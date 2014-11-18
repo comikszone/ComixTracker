@@ -1,5 +1,6 @@
 
 CREATE TABLE "COMICS"(
+ "name_lowercase" Varchar,
  "comics_id" number NOT NULL,
  "name" Varchar NOT NULL,
  "description" Text,
@@ -21,6 +22,7 @@ ALTER TABLE "CHARREFS" ADD CONSTRAINT PRIMARY KEY ("charver_id","issue_id")
 ;
 
 CREATE TABLE "CHARACTER"(
+ "name_lowercase" Varchar,
  "char_id" number NOT NULL,
  "name" Varchar NOT NULL,
  "description" Text,
@@ -35,6 +37,7 @@ ALTER TABLE "CHARACTER" ADD CONSTRAINT  PRIMARY KEY ("char_id")
 ;
 
 CREATE TABLE "ISSUE"(
+"name_lowercase" Varchar,
  "issue_id" number NOT NULL,
  "name" Varchar NOT NULL,
  "description" Text,
@@ -51,6 +54,7 @@ ALTER TABLE "ISSUE" ADD CONSTRAINT  PRIMARY KEY ("issue_id")
 ;
 
 CREATE TABLE "VOLUME"(
+"name_lowercase" Varchar,
  "volume_id" number NOT NULL,
  "name" Varchar NOT NULL,
  "description" Text,
