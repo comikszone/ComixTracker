@@ -1,0 +1,272 @@
+/*
+Created: 09.11.2014
+Modified: 16.11.2014
+Model: PostgreSQL 9.2
+Database: PostgreSQL 9.2
+*/
+
+
+-- Create tables section -------------------------------------------------
+
+-- Table COMICS
+
+CREATE TABLE "COMICS"(
+ "comics_id" Oid NOT NULL,
+ "name" Varchar NOT NULL,
+ "description" Text,
+ "image" Bytea,
+ "rating" Real,
+ "imprint" Varchar,
+ "publisher" Varchar,
+ "rel_date" Interval 
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table COMICS
+
+ALTER TABLE "COMICS" ADD CONSTRAINT "Key1" PRIMARY KEY ("comics_id")
+;
+
+ALTER TABLE "COMICS" ADD CONSTRAINT "comics_id" UNIQUE ("comics_id")
+;
+
+-- Table CHARREFS
+
+CREATE TABLE "CHARREFS"(
+ "char_id" Oid NOT NULL,
+ "issue_id" Oid NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table CHARREFS
+
+ALTER TABLE "CHARREFS" ADD CONSTRAINT "Key3" PRIMARY KEY ("char_id","issue_id")
+;
+
+-- Table CHARACTER
+
+CREATE TABLE "CHARACTER"(
+ "char_id" Oid NOT NULL,
+ "name" Varchar NOT NULL,
+ "real_name" Varchar,
+ "description" Text,
+ "image" Bytea,
+ "universe" Varchar,
+ "realm" Varchar
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table CHARACTER
+
+ALTER TABLE "CHARACTER" ADD CONSTRAINT "Key4" PRIMARY KEY ("char_id")
+;
+
+ALTER TABLE "CHARACTER" ADD CONSTRAINT "char_id" UNIQUE ("char_id")
+;
+
+-- Table MSG
+
+CREATE TABLE "MSG"(
+ "msg_id" Oid NOT NULL,
+ "sender" Oid NOT NULL,
+ "receiver" Oid NOT NULL,
+ "title" Varchar NOT NULL,
+ "text" Text NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table MSG
+
+ALTER TABLE "MSG" ADD CONSTRAINT "Key6" PRIMARY KEY ("sender","receiver")
+;
+
+ALTER TABLE "MSG" ADD CONSTRAINT "msg_id" UNIQUE ("msg_id")
+;
+
+-- Table USER
+
+CREATE TABLE "USER"(
+ "user_id" Oid NOT NULL,
+ "nickname" Varchar NOT NULL,
+ "pass" Varchar NOT NULL,
+ "avatar" Bytea,
+ "sex" Bit(1) DEFAULT 0 NOT NULL,
+ "birthday" Date,
+ "email" Varchar NOT NULL,
+ "online" Boolean DEFAULT false NOT NULL,
+ "group_id" Oid NOT NULL,
+ "banned" Boolean DEFAULT false NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table USER
+
+ALTER TABLE "USER" ADD CONSTRAINT "Key7" PRIMARY KEY ("user_id")
+;
+
+ALTER TABLE "USER" ADD CONSTRAINT "uid" UNIQUE ("user_id")
+;
+
+-- Table GROUP
+
+CREATE TABLE "GROUP"(
+ "group_id" Oid NOT NULL,
+ "gname" Varchar NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table GROUP
+
+ALTER TABLE "GROUP" ADD CONSTRAINT "Key8" PRIMARY KEY ("group_id")
+;
+
+ALTER TABLE "GROUP" ADD CONSTRAINT "gid" UNIQUE ("group_id")
+;
+
+ALTER TABLE "GROUP" ADD CONSTRAINT "gname" UNIQUE ("gname")
+;
+
+-- Table ISSUE
+
+CREATE TABLE "ISSUE"(
+ "issue_id" Oid NOT NULL,
+ "name" Varchar NOT NULL,
+ "description" Text,
+ "img" Bytea,
+ "rating" Real,
+ "imprint" Varchar,
+ "rel_date" Date,
+ "publisher" Varchar,
+ "volume_id" Oid NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table ISSUE
+
+ALTER TABLE "ISSUE" ADD CONSTRAINT "Key9" PRIMARY KEY ("issue_id")
+;
+
+ALTER TABLE "ISSUE" ADD CONSTRAINT "issue_id" UNIQUE ("issue_id")
+;
+
+-- Table VOLUME
+
+CREATE TABLE "VOLUME"(
+ "volume_id" Oid NOT NULL,
+ "name" Varchar NOT NULL,
+ "description" Text,
+ "img" Bytea,
+ "rating" Real,
+ "imprint" Varchar,
+ "rel_date" Interval ,
+ "publisher" Varchar,
+ "comics_id" Oid NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table VOLUME
+
+ALTER TABLE "VOLUME" ADD CONSTRAINT "Key10" PRIMARY KEY ("volume_id")
+;
+
+ALTER TABLE "VOLUME" ADD CONSTRAINT "volume_id" UNIQUE ("volume_id")
+;
+
+-- Table PROGRESS
+
+CREATE TABLE "PROGRESS"(
+ "user_id" Oid NOT NULL,
+ "issue_id" Oid NOT NULL,
+ "state" Bit(1) NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table PROGRESS
+
+ALTER TABLE "PROGRESS" ADD CONSTRAINT "Key11" PRIMARY KEY ("user_id","issue_id")
+;
+
+-- Table REVIEW
+
+CREATE TABLE "REVIEW"(
+ "user_id" Oid NOT NULL,
+ "text" Text NOT NULL,
+ "rating" Real NOT NULL,
+ "reference" Oid NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table REVIEW
+
+ALTER TABLE "REVIEW" ADD CONSTRAINT "Key12" PRIMARY KEY ("reference","user_id")
+;
+
+-- Table CHARVER
+
+CREATE TABLE "CHARVER"(
+ "char1" Oid NOT NULL,
+ "char2" Oid NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table CHARVER
+
+ALTER TABLE "CHARVER" ADD CONSTRAINT "Key13" PRIMARY KEY ("char2","char1")
+;
+
+-- Create relationships section ------------------------------------------------- 
+
+ALTER TABLE "USER" ADD CONSTRAINT "is member of" FOREIGN KEY ("group_id") REFERENCES "GROUP" ("group_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "MSG" ADD CONSTRAINT "sent by" FOREIGN KEY ("sender") REFERENCES "USER" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "MSG" ADD CONSTRAINT "sent to" FOREIGN KEY ("receiver") REFERENCES "USER" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "VOLUME" ADD CONSTRAINT "has volumes" FOREIGN KEY ("comics_id") REFERENCES "COMICS" ("comics_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "ISSUE" ADD CONSTRAINT "has issues" FOREIGN KEY ("volume_id") REFERENCES "VOLUME" ("volume_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "CHARREFS" ADD CONSTRAINT "chars in issues" FOREIGN KEY ("issue_id") REFERENCES "ISSUE" ("issue_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "PROGRESS" ADD CONSTRAINT "has in list" FOREIGN KEY ("user_id") REFERENCES "USER" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "PROGRESS" ADD CONSTRAINT "progress of" FOREIGN KEY ("issue_id") REFERENCES "ISSUE" ("issue_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "REVIEW" ADD CONSTRAINT "reviewer" FOREIGN KEY ("user_id") REFERENCES "USER" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "REVIEW" ADD CONSTRAINT "reviewed" FOREIGN KEY ("reference") REFERENCES "ISSUE" ("issue_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "CHARREFS" ADD CONSTRAINT "can be met in" FOREIGN KEY ("char_id") REFERENCES "CHARACTER" ("char_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "CHARVER" ADD CONSTRAINT "has variations" FOREIGN KEY ("char1") REFERENCES "CHARACTER" ("char_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "CHARVER" ADD CONSTRAINT "variation is" FOREIGN KEY ("char2") REFERENCES "CHARACTER" ("char_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+
+
+
+
