@@ -17,8 +17,8 @@ CREATE TABLE "COMICS"(
  "image" Text,
  "rating" Real,
  "votes" Integer,
- "publisher_id" Integer NOT NULL,
- "imprint_id" Integer NOT NULL,
+ "publisher_id" Integer,
+ "imprint_id" Integer,
  "start_date" Date,
  "end_date" Date,
  "in_progress" Date
@@ -75,8 +75,8 @@ CREATE TABLE "CHARACTER"(
  "real_name" Varchar,
  "description" Text,
  "image" Text,
- "realm_id" Bigint NOT NULL,
- "universe_id" Integer NOT NULL
+ "realm_id" Bigint,
+ "universe_id" Integer
 )
 WITH (OIDS=FALSE)
 ;
