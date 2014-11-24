@@ -1,6 +1,6 @@
 /*
 Created: 09.11.2014
-Modified: 16.11.2014
+Modified: 24.11.2014
 Model: PostgreSQL 9.2
 Database: PostgreSQL 9.2
 */
@@ -11,16 +11,33 @@ Database: PostgreSQL 9.2
 -- Table COMICS
 
 CREATE TABLE "COMICS"(
- "comics_id" Oid NOT NULL,
+ "comics_id" Serial NOT NULL,
  "name" Varchar NOT NULL,
  "description" Text,
- "image" Bytea,
+ "image" Text,
  "rating" Real,
- "imprint" Varchar,
- "publisher" Varchar,
- "rel_date" Interval 
+ "votes" Integer,
+ "publisher_id" Integer NOT NULL,
+ "imprint_id" Integer NOT NULL,
+ "start_date" Date,
+ "end_date" Date,
+ "in_progress" Date
 )
 WITH (OIDS=FALSE)
+;
+
+-- Create indexes for table COMICS
+
+CREATE INDEX "comi_Name" ON "COMICS" (LOWER(name))
+;
+
+CREATE UNIQUE INDEX "comi_ID" ON "COMICS" ("comics_id")
+;
+
+CREATE INDEX "comi_Pub" ON "COMICS" ("publisher_id")
+;
+
+CREATE INDEX "comi_Imp" ON "COMICS" ("imprint_id")
 ;
 
 -- Add keys for table COMICS
@@ -34,10 +51,15 @@ ALTER TABLE "COMICS" ADD CONSTRAINT "comics_id" UNIQUE ("comics_id")
 -- Table CHARREFS
 
 CREATE TABLE "CHARREFS"(
- "char_id" Oid NOT NULL,
- "issue_id" Oid NOT NULL
+ "char_id" Integer NOT NULL,
+ "issue_id" Integer NOT NULL
 )
 WITH (OIDS=FALSE)
+;
+
+-- Create indexes for table CHARREFS
+
+CREATE INDEX "charref_All" ON "CHARREFS" ("char_id","issue_id")
 ;
 
 -- Add keys for table CHARREFS
@@ -48,15 +70,29 @@ ALTER TABLE "CHARREFS" ADD CONSTRAINT "Key3" PRIMARY KEY ("char_id","issue_id")
 -- Table CHARACTER
 
 CREATE TABLE "CHARACTER"(
- "char_id" Oid NOT NULL,
+ "char_id" Serial NOT NULL,
  "name" Varchar NOT NULL,
  "real_name" Varchar,
  "description" Text,
- "image" Bytea,
- "universe" Varchar,
- "realm" Varchar
+ "image" Text,
+ "realm_id" Bigint NOT NULL,
+ "universe_id" Integer NOT NULL
 )
 WITH (OIDS=FALSE)
+;
+
+-- Create indexes for table CHARACTER
+
+CREATE INDEX "chari_Name" ON "CHARACTER" (LOWER(name))
+;
+
+CREATE UNIQUE INDEX "chari_ID" ON "CHARACTER" ("char_id")
+;
+
+CREATE INDEX "chari_Realm" ON "CHARACTER" ("realm_id")
+;
+
+CREATE INDEX "chari_Univ" ON "CHARACTER" ("universe_id")
 ;
 
 -- Add keys for table CHARACTER
@@ -67,85 +103,101 @@ ALTER TABLE "CHARACTER" ADD CONSTRAINT "Key4" PRIMARY KEY ("char_id")
 ALTER TABLE "CHARACTER" ADD CONSTRAINT "char_id" UNIQUE ("char_id")
 ;
 
--- Table MSG
+-- Table MESSAGES
 
-CREATE TABLE "MSG"(
- "msg_id" Oid NOT NULL,
- "sender" Oid NOT NULL,
- "receiver" Oid NOT NULL,
+CREATE TABLE "MESSAGES"(
+ "msg_id" Serial NOT NULL,
+ "sender" Integer NOT NULL,
+ "receiver" Integer NOT NULL,
  "title" Varchar NOT NULL,
  "text" Text NOT NULL
 )
 WITH (OIDS=FALSE)
 ;
 
--- Add keys for table MSG
+-- Create indexes for table MESSAGES
 
-ALTER TABLE "MSG" ADD CONSTRAINT "Key6" PRIMARY KEY ("sender","receiver")
+CREATE INDEX "msgi_Title" ON "MESSAGES" ("title")
 ;
 
-ALTER TABLE "MSG" ADD CONSTRAINT "msg_id" UNIQUE ("msg_id")
+-- Add keys for table MESSAGES
+
+ALTER TABLE "MESSAGES" ADD CONSTRAINT "Key6" PRIMARY KEY ("msg_id")
 ;
 
--- Table USER
+ALTER TABLE "MESSAGES" ADD CONSTRAINT "msg_id" UNIQUE ("msg_id")
+;
 
-CREATE TABLE "USER"(
- "user_id" Oid NOT NULL,
+-- Table USERS
+
+CREATE TABLE "USERS"(
+ "user_id" Serial NOT NULL,
  "nickname" Varchar NOT NULL,
  "pass" Varchar NOT NULL,
  "avatar" Bytea,
- "sex" Bit(1) DEFAULT 0 NOT NULL,
+ "sex" Integer DEFAULT 0 NOT NULL,
  "birthday" Date,
  "email" Varchar NOT NULL,
- "online" Boolean DEFAULT false NOT NULL,
- "group_id" Oid NOT NULL,
+ "online" Boolean DEFAULT false,
  "banned" Boolean DEFAULT false NOT NULL
 )
 WITH (OIDS=FALSE)
 ;
 
--- Add keys for table USER
+-- Create indexes for table USERS
 
-ALTER TABLE "USER" ADD CONSTRAINT "Key7" PRIMARY KEY ("user_id")
+CREATE INDEX "usi_Name" ON "USERS" (LOWER(nickname))
 ;
 
-ALTER TABLE "USER" ADD CONSTRAINT "uid" UNIQUE ("user_id")
+CREATE UNIQUE INDEX "usi_ID" ON "USERS" ("user_id")
 ;
 
--- Table GROUP
+-- Add keys for table USERS
 
-CREATE TABLE "GROUP"(
- "group_id" Oid NOT NULL,
- "gname" Varchar NOT NULL
+ALTER TABLE "USERS" ADD CONSTRAINT "Key7" PRIMARY KEY ("user_id")
+;
+
+ALTER TABLE "USERS" ADD CONSTRAINT "user_id" UNIQUE ("user_id")
+;
+
+-- Table USER_GROUP
+
+CREATE TABLE "USER_GROUP"(
+ "gname" Varchar NOT NULL,
+ "user_id" Integer NOT NULL
 )
 WITH (OIDS=FALSE)
 ;
 
--- Add keys for table GROUP
+-- Add keys for table USER_GROUP
 
-ALTER TABLE "GROUP" ADD CONSTRAINT "Key8" PRIMARY KEY ("group_id")
-;
-
-ALTER TABLE "GROUP" ADD CONSTRAINT "gid" UNIQUE ("group_id")
-;
-
-ALTER TABLE "GROUP" ADD CONSTRAINT "gname" UNIQUE ("gname")
+ALTER TABLE "USER_GROUP" ADD CONSTRAINT "Key8" PRIMARY KEY ("user_id","gname")
 ;
 
 -- Table ISSUE
 
 CREATE TABLE "ISSUE"(
- "issue_id" Oid NOT NULL,
+ "issue_id" Serial NOT NULL,
  "name" Varchar NOT NULL,
  "description" Text,
- "img" Bytea,
+ "img" Text,
  "rating" Real,
- "imprint" Varchar,
+ "votes" Integer,
  "rel_date" Date,
- "publisher" Varchar,
- "volume_id" Oid NOT NULL
+ "volume_id" Integer NOT NULL
 )
 WITH (OIDS=FALSE)
+;
+
+-- Create indexes for table ISSUE
+
+CREATE INDEX "issi_Name" ON "ISSUE" (LOWER(name))
+;
+
+CREATE UNIQUE INDEX "issi_ID" ON "ISSUE" ("issue_id")
+;
+
+CREATE INDEX "issi_Vol" ON "ISSUE" ("volume_id")
 ;
 
 -- Add keys for table ISSUE
@@ -159,17 +211,26 @@ ALTER TABLE "ISSUE" ADD CONSTRAINT "issue_id" UNIQUE ("issue_id")
 -- Table VOLUME
 
 CREATE TABLE "VOLUME"(
- "volume_id" Oid NOT NULL,
+ "volume_id" Serial NOT NULL,
  "name" Varchar NOT NULL,
  "description" Text,
- "img" Bytea,
+ "img" Text,
  "rating" Real,
- "imprint" Varchar,
- "rel_date" Interval ,
- "publisher" Varchar,
- "comics_id" Oid NOT NULL
+ "votes" Integer,
+ "comics_id" Integer NOT NULL
 )
 WITH (OIDS=FALSE)
+;
+
+-- Create indexes for table VOLUME
+
+CREATE INDEX "voli_Name" ON "VOLUME" (LOWER(name))
+;
+
+CREATE UNIQUE INDEX "voli_ID" ON "VOLUME" ("volume_id")
+;
+
+CREATE INDEX "voli_Com" ON "VOLUME" ("comics_id")
 ;
 
 -- Add keys for table VOLUME
@@ -183,41 +244,29 @@ ALTER TABLE "VOLUME" ADD CONSTRAINT "volume_id" UNIQUE ("volume_id")
 -- Table PROGRESS
 
 CREATE TABLE "PROGRESS"(
- "user_id" Oid NOT NULL,
- "issue_id" Oid NOT NULL,
- "state" Bit(1) NOT NULL
+ "user_id" Integer NOT NULL,
+ "issue_id" Integer NOT NULL
 )
 WITH (OIDS=FALSE)
 ;
 
 -- Add keys for table PROGRESS
 
-ALTER TABLE "PROGRESS" ADD CONSTRAINT "Key11" PRIMARY KEY ("user_id","issue_id")
-;
-
--- Table REVIEW
-
-CREATE TABLE "REVIEW"(
- "user_id" Oid NOT NULL,
- "text" Text NOT NULL,
- "rating" Real NOT NULL,
- "reference" Oid NOT NULL
-)
-WITH (OIDS=FALSE)
-;
-
--- Add keys for table REVIEW
-
-ALTER TABLE "REVIEW" ADD CONSTRAINT "Key12" PRIMARY KEY ("reference","user_id")
+ALTER TABLE "PROGRESS" ADD CONSTRAINT "Key11" PRIMARY KEY ("issue_id","user_id")
 ;
 
 -- Table CHARVER
 
 CREATE TABLE "CHARVER"(
- "char1" Oid NOT NULL,
- "char2" Oid NOT NULL
+ "char1" Integer NOT NULL,
+ "char2" Integer NOT NULL
 )
 WITH (OIDS=FALSE)
+;
+
+-- Create indexes for table CHARVER
+
+CREATE INDEX "charveri_All" ON "CHARVER" ("char1","char2")
 ;
 
 -- Add keys for table CHARVER
@@ -225,15 +274,112 @@ WITH (OIDS=FALSE)
 ALTER TABLE "CHARVER" ADD CONSTRAINT "Key13" PRIMARY KEY ("char2","char1")
 ;
 
+-- Table UNIVERSE
+
+CREATE TABLE "UNIVERSE"(
+ "universe_id" Serial NOT NULL,
+ "name" Varchar NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table UNIVERSE
+
+ALTER TABLE "UNIVERSE" ADD CONSTRAINT "Key14" PRIMARY KEY ("universe_id")
+;
+
+ALTER TABLE "UNIVERSE" ADD CONSTRAINT "universe_id" UNIQUE ("universe_id")
+;
+
+-- Table PUBLISHER
+
+CREATE TABLE "PUBLISHER"(
+ "publisher_id" Serial NOT NULL,
+ "name" Varchar NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table PUBLISHER
+
+ALTER TABLE "PUBLISHER" ADD CONSTRAINT "Key15" PRIMARY KEY ("publisher_id")
+;
+
+ALTER TABLE "PUBLISHER" ADD CONSTRAINT "publisher_id" UNIQUE ("publisher_id")
+;
+
+-- Table IMPINT
+
+CREATE TABLE "IMPINT"(
+ "imprint_id" Serial NOT NULL,
+ "name" Varchar NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table IMPINT
+
+ALTER TABLE "IMPINT" ADD CONSTRAINT "Key16" PRIMARY KEY ("imprint_id")
+;
+
+ALTER TABLE "IMPINT" ADD CONSTRAINT "imprint_id" UNIQUE ("imprint_id")
+;
+
+-- Table COMMENTS
+
+CREATE TABLE "COMMENTS"(
+ "comment_id" Serial NOT NULL,
+ "comics_id" Integer,
+ "volume_id" Integer,
+ "issue_id" Integer,
+ "user_id" Integer NOT NULL,
+ "text" Text NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table COMMENTS
+
+ALTER TABLE "COMMENTS" ADD CONSTRAINT "comment_id" UNIQUE ("comment_id")
+;
+
+-- Table REALM
+
+CREATE TABLE "REALM"(
+ "realm_id" Bigint NOT NULL,
+ "name" Bigint NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table REALM
+
+ALTER TABLE "REALM" ADD CONSTRAINT "Key18" PRIMARY KEY ("realm_id")
+;
+
+ALTER TABLE "REALM" ADD CONSTRAINT "realm_id" UNIQUE ("realm_id")
+;
+
+-- Table FRIENDS
+
+CREATE TABLE "FRIENDS"(
+ "user1_id" Integer NOT NULL,
+ "user2_id" Integer NOT NULL
+)
+WITH (OIDS=FALSE)
+;
+
+-- Add keys for table FRIENDS
+
+ALTER TABLE "FRIENDS" ADD CONSTRAINT "Key19" PRIMARY KEY ("user1_id","user2_id")
+;
+
 -- Create relationships section ------------------------------------------------- 
 
-ALTER TABLE "USER" ADD CONSTRAINT "is member of" FOREIGN KEY ("group_id") REFERENCES "GROUP" ("group_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE "MESSAGES" ADD CONSTRAINT "sent by" FOREIGN KEY ("sender") REFERENCES "USERS" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
-ALTER TABLE "MSG" ADD CONSTRAINT "sent by" FOREIGN KEY ("sender") REFERENCES "USER" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
-;
-
-ALTER TABLE "MSG" ADD CONSTRAINT "sent to" FOREIGN KEY ("receiver") REFERENCES "USER" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE "MESSAGES" ADD CONSTRAINT "sent to" FOREIGN KEY ("receiver") REFERENCES "USERS" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
 ALTER TABLE "VOLUME" ADD CONSTRAINT "has volumes" FOREIGN KEY ("comics_id") REFERENCES "COMICS" ("comics_id") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -245,16 +391,10 @@ ALTER TABLE "ISSUE" ADD CONSTRAINT "has issues" FOREIGN KEY ("volume_id") REFERE
 ALTER TABLE "CHARREFS" ADD CONSTRAINT "chars in issues" FOREIGN KEY ("issue_id") REFERENCES "ISSUE" ("issue_id") ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
-ALTER TABLE "PROGRESS" ADD CONSTRAINT "has in list" FOREIGN KEY ("user_id") REFERENCES "USER" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE "PROGRESS" ADD CONSTRAINT "has in list" FOREIGN KEY ("user_id") REFERENCES "USERS" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
 ALTER TABLE "PROGRESS" ADD CONSTRAINT "progress of" FOREIGN KEY ("issue_id") REFERENCES "ISSUE" ("issue_id") ON DELETE NO ACTION ON UPDATE NO ACTION
-;
-
-ALTER TABLE "REVIEW" ADD CONSTRAINT "reviewer" FOREIGN KEY ("user_id") REFERENCES "USER" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
-;
-
-ALTER TABLE "REVIEW" ADD CONSTRAINT "reviewed" FOREIGN KEY ("reference") REFERENCES "ISSUE" ("issue_id") ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
 ALTER TABLE "CHARREFS" ADD CONSTRAINT "can be met in" FOREIGN KEY ("char_id") REFERENCES "CHARACTER" ("char_id") ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -266,6 +406,38 @@ ALTER TABLE "CHARVER" ADD CONSTRAINT "has variations" FOREIGN KEY ("char1") REFE
 ALTER TABLE "CHARVER" ADD CONSTRAINT "variation is" FOREIGN KEY ("char2") REFERENCES "CHARACTER" ("char_id") ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
+ALTER TABLE "CHARACTER" ADD CONSTRAINT "from universe" FOREIGN KEY ("universe_id") REFERENCES "UNIVERSE" ("universe_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "COMICS" ADD CONSTRAINT "published" FOREIGN KEY ("publisher_id") REFERENCES "PUBLISHER" ("publisher_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "COMICS" ADD CONSTRAINT "released" FOREIGN KEY ("imprint_id") REFERENCES "IMPINT" ("imprint_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "USER_GROUP" ADD CONSTRAINT "in group" FOREIGN KEY ("user_id") REFERENCES "USERS" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "COMMENTS" ADD CONSTRAINT "written by" FOREIGN KEY ("user_id") REFERENCES "USERS" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "CHARACTER" ADD CONSTRAINT "from realm" FOREIGN KEY ("realm_id") REFERENCES "REALM" ("realm_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "FRIENDS" ADD CONSTRAINT "has friend" FOREIGN KEY ("user1_id") REFERENCES "USERS" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "FRIENDS" ADD CONSTRAINT "friend of" FOREIGN KEY ("user2_id") REFERENCES "USERS" ("user_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "COMMENTS" ADD CONSTRAINT "to c" FOREIGN KEY ("comics_id") REFERENCES "COMICS" ("comics_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "COMMENTS" ADD CONSTRAINT "to v" FOREIGN KEY ("volume_id") REFERENCES "VOLUME" ("volume_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
+
+ALTER TABLE "COMMENTS" ADD CONSTRAINT "to i" FOREIGN KEY ("issue_id") REFERENCES "ISSUE" ("issue_id") ON DELETE NO ACTION ON UPDATE NO ACTION
+;
 
 
 
