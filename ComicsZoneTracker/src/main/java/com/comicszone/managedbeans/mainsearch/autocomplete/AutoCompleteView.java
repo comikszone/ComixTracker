@@ -39,9 +39,18 @@ import org.primefaces.event.SelectEvent;
 @ManagedBean
 @SessionScoped
 public class AutoCompleteView {
-
+//    @EJB
+    private ComicsDaoImpl comicsDaoImpl;
+//    @EJB
+    private CharacterDaoImpl characterDaoImpl;
     private AjaxComicsCharacter ajaxComicsCharacter;
-
+    private String category;
+    private Finder finder;
+    public AutoCompleteView() {
+        comicsDaoImpl=new ComicsDaoImpl();
+        characterDaoImpl=new CharacterDaoImpl();
+        finder=comicsDaoImpl;
+    }
     public AjaxComicsCharacter getAjaxComicsCharacter() {
         return ajaxComicsCharacter;
     }
@@ -50,14 +59,12 @@ public class AutoCompleteView {
         this.ajaxComicsCharacter = ajaxComicsCharacter;
     }
    
-    private ComicsDaoImpl comicsDaoImpl;
-    private String category;
     public void onCategoryChange()
     {
         if (category.equals("Comics"))
-            finder=new ComicsDaoImpl();
+            finder=comicsDaoImpl;
         else
-            finder=new CharacterDaoImpl();
+            finder=characterDaoImpl;
     }
     public String getCategory() {
         return category;
@@ -66,14 +73,8 @@ public class AutoCompleteView {
     public void setCategory(String category) {
         this.category = category;
     }
-    public AutoCompleteView() {
-        comicsDaoImpl=new ComicsDaoImpl();
-    }
-     
-    private Finder finder;
      
     public List<AjaxComicsCharacter> completeComics(String query) {
-//        List<Comics> filteredComics = new ArrayList<Comics>();
         List<AjaxComicsCharacter> ajaxComicsCharacters=(List<AjaxComicsCharacter>) finder.findByNameStartsWith(query.toLowerCase());
         FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put("finder", finder);
         return ajaxComicsCharacters;
