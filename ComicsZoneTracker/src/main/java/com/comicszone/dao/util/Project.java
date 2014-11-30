@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.comicszone.test;
+package com.comicszone.dao.util;
 
 import com.comicszone.dao.CharacterDaoImpl;
+import com.comicszone.dao.ComicsDaoImpl;
 import com.comicszone.dao.Finder;
 import java.sql.SQLException;
 import com.comicszone.entitynetbeans.Character;
+import com.comicszone.entitynetbeans.Comics;
 
 /**
  *
@@ -62,8 +64,11 @@ public class Project {
 //        System.out.println(comics.getName());
 //        em.getTransaction().commit();
 //        em.close();
-        Finder finder=new CharacterDaoImpl();
-        Character character=(Character) finder.findByNameStartsWith("MoiRa").get(0);
-        System.out.println(character.getName());
+//        Finder finder=new CharacterDaoImpl();
+//        Character character=(Character) finder.findByNameStartsWith("MoiRa").get(0);
+//        System.out.println(character.getName());
+        ComicsDaoImpl cdi=new ComicsDaoImpl();
+        Comics c=cdi.findByName("100th Anniversary Special - Avengers", "name").get(0);
+        System.out.println(c.getName());
     }
 }

@@ -20,5 +20,5 @@ import javax.ejb.Stateless;
 //@PostConstruct
 public interface Finder {
     public List<? extends AjaxComicsCharacter> findByNameStartsWith(String name);
-    public AjaxComicsCharacter find (Object id);
+    public AjaxComicsCharacter findById (Object id);
 }

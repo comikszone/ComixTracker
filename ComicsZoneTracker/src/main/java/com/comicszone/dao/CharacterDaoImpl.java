@@ -7,7 +7,7 @@ package com.comicszone.dao;
 
 import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Character;
-import com.comicszone.test.PersistenceUtil;
+import com.comicszone.dao.util.PersistenceUtil;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

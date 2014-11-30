@@ -32,7 +32,7 @@ public class AjaxComicsConverter implements Converter {
 //                ComicsService service = (ComicsService) fc.getExternalContext().getApplicationMap().get("comicsService");
 //                ComicsDaoImpl impl=new ComicsDaoImpl();
                 Finder finder=(Finder) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("finder");
-                return finder.find(Integer.parseInt(value));
+                return finder.findById(Integer.parseInt(value));
 //                return service.getComicsList().get(Integer.parseInt(value));
             } catch(NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid comics."));

@@ -5,10 +5,11 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.test.PersistenceUtil;
+import com.comicszone.dao.util.PersistenceUtil;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 //import javax.persistence.PersistenceUtil;
 
 /**
@@ -83,7 +84,7 @@ public abstract class AbstractDao<T> {
     }
   
 
-  public T find(Object id) {
+  public T findById(Object id) {
         EntityManager em=null;
         T entity=null;
         try
@@ -124,5 +125,28 @@ public abstract class AbstractDao<T> {
         }
         return entities;
   }
+  public List<T> findByName(String name,String parameter)
+{
+        EntityManager em=null;
+        List<T> results=null;
+        try
+        {
+            em=PersistenceUtil.getEntityManagerFactory().createEntityManager();
+            em.getTransaction().begin();
+            TypedQuery<T> query =em.createQuery("SELECT c FROM "+entityClass.getName()+" c WHERE c."+ parameter+"=:name", entityClass);
+            query.setParameter("name", name);
+            results = query.getResultList();
+            em.getTransaction().commit();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }finally
+        {
+            if ((em!=null) && (em.isOpen()))
+                em.close();
+        }   
+        return results;
+    }
+
 }
   
