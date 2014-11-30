@@ -349,8 +349,8 @@ ALTER TABLE  COMMENTS  ADD CONSTRAINT  comment_id  PRIMARY KEY ( comment_id )
 -- Table REALM
 
 CREATE TABLE  REALM (
-  realm_id  Bigint NOT NULL,
-  name  Bigint NOT NULL
+  realm_id  Serial NOT NULL,
+  name  Varchar NOT NULL
 )
 WITH (OIDS=FALSE)
 ;
