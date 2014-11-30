@@ -1,3 +1,4 @@
 ALTER TABLE realm
   ALTER COLUMN realm_id TYPE Serial,
   ALTER COLUMN name TYPE Varchar;
+ 
