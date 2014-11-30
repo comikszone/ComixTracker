@@ -54,7 +54,8 @@ public class ComicsDaoImpl extends AbstractDao<Comics> implements Finder, Slides
         {
             em=PersistenceUtil.getEntityManagerFactory().createEntityManager();
             em.getTransaction().begin();
-            TypedQuery<Comics> query =em.createNamedQuery("Comics.get12Best", Comics.class);
+            TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
+            query.setMaxResults(12);
             results = query.getResultList();
             em.getTransaction().commit();
         }catch (Exception e)

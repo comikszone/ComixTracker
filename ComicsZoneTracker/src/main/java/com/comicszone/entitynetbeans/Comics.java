@@ -47,7 +47,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByEndDate", query = "SELECT c FROM Comics c WHERE c.endDate = :endDate"),
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
     @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
-    @NamedQuery(name = "Comics.get12Best", query = "SELECT c FROM Comics c WHERE c.image !=''")})
+    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''")})
 public class Comics implements Serializable,AjaxComicsCharacter {
     private static final long serialVersionUID = 1L;
     @Id
