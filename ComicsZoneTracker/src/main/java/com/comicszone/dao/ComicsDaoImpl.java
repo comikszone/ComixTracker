@@ -17,7 +17,7 @@ import javax.persistence.TypedQuery;
  * @author ArsenyPC
  */
 @Stateless
-public class ComicsDaoImpl extends AbstractDao<Comics> implements Finder{
+public class ComicsDaoImpl extends AbstractDao<Comics> implements Finder, SlideshowFacade{
     public ComicsDaoImpl() {
         super(Comics.class);
     }
@@ -45,6 +45,26 @@ public class ComicsDaoImpl extends AbstractDao<Comics> implements Finder{
         }   
         return results;
     }
-   
-    
+
+    @Override
+    public List<Comics> get12Best() {
+        EntityManager em=null;
+        List<Comics> results=null;
+        try
+        {
+            em=PersistenceUtil.getEntityManagerFactory().createEntityManager();
+            em.getTransaction().begin();
+            TypedQuery<Comics> query =em.createNamedQuery("Comics.get12Best", Comics.class);
+            results = query.getResultList();
+            em.getTransaction().commit();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }finally
+        {
+            if ((em!=null) && (em.isOpen()))
+                em.close();
+        }   
+        return results;
+    }
 }
