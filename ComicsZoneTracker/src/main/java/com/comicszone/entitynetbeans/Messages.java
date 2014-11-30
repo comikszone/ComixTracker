@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,7 +27,7 @@ import javax.validation.constraints.Size;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"MESSAGES\"")
+@Table(name = "messages")
 @NamedQueries({
     @NamedQuery(name = "Messages.findAll", query = "SELECT m FROM Messages m"),
     @NamedQuery(name = "Messages.findByMsgId", query = "SELECT m FROM Messages m WHERE m.msgId = :msgId"),
@@ -35,7 +36,8 @@ import javax.validation.constraints.Size;
 public class Messages implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "messages_msg_id_seq")
+    @SequenceGenerator(name = "messages_msg_id_seq", sequenceName = "messages_msg_id_seq")
     @Basic(optional = false)
     @Column(name = "msg_id")
     private Integer msgId;
@@ -49,11 +51,9 @@ public class Messages implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "text")
     private String text;
-    
     @JoinColumn(name = "sender", referencedColumnName = "user_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Users sender;
-    
     @JoinColumn(name = "receiver", referencedColumnName = "user_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Users receiver;
@@ -133,7 +133,7 @@ public class Messages implements Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.Messages[ msgId=" + msgId + " ]";
+        return "com.comicszone.entitynetbeans.Messages[ msgId=" + msgId + " ]";
     }
     
 }

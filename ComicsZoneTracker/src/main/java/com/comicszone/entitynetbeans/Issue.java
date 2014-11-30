@@ -20,6 +20,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +33,7 @@ import javax.validation.constraints.Size;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"ISSUE\"")
+@Table(name = "issue")
 @NamedQueries({
     @NamedQuery(name = "Issue.findAll", query = "SELECT i FROM Issue i"),
     @NamedQuery(name = "Issue.findByIssueId", query = "SELECT i FROM Issue i WHERE i.issueId = :issueId"),
@@ -44,7 +46,8 @@ import javax.validation.constraints.Size;
 public class Issue implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "issue_issue_id_seq")
+    @SequenceGenerator(name = "issue_issue_id_seq", sequenceName = "issue_issue_id_seq")
     @Basic(optional = false)
     @Column(name = "issue_id")
     private Integer issueId;
@@ -71,6 +74,8 @@ public class Issue implements Serializable {
     private List<Character> characterList;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
     private List<Users> usersList;
+    @OneToMany(mappedBy = "issueId", fetch = FetchType.LAZY)
+    private List<Comments> commentsList;
     @JoinColumn(name = "volume_id", referencedColumnName = "volume_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Volume volumeId;
@@ -159,6 +164,14 @@ public class Issue implements Serializable {
         this.usersList = usersList;
     }
 
+    public List<Comments> getCommentsList() {
+        return commentsList;
+    }
+
+    public void setCommentsList(List<Comments> commentsList) {
+        this.commentsList = commentsList;
+    }
+
     public Volume getVolumeId() {
         return volumeId;
     }
@@ -189,7 +202,7 @@ public class Issue implements Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.Issue[ issueId=" + issueId + " ]";
+        return "com.comicszone.entitynetbeans.Issue[ issueId=" + issueId + " ]";
     }
     
 }

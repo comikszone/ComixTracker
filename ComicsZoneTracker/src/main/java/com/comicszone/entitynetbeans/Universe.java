@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,7 +27,7 @@ import javax.validation.constraints.Size;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"UNIVERSE\"")
+@Table(name = "universe")
 @NamedQueries({
     @NamedQuery(name = "Universe.findAll", query = "SELECT u FROM Universe u"),
     @NamedQuery(name = "Universe.findByUniverseId", query = "SELECT u FROM Universe u WHERE u.universeId = :universeId"),
@@ -34,7 +35,8 @@ import javax.validation.constraints.Size;
 public class Universe implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "universe_universe_id_seq")
+    @SequenceGenerator(name = "universe_universe_id_seq", sequenceName = "universe_universe_id_seq")
     @Basic(optional = false)
     @Column(name = "universe_id")
     private Integer universeId;
@@ -104,7 +106,7 @@ public class Universe implements Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.Universe[ universeId=" + universeId + " ]";
+        return "com.comicszone.entitynetbeans.Universe[ universeId=" + universeId + " ]";
     }
     
 }

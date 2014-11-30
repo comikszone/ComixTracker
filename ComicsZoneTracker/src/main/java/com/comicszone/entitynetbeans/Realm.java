@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"REALM\"")
+@Table(name = "realm")
 @NamedQueries({
     @NamedQuery(name = "Realm.findAll", query = "SELECT r FROM Realm r"),
     @NamedQuery(name = "Realm.findByRealmId", query = "SELECT r FROM Realm r WHERE r.realmId = :realmId"),
@@ -100,7 +100,7 @@ public class Realm implements Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.Realm[ realmId=" + realmId + " ]";
+        return "com.comicszone.entitynetbeans.Realm[ realmId=" + realmId + " ]";
     }
     
 }

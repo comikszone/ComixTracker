@@ -21,6 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,20 +31,20 @@ import javax.validation.constraints.Size;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"CHARACTER\"")
+@Table(name = "character")
 @NamedQueries({
     @NamedQuery(name = "Character.findAll", query = "SELECT c FROM Character c"),
-    @NamedQuery(name = "Character.findById", query = "SELECT c FROM Character c WHERE c.Id = :Id"),
+    @NamedQuery(name = "Character.findByCharId", query = "SELECT c FROM Character c WHERE c.id = :charId"),
     @NamedQuery(name = "Character.findByName", query = "SELECT c FROM Character c WHERE c.name = :name"),
     @NamedQuery(name = "Character.findByRealName", query = "SELECT c FROM Character c WHERE c.realName = :realName"),
     @NamedQuery(name = "Character.findByDescription", query = "SELECT c FROM Character c WHERE c.description = :description"),
     @NamedQuery(name = "Character.findByImage", query = "SELECT c FROM Character c WHERE c.image = :image"),
-    @NamedQuery(name = "Character.findByNameStartsWith", query = "SELECT c FROM Character c WHERE  LOWER(c.name) LIKE :name")
-})
-public class Character implements AjaxComicsCharacter, Serializable {
+    @NamedQuery(name = "Character.findByNameStartsWith", query = "SELECT c FROM Character c WHERE  LOWER(c.name) LIKE :name")})
+public class Character implements Serializable,AjaxComicsCharacter {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "character_char_id_seq")
+    @SequenceGenerator(name = "character_char_id_seq", sequenceName = "character_char_id_seq")
     @Basic(optional = false)
     @Column(name = "char_id")
     private Integer Id;
@@ -61,18 +62,18 @@ public class Character implements AjaxComicsCharacter, Serializable {
     @Size(max = 2147483647)
     @Column(name = "image")
     private String image;
-    @JoinTable(name = "CHARREFS", joinColumns = {
-        @JoinColumn(name = "char_id", referencedColumnName = "char_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "issue_id", referencedColumnName = "issue_id")})
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Issue> issueList;
-    @JoinTable(name = "CHARVER", joinColumns = {
+    @JoinTable(name = "charver", joinColumns = {
         @JoinColumn(name = "char1", referencedColumnName = "char_id")}, inverseJoinColumns = {
         @JoinColumn(name = "char2", referencedColumnName = "char_id")})
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Character> characterList;
     @ManyToMany(mappedBy = "characterList", fetch = FetchType.LAZY)
     private List<Character> characterList1;
+    @JoinTable(name = "charrefs", joinColumns = {
+        @JoinColumn(name = "char_id", referencedColumnName = "char_id")}, inverseJoinColumns = {
+        @JoinColumn(name = "issue_id", referencedColumnName = "issue_id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Issue> issueList;
     @JoinColumn(name = "realm_id", referencedColumnName = "realm_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Realm realmId;
@@ -132,14 +133,6 @@ public class Character implements AjaxComicsCharacter, Serializable {
         this.image = image;
     }
 
-    public List<Issue> getIssueList() {
-        return issueList;
-    }
-
-    public void setIssueList(List<Issue> issueList) {
-        this.issueList = issueList;
-    }
-
     public List<Character> getCharacterList() {
         return characterList;
     }
@@ -154,6 +147,14 @@ public class Character implements AjaxComicsCharacter, Serializable {
 
     public void setCharacterList1(List<Character> characterList1) {
         this.characterList1 = characterList1;
+    }
+
+    public List<Issue> getIssueList() {
+        return issueList;
+    }
+
+    public void setIssueList(List<Issue> issueList) {
+        this.issueList = issueList;
     }
 
     public Realm getRealmId() {
@@ -194,6 +195,7 @@ public class Character implements AjaxComicsCharacter, Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.Character[ charId=" + Id + " ]";
-    }    
+        return "com.comicszone.entitynetbeans.Character[ charId=" + Id + " ]";
+    }
+    
 }

@@ -68,7 +68,11 @@ public class Project {
 //        Character character=(Character) finder.findByNameStartsWith("MoiRa").get(0);
 //        System.out.println(character.getName());
         ComicsDaoImpl cdi=new ComicsDaoImpl();
-        Comics c=cdi.findByName("100th Anniversary Special - Avengers", "name").get(0);
-        System.out.println(c.getName());
+        Comics c=cdi.findByName("100th Anniversary Special - Fantastic Four", "name").get(0);
+        System.out.println(c.getId());
+        Character character=new Character();
+        character.setName("Monkey (Vietnamese) (Earth-616)"); character.setImage("http://img3.wikia.nocookie.net/__cb20140205190724/marveldatabase/images/thumb/f/f7/Monkey_%28Vietnamese%29_%28Earth-616%29.jpg/200px-0%2C519%2C0%2C519-Monkey_%28Vietnamese%29_%28Earth-616%29.jpg");
+        CharacterDaoImpl cdi1=new CharacterDaoImpl();
+        cdi1.save(character);
     }
 }

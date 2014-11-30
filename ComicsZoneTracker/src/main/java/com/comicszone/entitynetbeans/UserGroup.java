@@ -20,7 +20,7 @@ import javax.persistence.Table;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"USER_GROUP\"")
+@Table(name = "user_group")
 @NamedQueries({
     @NamedQuery(name = "UserGroup.findAll", query = "SELECT u FROM UserGroup u"),
     @NamedQuery(name = "UserGroup.findByGname", query = "SELECT u FROM UserGroup u WHERE u.userGroupPK.gname = :gname"),
@@ -82,7 +82,7 @@ public class UserGroup implements Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.UserGroup[ userGroupPK=" + userGroupPK + " ]";
+        return "com.comicszone.entitynetbeans.UserGroup[ userGroupPK=" + userGroupPK + " ]";
     }
     
 }

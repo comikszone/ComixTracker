@@ -8,11 +8,12 @@
   </persistence-unit>
 </persistence>-->
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-  <persistence-unit name="ComicsTracker1" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="ComicsZonePU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <class>com.comicszone.entitynetbeans.Character</class>
     <class>com.comicszone.entitynetbeans.Comics</class>
-    <class>com.comicszone.entitynetbeans.Impint</class>
+    <class>com.comicszone.entitynetbeans.Comments</class>
+    <class>com.comicszone.entitynetbeans.Imprint</class>
     <class>com.comicszone.entitynetbeans.Issue</class>
     <class>com.comicszone.entitynetbeans.Messages</class>
     <class>com.comicszone.entitynetbeans.Publisher</class>
@@ -26,9 +27,9 @@
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.user" value="ComicsZoneRole"/>
       <property name="javax.persistence.jdbc.password" value="MANAGER"/>
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/ComicsTracker1"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/ComicsZoneDB"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
       <property name="hibernate.max_fetch_depth" value="3"/>
     </properties>

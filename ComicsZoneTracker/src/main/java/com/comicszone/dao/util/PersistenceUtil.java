@@ -18,7 +18,7 @@ import javax.persistence.Persistence;
     static {
                 try {
                 	Class.forName("org.postgresql.Driver");
-                     entityManagerFactory =  Persistence.createEntityManagerFactory("ComicsTracker1"); 
+                     entityManagerFactory =  Persistence.createEntityManagerFactory("ComicsZonePU"); 
                 } catch (Throwable ex) {
 
                     System.err.println("Initial SessionFactory creation failed." + ex);

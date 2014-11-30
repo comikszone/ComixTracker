@@ -34,10 +34,10 @@ import javax.validation.constraints.Size;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"COMICS\"")
+@Table(name = "comics")
 @NamedQueries({
     @NamedQuery(name = "Comics.findAll", query = "SELECT c FROM Comics c"),
-    @NamedQuery(name = "Comics.findById", query = "SELECT c FROM Comics c WHERE c.Id = :Id"),
+    @NamedQuery(name = "Comics.findByComicsId", query = "SELECT c FROM Comics c WHERE c.id = :comicsId"),
     @NamedQuery(name = "Comics.findByName", query = "SELECT c FROM Comics c WHERE c.name = :name"),
     @NamedQuery(name = "Comics.findByDescription", query = "SELECT c FROM Comics c WHERE c.description = :description"),
     @NamedQuery(name = "Comics.findByImage", query = "SELECT c FROM Comics c WHERE c.image = :image"),
@@ -46,13 +46,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByStartDate", query = "SELECT c FROM Comics c WHERE c.startDate = :startDate"),
     @NamedQuery(name = "Comics.findByEndDate", query = "SELECT c FROM Comics c WHERE c.endDate = :endDate"),
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
-    @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name")
-})
-public class Comics implements Serializable, AjaxComicsCharacter {
+    @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name")})
+public class Comics implements Serializable,AjaxComicsCharacter {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "\"COMICS_comics_id_seq\"")
-    @SequenceGenerator(name = "\"COMICS_comics_id_seq\"", sequenceName = "\"COMICS_comics_id_seq\"")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comics_comics_id_seq")
+    @SequenceGenerator(name = "comics_comics_id_seq", sequenceName = "comics_comics_id_seq")
     @Basic(optional = false)
     @Column(name = "comics_id")
     private Integer Id;
@@ -83,9 +82,11 @@ public class Comics implements Serializable, AjaxComicsCharacter {
     private Date inProgress;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comicsId", fetch = FetchType.LAZY)
     private List<Volume> volumeList;
+    @OneToMany(mappedBy = "comicsId", fetch = FetchType.LAZY)
+    private List<Comments> commentsList;
     @JoinColumn(name = "imprint_id", referencedColumnName = "imprint_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Impint imprintId;
+    private Imprint imprintId;
     @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Publisher publisherId;
@@ -101,19 +102,19 @@ public class Comics implements Serializable, AjaxComicsCharacter {
         this.Id = comicsId;
         this.name = name;
     }
-    @Override
+
     public Integer getId() {
         return Id;
     }
-    @Override
+
     public void setId(Integer Id) {
         this.Id = Id;
     }
-    @Override
+
     public String getName() {
         return name;
     }
-    @Override
+
     public void setName(String name) {
         this.name = name;
     }
@@ -182,11 +183,19 @@ public class Comics implements Serializable, AjaxComicsCharacter {
         this.volumeList = volumeList;
     }
 
-    public Impint getImprintId() {
+    public List<Comments> getCommentsList() {
+        return commentsList;
+    }
+
+    public void setCommentsList(List<Comments> commentsList) {
+        this.commentsList = commentsList;
+    }
+
+    public Imprint getImprintId() {
         return imprintId;
     }
 
-    public void setImprintId(Impint imprintId) {
+    public void setImprintId(Imprint imprintId) {
         this.imprintId = imprintId;
     }
 
@@ -220,7 +229,7 @@ public class Comics implements Serializable, AjaxComicsCharacter {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.Comics[ comicsId=" + Id + " ]";
+        return "com.comicszone.entitynetbeans.Comics[ comicsId=" + Id + " ]";
     }
     
 }

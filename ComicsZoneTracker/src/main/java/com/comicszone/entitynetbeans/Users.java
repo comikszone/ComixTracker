@@ -23,6 +23,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,7 +35,7 @@ import javax.validation.constraints.Size;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"USERS\"")
+@Table(name = "users")
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
     @NamedQuery(name = "Users.findByUserId", query = "SELECT u FROM Users u WHERE u.userId = :userId"),
@@ -48,74 +49,63 @@ import javax.validation.constraints.Size;
 public class Users implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "users_user_id_seq")
+    @SequenceGenerator(name = "users_user_id_seq", sequenceName = "users_user_id_seq")
     @Basic(optional = false)
     @Column(name = "user_id")
     private Integer userId;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "nickname")
     private String nickname;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "pass")
     private String pass;
-    
 //    @Lob
     @Column(name = "avatar")
     private byte[] avatar;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "sex")
     private int sex;
-    
     @Column(name = "birthday")
     @Temporal(TemporalType.DATE)
     private Date birthday;
-    
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Недопустимый адрес электронной почты")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "email")
     private String email;
-    
     @Column(name = "online")
     private Boolean online;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "banned")
     private boolean banned;
-    
-    @JoinTable(name = "\"FRIENDS\"", joinColumns = {
+    @JoinTable(name = "friends", joinColumns = {
         @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
         @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Users> usersList;
-    
     @ManyToMany(mappedBy = "usersList", fetch = FetchType.LAZY)
     private List<Users> usersList1;
-    
-    @JoinTable(name = "PROGRESS", joinColumns = {
+    @JoinTable(name = "progress", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
         @JoinColumn(name = "issue_id", referencedColumnName = "issue_id")})
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Issue> issueList;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users", fetch = FetchType.LAZY)
     private List<UserGroup> userGroupList;
-    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<Comments> commentsList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sender", fetch = FetchType.LAZY)
-    private List<Messages> senderMessagesList;
-    
+    private List<Messages> messagesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "receiver", fetch = FetchType.LAZY)
-    private List<Messages> recieverMessagesList;
+    private List<Messages> messagesList1;
 
     public Users() {
     }
@@ -237,20 +227,28 @@ public class Users implements Serializable {
         this.userGroupList = userGroupList;
     }
 
+    public List<Comments> getCommentsList() {
+        return commentsList;
+    }
+
+    public void setCommentsList(List<Comments> commentsList) {
+        this.commentsList = commentsList;
+    }
+
     public List<Messages> getMessagesList() {
-        return senderMessagesList;
+        return messagesList;
     }
 
     public void setMessagesList(List<Messages> messagesList) {
-        this.senderMessagesList = messagesList;
+        this.messagesList = messagesList;
     }
 
     public List<Messages> getMessagesList1() {
-        return recieverMessagesList;
+        return messagesList1;
     }
 
     public void setMessagesList1(List<Messages> messagesList1) {
-        this.recieverMessagesList = messagesList1;
+        this.messagesList1 = messagesList1;
     }
 
     @Override
@@ -275,7 +273,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.Users[ userId=" + userId + " ]";
+        return "com.comicszone.entitynetbeans.Users[ userId=" + userId + " ]";
     }
     
 }

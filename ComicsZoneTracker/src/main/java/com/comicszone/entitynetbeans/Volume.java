@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,7 +30,7 @@ import javax.validation.constraints.Size;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"VOLUME\"")
+@Table(name = "volume")
 @NamedQueries({
     @NamedQuery(name = "Volume.findAll", query = "SELECT v FROM Volume v"),
     @NamedQuery(name = "Volume.findByVolumeId", query = "SELECT v FROM Volume v WHERE v.volumeId = :volumeId"),
@@ -41,7 +42,8 @@ import javax.validation.constraints.Size;
 public class Volume implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "volume_volume_id_seq")
+    @SequenceGenerator(name = "volume_volume_id_seq", sequenceName = "volume_volume_id_seq")
     @Basic(optional = false)
     @Column(name = "volume_id")
     private Integer volumeId;
@@ -61,11 +63,13 @@ public class Volume implements Serializable {
     private Float rating;
     @Column(name = "votes")
     private Integer votes;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "volumeId", fetch = FetchType.LAZY)
-    private List<Issue> issueList;
     @JoinColumn(name = "comics_id", referencedColumnName = "comics_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Comics comicsId;
+    @OneToMany(mappedBy = "volumeId", fetch = FetchType.LAZY)
+    private List<Comments> commentsList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "volumeId", fetch = FetchType.LAZY)
+    private List<Issue> issueList;
 
     public Volume() {
     }
@@ -127,20 +131,28 @@ public class Volume implements Serializable {
         this.votes = votes;
     }
 
-    public List<Issue> getIssueList() {
-        return issueList;
-    }
-
-    public void setIssueList(List<Issue> issueList) {
-        this.issueList = issueList;
-    }
-
     public Comics getComicsId() {
         return comicsId;
     }
 
     public void setComicsId(Comics comicsId) {
         this.comicsId = comicsId;
+    }
+
+    public List<Comments> getCommentsList() {
+        return commentsList;
+    }
+
+    public void setCommentsList(List<Comments> commentsList) {
+        this.commentsList = commentsList;
+    }
+
+    public List<Issue> getIssueList() {
+        return issueList;
+    }
+
+    public void setIssueList(List<Issue> issueList) {
+        this.issueList = issueList;
     }
 
     @Override
@@ -165,7 +177,7 @@ public class Volume implements Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.Volume[ volumeId=" + volumeId + " ]";
+        return "com.comicszone.entitynetbeans.Volume[ volumeId=" + volumeId + " ]";
     }
     
 }

@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,7 +27,7 @@ import javax.validation.constraints.Size;
  * @author ArsenyPC
  */
 @Entity
-@Table(name = "\"PUBLISHER\"")
+@Table(name = "publisher")
 @NamedQueries({
     @NamedQuery(name = "Publisher.findAll", query = "SELECT p FROM Publisher p"),
     @NamedQuery(name = "Publisher.findByPublisherId", query = "SELECT p FROM Publisher p WHERE p.publisherId = :publisherId"),
@@ -34,7 +35,8 @@ import javax.validation.constraints.Size;
 public class Publisher implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "publisher_publisher_id_seq")
+    @SequenceGenerator(name = "publisher_publisher_id_seq", sequenceName = "publisher_publisher_id_seq")
     @Basic(optional = false)
     @Column(name = "publisher_id")
     private Integer publisherId;
@@ -104,7 +106,7 @@ public class Publisher implements Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entitynetbeans.Publisher[ publisherId=" + publisherId + " ]";
+        return "com.comicszone.entitynetbeans.Publisher[ publisherId=" + publisherId + " ]";
     }
     
 }
