@@ -1,4 +1,4 @@
-/*
+﻿/*
 Created: 09.11.2014
 Modified: 24.11.2014
 Model: PostgreSQL 9.2
@@ -41,7 +41,7 @@ CREATE INDEX  comi_Imp  ON  COMICS  ( imprint_id )
 ;
 
 -- Add keys for table COMICS
-i
+
 ALTER TABLE  COMICS  ADD CONSTRAINT  Key1  PRIMARY KEY ( comics_id )
 ;
 
