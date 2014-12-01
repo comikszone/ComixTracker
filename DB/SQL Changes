@@ -1,4 +1,9 @@
 ALTER TABLE realm
   ALTER COLUMN realm_id TYPE Serial,
   ALTER COLUMN name TYPE Varchar;
- 
+  
+DROP TABLE universe CASCADE;
+ALTER TABLE character 
+  ADD COLUMN publisher_id integer;
+ALTER TABLE character
+  ADD CONSTRAINT created_by FOREIGN KEY ( publisher_id ) REFERENCES publisher (publisher_id) ON DELETE NO ACTION ON UPDATE NO ACTION;
