@@ -29,15 +29,16 @@ import javax.ejb.EJB;
 public class SlideshowController implements Serializable{
     
     private List<Comics> comicsList;
-    private SlideshowFacade slideshowFacade;
+    @EJB
+    private ComicsFacade comicsFacade;
     
     public SlideshowController() {
     }
         
     @PostConstruct
     public void fillComicsList() {
-       slideshowFacade = new ComicsFacade();
-       comicsList = slideshowFacade.get12Best();
+//       comicsFacade = new ComicsFacade();
+       comicsList = comicsFacade.get12Best();
     }
     
     public List<Comics> getComicsList() {

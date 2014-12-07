@@ -1,44 +1,65 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui" >
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>Facelet Title</title>
+        <title>ComicsZone</title>
+        <h:outputStylesheet library="css" name="basic-styles.css" />
     </h:head>
-    <h:body>
-        <h:form> 
-            <h:panelGrid columns="2" cellpadding="5"> 
-                <p:autoComplete id="comicsPojo" 
-                                value="#{autoCompleteView.ajaxComicsCharacter}" 
-                                completeMethod="#{autoCompleteView.completeComics}"
-                                var="aj" 
-                                itemLabel="#{aj.name}"
-                                itemValue="#{aj}"
-                                converter="ajaxComicsCharacterConverter"
-                                queryDelay="0"
-                                forceSelection="true"
-                                dropdown="false"
-                                >
-                    <p:column>
-                        #{aj.name}
-                    </p:column>
-                    <p:column>
-                        <p:graphicImage value="#{aj.image}" width="40" height="40"/>
-                    </p:column>
-                </p:autoComplete>
-                <p:selectOneMenu id="console" value="#{autoCompleteView.category}">
-                    <p:ajax listener="#{autoCompleteView.onCategoryChange}"/>
-                    <f:selectItem itemLabel="Comics" itemValue="Comics" />
-                    <f:selectItem itemLabel="Characters" itemValue="Characters" />
-                </p:selectOneMenu>
-            </h:panelGrid>
-
-
-            <p:commandButton value="Submit" action="index2.xhtml?faces-redirect=true"/>
-        </h:form>
-
+    <h:body id="container">
+        <header class="light-black">
+            <ui:insert name="headerContent">
+                Default Header Content
+            </ui:insert>
+        </header>
+        
+        <header class="middle-blue">
+            <table class="full-parent">
+                <tr class="full-parent" >
+                    <td class="parent-third">
+                        <p:link value="Rating search" 
+                                styleClass="without-decoration white"/>
+                    </td>
+                    <td class="parent-third">
+                        <p:link value="Catalogue"
+                                styleClass="without-decoration white"/>
+                    </td>
+                    <td class="parent-third">
+                        <div>
+                            <ui:include src="mainSearch/search.xhtml"/>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </header>
+        
+        <article>
+            <ui:insert name="articleContent">
+                <center>
+                    <ui:include src="slideshow/slideshow.xhtml"/>
+                </center>
+            </ui:insert>
+        </article>    
+        
+        <footer class="grey">
+            <table class="full-parent">
+                <tr class="full-parent">
+                    <td class="parent-third">
+                        <p:link value="About"
+                                styleClass="without-decoration dark-grey"/>
+                    </td>
+                    <td class="parent-third">
+                        <p:link value="Privacy"
+                                styleClass="without-decoration dark-grey"/>
+                    </td>
+                    <td class="parent-third">
+                        <p:link value="Help"
+                                styleClass="without-decoration dark-grey"/>
+                    </td>
+                </tr>
+            </table>
+        </footer>
     </h:body>
 </html>
-
