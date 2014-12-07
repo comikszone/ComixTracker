@@ -11,10 +11,18 @@ public class SHA256Encriptor implements IPasswordEncryptor{
     public String getEncodedPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(password.getBytes("UTF-8")); 
-            byte[] digest = md.digest();
-            BigInteger bigInt = new BigInteger(1, digest);
-            return bigInt.toString(16);
+            md.update(password.getBytes("UTF-8"));
+            byte[] hash = md.digest();
+            
+            StringBuffer hexString = new StringBuffer();
+
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if(hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
         } catch (NoSuchAlgorithmException ex) {
             ex.printStackTrace();
         }
