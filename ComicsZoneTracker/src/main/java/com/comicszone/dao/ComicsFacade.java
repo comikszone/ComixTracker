@@ -20,7 +20,7 @@ import javax.persistence.TypedQuery;
  */
 @Stateless
 @LocalBean
-public class ComicsFacade extends AbstractFacade<Comics> implements Finder{
+public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowFacade{
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -38,5 +38,12 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder{
             query.setParameter("name", name.toLowerCase()+"%");
             return query.getResultList();
         }
+     @Override
+    public List<Comics> get12Best() {
+        TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
+        query.setMaxResults(12);
+        List<Comics> results = query.getResultList();
+        return results;
+    }
     
 }

@@ -1,13 +1,44 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" >
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Facelets
-        <h:outputText value="#{comicsView.numberOfComics}"/>
+        <h:form> 
+            <h:panelGrid columns="2" cellpadding="5"> 
+                <p:autoComplete id="comicsPojo" 
+                                value="#{autoCompleteView.ajaxComicsCharacter}" 
+                                completeMethod="#{autoCompleteView.completeComics}"
+                                var="aj" 
+                                itemLabel="#{aj.name}"
+                                itemValue="#{aj}"
+                                converter="ajaxComicsCharacterConverter"
+                                queryDelay="0"
+                                forceSelection="true"
+                                dropdown="false"
+                                >
+                    <p:column>
+                        #{aj.name}
+                    </p:column>
+                    <p:column>
+                        <p:graphicImage value="#{aj.image}" width="40" height="40"/>
+                    </p:column>
+                </p:autoComplete>
+                <p:selectOneMenu id="console" value="#{autoCompleteView.category}">
+                    <p:ajax listener="#{autoCompleteView.onCategoryChange}"/>
+                    <f:selectItem itemLabel="Comics" itemValue="Comics" />
+                    <f:selectItem itemLabel="Characters" itemValue="Characters" />
+                </p:selectOneMenu>
+            </h:panelGrid>
+
+
+            <p:commandButton value="Submit" action="index2.xhtml?faces-redirect=true"/>
+        </h:form>
+
     </h:body>
 </html>
 
