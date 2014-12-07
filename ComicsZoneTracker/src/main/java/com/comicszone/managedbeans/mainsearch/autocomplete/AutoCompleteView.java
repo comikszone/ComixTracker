@@ -10,7 +10,7 @@ package com.comicszone.managedbeans.mainsearch.autocomplete;
  * @author ArsenyPC
  */
 
-import com.comicszone.dao.AjaxComicsCharacter;
+import com.comicszone.entitynetbeans.AjaxComicsCharacter;
 import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.Finder;

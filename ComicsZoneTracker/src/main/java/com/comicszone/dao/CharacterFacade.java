@@ -5,6 +5,7 @@
  */
 package com.comicszone.dao;
 
+import com.comicszone.entitynetbeans.AjaxComicsCharacter;
 import com.comicszone.entitynetbeans.Character;
 import com.comicszone.entitynetbeans.Comics;
 import java.util.List;

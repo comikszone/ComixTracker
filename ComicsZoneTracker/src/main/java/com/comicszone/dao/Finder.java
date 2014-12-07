@@ -6,6 +6,7 @@
 package com.comicszone.dao;
 
 //import com.netcracker.entity.Comics;
+import com.comicszone.entitynetbeans.AjaxComicsCharacter;
 import com.comicszone.entitynetbeans.Comics;
 import java.util.List;
 import javax.annotation.PostConstruct;
