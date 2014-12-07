@@ -23,7 +23,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>resources/templates/basic.jsf</welcome-file>
-        <welcome-file>resources/templates/basic.html</welcome-file>
+        <welcome-file>resources/templates/index.jsf</welcome-file>
     </welcome-file-list>
 </web-app>
