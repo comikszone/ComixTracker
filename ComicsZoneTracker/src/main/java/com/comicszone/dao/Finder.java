@@ -18,10 +18,10 @@ import javax.ejb.Stateless;
  * @author ArsenyPC
  */
 //@Stateless
-//@Local
 @Local
+//@Remote
 //@PostConstruct
 public interface Finder {
-    public List<Comics> findByNameStartsWith(String name);
+    public List<? extends AjaxComicsCharacter> findByNameStartsWith(String name);
     public AjaxComicsCharacter find (Object id);
 }

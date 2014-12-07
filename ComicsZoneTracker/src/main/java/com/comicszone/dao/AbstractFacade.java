@@ -6,12 +6,14 @@
 package com.comicszone.dao;
 
 import java.util.List;
+import javax.ejb.Local;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author ArsenyPC
  */
+//@Local
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
 

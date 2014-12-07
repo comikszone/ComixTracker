@@ -20,6 +20,8 @@ public class ComicsView {
     @EJB
     private ComicsFacade comicsFacade;
 
+    @EJB
+    private CharacterFacade characterFacade;
     /**
      * Creates a new instance of ComicsView
      */
@@ -33,7 +35,7 @@ public class ComicsView {
         return comics;
     }
      public int getNumberOfComics(){
-         finder=comicsFacade;
-       return finder.findByNameStartsWith("2099").get(0).getId();
+         finder=characterFacade;
+       return finder.findByNameStartsWith("MOI").get(0).getId();
     }
 }
