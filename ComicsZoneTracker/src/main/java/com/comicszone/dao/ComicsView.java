@@ -24,6 +24,7 @@ public class ComicsView {
      * Creates a new instance of ComicsView
      */
     private Comics comics;
+    private Finder finder; 
     public ComicsView() {
         this.comics=new Comics();
     }
@@ -32,6 +33,7 @@ public class ComicsView {
         return comics;
     }
      public int getNumberOfComics(){
-       return comicsFacade.findAll().size();
+         finder=comicsFacade;
+       return finder.findByNameStartsWith("2099").get(0).getId();
     }
 }
