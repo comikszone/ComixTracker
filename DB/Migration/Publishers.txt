@@ -1,0 +1,2 @@
+insert into publisher (publisher_id, name) values (1, 'Marvel');
+insert into publisher (publisher_id, name) values (2, 'DC');
