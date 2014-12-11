@@ -1,6 +1,8 @@
 package com.comicszone.dao.userdao;
 
+import com.comicszone.dao.groupdao.GroupDao;
 import com.comicszone.dao.util.encryption.*;
+import com.comicszone.entitynetbeans.UserGroup;
 import com.comicszone.entitynetbeans.Users;
 import javax.ejb.Stateless;
 
@@ -19,6 +21,11 @@ public class UserRegistrationDao extends AbstractUserDao{
         password = encryptor.getEncodedPassword(password);
         Users user = new Users(nickname, email, password);
         
+        
         save(user);
+        
+        UserGroup group = new UserGroup("user", nickname);
+        GroupDao groupDao = new GroupDao();
+        groupDao.save(group);
     }
 }

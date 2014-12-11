@@ -1,27 +1,36 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/basic.xhtml"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
     <ui:define name="headerContent">
         <table class="full-parent">
-                <tr class="full-parent">
-                    <td>
-                        <p:link value="My news"
-                                styleClass="without-decoration light-grey"/>
-                    </td>
-                    <td>
-                        <p:link value="My comicses"
-                                styleClass="without-decoration light-grey"/>
-                    </td>
-                    <td>
-                        <p:link value="My friends"
-                                styleClass="without-decoration light-grey"/>
-                    </td>
-                    <td>
-                        <p:link value="My profile"
-                                styleClass="without-decoration light-grey"/>
-                    </td>
-                </tr>
+            <tr class="full-parent">
+                <td>
+                    <p:link value="My news"
+                            styleClass="without-decoration light-grey"/>
+                </td>
+                <td>
+                    <p:link value="My comicses"
+                            styleClass="without-decoration light-grey"/>
+                </td>
+                <td>
+                    <p:link value="My friends"
+                            styleClass="without-decoration light-grey"/>
+                </td>
+                <td>
+                    <p:link value="My profile"
+                            styleClass="without-decoration light-grey"/>
+                </td>
+                <td>
+                    <h:form>
+                        <p:commandButton 
+                            ajax="false" 
+                            value="Logout" 
+                            action="#{logoutManagedBean.logout()}"/>
+                    </h:form>
+                </td>
+            </tr>
         </table>
     </ui:define>
 </ui:composition>
