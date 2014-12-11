@@ -5,7 +5,6 @@
  */
 package com.comicszone.entitynetbeans;
 
-import com.comicszone.dao.AjaxComicsCharacter;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -34,7 +33,6 @@ import javax.validation.constraints.Size;
 @Table(name = "character")
 @NamedQueries({
     @NamedQuery(name = "Character.findAll", query = "SELECT c FROM Character c"),
-    @NamedQuery(name = "Character.findByCharId", query = "SELECT c FROM Character c WHERE c.id = :charId"),
     @NamedQuery(name = "Character.findByName", query = "SELECT c FROM Character c WHERE c.name = :name"),
     @NamedQuery(name = "Character.findByRealName", query = "SELECT c FROM Character c WHERE c.realName = :realName"),
     @NamedQuery(name = "Character.findByDescription", query = "SELECT c FROM Character c WHERE c.description = :description"),
