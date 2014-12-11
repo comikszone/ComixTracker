@@ -1,31 +1,38 @@
 package com.comicszone.dao.userdao;
 
-import com.comicszone.dao.groupdao.GroupDao;
+import com.comicszone.dao.groupdao.GroupFacade;
 import com.comicszone.dao.util.encryption.*;
 import com.comicszone.entitynetbeans.UserGroup;
 import com.comicszone.entitynetbeans.Users;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Stateless
-public class UserRegistrationDao extends AbstractUserDao{
-    
+public class UserRegistrationDao extends AbstractUserFacade{
+    @EJB
+    private GroupFacade groupFacade;
+        
+    @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
+    private EntityManager em;
     
     public void registration(String nickname, String email, String password, String confirmPassword){
         if (!password.equals(confirmPassword))
             throw new IllegalArgumentException("Password isn't equals confirmPassword");
         
-        if (getUserWithNickname(nickname) != null)
-            throw new IllegalStateException("User with this nickname already exist!");
-        
         IPasswordEncryptor encryptor = new SHA256Encriptor();
         password = encryptor.getEncodedPassword(password);
         Users user = new Users(nickname, email, password);
         
-        
-        save(user);
+        create(user);
         
         UserGroup group = new UserGroup("user", nickname);
-        GroupDao groupDao = new GroupDao();
-        groupDao.save(group);
+        groupFacade.create(group);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 }

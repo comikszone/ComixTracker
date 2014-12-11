@@ -15,10 +15,6 @@ public class RegistrationManagedBean {
     @EJB
     UserRegistrationDao registrationDao;
     
-    public RegistrationManagedBean() {
-        registrationDao = new UserRegistrationDao();
-    }
-    
     public String registrationNewUser(){
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
