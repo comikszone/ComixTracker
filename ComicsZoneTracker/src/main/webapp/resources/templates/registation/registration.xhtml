@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <p:panel id="regPanel">
+        <h:form id="registrationForm">
+            <h2>Registration</h2>
+            <p:panelGrid columns="2">
+                Nickname: <p:inputText id="nickname"/>
+                Email: <p:inputText id="email"/>
+                Password: <p:password id="password"/>
+                Confirm Password: <p:password id="confirmPassword" />
+                <p:commandButton ajax="false" value="Ok" action="#{registrationManagedBean.registrationNewUser()}"/>
+                <p:commandButton
+                    onclick="document.getElementById('RegistrationWindow').style.display = 'none'"
+                    value="Cancel" />
+            </p:panelGrid>
+        </h:form>
+    </p:panel>
+</ui:composition>

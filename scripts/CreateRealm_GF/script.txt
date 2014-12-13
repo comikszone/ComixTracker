@@ -1,0 +1,3 @@
+start-domain
+create-auth-realm --classname com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm --property jaas-context=jdbcRealm:datasource-jndi=JNDI_ComicsZoneDB:user-table=public.users:user-name-column=nickname:password-column=pass:group-table=public.user_group:group-name-column=gname ComicsZoneRealm
+stop-domain
