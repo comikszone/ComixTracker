@@ -35,7 +35,7 @@ public class CharacterFacade extends AbstractFacade<Character> implements Finder
     }
 
     @Override
-    public List<? extends AjaxComicsCharacter> findByNameStartsWith(String name) {
+    public List<Character> findByNameStartsWith(String name) {
             TypedQuery<Character> query =em.createNamedQuery("Character.findByNameStartsWith", Character.class);
             query.setParameter("name", name.toLowerCase()+"%");
             return query.getResultList();
