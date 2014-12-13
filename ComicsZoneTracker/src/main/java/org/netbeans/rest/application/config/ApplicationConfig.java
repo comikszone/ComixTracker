@@ -36,7 +36,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.comicszone.managedbeans.mainsearch.autocomplete.RestfulService.class);
+        resources.add(com.comicszone.dao.CharacterFacade.class);
+        resources.add(com.comicszone.dao.ComicsFacade.class);
     }
     
 }

@@ -14,6 +14,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
 /**
  *
@@ -21,6 +25,8 @@ import javax.persistence.TypedQuery;
  */
 @Stateless
 @LocalBean
+@Path("/characters")
+@Produces({"text/xml", "application/json"})
 public class CharacterFacade extends AbstractFacade<Character> implements Finder{
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
@@ -35,7 +41,19 @@ public class CharacterFacade extends AbstractFacade<Character> implements Finder
     }
 
     @Override
-    public List<Character> findByNameStartsWith(String name) {
+//    @Path("/characters")
+    @GET
+    @Produces("application/json")
+    public List<Character> findAll() {
+        return super.findAll();
+    }
+
+    
+    @Override
+    @Path("/{name}")
+    @GET
+    @Produces("application/json")
+    public List<Character> findByNameStartsWith(@PathParam("name") String name) {
             TypedQuery<Character> query =em.createNamedQuery("Character.findByNameStartsWith", Character.class);
             query.setParameter("name", name.toLowerCase()+"%");
             return query.getResultList();
