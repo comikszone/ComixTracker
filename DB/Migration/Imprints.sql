@@ -1,4 +1,4 @@
-insert into imprint ( name) values ( 'Marvel_2099_Comic_Books');
+begin;insert into imprint ( name) values ( 'Marvel_2099_Comic_Books');
 insert into imprint ( name) values ( 'Malibu_Comics');
 insert into imprint ( name) values ( 'Marvel_Knights');
 insert into imprint ( name) values ( 'Epic_Comics');
@@ -19,3 +19,4 @@ insert into imprint ( name) values ( 'Marvel_Music');
 insert into imprint ( name) values ( 'Soleil');
 insert into imprint ( name) values ( 'Star_Comics');
 insert into imprint ( name) values ( 'Marvel_Edge');
+commit

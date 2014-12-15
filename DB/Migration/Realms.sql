@@ -1,4 +1,4 @@
-insert into realm ( name) values ( 'Default Realm');
+begin;insert into realm ( name) values ( 'Default Realm');
 insert into realm ( name) values ( 'Earth-534834');
 insert into realm ( name) values ( 'Earth-33 1/3');
 insert into realm ( name) values ( 'Earth-42221');
@@ -1660,3 +1660,4 @@ insert into realm ( name) values ( 'Earth-10280');
 insert into realm ( name) values ( 'Earth-2532');
 insert into realm ( name) values ( 'Earth-10294');
 insert into realm ( name) values ( 'Earth-2530');
+commit
