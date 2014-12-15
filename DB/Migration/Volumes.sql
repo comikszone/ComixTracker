@@ -4230,5 +4230,4 @@ insert into volume ( name, img, comics_id) values ( 'Ythaq: The Forsaken World V
 insert into volume ( name, img, comics_id) values ( 'Yuppies From Hell Vol 1', 'http://img2.wikia.nocookie.net/__cb20090420142944/marveldatabase/images/thumb/e/ed/Yuppies_From_Hell_Vol_1_1.jpg/200px-0%2C400%2C0%2C400-Yuppies_From_Hell_Vol_1_1.jpg', 3751);
 insert into volume ( name, img, comics_id) values ( 'Ziggy Pig Silly Seal Vol 1', 'http://img4.wikia.nocookie.net/__cb20051231050659/marveldatabase/images/thumb/1/11/Ziggy_Pig_Silly_Seal_Vol_1_1.jpg/200px-0%2C232%2C0%2C232-Ziggy_Pig_Silly_Seal_Vol_1_1.jpg', 3752);
 insert into volume ( name, img, comics_id) values ( 'Zombie Vol 1', 'http://img4.wikia.nocookie.net/__cb20081003234336/marveldatabase/images/thumb/8/88/Zombie_Vol_1_1.jpg/200px-0%2C402%2C0%2C402-Zombie_Vol_1_1.jpg', 3753);
-insert into volume ( name, img, comics_id) values ( 'Zombie: Simon Garth Vol 1', 'http://img1.wikia.nocookie.net/__cb20071202213056/marveldatabase/images/thumb/1/1f/Zombie_Simon_Garth_Vol_1_1.jpg/200px-0%2C503%2C0%2C503-Zombie_Simon_Garth_Vol_1_1.jpg', 3754);
-commit
+commit;
