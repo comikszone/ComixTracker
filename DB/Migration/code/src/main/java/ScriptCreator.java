@@ -15,33 +15,33 @@ public class ScriptCreator {
     }
 
     void createIssuesScript() throws Exception {
-        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Issues.txt");
+        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Issues.sql");
         List<Issue> issueList = (List<Issue>) getter.getFromFile("D:\\project\\issues_v3");
         for (Issue i: issueList){
-            writer.printf("insert into issue (issue_id, name, img, volume_id) values (%d, '%s', '%s', %d);%n",
-                    i.getIssueId(), i.getName().replaceAll("'", "''"), i.getImage(), i.getVolumeId());
+            writer.printf("insert into issue (name, img, volume_id) values ( '%s', '%s', %d);%n",
+                     i.getName().replaceAll("'", "''"), i.getImage(), i.getVolumeId());
         }
         writer.close();
 
     }
 
     void createVolumesScript() throws Exception {
-        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Volumes.txt");
+        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Volumes.sql");
         List<Volume> volumeList  = (List<Volume>) getter.getFromFile("D:\\project\\volumes_v2");
         for (Volume v: volumeList){
-            writer.printf("insert into volume (volume_id, name, img, comics_id) values (%d, '%s', '%s', %d);%n",
-                    v.getVolume_id(), v.getName().replaceAll("'", "''"), v.getImage(), v.getComics_id());
+            writer.printf("insert into volume ( name, img, comics_id) values ( '%s', '%s', %d);%n",
+                    v.getName().replaceAll("'", "''"), v.getImage(), v.getComics_id());
         }
         writer.close();
 
     }
 
     void createComicsScript() throws Exception {
-        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Comics.txt");
+        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Comics.sql");
         List<Comics> comicsList  = (List<Comics>) getter.getFromFile("D:\\project\\comics_v1");
         for (Comics c: comicsList){
-            writer.printf("insert into comics (comics_id, name, image, publisher_id, imprint_id) values (%d, '%s', '%s', %d, %d);%n",
-                    c.getComics_id(), c.getName().replaceAll("'", "''"), c.getImage(), c.getPublisherId(), c.getImprintId());
+            writer.printf("insert into comics (name, image, publisher_id, imprint_id) values ( '%s', '%s', %d, %d);%n",
+                     c.getName().replaceAll("'", "''"), c.getImage(), c.getPublisherId(), c.getImprintId());
         }
         writer.close();
 
@@ -49,7 +49,7 @@ public class ScriptCreator {
 
     void createCharactersScript() throws Exception {
 
-        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Characters.txt");
+        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Characters.sql");
         List<Character> characterList = (List<Character>) getter.getFromFile("D:\\project\\characters_v1");
         ListIterator<Character> charIter = characterList.listIterator();
 
@@ -61,8 +61,8 @@ public class ScriptCreator {
         }
 
         for (Character ch: characterList){
-            writer.printf("insert into character (char_id, name, image, realm_id, universe_id) values (%d, '%s', '%s', %d, %d);%n",
-                    identifiers.get(ch.getFirstId()), ch.getName().replaceAll("'", "''"), ch.getImage(), ch.getRealmId(), ch.getUniverseId());
+            writer.printf("insert into character ( name, image, realm_id, universe_id) values ( '%s', '%s', %d, %d);%n",
+                     ch.getName().replaceAll("'", "''"), ch.getImage(), ch.getRealmId(), ch.getUniverseId());
         }
         writer.close();
     }
@@ -70,7 +70,7 @@ public class ScriptCreator {
     void createCharrefsScript() throws Exception {
         int c = 0;
         Set<Pair> set = new HashSet<Pair>();
-        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Charrefs.txt");
+        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Charrefs.sql");
         List<Issue> issueList = (List<Issue>) getter.getFromFile("D:\\project\\issues_v2");
         List<Character> characterList = (List<Character>) getter.getFromFile("D:\\project\\characters_v1");
 
@@ -108,32 +108,46 @@ public class ScriptCreator {
     }
 
     void createRealmsScript() throws Exception {
-        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Realms.txt");
+        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Realms.sql");
         Map<String, Realm> realms = (Map<String, Realm>) getter.getFromFile("D:\\project\\realms_v1");
+        List<Realm> tmp = new ArrayList<Realm>();
+        tmp.addAll(realms.values());
+        class mycomp implements Comparator<Realm>{
+
+            @Override
+            public int compare(Realm o1, Realm o2) {
+                if (o1.getRealmId() > o2.getRealmId())
+                    return 1;
+                else if(o1.getRealmId() == o2.getRealmId())
+                    return 0;
+                else return -1;
+            }
+        }
+        Collections.sort(tmp, new mycomp());
         for (Realm r: realms.values()){
-            writer.printf("insert into realm (realm_id, name) values (%d, '%s');%n",
-                    r.getRealmId(), r.getName().replaceAll("'", "''"));
+            writer.printf("insert into realm ( name) values ( '%s');%n",
+                    r.getName().replaceAll("'", "''"));
         }
         writer.close();
 
     }
 
     void createImprintsScript() throws Exception {
-        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Imprints.txt");
+        PrintWriter writer = new PrintWriter("D:\\project\\sql\\Imprints.sql");
         List<Imprint> imprintList = (List<Imprint>) getter.getFromFile("D:\\project\\imprints_v1");
         for (Imprint i: imprintList){
-            writer.printf("insert into imprint (imprint_id, name) values (%d, '%s');%n",
-                    i.getId(), i.getName().replaceAll("'", "''"));
+            writer.printf("insert into imprint ( name) values ( '%s');%n",
+                     i.getName().replaceAll("'", "''"));
         }
         writer.close();
 
     }
 
     void createPublishersScript() throws Exception {
-        File file = new File("D:\\project\\sql\\Publishers.txt");
+        File file = new File("D:\\project\\sql\\Publishers.sql");
         PrintWriter writer = new PrintWriter(file);
-        writer.printf("insert into publisher (publisher_id, name) values (%d, '%s');%n", 1, "Marvel");
-        writer.printf("insert into publisher (publisher_id, name) values (%d, '%s');%n", 2, "DC");
+        writer.printf("insert into publisher (name) values ('%s');%n", "Marvel");
+        writer.printf("insert into publisher ( name) values ('%s');%n", "DC");
         writer.close();
     }
 
