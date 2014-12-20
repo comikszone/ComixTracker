@@ -56,6 +56,7 @@ public class CharacterFacade extends AbstractFacade<Character> implements Finder
     public List<Character> findByNameStartsWith(@PathParam("name") String name) {
             TypedQuery<Character> query =em.createNamedQuery("Character.findByNameStartsWith", Character.class);
             query.setParameter("name", name.toLowerCase()+"%");
+            query.setMaxResults(10);
             return query.getResultList();
         }
     
