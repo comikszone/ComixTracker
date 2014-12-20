@@ -15,6 +15,7 @@ import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.Finder;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -33,7 +34,8 @@ public class AutoCompleteView {
     private String category;
     private Finder finder;
 
-    public AutoCompleteView() {
+    @PostConstruct
+    public void init() {
         finder=comicsFacade;
     }
     
@@ -62,8 +64,8 @@ public class AutoCompleteView {
      
     public List<AjaxComicsCharacter> completeComics(String query) {
 //        finder=comicsFacade;
-        if (finder==null)
-            finder=comicsFacade;
+//        if (finder==null)
+//            finder=comicsFacade;
         List<AjaxComicsCharacter> ajaxComicsCharacters=(List<AjaxComicsCharacter>) finder.findByNameStartsWith(query.toLowerCase());
         FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put("finder", finder);
         return ajaxComicsCharacters;
