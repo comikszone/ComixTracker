@@ -26,7 +26,7 @@ import javax.ejb.EJB;
 
 @ManagedBean(name="slideshowController")
 @ViewScoped
-public class SlideshowController implements Serializable{
+public class SlideshowController{
     
     private List<Comics> comicsList;
     @EJB
