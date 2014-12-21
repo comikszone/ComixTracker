@@ -2,7 +2,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/basic.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://java.sun.com/jsf/html">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="headerContent">
         <table class="full-parent">
             <tr class="full-parent">
@@ -20,8 +21,10 @@
                 </td>
                 <td>
                     <p:link value="My profile"
-                            styleClass="without-decoration light-grey"/>
+                            styleClass="without-decoration light-grey"
+                            outcome="profile.jsf"/>
                 </td>
+                <td>#{userManagedBean.nickname}</td>
                 <td>
                     <h:form>
                         <p:commandButton 
@@ -32,5 +35,8 @@
                 </td>
             </tr>
         </table>
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{userManagedBean.setCurrentUser()}"/>
+        </f:metadata>
     </ui:define>
 </ui:composition>
