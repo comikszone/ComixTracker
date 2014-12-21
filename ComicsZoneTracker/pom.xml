@@ -101,6 +101,11 @@
                 <artifactId>ejb-api</artifactId>
                 <version>3.0</version>
         </dependency>
+        <dependency>
+            <groupId>net.playerfinder.jsf.components</groupId>
+            <artifactId>playerfinder</artifactId>
+            <version>0.5</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -163,6 +168,11 @@
             <id>unknown-jars-temp-repo</id>
             <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
             <url>file:${project.basedir}/lib</url>
+        </repository>
+        <repository>
+            <id>project.local</id>
+            <name>Playfinder repostitory for rating component</name>
+            <url>file:///${basedir}\repo</url>
         </repository>
     </repositories>
 </project>
