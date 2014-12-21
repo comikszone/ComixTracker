@@ -55,6 +55,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
     public List<Comics> findByNameStartsWith(@PathParam("name") String name) {
             TypedQuery<Comics> query =em.createNamedQuery("Comics.findByNameStartsWith", Comics.class);
             query.setParameter("name", name.toLowerCase()+"%");
+            query.setMaxResults(10);
             return query.getResultList();
         }
      @Override
