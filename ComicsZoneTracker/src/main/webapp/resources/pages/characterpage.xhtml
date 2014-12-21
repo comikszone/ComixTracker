@@ -11,12 +11,12 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui" >
     <h:head>
         <f:metadata>
-            <f:viewParam name="id" value="#{comicsController.comicsId}"/>
+            <f:viewParam name="id" value="#{characterController.characterId}"/>
         </f:metadata>
-        #{comicsController.initComics()}
+        #{characterController.initCharacter()}
     </h:head>
     <h:body>
-                #{comicsController.comics.name}
-        <p:graphicImage value="#{comicsController.comics.image}"/>
+                #{characterController.character.name}
+        <p:graphicImage value="#{characterController.character.image}"/>
     </h:body>
 </html>

@@ -14,10 +14,12 @@ import com.comicszone.entitynetbeans.AjaxComicsCharacter;
 import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.Finder;
+import com.comicszone.entitynetbeans.Comics;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 //import javax.inject.Scope;
@@ -72,6 +74,9 @@ public class AutoCompleteView {
     }
     public String redirect()
     {
-        return "/resources/pages/comicspage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
+        if (ajaxComicsCharacter instanceof Comics)
+            return "/resources/pages/comicspage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
+        else
+            return "/resources/pages/characterpage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
     }
 }
