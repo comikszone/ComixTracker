@@ -47,10 +47,11 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Users.findByOnline", query = "SELECT u FROM Users u WHERE u.online = :online"),
     @NamedQuery(name = "Users.findByBanned", query = "SELECT u FROM Users u WHERE u.banned = :banned")})
 public class Users implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "users_user_id_seq")
-    @SequenceGenerator(name = "users_user_id_seq", sequenceName = "users_user_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_user_id_seq")
+    @SequenceGenerator(name = "users_user_id_seq", sequenceName = "users_user_id_seq", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "user_id")
     private Integer userId;
@@ -112,6 +113,12 @@ public class Users implements Serializable {
 
     public Users(Integer userId) {
         this.userId = userId;
+    }
+
+    public Users(String nickname, String email, String password) {
+        this.nickname = nickname;
+        this.email = email;
+        this.pass = password;
     }
 
     public Users(Integer userId, String nickname, String pass, int sex, String email, boolean banned) {
@@ -275,5 +282,5 @@ public class Users implements Serializable {
     public String toString() {
         return "com.comicszone.entitynetbeans.Users[ userId=" + userId + " ]";
     }
-    
+
 }

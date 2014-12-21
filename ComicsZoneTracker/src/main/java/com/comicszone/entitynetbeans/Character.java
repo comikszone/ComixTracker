@@ -5,7 +5,6 @@
  */
 package com.comicszone.entitynetbeans;
 
-import com.comicszone.dao.AjaxComicsCharacter;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -34,7 +33,6 @@ import javax.validation.constraints.Size;
 @Table(name = "character")
 @NamedQueries({
     @NamedQuery(name = "Character.findAll", query = "SELECT c FROM Character c"),
-    @NamedQuery(name = "Character.findByCharId", query = "SELECT c FROM Character c WHERE c.id = :charId"),
     @NamedQuery(name = "Character.findByName", query = "SELECT c FROM Character c WHERE c.name = :name"),
     @NamedQuery(name = "Character.findByRealName", query = "SELECT c FROM Character c WHERE c.realName = :realName"),
     @NamedQuery(name = "Character.findByDescription", query = "SELECT c FROM Character c WHERE c.description = :description"),
@@ -77,9 +75,11 @@ public class Character implements Serializable,AjaxComicsCharacter {
     @JoinColumn(name = "realm_id", referencedColumnName = "realm_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Realm realmId;
-    @JoinColumn(name = "universe_id", referencedColumnName = "universe_id")
+    
+    @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Universe universeId;
+    private Publisher publisherId;
+
 
     public Character() {
     }
@@ -165,33 +165,38 @@ public class Character implements Serializable,AjaxComicsCharacter {
         this.realmId = realmId;
     }
 
-    public Universe getUniverseId() {
-        return universeId;
+    public Publisher getPublisherId() {
+        return publisherId;
     }
 
-    public void setUniverseId(Universe universeId) {
-        this.universeId = universeId;
+    public void setPublisherId(Publisher publisherId) {
+        this.publisherId = publisherId;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (Id != null ? Id.hashCode() : 0);
+        int hash = 7;
+        hash = 71 * hash + (this.Id != null ? this.Id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Character)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Character other = (Character) object;
-        if ((this.Id == null && other.Id != null) || (this.Id != null && !this.Id.equals(other.Id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Character other = (Character) obj;
+        if (this.Id != other.Id && (this.Id == null || !this.Id.equals(other.Id))) {
             return false;
         }
         return true;
     }
+    
+
+   
 
     @Override
     public String toString() {

@@ -32,10 +32,10 @@
             <p:ajax listener="#{autoCompleteView.onCategoryChange}"/>
             <f:selectItem itemLabel="Comics" itemValue="Comics" />
             <f:selectItem itemLabel="Characters" itemValue="Characters" />
-            </p:selectOneMenu>
+        </p:selectOneMenu>
  
     
-    <p:commandButton value="Submit" action="searchComplete.xhtml?faces-redirect=true"/>
+    <p:commandButton value="Search" action="#{autoCompleteView.redirect}"/>
      </h:panelGrid>
 
 </h:form>

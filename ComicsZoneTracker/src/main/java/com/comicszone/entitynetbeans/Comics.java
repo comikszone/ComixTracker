@@ -5,7 +5,6 @@
  */
 package com.comicszone.entitynetbeans;
 
-import com.comicszone.dao.AjaxComicsCharacter;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +36,6 @@ import javax.validation.constraints.Size;
 @Table(name = "comics")
 @NamedQueries({
     @NamedQuery(name = "Comics.findAll", query = "SELECT c FROM Comics c"),
-    @NamedQuery(name = "Comics.findByComicsId", query = "SELECT c FROM Comics c WHERE c.id = :comicsId"),
     @NamedQuery(name = "Comics.findByName", query = "SELECT c FROM Comics c WHERE c.name = :name"),
     @NamedQuery(name = "Comics.findByDescription", query = "SELECT c FROM Comics c WHERE c.description = :description"),
     @NamedQuery(name = "Comics.findByImage", query = "SELECT c FROM Comics c WHERE c.image = :image"),
@@ -46,7 +44,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByStartDate", query = "SELECT c FROM Comics c WHERE c.startDate = :startDate"),
     @NamedQuery(name = "Comics.findByEndDate", query = "SELECT c FROM Comics c WHERE c.endDate = :endDate"),
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
-    @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name")})
+    @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
+    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''")})
 public class Comics implements Serializable,AjaxComicsCharacter {
     private static final long serialVersionUID = 1L;
     @Id
