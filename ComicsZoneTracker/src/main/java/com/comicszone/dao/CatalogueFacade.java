@@ -5,6 +5,8 @@
  */
 package com.comicszone.dao;
 
+import com.comicszone.entitynetbeans.Comics;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +15,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface CatalogueFacade {
-    
+    List<Comics> findByNameAndRatingStartsWith(Integer maxResult, String name, Double rating);
 }

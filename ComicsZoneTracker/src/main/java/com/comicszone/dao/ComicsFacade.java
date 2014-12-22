@@ -26,7 +26,7 @@ import javax.ws.rs.Produces;
 @LocalBean
 @Path("/comics")
 @Produces({"text/xml", "application/json"})
-public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowFacade{
+public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowFacade,CatalogueFacade{
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -64,6 +64,15 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         query.setMaxResults(12);
         List<Comics> results = query.getResultList();
         return results;
+    }
+
+    @Override
+    public List<Comics> findByNameAndRatingStartsWith(Integer maxResult, String name, Double rating) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByNameAndRatingStartsWith", Comics.class);
+        query.setMaxResults(maxResult);
+        query.setParameter("name", name.toLowerCase() + "%");
+        query.setParameter("rating", rating);
+        return query.getResultList();
     }
     
 }

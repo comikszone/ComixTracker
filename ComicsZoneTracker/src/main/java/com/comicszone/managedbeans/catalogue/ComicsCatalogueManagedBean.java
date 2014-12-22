@@ -40,7 +40,7 @@ public class ComicsCatalogueManagedBean {
      
     @PostConstruct
     public void init() {
-        lazyModel = new LazyComicsDataModel(comicsFacade.get12Best());
+        lazyModel = new LazyComicsDataModel(comicsFacade.get12Best(),comicsFacade);
     }
  
     public List<Integer> getRatings() {
