@@ -101,8 +101,22 @@
                 <artifactId>ejb-api</artifactId>
                 <version>3.0</version>
         </dependency>
-    </dependencies>
-
+        <dependency>
+                <groupId>com.google.http-client</groupId>
+                <artifactId>google-http-client</artifactId>
+                <version>1.13.1-beta</version>
+        </dependency>
+        <dependency>
+                <groupId>com.google.http-client</groupId>
+                <artifactId>google-http-client-jackson</artifactId>
+                <version>1.13.1-beta</version>
+        </dependency>
+       		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-oauth2</artifactId>
+			<version>v2-rev29-1.13.2-beta</version>
+		</dependency>
+	</dependencies>
     <build>
         <plugins>
             <plugin>
@@ -163,6 +177,10 @@
             <id>unknown-jars-temp-repo</id>
             <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
             <url>file:${project.basedir}/lib</url>
+        </repository>
+        <repository>
+            <id>google-api-services</id>
+            <url>http://google-api-client-libraries.appspot.com/mavenrepo</url>
         </repository>
     </repositories>
 </project>
