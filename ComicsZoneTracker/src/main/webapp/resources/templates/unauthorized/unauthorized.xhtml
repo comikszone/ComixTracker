@@ -11,7 +11,8 @@
                           onclick="showPopUpWin('LoginWindow')"/>
                 <p:button href="#" value="Join ComicsZone"
                     onclick="showPopUpWin('RegistrationWindow')" />
-                <p:button href="#{socialNetwork.userUrl}" value="Log in via Google"/>
+                <p:button href="#{googleAuthorization.userUrl}" value="Log in via Google"/>
+                <p:button href="#{vKAuthorization.userUrl}" value="Log in via VK"/>
             </h:form>
             <div id="RegistrationWindow" style="display:none">
                 <ui:insert>

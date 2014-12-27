@@ -28,7 +28,7 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class SocialNetwork {
+public class GoogleAuthorization implements SocialNetworkAuthorization{
     private static final String CLIENT_ID = "232041634310-t8k3nf1cbede85kbu8ljsc16j2fdfbvf.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "KYTJxAdhHkJ1ccx7uy9HIgKn";
     private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/redirect_page.jsf";
