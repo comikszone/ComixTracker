@@ -1,0 +1,135 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.comicszone.managedbeans.social_networks;
+
+/**
+ *
+ * @author ArsenyPC
+ */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.ClientParamsStack;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+/**
+ *
+ * @author ArsenyPC
+ */
+@ManagedBean
+public class FacebookAuthorization implements SocialNetworkAuthorization{
+    private static final String CLIENT_ID = "361365270701323";
+    private static final String CLIENT_SECRET = "0b2cf81509ba71c7df172ab46fa49a57";
+    private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/facebook_redirect_page.jsf";
+    private static final String FACEBOOK_URL = "https://www.facebook.com/dialog/oauth";
+    private static final String ACCESS_TOKEN_URL="https://graph.facebook.com/oauth/access_token";
+    private static final String PERSONAL_INFO_URL="https://graph.facebook.com/me";
+    private String userUrl;
+    private String authCode;
+    
+    @Override
+    public String getUserUrl()
+    {
+        return userUrl;
+    }
+
+    @Override
+    public String getAuthCode() {
+        return authCode;
+    }
+    
+    @Override
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
+    }
+    
+    @PostConstruct
+    @Override
+    public void buildUserUrl()
+    {
+        String url=FACEBOOK_URL+"?client_id="+CLIENT_ID +
+                "&redirect_uri="+CALLBACK_URI+
+                "&response_type=code";
+        userUrl= url;
+    }
+
+    @Override
+    public String fetchPersonalInfo() throws IOException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String urlAccessToken=ACCESS_TOKEN_URL+
+                "?client_id="+CLIENT_ID+
+                "&client_secret="+CLIENT_SECRET+
+                "&code="+authCode+
+                "&redirect_uri="+CALLBACK_URI;
+        String response=getResponseString(urlAccessToken);
+        String accessToken=getAccessToken(response);
+//        String userId=getAccessToken();
+        String urlUserInfo=PERSONAL_INFO_URL+
+                "?access_token="+accessToken;
+        String json=getResponseString(urlUserInfo);
+        String personalFacebookId=getPersonalFacebookId(json, "id");
+        String pictureUrl="https://graph.facebook.com/"+personalFacebookId+"/picture?return_ssl_resources=true";
+        json=addPictureUrl(json, pictureUrl);
+        return json;
+    }
+    private String getAccessToken(String response)
+    {
+        int first=response.indexOf("=")+1;
+        int last=response.indexOf("&expires");
+        return response.substring(first, last);
+    }
+    private String getResponseString(String url) throws IOException
+    {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet request = new HttpGet(url);
+        HttpResponse response = client.execute(request);
+        ClientParamsStack httpParams=(ClientParamsStack) response.getParams();
+        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"UTF-8"));
+        StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = bufferedReader.readLine()) != null) {
+			result.append(line);
+		}
+        return result.toString();
+    }
+    private String getPersonalFacebookId(String json,String parameter)
+    {
+        JSONParser jsonParser=new JSONParser();
+        try {
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
+            String jsonId = jsonObject.get(parameter).toString();
+//            String jsonComponent=array.get(index).toString();
+            return jsonId;
+        } catch (ParseException ex) {
+            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    private String addPictureUrl(String json,String pictureUrl)
+    {
+        JSONParser jsonParser=new JSONParser();
+        String result="";
+        try {
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
+            jsonObject.put("picture", pictureUrl);
+            result=jsonObject.toJSONString();
+//            String jsonComponent=array.get(index).toString();
+        } catch (ParseException ex) {
+            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+}
+
