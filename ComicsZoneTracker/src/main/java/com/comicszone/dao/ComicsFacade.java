@@ -55,13 +55,13 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
     public List<Comics> findByNameStartsWith(@PathParam("name") String name) {
             TypedQuery<Comics> query =em.createNamedQuery("Comics.findByNameStartsWith", Comics.class);
             query.setParameter("name", name.toLowerCase()+"%");
-            query.setMaxResults(10);
+            query.setMaxResults(5);
             return query.getResultList();
         }
      @Override
     public List<Comics> get12Best() {
         TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
-        query.setMaxResults(12);
+        query.setMaxResults(5);
         List<Comics> results = query.getResultList();
         return results;
     }
