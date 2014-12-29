@@ -45,8 +45,31 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByEndDate", query = "SELECT c FROM Comics c WHERE c.endDate = :endDate"),
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
     @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
-    @NamedQuery(name = "Comics.findByNameAndRatingStartsWith", query = "SELECT c FROM Comics c WHERE "
-            + "LOWER(c.name) LIKE :name AND c.rating BETWEEN :rating AND :rating+1"),
+    //forComicsCatalogue
+    @NamedQuery(name = "Comics.findAllForCatalogueSortByRatingASC", 
+            query = "SELECT c FROM Comics c ORDER BY "
+            + "CASE WHEN c.rating IS NULL THEN 1 ELSE 0 END, c.rating ASC"),
+    @NamedQuery(name = "Comics.findAllForCatalogueSortByRatingDESC", 
+            query = "SELECT c FROM Comics c ORDER BY "
+            + "CASE WHEN c.rating IS NULL THEN 1 ELSE 0 END, c.rating DESC"),
+    @NamedQuery(name = "Comics.findAllForCatalogueSortByNameASC", 
+            query = "SELECT c FROM Comics c ORDER BY "
+            + "CASE WHEN c.name IS NULL THEN 1 ELSE 0 END, c.name ASC"),
+    @NamedQuery(name = "Comics.findAllForCatalogueSortByNameDESC", 
+            query = "SELECT c FROM Comics c ORDER BY "
+            + "CASE WHEN c.name IS NULL THEN 1 ELSE 0 END, c.name DESC"),
+    @NamedQuery(name = "Comics.findByNameAndRatingStartsWith", 
+            query = "SELECT c FROM Comics c WHERE LOWER(c.name) LIKE :name AND c.rating BETWEEN :rating AND :rating+1"),
+    @NamedQuery(name = "Comics.findByRatingBetween", 
+            query = "SELECT c FROM Comics c WHERE c.rating BETWEEN :rating AND :rating+1"),
+    @NamedQuery(name = "Comics.count", 
+            query = "SELECT COUNT(c) FROM Comics c"),
+    @NamedQuery(name = "Comics.countFoundByNameAndRating", 
+            query = "SELECT COUNT(c) FROM Comics c WHERE LOWER(c.name) LIKE :name AND c.rating BETWEEN :rating AND :rating+1"),
+    @NamedQuery(name = "Comics.countFoundByName",
+            query = "SELECT COUNT(c) FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
+    @NamedQuery(name = "Comics.countFoundByRating",
+            query = "SELECT COUNT(c) FROM Comics c WHERE c.rating BETWEEN :rating AND :rating+1"),
     @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''")})
 public class Comics implements Serializable,AjaxComicsCharacter {
     private static final long serialVersionUID = 1L;

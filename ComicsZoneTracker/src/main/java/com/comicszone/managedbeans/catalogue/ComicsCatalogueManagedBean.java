@@ -26,6 +26,11 @@ import org.primefaces.model.LazyDataModel;
 @ViewScoped
 public class ComicsCatalogueManagedBean {
     
+    private final String columnComicsName = "Name";
+    private final String columnComicsRating = "Rating";
+    private final String columnComicsImage = "Image";
+    private final String columnComicsDescription = "Description";
+    
     @EJB
     private ComicsFacade comicsFacade;
     
@@ -35,12 +40,15 @@ public class ComicsCatalogueManagedBean {
     
     private Integer[] ratings = {0,1,2,3,4};
      
-//    @ManagedProperty("#{comicsService}")
-//    private ComicsService comicsService = new ComicsService();
-     
     @PostConstruct
     public void init() {
-        lazyModel = new LazyComicsDataModel(comicsFacade.get12Best(),comicsFacade);
+        lazyModel = new LazyComicsDataModel(comicsFacade.get12Best(),comicsFacade,
+                columnComicsName,columnComicsRating);
+    }
+    
+    public void onRowSelect(SelectEvent event) {
+        FacesMessage msg = new FacesMessage("Comics Selected",((Comics) event.getObject()).getName());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
  
     public List<Integer> getRatings() {
@@ -58,10 +66,21 @@ public class ComicsCatalogueManagedBean {
     public void setSelectedComics(Comics selectedComics) {
         this.selectedComics = selectedComics;
     }
-     
-    public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Comics Selected",((Comics) event.getObject()).getName());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    
+    public String getColumnComicsName() {
+        return columnComicsName;
+    }
+
+    public String getColumnComicsRating() {
+        return columnComicsRating;
+    }
+
+    public String getColumnComicsImage() {
+        return columnComicsImage;
+    }
+
+    public String getColumnComicsDescription() {
+        return columnComicsDescription;
     }
     
     /*public void rate(AjaxBehaviorEvent actionEvent) {

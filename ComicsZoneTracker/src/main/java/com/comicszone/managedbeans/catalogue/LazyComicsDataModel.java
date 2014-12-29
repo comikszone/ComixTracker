@@ -7,16 +7,12 @@ package com.comicszone.managedbeans.catalogue;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.EJB;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -30,10 +26,15 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
     private ComicsFacade comicsFacade;
     
     private final List<Comics> datasource;
+    private final String columnComicsName;
+    private final String columnComicsRating;
     
-    public LazyComicsDataModel(List<Comics> datasource, ComicsFacade comicsFacade) {
+    public LazyComicsDataModel(List<Comics> datasource, ComicsFacade comicsFacade,
+                            String columnComicsName, String columnComicsRating) {
         this.datasource = datasource;
         this.comicsFacade = comicsFacade;
+        this.columnComicsName = columnComicsName.toLowerCase();
+        this.columnComicsRating = columnComicsRating.toLowerCase();
     }
 
     @Override
@@ -56,91 +57,57 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
             SortOrder sortOrder, Map<String,Object> filters) {
         
         List<Comics> data = new ArrayList<Comics>();
-        List<Comics> result;
-        
-        /*for (Iterator<String> ittt = filters.keySet().iterator(); ittt.hasNext();) {*/
-        Iterator<String> ittt = filters.keySet().iterator();
-        //Set<String> set = filters.keySet();
-        if (ittt.hasNext()) {
-            String filterProperty = ittt.next();
-            String filterValue = filters.get(filterProperty).toString();
-            
-            Comics c = new Comics();
-            c.setName(filterProperty);
-            c.setDescription(filterValue);
-            data.add(c);
-                
-            result = comicsFacade.findByNameStartsWith(filterValue);
-            data.addAll(result);
-        }
-        
-        /*Logger log = Logger.getLogger(LazyComicsComparator.class.getName());*/
-        //for (Iterator<String> itt = filters.keySet().iterator(); itt.hasNext();) {
-            /*Iterator<String> itt = filters.keySet().iterator();
-            if (itt.hasNext()) {
-                String filterProperty = itt.next();
-                String filterValue = filters.get(filterProperty).toString();
-                Comics c = new Comics();
-                c.setName(filterProperty);
-                c.setDescription(filterValue);
-                data.add(c);
-                //List<Comics> result = comicsFacade.findByNameStartsWith(filterValue);
-            //comicsFacade.findByNameStartsWith((String)filters.get(filterProperty)));
-                //data.addAll(result);
-            }
-            if (itt.hasNext()) {
-                String filterProperty = itt.next();
-                String filterValue = filters.get(filterProperty).toString();
-                Comics c = new Comics();
-                c.setName(filterProperty);
-                c.setDescription(filterValue);
-                data.add(c);
-            }*/
-            //log.logp(Level.ALL, filterProperty, (String)filters.get(filterProperty), sortField);
-            //System.out.println(filterProperty +" " + filters.get(filterProperty));
-        //}
+        List<Comics> resultComics;
         
         //filter
-        /*for(Comics comics : datasource) {
-            boolean match = true;
- 
-            if (filters != null) {
-                for (Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
-                    try {
-                        String filterProperty = it.next();
-                        Object filterValue = filters.get(filterProperty);
-                        Field filterField  = comics.getClass().getDeclaredField(filterProperty);
-                        filterField.setAccessible(true);
-                        String fieldValue = String.valueOf(filterField.get(comics));
-                        if(filterValue == null || fieldValue.startsWith(filterValue.toString())) {  
-                            match = true;
-                        }
-                        else {
-                            match = false;
-                            break;
-                        }
-                    } catch(Exception e) {
-                        match = false;
-                    }
-                }
-            }
- 
-            if(match) {
-                data.add(comics);
-            }
-        }*/
- 
-        /*if(sortField != null) {
+        Iterator<String> itFilter = filters.keySet().iterator();
+        if(itFilter.hasNext()) {
             
-            Comics[] array = (Comics[])data.toArray();
-            Arrays.sort(array, new LazyComicsComparator(sortField, sortOrder));
-            //data.sort();
-        }*/
- 
+            String nextColumn = itFilter.next();
+            String nextColumnValue = filters.get(nextColumn).toString();
+            
+            if (nextColumn.equals(columnComicsName) && !itFilter.hasNext()) {
+                resultComics = comicsFacade.findByName(first+pageSize,nextColumnValue);
+                this.setRowCount((int)comicsFacade.getComicsCountFoundByName(nextColumnValue));
+            }
+            else if (nextColumn.equals(columnComicsRating) && !itFilter.hasNext()) {
+                Double rating = Double.valueOf(nextColumnValue);
+                resultComics = comicsFacade.findByRating(first+pageSize, rating);
+                this.setRowCount((int)comicsFacade.getComicsCountFoundByRating(rating));
+            }
+            else
+            {
+                String columnName;
+                String columnRating;
+                if (nextColumn.equals(columnComicsName)) {
+                    columnName = nextColumn;
+                    columnRating = itFilter.next();
+                }
+                else {
+                    columnRating = nextColumn;
+                    columnName = itFilter.next();
+                }
+                
+                String columnNameValue = filters.get(columnName).toString();
+                Double columnRatingValue = Double.valueOf(filters.get(columnRating).toString());
+                
+                
+                resultComics = comicsFacade.findByNameAndRating(first+pageSize,columnNameValue,columnRatingValue);
+                long count = comicsFacade.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
+                this.setRowCount((int)count);
+            }
+            
+        }
+        else {
+            resultComics = comicsFacade.findAllForCatalogue(first+pageSize,sortField,sortOrder);
+            
+            this.setRowCount((int)(comicsFacade.getComicsCount()));
+        }
+        
+        data.addAll(resultComics);
+        
         //rowCount
         int dataSize = data.size();
-        this.setRowCount(dataSize);
- 
         //paginate
         if(dataSize > pageSize) {
             try {

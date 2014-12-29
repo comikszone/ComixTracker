@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -65,14 +66,86 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         List<Comics> results = query.getResultList();
         return results;
     }
+    
+    @Override
+    public List<Comics> findAllForCatalogue(Integer maxResult, String sortField, SortOrder sortOrder) {
+        TypedQuery<Comics> query;
+        if (sortField == null) {
+            query = em.createNamedQuery("Comics.findAllForCatalogueSortByRatingDESC", Comics.class);
+        }
+        else if (sortField.equalsIgnoreCase("rating") && sortOrder == SortOrder.DESCENDING){
+            query = em.createNamedQuery("Comics.findAllForCatalogueSortByRatingDESC", Comics.class);
+        }
+        else if (sortField.equalsIgnoreCase("rating") && sortOrder == SortOrder.ASCENDING){
+            query = em.createNamedQuery("Comics.findAllForCatalogueSortByRatingASC", Comics.class);
+        }
+        else if (sortField.equalsIgnoreCase("name") && sortOrder == SortOrder.DESCENDING){
+            query = em.createNamedQuery("Comics.findAllForCatalogueSortByNameDESC", Comics.class);
+        }
+        else {
+            query = em.createNamedQuery("Comics.findAllForCatalogueSortByNameASC", Comics.class);
+        }
+        
+        query.setMaxResults(maxResult);
+        return query.getResultList();
+    }
 
     @Override
-    public List<Comics> findByNameAndRatingStartsWith(Integer maxResult, String name, Double rating) {
-        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByNameAndRatingStartsWith", Comics.class);
+    public List<Comics> findByNameAndRating(Integer maxResult, String name, Double rating) {
+        TypedQuery<Comics> query = 
+                em.createNamedQuery("Comics.findByNameAndRatingStartsWith", Comics.class);
         query.setMaxResults(maxResult);
         query.setParameter("name", name.toLowerCase() + "%");
         query.setParameter("rating", rating);
         return query.getResultList();
     }
+
+    @Override
+    public List<Comics> findByRating(Integer maxResult, Double rating) {
+        TypedQuery<Comics> query = 
+                em.createNamedQuery("Comics.findByRatingBetween", Comics.class);
+        query.setParameter("rating", rating);
+        query.setMaxResults(maxResult);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Comics> findByName(Integer maxResult, String name) {
+        TypedQuery<Comics> query =em.createNamedQuery("Comics.findByNameStartsWith", Comics.class);
+        query.setParameter("name", name.toLowerCase()+"%");
+        query.setMaxResults(maxResult);
+        return query.getResultList();
+    }
+    
+    @Override
+    public long getComicsCount() {
+        TypedQuery<Long> query = em.createNamedQuery("Comics.count", Long.class);
+        List<Long> queryResult = query.getResultList();
+        return queryResult.get(0);
+    }
+
+    @Override
+    public long getComicsCountFoundByNameAndRating(String name, Double rating) {
+        TypedQuery<Long> query = em.createNamedQuery("Comics.countFoundByNameAndRating", Long.class);
+        query.setParameter("name", name.toLowerCase() + "%");
+        query.setParameter("rating", rating);
+        return query.getResultList().get(0);
+    }
+
+    @Override
+    public long getComicsCountFoundByName(String name) {
+        TypedQuery<Long> query =em.createNamedQuery("Comics.countFoundByName", Long.class);
+        query.setParameter("name", name.toLowerCase()+"%");
+        return query.getResultList().get(0);
+    }
+
+    @Override
+    public long getComicsCountFoundByRating(Double rating) {
+        TypedQuery<Long> query =em.createNamedQuery("Comics.countFoundByRating", Long.class);
+        query.setParameter("rating", rating);
+        return query.getResultList().get(0);
+    }
+
+
     
 }

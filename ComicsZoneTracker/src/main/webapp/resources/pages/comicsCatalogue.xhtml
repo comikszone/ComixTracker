@@ -28,13 +28,19 @@
                     update=":form:comicsDetail" 
                     oncomplete="PF('comicsDialog').show()"/> 
                 
-                <p:column width="30%" headerText="Name" sortBy="#{comics.name}" 
-                          filterBy="#{comics.name}" filterMatchMode="lte">
+                <p:column width="30%" 
+                          headerText="#{comicsCatalogueView.columnComicsName}" 
+                          sortBy="#{comics.name}" 
+                          filterBy="#{comics.name}" 
+                          >
                     <h:outputText value="#{comics.name}" />
                 </p:column>      
                 
-                <p:column width="20%" headerText="Rating" sortBy="#{comics.rating}" 
-                           filterBy="#{comics.rating}" filterMatchMode="exact" >
+                <p:column width="20%" 
+                          headerText="#{comicsCatalogueView.columnComicsRating}" 
+                          sortBy="#{comics.rating}" 
+                          filterBy="#{comics.rating}" 
+                          filterMatchMode="exact" >
                     <f:facet name="filter" >
                         <p:selectOneMenu onchange="PF('comicsTable').filter()" 
                                          >
@@ -59,12 +65,14 @@
                 </h:panelGroup>
                     
                 </p:column>
-                <p:column headerText="Image" width="15%"  >
+                <p:column width="15%"
+                          headerText="#{comicsCatalogueView.columnComicsImage}" > 
+                            
                     <p:graphicImage value="#{comics.image}"
                                          width="100%"
                                          height="100%"/> 
                 </p:column>
-                <p:column headerText="Description">
+                <p:column headerText="#{comicsCatalogueView.columnComicsDescription}">
                     <h:outputText value="#{comics.description}"/>
                 </p:column>
             </p:dataTable>
