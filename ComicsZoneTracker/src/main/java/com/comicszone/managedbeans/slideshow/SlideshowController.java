@@ -7,7 +7,7 @@ package com.comicszone.managedbeans.slideshow;
 
 //import com.comicszone.dao.ComicsDaoImpl;
 import com.comicszone.dao.ComicsFacade;
-import com.comicszone.dao.SlideshowFacade;
+import com.comicszone.dao.SlideshowInterface;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -26,7 +26,7 @@ import javax.ejb.EJB;
 
 @ManagedBean(name="slideshowController")
 @ViewScoped
-public class SlideshowController{
+public class SlideshowController implements Serializable{
     
     private List<Comics> comicsList;
     @EJB
@@ -37,12 +37,11 @@ public class SlideshowController{
         
     @PostConstruct
     public void fillComicsList() {
-//       comicsFacade = new ComicsFacade();
        comicsList = comicsFacade.get12Best();
     }
     
     public List<Comics> getComicsList() {
         return comicsList;
     }
-
+    
 }

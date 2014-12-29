@@ -18,9 +18,9 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>5.0</version>
+            <version>5.1</version>
         </dependency>
-        <dependency>  
+        <dependency>
             <groupId>org.primefaces.themes</groupId>  
             <artifactId>all-themes</artifactId>  
             <version>1.0.10</version>  
@@ -95,6 +95,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.2-1003-jdbc4</version>
+        </dependency>
+        <dependency>
+            <groupId>playerfinder</groupId>
+            <artifactId>playerfinder</artifactId>
+            <version>0.5</version>
         </dependency>
         <dependency>
                 <groupId>javax.ejb</groupId>

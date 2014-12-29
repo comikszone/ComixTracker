@@ -26,7 +26,7 @@ import javax.ws.rs.Produces;
 @LocalBean
 @Path("/comics")
 @Produces({"text/xml", "application/json"})
-public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowFacade{
+public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowInterface{
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -60,10 +60,9 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         }
      @Override
     public List<Comics> get12Best() {
-        TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
-        query.setMaxResults(5);
-        List<Comics> results = query.getResultList();
-        return results;
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
+        query.setMaxResults(12);
+        return query.getResultList();
     }
     
 }

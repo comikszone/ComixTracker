@@ -13,14 +13,16 @@
                             numVisible="3"
                             circular="true"
                             autoPlayInterval="3000">
-                    <h:panelGrid columns="2" style="width:100%" cellpadding="5" columnClasses="label,value">
-                        <f:facet name="header">
-                         <p:graphicImage value="#{comics.image}"
-                                         width="320px"
-                                         height="320px"/> 
-                        </f:facet>
-                        <h:outputText value="#{comics.name}" />
-                    </h:panelGrid>
+                    <p:panelGrid columns="1" style="width:100%" columnClasses="label,value">
+                        <p:row>
+                        <p:graphicImage value="#{comics.image}"
+                                         width="390px"
+                                         height="380px"/>
+                        </p:row>
+                        <p:row>
+                        <h:outputText value="#{comics.name}" style="height:auto; width:60%;"/>
+                        </p:row>
+                    </p:panelGrid>
                 </p:carousel>
     </h:body>
 </html>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      template="#{startNavigationManagedBean.templateName}"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pf="http://jsf.playerfinder.net/components">
+    <ui:define name="articleContent">
+        <f:metadata>
+            <f:viewParam name="id" value="#{comicsController.comicsId}"/>
+        </f:metadata>
+        #{comicsController.initComics()}
+        <center>
+            <p:panelGrid>
+                <f:facet name="header" >
+                    <p:row>
+                        <p:column colspan="2">
+                            #{comicsController.comics.name}
+                        </p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:graphicImage value="#{comicsController.comics.image}"
+                                        width="320px"
+                                        height="320px"/>
+                    </p:column>
+                    <p:column colspan="1" style="text-align: left; vertical-align: text-top;">
+                       <h:outputText value="Publisher: #{comicsController.comics.publisherId.name}"/>
+                       <br/>
+                       <h:outputText value="Imprint: #{comicsController.comics.imprintId.name}"/>
+                       <br/>
+                       <h:outputText value="Description: #{comicsController.comics.description}"/>
+                       <br/>
+                       <pf:rating   totalStars="5"
+                                    step="0.1"
+                                    value="#{comics.rating}">
+                       </pf:rating>
+                       <br/>
+                       <h:outputText value="Votes: #{comicsController.comics.votes}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:accordionPanel var="volume" value="#{comicsController.comics.volumeList}">
+                            <p:tab title="#{volume.name}">
+                                <p:dataList  var="issue" value="#{volume.issueList}" type="definition">
+                                    <p:link value="#{issue.name}" outcome="#{comicsController.redirect(issue.id)}"/>
+                                </p:dataList>
+                            </p:tab>
+           </p:accordionPanel>
+        </center>
+    </ui:define>
+</ui:composition>

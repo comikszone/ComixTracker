@@ -14,6 +14,6 @@ import javax.ejb.Local;
  * @author GuronPavorro
  */
 @Local
-public interface SlideshowFacade {
+public interface SlideshowInterface {
     public List<Comics> get12Best();
 }

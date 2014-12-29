@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.entitynetbeans.Issue;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -23,7 +24,7 @@ public class ComicsController {
     private ComicsFacade comicsFacade;
     private Comics comics;
     private Integer comicsId;
-
+    
     public Integer getComicsId() {
         return comicsId;
     }
@@ -43,4 +44,10 @@ public class ComicsController {
     public void setComics(Comics comics) {
         this.comics = comics;
     }
+    
+    public String redirect(Integer issueId)
+    {
+        return "/resources/pages/issuePage.jsf?faces-redirect=true&id=" + issueId;
+    }
+
 }

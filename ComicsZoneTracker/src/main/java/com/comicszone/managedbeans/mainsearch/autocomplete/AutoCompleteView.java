@@ -75,8 +75,8 @@ public class AutoCompleteView {
     public String redirect()
     {
         if (ajaxComicsCharacter instanceof Comics)
-            return "/resources/pages/comicspage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
+            return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
         else
-            return "/resources/pages/characterpage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
+            return "/resources/pages/characterPage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
     }
 }

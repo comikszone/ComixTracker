@@ -1,0 +1,42 @@
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      template="#{startNavigationManagedBean.templateName}"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="articleContent">
+        <f:metadata>
+            <f:viewParam name="id" value="#{characterController.characterId}"/>
+        </f:metadata>
+        #{characterController.initCharacter()}
+        <center>
+            <p:panelGrid>
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="2">
+                           #{characterController.character.name}
+                        </p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:graphicImage value="#{characterController.character.image}"
+                                        width="320px"
+                                        height="320px"/>
+                    </p:column>
+                    <p:column colspan="1" style="text-align: left">
+                        <h:outputText value="Real name: #{characterController.character.realName}"/>
+                       <br/>
+                       <h:outputText value="Description: #{characterController.character.description}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </center>
+    </ui:define>
+</ui:composition>
