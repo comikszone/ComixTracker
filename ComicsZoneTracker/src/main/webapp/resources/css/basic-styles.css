@@ -2,6 +2,7 @@ html, body, #container {
     margin: 0;
     padding: 0;
     width: 100%;
+    height: 100%;
 }
 
 header {
@@ -15,10 +16,19 @@ article {
     height: max-content;
 }
 
+.wrapper {
+    min-height: 100%;
+    margin: 0 auto -2em;
+}
+
 footer {
     width: 100%;
-    height: 5%;
+    height: 2em;
     background-color: #ECEFF1;
+}
+
+.push {
+    height: 2em;
 }
 
 .right-align {
@@ -70,4 +80,10 @@ td {
 
 .dark-grey {
     color: #424242;
+}
+
+.left-align {
+    position: absolute;
+    left: 20px;
+    top: 10px;
 }

@@ -36,7 +36,8 @@ public class Comments implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comments_comment_id_seq")
-    @SequenceGenerator(name = "comments_comment_id_seq", sequenceName = "comments_comment_id_seq")
+    @SequenceGenerator(name = "comments_comment_id_seq", sequenceName = "comments_comment_id_seq", 
+            allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "comment_id")
     private Integer commentId;

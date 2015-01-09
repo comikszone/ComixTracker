@@ -6,6 +6,7 @@
 package com.comicszone.dao;
 
 import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.entitynetbeans.Content;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.LocalBean;
@@ -58,12 +59,11 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             query.setMaxResults(5);
             return query.getResultList();
         }
-     @Override
+    @Override
     public List<Comics> get12Best() {
         TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
-        query.setMaxResults(5);
+        query.setMaxResults(12);
         List<Comics> results = query.getResultList();
         return results;
     }
-    
 }

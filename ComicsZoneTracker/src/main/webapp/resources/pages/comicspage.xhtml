@@ -8,7 +8,8 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui" >
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <f:metadata>
             <f:viewParam name="id" value="#{comicsController.comicsId}"/>
@@ -18,5 +19,10 @@ and open the template in the editor.
     <h:body>
                 #{comicsController.comics.name}
         <p:graphicImage value="#{comicsController.comics.image}"/>
+        <div>
+            <ui:include src="../templates/comments/comments.xhtml">
+                <ui:param name="type" value="comics"/>
+            </ui:include>    
+        </div>
     </h:body>
 </html>

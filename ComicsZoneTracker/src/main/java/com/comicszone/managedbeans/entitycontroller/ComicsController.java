@@ -11,13 +11,14 @@ import com.comicszone.entitynetbeans.Comics;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author ArsenyPC
  */
 @ManagedBean(name="comicsController")
-@RequestScoped
+@ViewScoped
 public class ComicsController {
     @EJB
     private ComicsFacade comicsFacade;
@@ -31,6 +32,7 @@ public class ComicsController {
     public void setComicsId(Integer comicsId) {
         this.comicsId = comicsId;
     }
+    
     public void initComics()
     {
         comics=comicsFacade.find(comicsId);

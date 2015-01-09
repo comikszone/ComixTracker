@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -42,8 +43,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Issue.findByImg", query = "SELECT i FROM Issue i WHERE i.img = :img"),
     @NamedQuery(name = "Issue.findByRating", query = "SELECT i FROM Issue i WHERE i.rating = :rating"),
     @NamedQuery(name = "Issue.findByVotes", query = "SELECT i FROM Issue i WHERE i.votes = :votes"),
-    @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate")})
-public class Issue implements Serializable {
+    @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
+    @NamedQuery(name = "Issue.findByChecking", query = "SELECT i FROM Issue i WHERE i.isChecked = :isChecked ORDER BY i.issueId")})
+public class Issue implements Serializable, CommentsContainer, Content {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "issue_issue_id_seq")
@@ -70,15 +72,19 @@ public class Issue implements Serializable {
     @Column(name = "rel_date")
     @Temporal(TemporalType.DATE)
     private Date relDate;
+    @Column(name = "is_checked")
+    private Boolean isChecked;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
     private List<Character> characterList;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
     private List<Users> usersList;
     @OneToMany(mappedBy = "issueId", fetch = FetchType.LAZY)
+    @OrderBy("commentId")
     private List<Comments> commentsList;
     @JoinColumn(name = "volume_id", referencedColumnName = "volume_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Volume volumeId;
+    private final static ContentType CONTENT_TYPE = ContentType.Issue;
 
     public Issue() {
     }
@@ -92,11 +98,11 @@ public class Issue implements Serializable {
         this.name = name;
     }
 
-    public Integer getIssueId() {
+    public Integer getId() {
         return issueId;
     }
 
-    public void setIssueId(Integer issueId) {
+    public void setId(Integer issueId) {
         this.issueId = issueId;
     }
 
@@ -116,12 +122,12 @@ public class Issue implements Serializable {
         this.description = description;
     }
 
-    public String getImg() {
+    public String getImage() {
         return img;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void setImage(String image) {
+        this.img = image;
     }
 
     public Float getRating() {
@@ -164,10 +170,12 @@ public class Issue implements Serializable {
         this.usersList = usersList;
     }
 
+    @Override
     public List<Comments> getCommentsList() {
         return commentsList;
     }
 
+    @Override
     public void setCommentsList(List<Comments> commentsList) {
         this.commentsList = commentsList;
     }
@@ -178,6 +186,16 @@ public class Issue implements Serializable {
 
     public void setVolumeId(Volume volumeId) {
         this.volumeId = volumeId;
+    }
+    
+    @Override
+    public Boolean getIsChecked() {
+        return isChecked;
+    }
+    
+    @Override
+    public void setIsChecked(Boolean isChecked) {
+        this.isChecked = isChecked;
     }
 
     @Override
@@ -203,6 +221,16 @@ public class Issue implements Serializable {
     @Override
     public String toString() {
         return "com.comicszone.entitynetbeans.Issue[ issueId=" + issueId + " ]";
+    }
+
+    @Override
+    public ContentType getContentType() {
+        return CONTENT_TYPE;
+    }
+
+    @Override
+    public String getExtraInfo() {
+        return "Volume: " + volumeId.getName();
     }
     
 }

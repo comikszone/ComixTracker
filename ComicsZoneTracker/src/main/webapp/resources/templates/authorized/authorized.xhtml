@@ -2,16 +2,22 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/basic.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://java.sun.com/jsf/html">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
     <ui:define name="headerContent">
         <table class="full-parent">
             <tr class="full-parent">
+                <td>
+                    <p:link value="Main"
+                            styleClass="without-decoration light-grey"
+                            outcome="/resources/templates/index.xhtml"/>
+                </td>
                 <td>
                     <p:link value="My news"
                             styleClass="without-decoration light-grey"/>
                 </td>
                 <td>
-                    <p:link value="My comicses"
+                    <p:link value="My comics"
                             styleClass="without-decoration light-grey"/>
                 </td>
                 <td>
@@ -22,6 +28,13 @@
                     <p:link value="My profile"
                             styleClass="without-decoration light-grey"/>
                 </td>
+                <c:if test="#{userRoleManagedBean.isUserAdmin()}">
+                    <td>
+                        <p:link value="Admin page"
+                                styleClass="without-decoration light-grey"
+                                outcome="/resources/templates/authorized/admin/admin.xhtml"/>
+                    </td>
+                </c:if>
                 <td>
                     <h:form>
                         <p:commandButton 
