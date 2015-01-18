@@ -12,6 +12,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -69,31 +70,31 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
     
     @Override
     public List<Comics> findAllForCatalogue(Integer maxResult, String sortField, SortOrder sortOrder) {
-        TypedQuery<Comics> query;
-        if (sortField == null) {
-            query = em.createNamedQuery("Comics.findAllForCatalogueSortByRatingDESC", Comics.class);
-        }
-        else if (sortField.equalsIgnoreCase("rating") && sortOrder == SortOrder.DESCENDING){
-            query = em.createNamedQuery("Comics.findAllForCatalogueSortByRatingDESC", Comics.class);
-        }
-        else if (sortField.equalsIgnoreCase("rating") && sortOrder == SortOrder.ASCENDING){
-            query = em.createNamedQuery("Comics.findAllForCatalogueSortByRatingASC", Comics.class);
-        }
-        else if (sortField.equalsIgnoreCase("name") && sortOrder == SortOrder.DESCENDING){
-            query = em.createNamedQuery("Comics.findAllForCatalogueSortByNameDESC", Comics.class);
-        }
-        else {
-            query = em.createNamedQuery("Comics.findAllForCatalogueSortByNameASC", Comics.class);
-        }
+        
+        String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        
+        Query query = em.createQuery("SELECT c FROM Comics c ORDER BY " +
+            "CASE WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " + 
+            "c." + sortField + " " + sortOrderString);
         
         query.setMaxResults(maxResult);
         return query.getResultList();
     }
 
     @Override
-    public List<Comics> findByNameAndRating(Integer maxResult, String name, Double rating) {
-        TypedQuery<Comics> query = 
-                em.createNamedQuery("Comics.findByNameAndRatingStartsWith", Comics.class);
+    public List<Comics> findByNameAndRating(Integer maxResult, String name, 
+            Double rating, String sortField, SortOrder sortOrder) {
+        
+        String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        
+        Query query = em.createQuery("SELECT c FROM Comics c "
+                + "WHERE LOWER(c.name) LIKE :name "
+                + "AND c.rating BETWEEN :rating AND :rating+1 "
+                + "ORDER BY CASE "
+                + "WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " 
+                + "c." + sortField + " " + sortOrderString);
+        
+        
         query.setMaxResults(maxResult);
         query.setParameter("name", name.toLowerCase() + "%");
         query.setParameter("rating", rating);
@@ -101,17 +102,34 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
     }
 
     @Override
-    public List<Comics> findByRating(Integer maxResult, Double rating) {
-        TypedQuery<Comics> query = 
-                em.createNamedQuery("Comics.findByRatingBetween", Comics.class);
+    public List<Comics> findByRating(Integer maxResult, Double rating,
+            String sortField, SortOrder sortOrder) {
+        
+        String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        
+        Query query = em.createQuery("SELECT c FROM Comics c "
+                + "WHERE c.rating BETWEEN :rating AND :rating+1 "
+                + "ORDER BY CASE "
+                + "WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " 
+                + "c." + sortField + " " + sortOrderString);
+        
         query.setParameter("rating", rating);
         query.setMaxResults(maxResult);
         return query.getResultList();
     }
 
     @Override
-    public List<Comics> findByName(Integer maxResult, String name) {
-        TypedQuery<Comics> query =em.createNamedQuery("Comics.findByNameStartsWith", Comics.class);
+    public List<Comics> findByName(Integer maxResult, String name,
+            String sortField, SortOrder sortOrder) {
+        
+        String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        
+        Query query = em.createQuery("SELECT c FROM Comics c "
+                + "WHERE LOWER(c.name) LIKE :name "
+                + "ORDER BY CASE "
+                + "WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " 
+                + "c." + sortField + " " + sortOrderString);
+        
         query.setParameter("name", name.toLowerCase()+"%");
         query.setMaxResults(maxResult);
         return query.getResultList();

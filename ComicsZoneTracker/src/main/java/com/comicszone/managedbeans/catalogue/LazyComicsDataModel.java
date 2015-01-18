@@ -8,8 +8,6 @@ package com.comicszone.managedbeans.catalogue;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +57,11 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
         List<Comics> data = new ArrayList<Comics>();
         List<Comics> resultComics;
         
-        //filter
+        //filtering and sorting
+        if (sortField == null) {
+            sortField = "rating";
+            sortOrder = SortOrder.DESCENDING;
+        }
         Iterator<String> itFilter = filters.keySet().iterator();
         if(itFilter.hasNext()) {
             
@@ -67,12 +69,14 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
             String nextColumnValue = filters.get(nextColumn).toString();
             
             if (nextColumn.equals(columnComicsName) && !itFilter.hasNext()) {
-                resultComics = comicsFacade.findByName(first+pageSize,nextColumnValue);
+                resultComics = comicsFacade.findByName(first+pageSize,
+                        nextColumnValue,sortField,sortOrder);
                 this.setRowCount((int)comicsFacade.getComicsCountFoundByName(nextColumnValue));
             }
             else if (nextColumn.equals(columnComicsRating) && !itFilter.hasNext()) {
                 Double rating = Double.valueOf(nextColumnValue);
-                resultComics = comicsFacade.findByRating(first+pageSize, rating);
+                resultComics = comicsFacade.findByRating(first+pageSize, 
+                        rating,sortField,sortOrder);
                 this.setRowCount((int)comicsFacade.getComicsCountFoundByRating(rating));
             }
             else
@@ -92,7 +96,8 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
                 Double columnRatingValue = Double.valueOf(filters.get(columnRating).toString());
                 
                 
-                resultComics = comicsFacade.findByNameAndRating(first+pageSize,columnNameValue,columnRatingValue);
+                resultComics = comicsFacade.findByNameAndRating(first+pageSize,
+                        columnNameValue,columnRatingValue,sortField,sortOrder);
                 long count = comicsFacade.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
                 this.setRowCount((int)count);
             }
@@ -100,7 +105,6 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
         }
         else {
             resultComics = comicsFacade.findAllForCatalogue(first+pageSize,sortField,sortOrder);
-            
             this.setRowCount((int)(comicsFacade.getComicsCount()));
         }
         
