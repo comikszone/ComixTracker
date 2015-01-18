@@ -20,16 +20,15 @@ import org.primefaces.model.SortOrder;
  */
 public class LazyComicsDataModel extends LazyDataModel<Comics> {
     
+    private final ComicsFacade comicsFacade;
     
-    private ComicsFacade comicsFacade;
-    
-    private final List<Comics> datasource;
+    private List<Comics> datasource;
     private final String columnComicsName;
     private final String columnComicsRating;
     
-    public LazyComicsDataModel(List<Comics> datasource, ComicsFacade comicsFacade,
-                            String columnComicsName, String columnComicsRating) {
-        this.datasource = datasource;
+    public LazyComicsDataModel(ComicsFacade comicsFacade,
+            String columnComicsName, String columnComicsRating) {
+        datasource = new ArrayList<Comics>();
         this.comicsFacade = comicsFacade;
         this.columnComicsName = columnComicsName.toLowerCase();
         this.columnComicsRating = columnComicsRating.toLowerCase();
@@ -109,9 +108,11 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
         }
         
         data.addAll(resultComics);
+        datasource = data;
         
         //rowCount
         int dataSize = data.size();
+        
         //paginate
         if(dataSize > pageSize) {
             try {
