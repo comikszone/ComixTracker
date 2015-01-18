@@ -24,7 +24,7 @@
                             styleClass="without-decoration light-grey"
                             outcome="profile.jsf"/>
                 </td>
-                <td>#{userManagedBean.nickname}</td>
+                <td><p:outputLabel styleClass="light-grey" value="#{userProfileManagedBean.nickname}"/></td>
                 <td>
                     <h:form>
                         <p:commandButton 
@@ -35,8 +35,5 @@
                 </td>
             </tr>
         </table>
-        <f:metadata>
-            <f:event type="preRenderView" listener="#{userManagedBean.setCurrentUser()}"/>
-        </f:metadata>
     </ui:define>
 </ui:composition>

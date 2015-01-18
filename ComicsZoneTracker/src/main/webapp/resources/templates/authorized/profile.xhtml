@@ -2,19 +2,72 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/authorized/authorized.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://java.sun.com/jsf/html">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
-        <h:form>
-            <p:panelGrid columns="2">
-                Nickname:
-                <p:inputText value="#{userManagedBean.nickname}"/>
-                Email:
-                <p:inputText value="#{userManagedBean.email}"/>
-                Birthday:
-                <p:inputText value="#{userManagedBean.birthday}"/>
-                Sex:
-                <p:inputText value="#{userManagedBean.sex}"/>
-            </p:panelGrid>
-        </h:form> 
+        <center>
+            <h:form>
+                <p:panelGrid id="profilePanel">
+                    <p:row>
+                        <p:column>Nickname:</p:column>
+                        <p:column>
+                            <p:inputText value="#{userProfileManagedBean.nickname}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>Email:</p:column>
+                        <p:column>
+                            <p:inputText value="#{userProfileManagedBean.email}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>Birthday:</p:column>
+                        <p:column>        
+                            <p:inputMask value="#{userProfileManagedBean.birthday}" mask="99/99/9999"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>Sex:</p:column>
+                        <p:column>
+                            <p:selectOneMenu value="#{userProfileManagedBean.sex}">
+                                <f:selectItem itemValue="0" itemLabel="Undefined"/>
+                                <f:selectItem itemValue="1" itemLabel="Male"/>
+                                <f:selectItem itemValue="2" itemLabel="Female"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>Avatar:</p:column>
+                        <p:column>
+                            <p:graphicImage value="#{userProfileManagedBean.avatar}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>                 
+                        <p:column colspan="2">
+                            
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton 
+                                ajax="false"
+                                value="Save changes"
+                                action="#{userProfileManagedBean.saveChanges()}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+            <h:form>
+                <p:fileUpload 
+                                value="#{userProfileManagedBean.newAvatar}"
+                                fileLimit="1"
+                                fileLimitMessage="You can download only one file!"
+                                allowTypes="/(\.|\/)(jpe?g|png)$/"
+                                label="Choose new avatar"
+                                uploadLabel="Upload new avatar"
+                                mode="advanced"
+                                />
+            </h:form>
+        </center>
     </ui:define>
 </ui:composition>
