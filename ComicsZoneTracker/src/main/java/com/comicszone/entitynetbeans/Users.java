@@ -277,9 +277,15 @@ public class Users implements Serializable {
         return true;
     }
 
+//    @Override
+//    public String toString() {
+//        return "com.comicszone.entitynetbeans.Users[ userId=" + userId + " ]";
+//    }
+
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Users[ userId=" + userId + " ]";
+        return "Users{" + "userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", avatar=" + avatar + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", usersList=" + usersList + ", usersList1=" + usersList1 + ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
     }
+    
 
 }

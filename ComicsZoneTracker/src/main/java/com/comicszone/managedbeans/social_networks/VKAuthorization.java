@@ -5,12 +5,15 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
+import com.comicszone.entitynetbeans.Users;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -31,7 +34,7 @@ import org.json.simple.parser.ParseException;
  * @author ArsenyPC
  */
 @ManagedBean
-public class VKAuthorization implements SocialNetworkAuthorization{
+public class VKAuthorization extends SocialNetworkAuthorization{
     private static final String CLIENT_ID = "4695923";
     private static final String CLIENT_SECRET = "DN8uqaag7oUAPSfYCe2n";
     private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/vk_redirect_page.jsf";
@@ -69,7 +72,6 @@ public class VKAuthorization implements SocialNetworkAuthorization{
 
     @Override
     public String fetchPersonalInfo() throws IOException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String urlAccessToken=ACCESS_TOKEN_URL+
                 "?client_id="+CLIENT_ID+
                 "&client_secret="+CLIENT_SECRET+
@@ -112,4 +114,32 @@ public class VKAuthorization implements SocialNetworkAuthorization{
 		}
         return result.toString();
     }
+
+    @Override
+    public Users createUser() throws IOException, ParseException{
+        String startJson=fetchPersonalInfo();
+        JSONParser jsonParser=new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(startJson);
+        JSONArray jsonArray= (JSONArray) jsonObject.get("response");
+        JSONObject json= (JSONObject) jsonArray.get(0);
+        String id=getJsonValue(json, "uid");
+//        return id;
+        String nickname="VK"+id;
+        String firstName=getJsonValue(json, "first_name");
+        String lastName=getJsonValue(json, "last_name");
+        String name=firstName+" "+lastName;
+        String photo=getJsonValue(json, "photo");
+        String bDate=getJsonValue(json, "bdate");
+        Users user=new Users();
+        user.setNickname(nickname);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            user.setBirthday(sdf.parse(bDate));
+        } catch (java.text.ParseException ex) {
+            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return user;
+    }
+    
 }

@@ -5,6 +5,7 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
+import com.comicszone.entitynetbeans.Users;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
@@ -17,10 +18,17 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -28,7 +36,7 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class GoogleAuthorization implements SocialNetworkAuthorization{
+public class GoogleAuthorization extends SocialNetworkAuthorization{
     private static final String CLIENT_ID = "232041634310-t8k3nf1cbede85kbu8ljsc16j2fdfbvf.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "KYTJxAdhHkJ1ccx7uy9HIgKn";
     private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/redirect_page.jsf";
@@ -90,4 +98,21 @@ public class GoogleAuthorization implements SocialNetworkAuthorization{
 		return jsonIdentity;
 
 	}
+
+    @Override
+    public Users createUser() throws IOException, ParseException {
+        String startJson=fetchPersonalInfo();
+        JSONParser jsonParser=new JSONParser();
+        JSONObject json = (JSONObject) jsonParser.parse(startJson);
+        String id=getJsonValue(json, "id");
+//        return id;
+        String nickname="Google"+id;
+        String name=getJsonValue(json, "name");
+        String photo=getJsonValue(json, "picture");
+        String email=getJsonValue(json,"email");
+        Users user=new Users();
+        user.setEmail(email);
+        user.setNickname(nickname);
+        return user;
+    }
 }
