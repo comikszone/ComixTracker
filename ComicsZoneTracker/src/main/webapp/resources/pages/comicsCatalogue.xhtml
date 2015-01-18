@@ -4,7 +4,8 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:pf="http://jsf.playerfinder.net/components"
-                template="/resources/templates/basic.xhtml">
+                template="/resources/templates/basic.xhtml"
+                >
     <ui:define name="articleContent">
         <h:form id="form">
             <p:dataTable
@@ -42,19 +43,30 @@
                           filterBy="#{comics.rating}" 
                           filterMatchMode="exact" >
                     <f:facet name="filter" >
-                        <p:selectOneMenu onchange="PF('comicsTable').filter()" 
-                                         >
-                            <f:selectItem itemLabel="All ratings" itemValue="#{null}" 
-                                          noSelectionOption="true"/> 
-                            <f:selectItems value="#{comicsCatalogueView.ratings}" 
-                                         />
+                        <p:selectOneMenu 
+                            onchange="PF('comicsTable').filter()">
+                                         <!--value="#{comicsCatalogueView.rating}"-->
+                                         <!--converter="ratingConverter"-->
+                                         <!--var="r">-->
+                            <f:selectItem itemLabel="All ratings" 
+                                          itemValue="#{null}" /> 
+                            <f:selectItems value="#{comicsCatalogueView.ratings}"
+                                           var="rating"
+                                           itemLabel="#{rating.value} - #{rating.value+1}"
+                                           itemValue="#{rating.value}" 
+                                           
+                                           />   
+                            
+<!--                          <p:column>
+                                <p:graphicImage value="#{r.image}"/>
+                          </p:column>     -->
+                            
                         </p:selectOneMenu>
                     </f:facet>
                  
                 <h:panelGroup>
                     <pf:rating  disabled="true"
                                 totalStars="5"
-                                
                                 step="0.1"
                                 value="#{comics.rating}"
                                 >
@@ -77,6 +89,7 @@
                 </p:column>
             </p:dataTable>
             
+            <!--Dialog window-->
             <p:dialog header="Comics Detail" 
                       widgetVar="comicsDialog" 
                       modal="true" 
@@ -95,7 +108,10 @@
                     </f:facet>
                     <f:facet name="footer">
                         <p:link value="Visit comics page"
-                                href="comicspage.jsf" />
+                                href="/resources/pages/comicspage.jsf" 
+                                >
+                                <!--<f:param name="id" value="3" />-->
+                        </p:link>
                     </f:facet>
  
                     <h:outputText value="Id:" />

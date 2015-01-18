@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.catalogue;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -38,21 +39,35 @@ public class ComicsCatalogueManagedBean {
      
     private Comics selectedComics;
     
-    private Integer[] ratings = {0,1,2,3,4};
+    private Integer[] intRatings = {0,1,2,3,4};
+
+    public List<Integer> getIntRatings() {
+        return Arrays.asList(intRatings);
+    }
+
+    private List<Rating> ratings;
+    private Rating rating;
      
     @PostConstruct
     public void init() {
-        lazyModel = new LazyComicsDataModel(comicsFacade.get12Best(),comicsFacade,
-                columnComicsName,columnComicsRating);
+        lazyModel = new LazyComicsDataModel(comicsFacade,
+                columnComicsName, columnComicsRating);
+        ratings = new ArrayList();
+        ratings.add(new Rating(0,"/resources/images/ratings/1.jpg"));
+        ratings.add(new Rating(1,"/resources/images/ratings/2.jpg"));
+        ratings.add(new Rating(2,"/resources/images/ratings/3.jpg"));
+        ratings.add(new Rating(3,"/resources/images/ratings/4.jpg"));
+        ratings.add(new Rating(4,"/resources/images/ratings/5.jpg"));
     }
     
     public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Comics Selected",((Comics) event.getObject()).getName());
+        FacesMessage msg = new FacesMessage("Comics Selected",
+                ((Comics) event.getObject()).getName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
  
-    public List<Integer> getRatings() {
-        return Arrays.asList(ratings);
+    public List<Rating> getRatings() {
+        return ratings;
     }
     
     public LazyDataModel<Comics> getLazyModel() {
@@ -81,6 +96,14 @@ public class ComicsCatalogueManagedBean {
 
     public String getColumnComicsDescription() {
         return columnComicsDescription;
+    }
+    
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
     
     /*public void rate(AjaxBehaviorEvent actionEvent) {
