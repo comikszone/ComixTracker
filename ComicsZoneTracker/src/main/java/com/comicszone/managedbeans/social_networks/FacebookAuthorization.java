@@ -9,6 +9,7 @@ package com.comicszone.managedbeans.social_networks;
  *
  * @author ArsenyPC
  */
+import com.comicszone.entitynetbeans.Users;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,7 +30,7 @@ import org.json.simple.parser.ParseException;
  * @author ArsenyPC
  */
 @ManagedBean
-public class FacebookAuthorization implements SocialNetworkAuthorization{
+public class FacebookAuthorization extends SocialNetworkAuthorization{
     private static final String CLIENT_ID = "361365270701323";
     private static final String CLIENT_SECRET = "0b2cf81509ba71c7df172ab46fa49a57";
     private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/facebook_redirect_page.jsf";
@@ -130,6 +131,21 @@ public class FacebookAuthorization implements SocialNetworkAuthorization{
             Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    @Override
+    public Users createUser() throws IOException, ParseException {
+        String startJson=fetchPersonalInfo();
+        JSONParser jsonParser=new JSONParser();
+        JSONObject json = (JSONObject) jsonParser.parse(startJson);
+        String id=getJsonValue(json, "id");
+//        return id;
+        String nickname="Facebook"+id;
+        String name=getJsonValue(json, "name");
+        String photo=getJsonValue(json, "picture");
+        Users user=new Users();
+        user.setNickname(nickname);
+        return user;
     }
 }
 
