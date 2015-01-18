@@ -5,6 +5,7 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
+import com.comicszone.dao.userdao.UserRegistrationDao;
 import com.comicszone.entitynetbeans.Users;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -23,8 +24,10 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -37,6 +40,8 @@ import org.json.simple.parser.ParseException;
 @ManagedBean
 @SessionScoped
 public class GoogleAuthorization extends SocialNetworkAuthorization{
+    @EJB
+    private UserRegistrationDao userRegistrationDao;
     private static final String CLIENT_ID = "232041634310-t8k3nf1cbede85kbu8ljsc16j2fdfbvf.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "KYTJxAdhHkJ1ccx7uy9HIgKn";
     private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/redirect_page.jsf";
@@ -114,5 +119,12 @@ public class GoogleAuthorization extends SocialNetworkAuthorization{
         user.setEmail(email);
         user.setNickname(nickname);
         return user;
+    }
+
+    @Override
+    public void doRegistration() throws IOException, ParseException {
+        Users user=createUser();
+        userRegistrationDao.registration(user, PASSWORD);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/ComicsZoneTracker/resources/templates/unauthorized/unauthorized.jsf");
     }
 }

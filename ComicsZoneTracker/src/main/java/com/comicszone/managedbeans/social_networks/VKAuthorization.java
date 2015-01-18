@@ -5,6 +5,7 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
+import com.comicszone.dao.userdao.UserRegistrationDao;
 import com.comicszone.entitynetbeans.Users;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
@@ -17,7 +18,9 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -35,6 +38,8 @@ import org.json.simple.parser.ParseException;
  */
 @ManagedBean
 public class VKAuthorization extends SocialNetworkAuthorization{
+    @EJB
+    private UserRegistrationDao userRegistrationDao;
     private static final String CLIENT_ID = "4695923";
     private static final String CLIENT_SECRET = "DN8uqaag7oUAPSfYCe2n";
     private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/vk_redirect_page.jsf";
@@ -138,8 +143,15 @@ public class VKAuthorization extends SocialNetworkAuthorization{
         } catch (java.text.ParseException ex) {
             Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return user;
+    }
+
+    @Override
+    public void doRegistration() throws IOException, ParseException {
+        Users user=createUser();
+        user.setEmail("default email");
+        userRegistrationDao.registration(user, PASSWORD);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/ComicsZoneTracker/resources/templates/unauthorized/unauthorized.jsf");
     }
     
 }

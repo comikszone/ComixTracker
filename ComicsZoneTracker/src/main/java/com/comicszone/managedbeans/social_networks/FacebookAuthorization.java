@@ -9,6 +9,7 @@ package com.comicszone.managedbeans.social_networks;
  *
  * @author ArsenyPC
  */
+import com.comicszone.dao.userdao.UserRegistrationDao;
 import com.comicszone.entitynetbeans.Users;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +17,9 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -31,6 +34,8 @@ import org.json.simple.parser.ParseException;
  */
 @ManagedBean
 public class FacebookAuthorization extends SocialNetworkAuthorization{
+    @EJB
+    private UserRegistrationDao userRegistrationDao;
     private static final String CLIENT_ID = "361365270701323";
     private static final String CLIENT_SECRET = "0b2cf81509ba71c7df172ab46fa49a57";
     private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/facebook_redirect_page.jsf";
@@ -146,6 +151,14 @@ public class FacebookAuthorization extends SocialNetworkAuthorization{
         Users user=new Users();
         user.setNickname(nickname);
         return user;
+    }
+
+    @Override
+    public void doRegistration() throws IOException, ParseException {
+        Users user=createUser();
+        user.setEmail("default email");
+        userRegistrationDao.registration(user, PASSWORD);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/ComicsZoneTracker/resources/templates/unauthorized/unauthorized.jsf");
     }
 }
 

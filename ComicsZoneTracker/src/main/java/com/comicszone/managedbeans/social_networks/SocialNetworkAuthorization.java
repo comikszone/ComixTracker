@@ -21,12 +21,14 @@ import org.json.simple.parser.ParseException;
  * @author ArsenyPC
  */
 public abstract class SocialNetworkAuthorization {
+    protected String PASSWORD="402881834a5bbhaon14a5bb0188f0001";
     public abstract String getUserUrl();
     public abstract String getAuthCode();
     public abstract void setAuthCode(String authCode);
     public abstract void buildUserUrl();
     public abstract String fetchPersonalInfo() throws IOException;
     public abstract Users createUser() throws IOException, ParseException;
+    public abstract void doRegistration() throws IOException, ParseException;
 //    public String getJsonValue(String json,String parameter) throws ParseException
 //    {
 //        JSONParser jsonParser=new JSONParser();
