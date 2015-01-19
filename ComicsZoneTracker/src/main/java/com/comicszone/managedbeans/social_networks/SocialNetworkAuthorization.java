@@ -7,6 +7,8 @@ package com.comicszone.managedbeans.social_networks;
 
 import com.comicszone.dao.userdao.UserRegistrationDao;
 import com.comicszone.entitynetbeans.Users;
+import com.comicszone.managedbeans.util.passwordcreators.IPasswordCreator;
+import com.comicszone.managedbeans.util.passwordcreators.SimplePasswordCreator;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
@@ -28,8 +30,8 @@ public abstract class SocialNetworkAuthorization {
     @EJB
     private UserRegistrationDao userRegistrationDao;
 
-    protected String PASSWORD = "402881834a5bbhaon14a5bb0188f0001";
-
+    private final int PASSWORD_LENGTH = 20;
+    
     public abstract String getUserUrl();
 
     public abstract String getAuthCode();
@@ -43,15 +45,18 @@ public abstract class SocialNetworkAuthorization {
     public abstract Users createUser() throws IOException, ParseException;
 
     public void doRegistration() throws IOException, ParseException, ServletException {
+        IPasswordCreator passwordCreator = new SimplePasswordCreator();
+        String password = passwordCreator.createPassword(PASSWORD_LENGTH);
+        
         Users user = createUser();
-        userRegistrationDao.registration(user, PASSWORD);
+        userRegistrationDao.socialNetworkRegistration(user, password);
 
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         
         context.redirect("j_security_check?j_username="
                 + user.getNickname()
                 + "&j_password="
-                + PASSWORD);
+                + password);
     }
 //    public String getJsonValue(String json,String parameter) throws ParseException
 //    {

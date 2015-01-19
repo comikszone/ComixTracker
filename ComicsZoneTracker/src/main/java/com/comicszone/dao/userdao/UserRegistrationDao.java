@@ -33,16 +33,18 @@ public class UserRegistrationDao extends AbstractUserFacade {
         groupFacade.create(group);
     }
 
-    public void registration(Users user, String password) {
+    public void socialNetworkRegistration(Users user, String password) {
+        IPasswordEncryptor encryptor = new SHA256Encriptor();
+        password = encryptor.getEncodedPassword(password);
+        
         Users tempUser = getUserWithNickname(user.getNickname());
         if (tempUser != null) {
+            tempUser.setPass(password);
+            edit(tempUser);
             return;
         }
 
-        IPasswordEncryptor encryptor = new SHA256Encriptor();
-        password = encryptor.getEncodedPassword(password);
         user.setPass(password);
-
         create(user);
 
         UserGroup group = new UserGroup("user", user.getNickname());
