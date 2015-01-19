@@ -9,7 +9,12 @@ import com.comicszone.dao.userdao.UserRegistrationDao;
 import com.comicszone.entitynetbeans.Users;
 import java.io.IOException;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -37,10 +42,16 @@ public abstract class SocialNetworkAuthorization {
 
     public abstract Users createUser() throws IOException, ParseException;
 
-    public void doRegistration() throws IOException, ParseException {
+    public void doRegistration() throws IOException, ParseException, ServletException {
         Users user = createUser();
         userRegistrationDao.registration(user, PASSWORD);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/ComicsZoneTracker/resources/templates/unauthorized/unauthorized.jsf");
+
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        
+        context.redirect("j_security_check?j_username="
+                + user.getNickname()
+                + "&j_password="
+                + PASSWORD);
     }
 //    public String getJsonValue(String json,String parameter) throws ParseException
 //    {
@@ -54,9 +65,10 @@ public abstract class SocialNetworkAuthorization {
         JSONParser jsonParser = new JSONParser();
 //        JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
         Object obj = jsonObject.get(parameter);
-        if (obj == null)
+        if (obj == null) {
             return null;
-        String json = jsonObject.get(parameter).toString();
+        }
+        String json = obj.toString();
         return json;
     }
 
