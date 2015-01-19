@@ -6,7 +6,18 @@
 package com.comicszone.dao;
 
 import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.entitynetbeans.Imprint;
+import com.comicszone.entitynetbeans.Publisher;
+import com.comicszone.entitynetbeans.Volume;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -18,6 +29,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
+//import org.json.simple.JSONArray;
 import org.primefaces.model.SortOrder;
 
 /**
@@ -60,6 +74,57 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             query.setMaxResults(5);
             return query.getResultList();
         }
+    
+    @Path("/comicsid/{id}")
+    @GET
+    @Produces("application/json")
+    public String findByComicsId(@PathParam("id") String id) {
+        try {
+            Comics comics=find(Integer.parseInt(id));
+            Map map=new HashMap();
+            List<Volume> volumes=comics.getVolumeList();
+            JSONArray array=new JSONArray();
+            for (Volume v:volumes)
+            {
+                Map mapValume=new HashMap();
+                mapValume.put("volumeId", v.getVolumeId());
+                mapValume.put("name", v.getName());
+                array.add(mapValume);
+            }
+            Publisher publisher=comics.getPublisherId();
+            Map mapPublisher=new HashMap();
+            mapPublisher.put("publisherId", publisher.getPublisherId());
+            mapPublisher.put("name", publisher.getName());
+            Imprint imprint=comics.getImprintId();
+            Map mapImprint=new HashMap();
+            mapImprint.put("imprintId", imprint.getImprintId());
+            mapImprint.put("name", imprint.getName());
+            StringWriter out = new StringWriter();
+            map.put("id", comics.getId());
+            map.put("name", comics.getName());
+            map.put("description", comics.getDescription());
+            map.put("startDate", comics.getStartDate());
+            map.put("endDate", comics.getEndDate());
+            map.put("image", comics.getImage());
+            map.put("imprintId", mapImprint);
+            map.put("inProgress", comics.getInProgress());
+            map.put("publisherId", mapPublisher);
+            map.put("rating", comics.getRating());
+            map.put("votes", comics.getVotes());
+//            for (Field field : comics.getClass().getDeclaredFields()) {
+//                field.setAccessible(true);
+//                Object value = field.get(comics); 
+//                map.put(field.getName(), value);
+//            }
+            map.put("volumeList", array);
+            JSONValue.writeJSONString(map, out);
+            return out.toString();
+        } catch (IOException ex) {
+            Logger.getLogger(ComicsFacade.class.getName()).log(Level.SEVERE, null, ex);
+        return "";
+       }
+    }
+
      @Override
     public List<Comics> get12Best() {
         TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
