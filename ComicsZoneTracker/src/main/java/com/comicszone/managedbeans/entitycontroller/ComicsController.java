@@ -12,13 +12,14 @@ import com.comicszone.entitynetbeans.Issue;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author ArsenyPC
  */
 @ManagedBean(name="comicsController")
-@RequestScoped
+@ViewScoped
 public class ComicsController {
     @EJB
     private ComicsFacade comicsFacade;

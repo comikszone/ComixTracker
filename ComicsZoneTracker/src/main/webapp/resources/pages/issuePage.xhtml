@@ -12,28 +12,30 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:define name="articleContent">
         <f:metadata>
-            <f:viewParam name="id" value="#{characterController.characterId}"/>
+            <f:viewParam name="id" value="#{issueController.issueId}"/>
         </f:metadata>
-        #{characterController.initCharacter()}
+        #{issueController.initIssue()}
         <center>
-            <p:panelGrid>
+            <p:panelGrid style="width:65%;">
                 <f:facet name="header">
                     <p:row>
                         <p:column colspan="2">
-                           #{characterController.character.name}
+                           #{issueController.issue.name}
                         </p:column>
                     </p:row>
                 </f:facet>
                 <p:row>
-                    <p:column colspan="1" style="width: 75%; height:auto;">
-                        <p:graphicImage value="#{characterController.character.image}"
-                                        height="100%"
-                                        width="100%"/>
+                    <p:column colspan="1">
+                        <p:graphicImage value="#{issueController.issue.image}"
+                                        width="320px"
+                                        height="320px"/>
                     </p:column>
                     <p:column colspan="1" style="text-align: left">
-                        <h:outputText value="Real name: #{characterController.character.realName}"/>
+                       <h:outputText value="Description: #{issueController.issue.description}"/>
                        <br/>
-                       <h:outputText value="Description: #{characterController.character.description}"/>
+                       <h:outputText value="Rating: #{issueController.issue.rating}"/>
+                       <br/>
+                       <h:outputText value="Votes: #{issueController.issue.votes}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>

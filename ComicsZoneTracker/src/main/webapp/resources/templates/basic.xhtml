@@ -12,25 +12,26 @@
     </h:head>
     <h:body id="container">
         <header class="light-black">
+            <ui:insert name="headerContent">
+                Default Header Content
+            </ui:insert>
+        </header>
+        
+        <header class="middle-blue">
             <table class="full-parent">
                 <tr class="full-parent" >
-                    <td class="parent-fourth">
+                    <td class="parent-third">
                         <p:link value="Rating search" 
                                 styleClass="without-decoration white"/>
                     </td>
-                    <td class="parent-fourth">
+                    <td class="parent-third">
                         <p:link value="Catalogue"
                                 styleClass="without-decoration white"/>
                     </td>
-                    <td class="parent-fourth">
+                    <td class="parent-third">
                         <div>
                             <ui:include src="mainSearch/search.xhtml"/>
                         </div>
-                    </td>
-                    <td class="parent-fourth">
-                        <ui:insert name="headerContent">
-                            Default Header Content
-                        </ui:insert>
                     </td>
                 </tr>
             </table>
