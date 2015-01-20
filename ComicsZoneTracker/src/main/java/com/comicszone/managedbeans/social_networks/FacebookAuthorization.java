@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -80,6 +81,27 @@ public class FacebookAuthorization extends SocialNetworkAuthorization {
                 + "&code=" + authCode
                 + "&redirect_uri=" + CALLBACK_URI;
         String response = getResponseString(urlAccessToken);
+        try {
+            if (getJsonValue(response, "error")!=null)
+            {
+                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+                context.redirect("/ComicsZoneTracker");
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(FacebookAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        JSONParser jsonParser = new JSONParser();
+//        try {
+//            JSONObject json = (JSONObject) jsonParser.parse(response);
+//            if (getJsonValue(json,"error")!=null)
+//            {
+//                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+//                context.redirect("/ComicsZoneTracker");
+//            }
+//        } catch (ParseException ex) {
+//            Logger.getLogger(FacebookAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return response;
         String accessToken = getAccessToken(response);
 //        String userId=getAccessToken();
         String urlUserInfo = PERSONAL_INFO_URL
@@ -143,6 +165,7 @@ public class FacebookAuthorization extends SocialNetworkAuthorization {
         String startJson = fetchPersonalInfo();
         JSONParser jsonParser = new JSONParser();
         JSONObject json = (JSONObject) jsonParser.parse(startJson);
+        String error=getJsonValue(json, "error");
         String id = getJsonValue(json, "id");
 //        return id;
         String nickname = "Facebook" + id;

@@ -47,24 +47,27 @@ public abstract class SocialNetworkAuthorization {
     public void doRegistration() throws IOException, ParseException, ServletException {
         IPasswordCreator passwordCreator = new SimplePasswordCreator();
         String password = passwordCreator.createPassword(PASSWORD_LENGTH);
-        
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();        
         Users user = createUser();
         userRegistrationDao.socialNetworkRegistration(user, password);
 
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         context.redirect("j_security_check?j_username="
                 + user.getNickname()
                 + "&j_password="
                 + password);
     }
-//    public String getJsonValue(String json,String parameter) throws ParseException
-//    {
-//        JSONParser jsonParser=new JSONParser();
-//        JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
-//        String jsonId = jsonObject.get(parameter).toString();
-//        return jsonId;
-//    }
+    public String getJsonValue(String json,String parameter) throws ParseException
+    {
+        JSONParser jsonParser=new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
+        Object obj = jsonObject.get(parameter);
+        if (obj == null) {
+            return null;
+        }
+        String result = obj.toString();
+        return result;
+    }
 
     public String getJsonValue(JSONObject jsonObject, String parameter) throws ParseException {
         JSONParser jsonParser = new JSONParser();

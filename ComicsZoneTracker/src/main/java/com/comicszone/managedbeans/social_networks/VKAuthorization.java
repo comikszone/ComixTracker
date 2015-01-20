@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -76,6 +78,26 @@ public class VKAuthorization extends SocialNetworkAuthorization {
                 + "&code=" + authCode
                 + "&redirect_uri=" + CALLBACK_URI;
         String json = getResponseJson(urlAccessToken);
+        try {
+            if (getJsonValue(json,"error")!=null)
+            {
+                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+                context.redirect("/ComicsZoneTracker");
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        JSONParser jsonParser = new JSONParser();
+//        try {
+//            JSONObject jsonObj = (JSONObject) jsonParser.parse(json);
+//            if (getJsonValue(jsonObj,"error")!=null)
+//            {
+//                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+//                context.redirect("/ComicsZoneTracker");
+//            }
+//        } catch (ParseException ex) {
+//            Logger.getLogger(FacebookAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         String accessToken = parseJson(json, "access_token");
         String userId = parseJson(json, "user_id");
         String urlUserInfo = PERSONAL_INFO_URL
