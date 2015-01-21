@@ -90,18 +90,6 @@ public class FacebookAuthorization extends SocialNetworkAuthorization {
         } catch (ParseException ex) {
             Logger.getLogger(FacebookAuthorization.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        JSONParser jsonParser = new JSONParser();
-//        try {
-//            JSONObject json = (JSONObject) jsonParser.parse(response);
-//            if (getJsonValue(json,"error")!=null)
-//            {
-//                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-//                context.redirect("/ComicsZoneTracker");
-//            }
-//        } catch (ParseException ex) {
-//            Logger.getLogger(FacebookAuthorization.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return response;
         String accessToken = getAccessToken(response);
 //        String userId=getAccessToken();
         String urlUserInfo = PERSONAL_INFO_URL

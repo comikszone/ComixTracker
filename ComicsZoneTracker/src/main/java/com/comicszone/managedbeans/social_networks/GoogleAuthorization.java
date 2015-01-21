@@ -22,6 +22,8 @@ import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -33,7 +35,6 @@ import org.json.simple.parser.ParseException;
 @ManagedBean
 @SessionScoped
 public class GoogleAuthorization extends SocialNetworkAuthorization {
-
     private static final String CLIENT_ID = "232041634310-t8k3nf1cbede85kbu8ljsc16j2fdfbvf.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "KYTJxAdhHkJ1ccx7uy9HIgKn";
     private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/redirect_page.jsf";
@@ -46,19 +47,23 @@ public class GoogleAuthorization extends SocialNetworkAuthorization {
     private String userUrl;
     private String authCode;
 
+    @Override
     public String getUserUrl() {
         return userUrl;
     }
 
+    @Override
     public String getAuthCode() {
         return authCode;
     }
 
+    @Override
     public void setAuthCode(String authCode) {
         this.authCode = authCode;
     }
 
     @PostConstruct
+    @Override
     public void buildUserUrl() {
         flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, CLIENT_ID,
                 CLIENT_SECRET, SCOPE).build();
@@ -66,29 +71,22 @@ public class GoogleAuthorization extends SocialNetworkAuthorization {
         userUrl = url.setRedirectUri(CALLBACK_URI).build();
     }
 
+    @Override
     public String fetchPersonalInfo() throws IOException {
 
-//            logger.info(authCode);
-//            logger.info(flow.newTokenRequest(authCode).setRedirectUri(CALLBACK_URI));
-//            flow.
+        if (authCode==null)
+        {
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+            context.redirect("/ComicsZoneTracker");
+        }
         final GoogleTokenResponse response = flow.newTokenRequest(authCode).setRedirectUri(CALLBACK_URI).execute();
-//		logger.info("response.getAccessToken()"+response.getAccessToken());
         final Credential credential = flow.createAndStoreCredential(response, null);
-//                setCredential(credential);
-//                credential
         final HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(credential);
         // Make an authenticated request
         final GenericUrl url = new GenericUrl(USER_INFO_URL);
-//                logger.info("genericUrl="+url.);
         final HttpRequest request = requestFactory.buildGetRequest(url);
-//                HttpRequset requset=new HttpRequest();
-//                logger.info(request.getContent().getEncoding());
-        request.setUrl(new GenericUrl(USER_INFO_URL + "?access_token0=" + credential.getAccessToken()));
-//                logger.info("request.getUrl().build()="+request.getUrl().build());
         request.getHeaders().setContentType("application/json");
-//                logger.info("parameters="+request.getContent().getEncoding());
         final String jsonIdentity = request.execute().parseAsString();
-//                                logger.info("!!!"+credential.getAccessToken()+"___AAAAAAA_____"+credential.getRefreshToken());
         return jsonIdentity;
 
     }
@@ -99,7 +97,6 @@ public class GoogleAuthorization extends SocialNetworkAuthorization {
         JSONParser jsonParser = new JSONParser();
         JSONObject json = (JSONObject) jsonParser.parse(startJson);
         String id = getJsonValue(json, "id");
-//        return id;
         String nickname = "Google" + id;
         String name = getJsonValue(json, "name");
         String photo = getJsonValue(json, "picture");

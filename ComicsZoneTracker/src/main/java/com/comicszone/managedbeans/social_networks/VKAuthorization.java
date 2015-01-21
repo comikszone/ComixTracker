@@ -87,17 +87,6 @@ public class VKAuthorization extends SocialNetworkAuthorization {
         } catch (ParseException ex) {
             Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        JSONParser jsonParser = new JSONParser();
-//        try {
-//            JSONObject jsonObj = (JSONObject) jsonParser.parse(json);
-//            if (getJsonValue(jsonObj,"error")!=null)
-//            {
-//                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-//                context.redirect("/ComicsZoneTracker");
-//            }
-//        } catch (ParseException ex) {
-//            Logger.getLogger(FacebookAuthorization.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         String accessToken = parseJson(json, "access_token");
         String userId = parseJson(json, "user_id");
         String urlUserInfo = PERSONAL_INFO_URL
