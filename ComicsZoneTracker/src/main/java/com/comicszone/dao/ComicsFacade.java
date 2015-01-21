@@ -124,6 +124,21 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         return "";
        }
     }
+    @Path("/comicsid/")
+    @GET
+    @Produces("application/json")
+    public String findAllIdNameComics() {
+        List<Comics> comicsList=findAll();
+        JSONArray array=new JSONArray();
+        for (Comics comics:comicsList)
+        {
+            Map map=new HashMap();
+            map.put("id", comics.getId());
+            map.put("name", comics.getName());
+            array.add(map);
+        }
+        return array.toJSONString();
+    }
 
      @Override
     public List<Comics> get12Best() {
