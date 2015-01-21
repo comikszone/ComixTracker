@@ -39,7 +39,7 @@ public class VKAuthorization extends SocialNetworkAuthorization {
     private UserRegistrationDao userRegistrationDao;
     private static final String CLIENT_ID = "4695923";
     private static final String CLIENT_SECRET = "DN8uqaag7oUAPSfYCe2n";
-    private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/vk_redirect_page.jsf";
+    private static final String CALLBACK_URI = "http://188.166.44.178/ComicsZoneTracker/resources/templates/unauthorized/vk_redirect_page.jsf";
     private static final String VK_URL = "https://oauth.vk.com/authorize";
     private static final String ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
     private static final String PERSONAL_INFO_URL = "https://api.vk.com/method/users.get";
