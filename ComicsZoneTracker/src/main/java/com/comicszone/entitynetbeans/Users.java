@@ -86,6 +86,10 @@ public class Users implements Serializable {
     @NotNull
     @Column(name = "banned")
     private boolean banned;
+    @Column(name="name")
+    private String name;
+    @Column(name="avatar_url")
+    private String avatarUrl;
     @JoinTable(name = "friends", joinColumns = {
         @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
         @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
@@ -201,6 +205,23 @@ public class Users implements Serializable {
         this.banned = banned;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
+
     public List<Users> getUsersList() {
         return usersList;
     }
@@ -284,8 +305,10 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "Users{" + "userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", avatar=" + avatar + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", usersList=" + usersList + ", usersList1=" + usersList1 + ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
+        return "Users{" + "userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", avatar=" + avatar + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", name=" + name + ", avatarUrl=" + avatarUrl + ", usersList=" + usersList + ", usersList1=" + usersList1 + ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
     }
+
+
     
 
 }

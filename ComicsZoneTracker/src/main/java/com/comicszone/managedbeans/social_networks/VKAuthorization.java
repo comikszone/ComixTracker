@@ -11,8 +11,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -34,12 +36,9 @@ import org.json.simple.parser.ParseException;
  */
 @ManagedBean
 public class VKAuthorization extends SocialNetworkAuthorization {
-
-    @EJB
-    private UserRegistrationDao userRegistrationDao;
     private static final String CLIENT_ID = "4695923";
     private static final String CLIENT_SECRET = "DN8uqaag7oUAPSfYCe2n";
-    private static final String CALLBACK_URI = "http://188.166.44.178/ComicsZoneTracker/resources/templates/unauthorized/vk_redirect_page.jsf";
+    private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/vk_redirect_page.jsf";
     private static final String VK_URL = "https://oauth.vk.com/authorize";
     private static final String ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
     private static final String PERSONAL_INFO_URL = "https://api.vk.com/method/users.get";
@@ -142,13 +141,18 @@ public class VKAuthorization extends SocialNetworkAuthorization {
         Users user = new Users();
         user.setNickname(nickname);
         user.setEmail("default email");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            user.setBirthday(sdf.parse(bDate));
-        } catch (java.text.ParseException ex) {
-            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex) {
-            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+        user.setAvatarUrl(photo);
+        user.setName(name);
+        if (bDate!=null)
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            try {
+                user.setBirthday(sdf.parse(bDate));
+            } catch (java.text.ParseException ex) {
+                Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NullPointerException ex) {
+                Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return user;
     }

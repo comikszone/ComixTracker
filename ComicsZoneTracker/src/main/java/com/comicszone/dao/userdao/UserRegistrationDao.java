@@ -40,6 +40,9 @@ public class UserRegistrationDao extends AbstractUserFacade {
         Users tempUser = getUserWithNickname(user.getNickname());
         if (tempUser != null) {
             tempUser.setPass(password);
+            tempUser.setBirthday(user.getBirthday());
+            tempUser.setAvatarUrl(user.getAvatarUrl());
+            tempUser.setName(user.getName());
             edit(tempUser);
             return;
         }

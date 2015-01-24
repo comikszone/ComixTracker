@@ -14,8 +14,10 @@ import com.comicszone.entitynetbeans.Users;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -36,12 +38,9 @@ import org.json.simple.parser.ParseException;
  */
 @ManagedBean
 public class FacebookAuthorization extends SocialNetworkAuthorization {
-
-    @EJB
-    private UserRegistrationDao userRegistrationDao;
     private static final String CLIENT_ID = "361365270701323";
     private static final String CLIENT_SECRET = "0b2cf81509ba71c7df172ab46fa49a57";
-    private static final String CALLBACK_URI = "http://188.166.44.178/ComicsZoneTracker/resources/templates/unauthorized/facebook_redirect_page.jsf";
+    private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/facebook_redirect_page.jsf";
     private static final String FACEBOOK_URL = "https://www.facebook.com/dialog/oauth";
     private static final String ACCESS_TOKEN_URL = "https://graph.facebook.com/oauth/access_token";
     private static final String PERSONAL_INFO_URL = "https://graph.facebook.com/me";
@@ -74,7 +73,6 @@ public class FacebookAuthorization extends SocialNetworkAuthorization {
 
     @Override
     public String fetchPersonalInfo() throws IOException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String urlAccessToken = ACCESS_TOKEN_URL
                 + "?client_id=" + CLIENT_ID
                 + "&client_secret=" + CLIENT_SECRET
@@ -160,6 +158,8 @@ public class FacebookAuthorization extends SocialNetworkAuthorization {
         String name = getJsonValue(json, "name");
         String photo = getJsonValue(json, "picture");
         Users user = new Users();
+        user.setAvatarUrl(photo);
+        user.setName(name);
         user.setNickname(nickname);
         user.setEmail("default email");
         return user;
