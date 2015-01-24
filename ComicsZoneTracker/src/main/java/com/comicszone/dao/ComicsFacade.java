@@ -40,8 +40,8 @@ import org.primefaces.model.SortOrder;
  */
 @Stateless
 @LocalBean
-@Path("/comics")
-@Produces({"text/xml", "application/json"})
+//@Path("/comics")
+//@Produces({"text/xml", "application/json"})
 public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowFacade,CatalogueFacade{
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
@@ -51,94 +51,17 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         return em;
     }
 
-    @Override
-//    @Path("/comics")
-    @GET
-    @Produces("application/json")
-    public List<Comics> findAll() {
-        return super.findAll();
-    }
-    
-
     public ComicsFacade() {
         super(Comics.class);
     }
     
     @Override
-    @Path("/{name}")
-    @GET
-    @Produces("application/json")
     public List<Comics> findByNameStartsWith(@PathParam("name") String name) {
             TypedQuery<Comics> query =em.createNamedQuery("Comics.findByNameStartsWith", Comics.class);
             query.setParameter("name", name.toLowerCase()+"%");
             query.setMaxResults(5);
             return query.getResultList();
         }
-    
-    @Path("/comicsid/{id}")
-    @GET
-    @Produces("application/json")
-    public String findByComicsId(@PathParam("id") String id) {
-        try {
-            Comics comics=find(Integer.parseInt(id));
-            Map map=new HashMap();
-            List<Volume> volumes=comics.getVolumeList();
-            JSONArray array=new JSONArray();
-            for (Volume v:volumes)
-            {
-                Map mapValume=new HashMap();
-                mapValume.put("volumeId", v.getVolumeId());
-                mapValume.put("name", v.getName());
-                array.add(mapValume);
-            }
-            Publisher publisher=comics.getPublisherId();
-            Map mapPublisher=new HashMap();
-            mapPublisher.put("publisherId", publisher.getPublisherId());
-            mapPublisher.put("name", publisher.getName());
-            Imprint imprint=comics.getImprintId();
-            Map mapImprint=new HashMap();
-            mapImprint.put("imprintId", imprint.getImprintId());
-            mapImprint.put("name", imprint.getName());
-            StringWriter out = new StringWriter();
-            map.put("id", comics.getId());
-            map.put("name", comics.getName());
-            map.put("description", comics.getDescription());
-            map.put("startDate", comics.getStartDate());
-            map.put("endDate", comics.getEndDate());
-            map.put("image", comics.getImage());
-            map.put("imprintId", mapImprint);
-            map.put("inProgress", comics.getInProgress());
-            map.put("publisherId", mapPublisher);
-            map.put("rating", comics.getRating());
-            map.put("votes", comics.getVotes());
-//            for (Field field : comics.getClass().getDeclaredFields()) {
-//                field.setAccessible(true);
-//                Object value = field.get(comics); 
-//                map.put(field.getName(), value);
-//            }
-            map.put("volumeList", array);
-            JSONValue.writeJSONString(map, out);
-            return out.toString();
-        } catch (IOException ex) {
-            Logger.getLogger(ComicsFacade.class.getName()).log(Level.SEVERE, null, ex);
-        return "";
-       }
-    }
-    @Path("/comicsid/")
-    @GET
-    @Produces("application/json")
-    public String findAllIdNameComics() {
-        List<Comics> comicsList=findAll();
-        JSONArray array=new JSONArray();
-        for (Comics comics:comicsList)
-        {
-            Map map=new HashMap();
-            map.put("id", comics.getId());
-            map.put("name", comics.getName());
-            array.add(map);
-        }
-        return array.toJSONString();
-    }
 
      @Override
     public List<Comics> get12Best() {
