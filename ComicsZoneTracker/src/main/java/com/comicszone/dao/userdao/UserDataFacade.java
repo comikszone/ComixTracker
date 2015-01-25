@@ -1,7 +1,5 @@
 package com.comicszone.dao.userdao;
 
-import com.comicszone.entitynetbeans.Users;
-import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
