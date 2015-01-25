@@ -107,11 +107,10 @@
                                          height="200px"/> 
                     </f:facet>
                     <f:facet name="footer">
-                        <p:link value="Visit comics page"
-                                href="/resources/pages/comicspage.jsf" 
-                                >
-                                <!--<f:param name="id" value="3" />-->
-                        </p:link>
+                        <h:link value="Visit comics page"
+                                outcome="comicspage">
+                            <f:param name="id" value="#{comicsCatalogueView.selectedComics.id}" />
+                        </h:link>
                     </f:facet>
  
                     <h:outputText value="Id:" />
