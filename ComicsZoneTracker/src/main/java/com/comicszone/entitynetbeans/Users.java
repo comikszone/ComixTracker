@@ -77,7 +77,6 @@ public class Users implements Serializable {
     private Date birthday;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Недопустимый адрес электронной почты")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "email")
     private String email;
@@ -87,6 +86,10 @@ public class Users implements Serializable {
     @NotNull
     @Column(name = "banned")
     private boolean banned;
+    @Column(name="name")
+    private String name;
+    @Column(name="avatar_url")
+    private String avatarUrl;
     @JoinTable(name = "friends", joinColumns = {
         @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
         @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
@@ -202,6 +205,23 @@ public class Users implements Serializable {
         this.banned = banned;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
+
     public List<Users> getUsersList() {
         return usersList;
     }
@@ -278,9 +298,17 @@ public class Users implements Serializable {
         return true;
     }
 
+//    @Override
+//    public String toString() {
+//        return "com.comicszone.entitynetbeans.Users[ userId=" + userId + " ]";
+//    }
+
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Users[ userId=" + userId + " ]";
+        return "Users{" + "userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", avatar=" + avatar + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", name=" + name + ", avatarUrl=" + avatarUrl + ", usersList=" + usersList + ", usersList1=" + usersList1 + ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
     }
+
+
+    
 
 }
