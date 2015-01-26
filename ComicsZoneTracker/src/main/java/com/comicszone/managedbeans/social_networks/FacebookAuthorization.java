@@ -40,7 +40,7 @@ import org.json.simple.parser.ParseException;
 public class FacebookAuthorization extends SocialNetworkAuthorization {
     private static final String CLIENT_ID = "361365270701323";
     private static final String CLIENT_SECRET = "0b2cf81509ba71c7df172ab46fa49a57";
-    private static final String CALLBACK_URI = "http://188.166.44.178/ComicsZoneTracker/resources/templates/unauthorized/facebook_redirect_page.jsf";
+    private static final String CALLBACK_URI = "http://www.comicszonetracker.tk/resources/templates/unauthorized/facebook_redirect_page.jsf";
     private static final String FACEBOOK_URL = "https://www.facebook.com/dialog/oauth";
     private static final String ACCESS_TOKEN_URL = "https://graph.facebook.com/oauth/access_token";
     private static final String PERSONAL_INFO_URL = "https://graph.facebook.com/me";
@@ -83,7 +83,7 @@ public class FacebookAuthorization extends SocialNetworkAuthorization {
             if (getJsonValue(response, "error")!=null)
             {
                 ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-                context.redirect("/ComicsZoneTracker");
+                context.redirect("/");
             }
         } catch (ParseException ex) {
             Logger.getLogger(FacebookAuthorization.class.getName()).log(Level.SEVERE, null, ex);

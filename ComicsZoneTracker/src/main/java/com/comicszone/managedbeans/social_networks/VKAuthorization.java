@@ -38,7 +38,7 @@ import org.json.simple.parser.ParseException;
 public class VKAuthorization extends SocialNetworkAuthorization {
     private static final String CLIENT_ID = "4695923";
     private static final String CLIENT_SECRET = "DN8uqaag7oUAPSfYCe2n";
-    private static final String CALLBACK_URI = "http://188.166.44.178/ComicsZoneTracker/resources/templates/unauthorized/vk_redirect_page.jsf";
+    private static final String CALLBACK_URI = "http://www.comicszonetracker.tk/resources/templates/unauthorized/vk_redirect_page.jsf";
     private static final String VK_URL = "https://oauth.vk.com/authorize";
     private static final String ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
     private static final String PERSONAL_INFO_URL = "https://api.vk.com/method/users.get";
@@ -81,7 +81,7 @@ public class VKAuthorization extends SocialNetworkAuthorization {
             if (getJsonValue(json,"error")!=null)
             {
                 ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-                context.redirect("/ComicsZoneTracker");
+                context.redirect("/");
             }
         } catch (ParseException ex) {
             Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
