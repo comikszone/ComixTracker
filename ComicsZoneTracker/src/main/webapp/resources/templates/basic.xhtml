@@ -6,12 +6,19 @@
     xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>ComicsZone</title>
-        <h:outputStylesheet library="css" name="basic-styles.css" />        
+        <h:outputStylesheet library="css" name="basic-styles.css" />
+        <h:outputStylesheet library="css" name="fonts.css" />  
         <h:outputStylesheet library="css" name="popup.css"/>
         <h:outputScript library="scripts" name="PopUpWindowScript.js"/>
     </h:head>
     <h:body id="container">
+        <div class="wrapper">
         <header class="light-black">
+            <div class="homepage-link">
+                <p:link value="ComicsZone"
+                        styleClass="without-decoration homepage"
+                        outcome="/resources/templates/index.xhtml"/>
+            </div>
             <ui:insert name="headerContent">
                 Default Header Content
             </ui:insert>
@@ -45,7 +52,10 @@
             </ui:insert>
         </article>    
         
-        <footer class="grey">
+        <div class="push"></div>
+        </div>
+        
+        <footer style="color: #000000;">
             <table class="full-parent">
                 <tr class="full-parent">
                     <td class="parent-third">

@@ -35,6 +35,7 @@ and open the template in the editor.
                 <p:row>
                     <p:column colspan="1" style="width: 45%; height:auto;">
                         <p:graphicImage value="#{comicsController.comics.image}"
+                                        styleClass="content-image"
                                         height="100%"
                                         width="100%"/>
                     </p:column>
@@ -42,8 +43,8 @@ and open the template in the editor.
                        <h:outputText value="Publisher: #{comicsController.comics.publisherId.name}"/>
                        <br/>
                        <h:outputText value="Imprint: #{comicsController.comics.imprintId.name}"/>
-                       <br/>
-                       <h:outputText value="Votes: #{comicsController.comics.votes}"/>
+                        <br/>
+                       <h:outputText value="Description: #{comicsController.comics.description}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -64,20 +65,33 @@ and open the template in the editor.
                                     to rate and read comics!
                                 </c:otherwise>
                             </c:choose>
-                                
-                        <br/>
-                        <h:outputText value="Description: #{comicsController.comics.description}"/>
                     </p:column>
                 </p:row>
-            </p:panelGrid>
-            <p:accordionPanel style="width:65%;" var="volume" value="#{comicsController.comics.volumeList}">
+            </p:panelGrid>    
+            <p:accordionPanel var="volume" value="#{comicsController.comics.volumeList}">
                             <p:tab title="#{volume.name}">
-                                <p:dataList  var="issue" value="#{volume.issueList}" type="definition">
-                                    <p:link value="#{issue.name}" outcome="#{comicsController.redirect(issue.id)}"/>
-                                </p:dataList>
+                                <p:dataGrid var="issue"
+                                            value="#{volume.issueList}"
+                                            columns="6"
+                                            layout="grid"
+                                            paginator="true"
+                                            rows="7"                                           lazy="true">
+                        <p:panelGrid columns="1" columnClasses="label,value">
+                        <p:row>
+                        <p:graphicImage value="#{issue.image}"
+                                        styleClass="content-image"
+                                        />
+                        </p:row>
+                        <p:row>
+                            <p:link value="#{issue.name}" 
+                                    outcome="#{comicsController.redirect(issue.id)}" 
+                                    style="height:auto; width:60%;"/>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dataGrid>
                             </p:tab>
-           </p:accordionPanel>
-        </center>g
+            </p:accordionPanel>
+        </center>
     </ui:define>
 </ui:composition>
 </h:body>
