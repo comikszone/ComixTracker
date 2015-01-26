@@ -71,3 +71,19 @@ td {
 .dark-grey {
     color: #424242;
 }
+
+.profile-page-column-attr-name{
+    float: right;
+}
+
+.profile-page-column-value-text{
+    text-align: right;
+}
+
+.profile-page-column-value-list{
+    width: 100%;
+}
+
+.profile-page-column-button{
+    width: 100%;
+}

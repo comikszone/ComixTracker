@@ -2,7 +2,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/basic.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://java.sun.com/jsf/html">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="headerContent">
         <table class="full-parent">
             <tr class="full-parent">
@@ -20,8 +21,10 @@
                 </td>
                 <td>
                     <p:link value="My profile"
-                            styleClass="without-decoration light-grey"/>
+                            styleClass="without-decoration light-grey"
+                            outcome="profile.jsf"/>
                 </td>
+                <td><p:outputLabel styleClass="light-grey" value="#{currentUserManagedBean.nickname}"/></td>
                 <td>
                     <h:form>
                         <p:commandButton 
