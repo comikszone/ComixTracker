@@ -12,9 +12,9 @@ public class StartNavigationManagedBean {
     public void returnStartPage() throws IOException{
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         if (context.isUserInRole("user")){
-            context.redirect("/ComicsZoneTracker/resources/templates/authorized/authorized.jsf");
+            context.redirect("/resources/templates/authorized/authorized.jsf");
             return;
         }
-        context.redirect("/ComicsZoneTracker/resources/templates/unauthorized/unauthorized.jsf");
+        context.redirect("/resources/templates/unauthorized/unauthorized.jsf");
     }
 }

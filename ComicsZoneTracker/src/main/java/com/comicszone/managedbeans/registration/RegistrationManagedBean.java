@@ -26,6 +26,6 @@ public class RegistrationManagedBean {
                 parameterMap.get("registrationForm:password"), 
                 parameterMap.get("registrationForm:confirmPassword"));
         
-        return "/ComicsZoneTracker/resources/templates/index.jsf";
+        return "/resources/templates/index.jsf";
     }
 }

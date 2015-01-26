@@ -73,7 +73,7 @@ public class AutoCompleteView {
     {
         String url=redirect();
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        context.redirect("/ComicsZoneTracker"+url);
+        context.redirect(url);
     }
      
     public List<AjaxComicsCharacter> completeComics(String query) {
