@@ -14,7 +14,7 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class CurrentUserManagedBean {
 
-    Users currentUser;
+    private Users currentUser;
     @EJB
     UserDataFacade userDAO;
 
@@ -38,6 +38,10 @@ public class CurrentUserManagedBean {
         return currentUser.getEmail();
     }
 
+    public Users getCurrentUser() throws CloneNotSupportedException{
+        return (Users)currentUser.clone();
+    }
+    
     @PostConstruct
     public void setCurrentUser() {
         Principal prin = FacesContext.getCurrentInstance()

@@ -5,44 +5,53 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
-        <h:form>
+        <h:form id = "profileForm">
             <p:panelGrid id="profilePanel">
                 <p:row>
                     <p:column >
-                        <h:outputText styleClass="profile-page-column-text" 
+                        <h:outputText styleClass="profile-page-column-attr-name" 
                                       value="Nickname:"/>
                     </p:column>
                     <p:column>
-                        <p:inputText styleClass="profile-page-column-value"
-                                     value="#{currentUserManagedBean.nickname}"/>
+                        <p:inputText id="nickname"
+                                     styleClass="profile-page-column-value-text"
+                                     value="#{profileUserManagedBean.nickname}"/>
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column>
-                        <h:outputText styleClass="profile-page-column-text"  value="Email:"/>
+                        <h:outputText styleClass="profile-page-column-attr-name" 
+                                      value="Email:"/>
                     </p:column>
                     <p:column>
-                        <p:inputText styleClass="profile-page-column-value"
-                                     value="#{currentUserManagedBean.email}"/>
+                        <p:inputText id="email"
+                                     styleClass="profile-page-column-value-text"
+                                     value="#{profileUserManagedBean.email}"/>
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column>
-                        <h:outputText styleClass="profile-page-column-text"
+                        <h:outputText styleClass="profile-page-column-attr-name"
                                       value="Birthday:"/>
                     </p:column>
                     <p:column>        
-                        <p:inputMask styleClass="profile-page-column-value" 
-                                     value="#{currentUserManagedBean.birthday}" 
+                        <p:inputMask id="birthday"
+                                     styleClass="profile-page-column-value-text" 
+                                     value="#{profileUserManagedBean.birthday}" 
                                      mask="99/99/9999"/>
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column>
-                        <h:outputText styleClass="profile-page-column-text"  value="Sex:"/>
+                        <h:outputText styleClass="profile-page-column-attr-name"
+                                      value="Sex:"/>
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu value="#{currentUserManagedBean.sex}">
+                        <p:selectOneMenu
+                            id = "sex"
+                            style="width:100%"
+                            styleClass="profile-page-column-value-list"
+                            value="#{profileUserManagedBean.sex}">
                             <f:selectItem itemValue="0" itemLabel="Undefined"/>
                             <f:selectItem itemValue="1" itemLabel="Male"/>
                             <f:selectItem itemValue="2" itemLabel="Female"/>
@@ -51,37 +60,31 @@
                 </p:row>
                 <p:row>
                     <p:column>
-                        <h:outputText styleClass="profile-page-column-text"  value="Avatar:"/>
+                        <h:outputText styleClass="profile-page-column-attr-name"  value="Avatar:"/>
                     </p:column>
                     <p:column>
-                        <p:graphicImage value="#{currentUserManagedBean.avatar}"/>
-                    </p:column>
-                </p:row>
-                <p:row>                 
-                    <p:column colspan="2">
-
+                        <p:graphicImage value="#{profileUserManagedBean.avatar}"/>
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column colspan="2">
                         <p:commandButton 
+                            styleClass="profile-page-column-button"
+                            action="#{profileUserManagedBean.saveChanges()}"
                             ajax="false"
-                            value="Save changes"
-                            action="#{currentUserManagedBean.saveChanges()}"/>
+                            value="Save changes"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <p:commandButton
+                            styleClass="profile-page-column-button"
+                            action="#{profileUserManagedBean.resetChanges()}"
+                            ajax="false"
+                            value="Reset changes"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
-        </h:form>
-        <h:form>
-            <p:fileUpload 
-                value="#{currentUserManagedBean.newAvatar}"
-                fileLimit="1"
-                fileLimitMessage="You can download only one file!"
-                allowTypes="/(\.|\/)(jpe?g|png)$/"
-                label="Choose new avatar"
-                uploadLabel="Upload new avatar"
-                mode="advanced"
-                />
         </h:form>
     </ui:define>
 </ui:composition>

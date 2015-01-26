@@ -279,6 +279,11 @@ public class Users implements Serializable {
     }
 
     @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
     public String toString() {
         return "com.comicszone.entitynetbeans.Users[ userId=" + userId + " ]";
     }
