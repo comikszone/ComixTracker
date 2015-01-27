@@ -5,7 +5,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
-        <h:form id = "profileForm">
+        <h:form id = "profileForm" 
+                enctype="multipart/form-data">
             <p:panelGrid id="profilePanel">
                 <p:row>
                     <p:column >
@@ -14,8 +15,8 @@
                     </p:column>
                     <p:column>
                         <h:outputText id="nickname"
-                                     styleClass="profile-page-column-attr-name"
-                                     value="#{profileUserManagedBean.nickname}"/>
+                                      styleClass="profile-page-column-attr-name"
+                                      value="#{profileUserManagedBean.nickname}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -63,7 +64,7 @@
                             style="width:100%"
                             styleClass="profile-page-column-value-list"
                             value="#{profileUserManagedBean.sex}">
-                            <f:selectItem itemValue="0" itemLabel="Undefined"/>
+                            <f:selectItem itemValue="0" itemLabel=""/>
                             <f:selectItem itemValue="1" itemLabel="Male"/>
                             <f:selectItem itemValue="2" itemLabel="Female"/>
                         </p:selectOneMenu>
@@ -74,7 +75,34 @@
                         <h:outputText styleClass="profile-page-column-attr-name"  value="Avatar:"/>
                     </p:column>
                     <p:column>
-                        <p:graphicImage value="#{profileUserManagedBean.avatar}"/>
+                        <p:graphicImage 
+                            value="#{profileUserManagedBean.avatar}"
+                            width="150"
+                            height="150"
+                            />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:commandButton
+                            value="Browse"
+                            styleClass="profile-page-column-button"
+                            onclick="document.getElementById('profileForm:chooseFileDialog').click();"
+                            />
+                        <p:fileUpload
+                            id="chooseFileDialog"
+                            mode = "simple"
+                            value = "#{profileUserManagedBean.image}"
+                            style=
+                            "width:0px;"
+                            />
+                    </p:column>
+                    <p:column>
+                        <p:commandButton
+                            value="Upload new avatar"
+                            styleClass="profile-page-column-button"
+                            ajax="false"
+                            />
                     </p:column>
                 </p:row>
                 <p:row>

@@ -14,12 +14,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 @SessionScoped
 public class ProfileUserManagedBean {
 
+    private UploadedFile image;
     private Users user;
     @EJB
     UserDataFacade userDAO;
@@ -70,30 +71,60 @@ public class ProfileUserManagedBean {
         user.setEmail(email);
     }
 
-    public StreamedContent getAvatar() {
+    public Object getAvatar() {
         if (user.getAvatar() == null) {
-            return new DefaultStreamedContent(new ByteArrayInputStream(new byte[0]));
+            return user.getAvatarUrl();
         }
         return new DefaultStreamedContent(new ByteArrayInputStream(user.getAvatar()));
     }
-
+    
+    public UploadedFile getImage(){
+        return image;
+    }
+    
+    public void setImage(UploadedFile image){
+        if (image.getSize()==0)
+            return;
+        if (!isCurrectFileName(image.getContentType())){
+            return;
+        }
+        user.setAvatar(image.getContents());
+        this.image = image;
+    }
+    
+    private boolean isCurrectFileName(String filename){
+        return filename.indexOf("image") == 0;
+    }
+    
     public void saveChanges() {
         userDAO.edit(user);
+        updateCurrentUserManagedBean();
     }
 
     public void resetChanges() {
         loadCurrentUserInfo();
     }
 
+    private void updateCurrentUserManagedBean(){
+        CurrentUserManagedBean manBean = ((CurrentUserManagedBean) FacesContext
+                    .getCurrentInstance()
+                    .getExternalContext()
+                    .getSessionMap()
+                    .get("currentUserManagedBean"));
+        manBean.setCurrentUser();
+    }
+    
     @PostConstruct
     private void loadCurrentUserInfo() {
         try {
-            user = ((CurrentUserManagedBean) FacesContext
+            user = (Users)
+                    ((CurrentUserManagedBean) FacesContext
                     .getCurrentInstance()
                     .getExternalContext()
                     .getSessionMap()
                     .get("currentUserManagedBean"))
-                    .getCurrentUser();
+                    .getCurrentUser()
+                    .clone();
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
