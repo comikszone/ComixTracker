@@ -37,7 +37,7 @@ import org.json.simple.parser.ParseException;
 public class GoogleAuthorization extends SocialNetworkAuthorization {
     private static final String CLIENT_ID = "232041634310-t8k3nf1cbede85kbu8ljsc16j2fdfbvf.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "KYTJxAdhHkJ1ccx7uy9HIgKn";
-    private static final String CALLBACK_URI = "http://localhost:8080/ComicsZoneTracker/resources/templates/unauthorized/redirect_page.jsf";
+    private static final String CALLBACK_URI = "http://www.comicszonetracker.tk/resources/templates/unauthorized/redirect_page.jsf";
     private static final Iterable<String> SCOPE = Arrays.asList("https://www.googleapis.com/auth/userinfo.profile;https://www.googleapis.com/auth/userinfo.email".split(";"));
     private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v1/userinfo";
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
@@ -77,7 +77,7 @@ public class GoogleAuthorization extends SocialNetworkAuthorization {
         if (authCode==null)
         {
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-            context.redirect("/ComicsZoneTracker");
+            context.redirect("/");
         }
         final GoogleTokenResponse response = flow.newTokenRequest(authCode).setRedirectUri(CALLBACK_URI).execute();
         final Credential credential = flow.createAndStoreCredential(response, null);
@@ -104,6 +104,8 @@ public class GoogleAuthorization extends SocialNetworkAuthorization {
         Users user = new Users();
         user.setEmail(email);
         user.setNickname(nickname);
+        user.setName(name);
+        user.setAvatarUrl(photo); 
         return user;
     }
 }
