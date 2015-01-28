@@ -4,6 +4,11 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html">
     <ui:define name="headerContent">
+        <div class="homepage-link">
+            <p:link value="ComicsZone"
+                    styleClass="without-decoration homepage"
+                    outcome="/resources/templates/index.xhtml"/>
+        </div>
         <div class="right-align">
             <h:form prependId='false'>
                 <p:button value="Sign in"

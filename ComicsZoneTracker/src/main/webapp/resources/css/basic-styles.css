@@ -96,8 +96,8 @@ td {
 }
 
 .homepage-link {
-    position: relative;
-    margin-left: 2em;
+    position: absolute;
+    margin-left: 1em;
     text-align: left;
 }
 
