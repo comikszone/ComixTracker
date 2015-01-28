@@ -102,18 +102,22 @@ public class Comics implements Serializable, AjaxComicsCharacter {
         this.name = name;
     }
 
+    @Override
     public Integer getId() {
         return Id;
     }
 
+    @Override
     public void setId(Integer Id) {
         this.Id = Id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -126,10 +130,12 @@ public class Comics implements Serializable, AjaxComicsCharacter {
         this.description = description;
     }
 
+    @Override
     public String getImage() {
         return image;
     }
 
+    @Override
     public void setImage(String image) {
         this.image = image;
     }

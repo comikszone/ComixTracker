@@ -2,29 +2,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
-        <title>ComicsTracker Slideshow</title>
-    </h:head>
+      xmlns:p="http://primefaces.org/ui">
     <h:body>
-                <p:carousel value="#{slideshowController.comicsList}" 
-                            var="comics" 
-                            numVisible="3"
-                            circular="true"
-                            autoPlayInterval="3000"
-                            >
-                    <p:panelGrid columns="1" style="width:100%" columnClasses="label,value">
-                        <p:row>
-                        <p:graphicImage value="#{comics.image}"
-                                         width="390px"
-                                         styleClass="content-image"
-                                         height="380px"/>
-                        </p:row>
-                        <p:row>
-                        <h:outputText value="#{comics.name}" style="height:auto; width:60%;"/>
-                        </p:row>
-                    </p:panelGrid>
-                </p:carousel>
+        <p:carousel value="#{slideshowController.comicsList}" 
+                    var="comics" 
+                    numVisible="3"
+                    circular="true"
+                    autoPlayInterval="3000">
+            <h:panelGrid columns="1" cellpadding="6" columnClasses="label,value">
+                <p:row>
+                    <h:form>
+                        <h:link outcome="#{slideshowController.redirect(comics.id)}">
+                            <p:graphicImage value="#{comics.image}"
+                                            styleClass="content-image"
+                                            width="400"
+                                            height="400"/>
+                        </h:link>
+                    </h:form>
+                </p:row>
+                <p:row>
+                    <p:link value="#{comics.name}" 
+                            outcome="#{slideshowController.redirect(comics.id)}" 
+                            style="font-size: 0.9em; font-weight: 900"/>
+                </p:row>
+            </h:panelGrid>
+
+       </p:carousel>
     </h:body>
 </html>

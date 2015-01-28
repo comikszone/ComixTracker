@@ -92,11 +92,12 @@ public class Issue implements Serializable, AjaxComicsCharacter {
         this.name = name;
     }
     
-
+    @Override
     public Integer getId() {
         return Id;
     }
     
+    @Override
     public void setId(Integer issueId) {
         this.Id = issueId;
     }

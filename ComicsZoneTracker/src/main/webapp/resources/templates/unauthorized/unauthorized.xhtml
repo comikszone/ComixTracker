@@ -5,22 +5,19 @@
                 xmlns:h="http://java.sun.com/jsf/html">
     <ui:define name="headerContent">
         <div class="right-align">
-            <h:form>
+            <h:form prependId='false'>
                 <p:button value="Sign in"
+                          
                           href="#"
                           onclick="showPopUpWin('LoginWindow')"/>
                 <p:button href="#" value="Join ComicsZone"
                     onclick="showPopUpWin('RegistrationWindow')" />
             </h:form>
             <div id="RegistrationWindow" style="display:none">
-                <ui:insert>
                     <ui:include src="/resources/templates/registation/registration.xhtml"/>
-                </ui:insert>
             </div>
             <div id="LoginWindow" style="display:none">
-                <ui:insert>
                     <ui:include src="/resources/templates/authorization/login_popup.xhtml"/>
-                </ui:insert>
             </div>
         </div>
     </ui:define>

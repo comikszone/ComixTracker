@@ -26,6 +26,6 @@ public class PublisherFacade extends AbstractFacade<Publisher> {
 
     public PublisherFacade() {
         super(Publisher.class);
-    }   
+    }
     
 }

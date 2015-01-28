@@ -28,10 +28,13 @@ and open the template in the editor.
                     <p:column colspan="1">
                         <p:graphicImage value="#{issueController.issue.image}"
                                         styleClass="content-image"
-                                        width="320px"
-                                        height="320px"/>
+                                        height="300"
+                                        width="300"/>
                     </p:column>
-                    <p:column colspan="1" style="text-align: left">
+                    <p:column colspan="1" styleClass="content-info">
+                        <h:outputText value="#{issueController.issue.name}" 
+                                      styleClass="content-name"/>
+                        <br/>
                        <h:outputText value="Description: #{issueController.issue.description}"/>
                        <br/>
                        <h:outputText value="Rating: #{issueController.issue.rating}"/>

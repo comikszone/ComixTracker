@@ -7,19 +7,15 @@ package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
-import com.comicszone.entitynetbeans.Issue;
-
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.ViewScoped;
-
 /**
  *
  * @author ArsenyPC
  */
 @ManagedBean(name="comicsController")
-@ViewScoped
+@RequestScoped
 public class ComicsController {
     @EJB
     private ComicsFacade comicsFacade;

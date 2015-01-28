@@ -17,21 +17,17 @@ and open the template in the editor.
         #{characterController.initCharacter()}
         <center>
             <p:panelGrid>
-                <f:facet name="header">
-                    <p:row>
-                        <p:column colspan="2">
-                           #{characterController.character.name}
-                        </p:column>
-                    </p:row>
-                </f:facet>
                 <p:row>
-                    <p:column colspan="1" style="width: 75%; height:auto;">
+                    <p:column colspan="1">
                         <p:graphicImage value="#{characterController.character.image}"
                                         styleClass="content-image"
-                                        height="100%"
-                                        width="100%"/>
+                                        height="300"
+                                        width="300"/>
                     </p:column>
-                    <p:column colspan="1" style="text-align: left">
+                    <p:column colspan="1" styleClass="content-info">
+                        <h:outputText value="#{characterController.character.name}" 
+                                              styleClass="content-name"/>
+                        <br/>
                         <h:outputText value="Real name: #{characterController.character.realName}"/>
                        <br/>
                        <h:outputText value="Description: #{characterController.character.description}"/>

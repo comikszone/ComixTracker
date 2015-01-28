@@ -21,7 +21,7 @@ article {
 
 footer {
     height: 5%;
-    background-color: #212121;
+    background-color: #ECEFF1;
 }
 
 .right-align {
@@ -52,6 +52,7 @@ footer {
     position: relative;
     height:100%;
     width: 33%;
+    font-size: 1em;
 }
 
 td {
@@ -89,7 +90,9 @@ td {
 }
 
 .ui-widget-input, .ui-widget-select, .ui-widget-textarea, .ui-widget-button { 
-    font-family: 'Droid Sans', Verdana, Arial,sans-serif !important; font-size: 1em; 
+    font-family: 'Lato', Verdana, Arial,sans-serif !important; 
+    font-size: 1em;
+    font-weight: 700;
 }
 
 .homepage-link {
@@ -117,5 +120,18 @@ td {
     border: black;
     border-style: solid;
     border-width: 1px;
-    box-shadow: 0.4em 0.4em 1px 0px rgba(0,0,0,0.4);
+    box-shadow: 0.4em 0.4em 0px 0px rgba(0,0,0,0.25);
+    max-width: 100%;
+}
+
+.content-info {
+    text-align: left; 
+    vertical-align: text-top; 
+    width: 60%;
+}
+
+.content-name {
+    font-family: 'Lato'; 
+    font-size: 2.5em; 
+    text-transform: uppercase;
 }
