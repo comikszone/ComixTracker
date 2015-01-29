@@ -9,14 +9,14 @@ import com.comicszone.dao.IssueFacade;
 import com.comicszone.entitynetbeans.Issue;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Alexander Pyatakov
  */
 @ManagedBean(name="issueController")
-@RequestScoped
+@ViewScoped
 public class IssueController {
     @EJB
     public IssueFacade issueFacade;
