@@ -82,8 +82,18 @@ td {
     color: #424242;
 }
 
-.left-align {
-    position: absolute;
-    left: 20px;
-    top: 10px;
+.profile-page-column-attr-name{
+    float: right;
+}
+
+.profile-page-column-value-text{
+    text-align: right;
+}
+
+.profile-page-column-value-list{
+    width: 100%;
+}
+
+.profile-page-column-button{
+    width: 100%;
 }

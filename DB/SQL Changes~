@@ -25,3 +25,6 @@ ALTER TABLE character
   ADD COLUMN publisher_id integer;
 ALTER TABLE character
   ADD CONSTRAINT created_by FOREIGN KEY ( publisher_id ) REFERENCES publisher (publisher_id) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+ALTER TABLE users ADD COLUMN NAME VARCHAR;
+ALTER TABLE users ADD COLUMN avatar_url TEXT;

@@ -47,8 +47,20 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
     @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
     @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
-    @NamedQuery(name = "Comics.findByChecking", query = "SELECT c FROM Comics c WHERE c.isChecked = :isChecked ORDER BY c.Id")})
+    @NamedQuery(name = "Comics.findByChecking", query = "SELECT c FROM Comics c WHERE c.isChecked = :isChecked ORDER BY c.Id"),
+    //forComicsCatalogue
+    @NamedQuery(name = "Comics.count", 
+            query = "SELECT COUNT(c) FROM Comics c"),
+    @NamedQuery(name = "Comics.countFoundByNameAndRating", 
+            query = "SELECT COUNT(c) FROM Comics c WHERE LOWER(c.name) LIKE :name "
+                    + "AND c.rating BETWEEN :rating AND :rating+1"),
+    @NamedQuery(name = "Comics.countFoundByName",
+            query = "SELECT COUNT(c) FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
+    @NamedQuery(name = "Comics.countFoundByRating",
+            query = "SELECT COUNT(c) FROM Comics c WHERE c.rating BETWEEN :rating AND :rating+1"),
+    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''")})
 public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comics_comics_id_seq")

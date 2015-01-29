@@ -18,7 +18,7 @@ public class LogoutManagedBean {
             ExternalContext ex = facesContext.getExternalContext();
             HttpSession httpSession = (HttpSession)facesContext.getExternalContext().getSession(false);
             httpSession.invalidate();
-            ex.redirect("/ComicsZoneTracker/resources/templates/index.jsf");
+            ex.redirect("/resources/templates/index.jsf");
         } catch (IOException ex1) {
             Logger.getLogger(LogoutManagedBean.class.getName()).log(Level.SEVERE, null, ex1);
         }

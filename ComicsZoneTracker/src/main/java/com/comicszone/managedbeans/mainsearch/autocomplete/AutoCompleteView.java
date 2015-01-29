@@ -15,12 +15,18 @@ import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.Finder;
 import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.managedbeans.entitycontroller.ComicsController;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 //import javax.inject.Scope;
  
@@ -63,11 +69,14 @@ public class AutoCompleteView {
     public void setCategory(String category) {
         this.category = category;
     }
+    public void handleSelect() throws IOException
+    {
+        String url=redirect();
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        context.redirect(url);
+    }
      
     public List<AjaxComicsCharacter> completeComics(String query) {
-//        finder=comicsFacade;
-//        if (finder==null)
-//            finder=comicsFacade;
         List<AjaxComicsCharacter> ajaxComicsCharacters=(List<AjaxComicsCharacter>) finder.findByNameStartsWith(query.toLowerCase());
         FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put("finder", finder);
         return ajaxComicsCharacters;

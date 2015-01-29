@@ -21,6 +21,7 @@
                     forceSelection="true"
                     dropdown="false"
          >
+            <p:ajax event="itemSelect" listener="#{autoCompleteView.handleSelect}" />  
             <p:column>
                 #{aj.name}
             </p:column>
