@@ -1,4 +1,9 @@
+html {
+    background-color: #FFFFFF;
+}
+
 html, body, #container {
+    font-family: 'Droid Sans';
     margin: 0;
     padding: 0;
     width: 100%;
@@ -6,14 +11,13 @@ html, body, #container {
 }
 
 header {
-    width: 100%;
     height: 45px;
     z-index: 4;
 }
 
 article {
-    width: 100%;
-    height: max-content;
+    height: 100%;
+    z-index: 999;
 }
 
 .wrapper {
@@ -43,11 +47,11 @@ footer {
 }
 
 .light-black {
-    background-color: #282828;
+    background-color: #212121;
 }
 
 .middle-blue {
-    background-color: #039BE5;
+    background-color: #3F51B5;
 }
 
 .full-parent {
@@ -57,8 +61,9 @@ footer {
 
 .parent-third {
     position: relative;
-    height: 100%;
+    height:100%;
     width: 33%;
+    font-size: 1em;
 }
 
 td {
@@ -75,11 +80,70 @@ td {
 }
 
 .light-grey {
-    color: #E0E0E0;
+    color: #FEFEFE;
 }
 
 .dark-grey {
+    font-family: 'Lato';
     color: #424242;
+}
+
+.ui-widget {
+    font-family: 'Droid Sans' !important;
+}
+
+.ui-widget-content { 
+    font-family:'Droid Sans', sans-serif !important;
+}
+
+.ui-widget-header {
+    font-family: 'Lato' !important;
+}
+
+.ui-widget-input, .ui-widget-select, .ui-widget-textarea, .ui-widget-button { 
+    font-family: 'Lato', Verdana, Arial,sans-serif !important; 
+    font-size: 1em;
+    font-weight: 700;
+}
+
+.homepage-link {
+    margin-left: 1em;
+    color: #FFFFFF;
+    font-family: 'Audiowide' !important;
+    font-size: 2em !important;
+}
+
+.dirty-hack {
+    margin-left: -2em;
+}
+
+.wrapper {
+    min-height: 100%;
+    margin: 0 auto -2em !important;
+}
+
+.push {
+    height: 2em;
+}
+
+.content-image {
+    border: black;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0.4em 0.4em 0px 0px rgba(0,0,0,0.25);
+    max-width: 100%;
+}
+
+.content-info {
+    text-align: left; 
+    vertical-align: text-top; 
+    width: 60%;
+}
+
+.content-name {
+    font-family: 'Lato'; 
+    font-size: 2.5em; 
+    text-transform: uppercase;
 }
 
 .profile-page-column-attr-name{

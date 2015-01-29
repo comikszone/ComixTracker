@@ -9,6 +9,11 @@
         <table class="full-parent">
             <tr class="full-parent">
                 <td>
+                    <p:link value="ComicsZone"
+                            styleClass="without-decoration homepage-link dirty-hack"
+                            outcome="/resources/templates/index.xhtml"/>
+                </td>
+                <td>
                     <p:link value="My news"
                             styleClass="without-decoration light-grey"/>
                 </td>
@@ -24,6 +29,7 @@
                     <p:link value="My profile"
                             styleClass="without-decoration light-grey"
                             outcome="/resources/templates/authorized/profile.jsf"/>
+
                 </td>
                 <c:if test="#{userRoleManagedBean.isUserAdmin()}">
                     <td>

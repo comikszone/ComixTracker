@@ -59,6 +59,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.countFoundByRating",
             query = "SELECT COUNT(c) FROM Comics c WHERE c.rating BETWEEN :rating AND :rating+1"),
     @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''")})
+
 public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
 
     private static final long serialVersionUID = 1L;
@@ -120,18 +121,22 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
         this.name = name;
     }
 
+    @Override
     public Integer getId() {
         return Id;
     }
 
+    @Override
     public void setId(Integer Id) {
         this.Id = Id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -144,10 +149,12 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
         this.description = description;
     }
 
+    @Override
     public String getImage() {
         return image;
     }
 
+    @Override
     public void setImage(String image) {
         this.image = image;
     }

@@ -5,16 +5,11 @@
  */
 package com.comicszone.managedbeans.slideshow;
 
-//import com.comicszone.dao.ComicsDaoImpl;
 import com.comicszone.dao.ComicsFacade;
-import com.comicszone.dao.SlideshowFacade;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import com.comicszone.entitynetbeans.Comics;
 import javax.ejb.EJB;
@@ -26,7 +21,7 @@ import javax.ejb.EJB;
 
 @ManagedBean(name="slideshowController")
 @ViewScoped
-public class SlideshowController{
+public class SlideshowController implements Serializable {
     
     private List<Comics> comicsList;
     @EJB
@@ -37,12 +32,16 @@ public class SlideshowController{
         
     @PostConstruct
     public void fillComicsList() {
-//       comicsFacade = new ComicsFacade();
        comicsList = comicsFacade.get12Best();
     }
     
     public List<Comics> getComicsList() {
         return comicsList;
     }
-
+    
+    public String redirect(Integer comicsId)
+    {
+        return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + comicsId;
+    }
+    
 }

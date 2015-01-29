@@ -4,9 +4,15 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html">
     <ui:define name="headerContent">
+        <div class="left-align">
+            <p:link value="ComicsZone"
+                    styleClass="without-decoration homepage-link"
+                    outcome="/resources/templates/index.xhtml"/>
+        </div>
         <div class="right-align">
-            <h:form>
+            <h:form prependId='false'>
                 <p:button value="Sign in"
+                          
                           href="#"
                           onclick="showPopUpWin('LoginWindow')"/>
                 <p:button href="#" value="Join ComicsZone"
@@ -16,14 +22,10 @@
                 <p:button href="#{facebookAuthorization.userUrl}" value="Log in via Facebook"/>
             </h:form>
             <div id="RegistrationWindow" style="display:none">
-                <ui:insert>
                     <ui:include src="/resources/templates/registation/registration.xhtml"/>
-                </ui:insert>
             </div>
             <div id="LoginWindow" style="display:none">
-                <ui:insert>
                     <ui:include src="/resources/templates/authorization/login_popup.xhtml"/>
-                </ui:insert>
             </div>
         </div>
     </ui:define>
