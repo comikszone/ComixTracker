@@ -29,7 +29,8 @@
                 <p:graphicImage value="#{aj.image}" width="100" height="100"/>
             </p:column>
         </p:autoComplete>
-        <p:selectOneMenu id="console" value="#{autoCompleteView.category}">
+        <p:selectOneMenu id="console" value="#{autoCompleteView.category}"
+                         style="margin-top: 0.5%">
             <p:ajax listener="#{autoCompleteView.onCategoryChange}"/>
             <f:selectItem itemLabel="Comics" itemValue="Comics" />
             <f:selectItem itemLabel="Characters" itemValue="Characters" />
@@ -40,7 +41,6 @@
      </h:panelGrid>
 
 </h:form>
-       
     </h:body>
 </html>
 

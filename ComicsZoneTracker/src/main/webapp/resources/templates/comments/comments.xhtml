@@ -1,0 +1,90 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:form id="table">
+        <p:growl id="commentsMessage" showDetail="true" life="1000" />
+        <p:confirmDialog
+            message="Are you sure you want to delete comment?"
+            header="Confirm action"
+            widgetVar="deleteConfirm">
+                
+        </p:confirmDialog>
+        <p:panel styleClass="comments-container">
+        <p:dataGrid var="comment"
+                    id="comments"
+                    value="#{commentsManagedBean.comments}"
+                    emptyMessage="No comments"
+                    columns="1"
+                    rows = "10"
+                    paginator="true"
+                    paginatorTemplate="{CurrentPageReport} {PageLinks}">
+            <p:panel id="comment" 
+                     header="#{comment.userId.nickname}"
+                     style="text-align: left">
+                <f:facet name="actions">
+                
+                    <p:commandLink
+                        styleClass="ui-panel-titlebar-icon ui-corner-all 
+                        ui-state-default ui-icon ui-icon-close"
+                        action="#{commentsManagedBean.deleteComment(comment)}"
+                        rendered="#{commentsManagedBean.isCommentEditable(comment)}"
+                        update=":table">
+                    </p:commandLink>
+                    <p:commandLink
+                        rendered="#{commentsManagedBean.isCommentEditable(comment)}"
+                        styleClass="ui-panel-titlebar-icon ui-corner-all 
+                        ui-state-default ui-icon ui-icon-pencil"
+                        update=":edit"
+                        action="#{commentsManagedBean.editionStarted(comment)}"
+                        oncomplete="PF('commentEditor').show()">
+                        <f:setPropertyActionListener
+                            target="#{commentsManagedBean.selectedCommentText}"
+                            value="#{comment.text}"/>
+                    </p:commandLink>
+                </f:facet>
+                <h:outputText id="commentContent"
+                              value="#{comment.text}"/>
+            </p:panel>
+        </p:dataGrid>
+        </p:panel>
+    </h:form>
+    
+    <p:dialog header="Edit comment" widgetVar="commentEditor" modal="true"
+              showEffect="fade" hideEffect="fade" closeOnEscape="true" id="dialog">
+        <p:panel id="edit" style="height: 70%;">
+            <h:form id="editForm" style="height: 70%;">
+                <p:inputTextarea 
+                    value="#{commentsManagedBean.selectedCommentText}"
+                    id="editedComment"
+                    style="width: 90%; height: 70%;"/>
+                <p:commandButton
+                    value="Save"
+                    action="#{commentsManagedBean.editComment()}"
+                    update=":table :dialog"/>
+            </h:form>
+        </p:panel>
+    </p:dialog>
+    
+    <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+        <p:panel 
+            id="commentAdder" 
+            header="Your comment..." 
+            styleClass="comments-container">
+            <h:form id="commentAdderForm">
+                <p:inputTextarea 
+                    id="commentAdderNewComment" 
+                    style="width:100%"/>
+                <br/>
+                <p:commandButton 
+                    id="commentAdderSubmit" 
+                    value="Send"
+                    action="#{commentsManagedBean.addComment()}"
+                    update=":table :commentAdder"/>
+            </h:form>
+        </p:panel>
+    </c:if>
+</ui:composition>

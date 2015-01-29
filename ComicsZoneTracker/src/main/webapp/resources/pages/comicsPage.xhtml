@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:pf="http://jsf.playerfinder.net/components"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="#{startNavigationManagedBean.templateName}">          
+    <ui:define name="articleContent">
+        <f:metadata>
+            <f:viewParam name="id" value="#{comicsPageManagedBean.comicsId}"/>
+        </f:metadata>
+        #{comicsPageManagedBean.init()}
+        <center>
+            <p:panelGrid style="width:75% !important; border:none !important;">
+                        <p:row>
+                            <p:column colspan="1">
+                                <p:graphicImage value="#{comicsPageManagedBean.comics.image}"
+                                                styleClass="content-image"
+                                                height="300"
+                                                width="300"/>
+                            </p:column>
+                            <p:column colspan="1" styleClass="content-info">
+                                <h:outputText value="#{comicsPageManagedBean.comics.name}" 
+                                              styleClass="content-name"/>
+                                <br/>
+                                <h:outputText value="Publisher: #{comicsPageManagedBean.comics.publisherId.name}"/>
+                                <br/>
+                                <h:outputText value="Imprint: #{comicsPageManagedBean.comics.imprintId.name}"/>
+                                <br/>
+                                <h:outputText value="Description: #{comicsPageManagedBean.comics.description}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                    <c:choose>
+                                        <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                                            <pf:rating value="#{comicsPageManagedBean.comics.rating}"
+                                                       totalStars="5"
+                                                       step="1">
+                                                
+                                            </pf:rating>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p:link onclick="showPopUpWin('RegistrationWindow')"
+                                                    href='#'
+                                                    value="Join"/>
+                                            or 
+                                            <p:link onclick="showPopUpWin('LoginWindow')"
+                                                    href='#'
+                                                    value="Sign In"/>
+                                            to rate, read comics and comment!
+                                        </c:otherwise>
+                                    </c:choose>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>    
+                    <p:accordionPanel var="volume" 
+                                      value="#{comicsPageManagedBean.comics.volumeList}"
+                                      multiple="true"
+                                      style="width:75% !important;"
+                                      id="issues">
+                        <p:tab>
+                            <f:facet name="title">
+                                <p:link value="#{volume.name}" 
+                                        outcome="#{comicsPageManagedBean.redirect(volume)}"/>
+                            </f:facet>
+                            <p:dataGrid var="issue"
+                                        value="#{volume.issueList}"
+                                        columns="5"
+                                        layout="grid"
+                                        paginator="true"
+                                        rows="10"
+                                        styleClass="border:none">
+                                <h:panelGrid columns="1" styleClass="border:none">
+                                    <p:row>
+                                        <h:form>
+                                            <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
+                                                <p:graphicImage value="#{issue.image}"
+                                                                styleClass="content-image"/>
+                                            </h:link>
+                                        </h:form>
+                                    </p:row>
+                                    <p:row>
+                                        <p:link value="#{issue.name}" 
+                                                style="height:auto; width:60%;"
+                                                outcome="#{comicsPageManagedBean.redirect(issue)}"/>
+                                    </p:row>
+                                </h:panelGrid>
+                                                
+                            </p:dataGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+                </center>
+                <div>
+                    <ui:include src="/resources/templates/comments/comments.xhtml">
+                        <ui:param name="type" value="comics"/>
+                    </ui:include>
+                </div>
+            </ui:define>
+        </ui:composition>

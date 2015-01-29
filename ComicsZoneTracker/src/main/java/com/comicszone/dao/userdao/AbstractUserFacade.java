@@ -3,6 +3,7 @@ package com.comicszone.dao.userdao;
 import com.comicszone.dao.AbstractFacade;
 import com.comicszone.entitynetbeans.Users;
 import java.util.List;
+import javax.persistence.TypedQuery;
 
 public abstract class AbstractUserFacade extends AbstractFacade<Users> {
 
@@ -24,5 +25,13 @@ public abstract class AbstractUserFacade extends AbstractFacade<Users> {
 
         return (users.isEmpty() ? null : users.get(0));
 
+    }
+    
+    public List<Users> getUsersWithNicknameStartsWith(String nickname) {
+        TypedQuery<Users> query = getEntityManager().
+                createNamedQuery("Users.findByNicknameStartsWith", Users.class);
+        query.setParameter("nickname", nickname.toLowerCase() + "%");
+        query.setMaxResults(5);
+        return query.getResultList();
     }
 }

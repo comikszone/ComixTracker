@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -45,6 +46,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByEndDate", query = "SELECT c FROM Comics c WHERE c.endDate = :endDate"),
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
     @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
+    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
+    @NamedQuery(name = "Comics.findByChecking", query = "SELECT c FROM Comics c WHERE c.isChecked = :isChecked ORDER BY c.Id"),
     //forComicsCatalogue
     @NamedQuery(name = "Comics.count", 
             query = "SELECT COUNT(c) FROM Comics c"),
@@ -56,7 +59,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.countFoundByRating",
             query = "SELECT COUNT(c) FROM Comics c WHERE c.rating BETWEEN :rating AND :rating+1"),
     @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''")})
-public class Comics implements Serializable,AjaxComicsCharacter {
+
+public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comics_comics_id_seq")
@@ -89,9 +94,12 @@ public class Comics implements Serializable,AjaxComicsCharacter {
     @Column(name = "in_progress")
     @Temporal(TemporalType.DATE)
     private Date inProgress;
+    @Column(name = "is_checked")
+    private Boolean isChecked;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comicsId", fetch = FetchType.LAZY)
     private List<Volume> volumeList;
     @OneToMany(mappedBy = "comicsId", fetch = FetchType.LAZY)
+    @OrderBy("commentId")
     private List<Comments> commentsList;
     @JoinColumn(name = "imprint_id", referencedColumnName = "imprint_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -99,6 +107,7 @@ public class Comics implements Serializable,AjaxComicsCharacter {
     @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Publisher publisherId;
+    private static final ContentType CONTENT_TYPE = ContentType.Comics;
 
     public Comics() {
     }
@@ -112,18 +121,22 @@ public class Comics implements Serializable,AjaxComicsCharacter {
         this.name = name;
     }
 
+    @Override
     public Integer getId() {
         return Id;
     }
 
+    @Override
     public void setId(Integer Id) {
         this.Id = Id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -136,10 +149,12 @@ public class Comics implements Serializable,AjaxComicsCharacter {
         this.description = description;
     }
 
+    @Override
     public String getImage() {
         return image;
     }
 
+    @Override
     public void setImage(String image) {
         this.image = image;
     }
@@ -192,10 +207,12 @@ public class Comics implements Serializable,AjaxComicsCharacter {
         this.volumeList = volumeList;
     }
 
+    @Override
     public List<Comments> getCommentsList() {
         return commentsList;
     }
 
+    @Override
     public void setCommentsList(List<Comments> commentsList) {
         this.commentsList = commentsList;
     }
@@ -214,6 +231,16 @@ public class Comics implements Serializable,AjaxComicsCharacter {
 
     public void setPublisherId(Publisher publisherId) {
         this.publisherId = publisherId;
+    }
+    
+    @Override
+    public Boolean getIsChecked() {
+        return isChecked;
+    }
+    
+    @Override
+    public void setIsChecked(Boolean isChecked) {
+        this.isChecked = isChecked;
     }
 
     @Override
@@ -240,5 +267,16 @@ public class Comics implements Serializable,AjaxComicsCharacter {
     public String toString() {
         return "com.comicszone.entitynetbeans.Comics[ comicsId=" + Id + " ]";
     }
-    
+
+    @Override
+    public ContentType getContentType() {
+        return CONTENT_TYPE;
+    }
+
+
+    @Override
+    public String getExtraInfo() {
+        return "Publisher: " + publisherId.getName() + "\n" + 
+                "Imprint: " + imprintId.getName();
+    }
 }

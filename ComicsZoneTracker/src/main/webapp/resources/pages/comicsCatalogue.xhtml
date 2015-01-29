@@ -1,11 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:pf="http://jsf.playerfinder.net/components"
-                template="/resources/templates/basic.xhtml"
-                >
+                template="#{startNavigationManagedBean.templateName}">
     <ui:define name="articleContent">
         <h:form id="form">
             <p:dataTable
@@ -82,7 +83,8 @@
                             
                     <p:graphicImage value="#{comics.image}"
                                          width="100%"
-                                         height="100%"/> 
+                                         height="100%"
+                                         styleClass="content-image"/> 
                 </p:column>
                 <p:column headerText="#{comicsCatalogueView.columnComicsDescription}">
                     <h:outputText value="#{comics.description}"/>
@@ -104,11 +106,12 @@
                         <p:graphicImage 
                             value="#{comicsCatalogueView.selectedComics.image}"
                                          width="200px"
-                                         height="200px"/> 
+                                         height="200px"
+                                         styleClass="content-image"/> 
                     </f:facet>
                     <f:facet name="footer">
                         <h:link value="Visit comics page"
-                                outcome="comicspage">
+                                outcome="comicsPage">
                             <f:param name="id" value="#{comicsCatalogueView.selectedComics.id}" />
                         </h:link>
                     </f:facet>

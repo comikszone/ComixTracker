@@ -98,7 +98,7 @@ public class JsonProducer {
         for (Volume v:volumes)
         {
             Map mapVolume=new HashMap();
-            mapVolume.put("volumeId", v.getVolumeId());
+            mapVolume.put("volumeId", v.getId());
             mapVolume.put("name", v.getName());
             array.add(mapVolume);
         }
@@ -145,7 +145,7 @@ public class JsonProducer {
         for (Issue issue:issues)
         {
             Map mapIssue=new HashMap();
-            mapIssue.put("issueId", issue.getIssueId());
+            mapIssue.put("issueId", issue.getId());
             mapIssue.put("name", issue.getName());
             array.add(mapIssue);
         }
@@ -154,9 +154,9 @@ public class JsonProducer {
         mapComics.put("comicsId", comics.getId());
         mapComics.put("name", comics.getName());
         StringWriter out = new StringWriter();
-        map.put("volumeId", volume.getVolumeId());
+        map.put("volumeId", volume.getId());
         map.put("description", volume.getDescription());
-        map.put("img", volume.getImg());
+        map.put("img", volume.getImage());
         map.put("name", volume.getName());
         map.put("votes", volume.getVotes());
         map.put("rating", volume.getRating());
@@ -176,12 +176,12 @@ public class JsonProducer {
             Map map=new HashMap();
             Volume volume=issue.getVolumeId();
             Map mapVolume=new HashMap();
-            mapVolume.put("volumeId", volume.getVolumeId());
+            mapVolume.put("volumeId", volume.getId());
             mapVolume.put("name", volume.getName());
             StringWriter out = new StringWriter();
-            map.put("issueId", issue.getIssueId());
+            map.put("issueId", issue.getId());
             map.put("description", issue.getDescription());
-            map.put("img", issue.getImg());
+            map.put("img", issue.getImage());
             map.put("name", issue.getName());
             map.put("rating", issue.getRating());
             map.put("relDate", issue.getRelDate());
@@ -221,7 +221,7 @@ public class JsonProducer {
             for (Issue issue:issues)
             {
                 Map mapIssue=new HashMap();
-                mapIssue.put("issueId", issue.getIssueId());
+                mapIssue.put("issueId", issue.getId());
                 mapIssue.put("name", issue.getName());
                 array.add(mapIssue);
             }

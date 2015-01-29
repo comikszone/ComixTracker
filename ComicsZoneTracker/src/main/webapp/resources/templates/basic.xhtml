@@ -6,11 +6,14 @@
     xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>ComicsZone</title>
-        <h:outputStylesheet library="css" name="basic-styles.css" />        
+        <h:outputStylesheet library="css" name="basic-styles.css" />
+        <h:outputStylesheet library="css" name="fonts.css" />
         <h:outputStylesheet library="css" name="popup.css"/>
+        <h:outputStylesheet library="css" name="comments-styles.css"/>
         <h:outputScript library="scripts" name="PopUpWindowScript.js"/>
     </h:head>
     <h:body id="container">
+        <div class="wrapper">
         <header class="light-black">
             <ui:insert name="headerContent">
                 Default Header Content
@@ -25,7 +28,8 @@
                                 styleClass="without-decoration white"/>
                     </td>
                     <td class="parent-third">
-                    <p:link value="Catalogue" href="/resources/pages/comicsCatalogue.jsf"
+                        <p:link value="Catalogue"
+                                href="/resources/pages/comicsCatalogue.jsf"
                                 styleClass="without-decoration white"/>
                     </td>
                     <td class="parent-third">
@@ -43,8 +47,10 @@
                     <ui:include src="slideshow/slideshow.xhtml"/>
                 </center>
             </ui:insert>
-        </article>    
-        
+        </article>
+            
+        <div class="push"></div>
+        </div>
         <footer class="grey">
             <table class="full-parent">
                 <tr class="full-parent">

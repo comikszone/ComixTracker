@@ -3,16 +3,22 @@
                 template="/resources/templates/basic.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="headerContent">
         <table class="full-parent">
             <tr class="full-parent">
                 <td>
+                    <p:link value="ComicsZone"
+                            styleClass="without-decoration homepage-link dirty-hack"
+                            outcome="/resources/templates/index.xhtml"/>
+                </td>
+                <td>
                     <p:link value="My news"
                             styleClass="without-decoration light-grey"/>
                 </td>
                 <td>
-                    <p:link value="My comicses"
+                    <p:link value="My comics"
                             styleClass="without-decoration light-grey"/>
                 </td>
                 <td>
@@ -22,9 +28,23 @@
                 <td>
                     <p:link value="My profile"
                             styleClass="without-decoration light-grey"
-                            outcome="profile.jsf"/>
+                            outcome="/resources/templates/authorized/profile.jsf"/>
+
                 </td>
-                <td><p:outputLabel styleClass="light-grey" value="#{currentUserManagedBean.nickname}"/></td>
+                <c:if test="#{userRoleManagedBean.isUserAdmin()}">
+                    <td>
+                        <p:link value="Admin page"
+                                styleClass="without-decoration light-grey"
+                                outcome="/resources/templates/authorized/admin/admin.xhtml"/>
+                    </td>
+                </c:if>
+
+                <td>
+                    <p:outputLabel 
+                        styleClass="light-grey" 
+                        value="#{currentUserManagedBean.nickname}"/>
+                </td>
+
                 <td>
                     <h:form>
                         <p:commandButton 
