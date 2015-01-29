@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -22,6 +23,9 @@ public class ComicsController {
     private Comics comics;
     private Integer comicsId;
     
+    public ComicsController(){
+    }
+    
     public Integer getComicsId() {
         return comicsId;
     }
@@ -29,6 +33,15 @@ public class ComicsController {
     public void setComicsId(Integer comicsId) {
         this.comicsId = comicsId;
     }
+    
+    public ComicsFacade getComicsFacade() {
+        return comicsFacade;
+    }
+    
+    public void setComicsFacade(ComicsFacade comicsFacade) {
+        this.comicsFacade = comicsFacade;
+    }
+    
     public void initComics()
     {
         comics=comicsFacade.find(comicsId);
@@ -40,11 +53,6 @@ public class ComicsController {
 
     public void setComics(Comics comics) {
         this.comics = comics;
-    }
-    
-    public String redirect(Integer issueId)
-    {
-        return "/resources/pages/issuePage.jsf?faces-redirect=true&id=" + issueId;
     }
 
 }

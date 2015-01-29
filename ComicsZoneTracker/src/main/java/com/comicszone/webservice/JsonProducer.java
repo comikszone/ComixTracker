@@ -145,7 +145,7 @@ public class JsonProducer {
         for (Issue issue:issues)
         {
             Map mapIssue=new HashMap();
-            mapIssue.put("issueId", issue.getIssueId());
+            mapIssue.put("issueId", issue.getId());
             mapIssue.put("name", issue.getName());
             array.add(mapIssue);
         }
@@ -179,9 +179,9 @@ public class JsonProducer {
             mapVolume.put("volumeId", volume.getVolumeId());
             mapVolume.put("name", volume.getName());
             StringWriter out = new StringWriter();
-            map.put("issueId", issue.getIssueId());
+            map.put("issueId", issue.getId());
             map.put("description", issue.getDescription());
-            map.put("img", issue.getImg());
+            map.put("img", issue.getImage());
             map.put("name", issue.getName());
             map.put("rating", issue.getRating());
             map.put("relDate", issue.getRelDate());
@@ -221,7 +221,7 @@ public class JsonProducer {
             for (Issue issue:issues)
             {
                 Map mapIssue=new HashMap();
-                mapIssue.put("issueId", issue.getIssueId());
+                mapIssue.put("issueId", issue.getId());
                 mapIssue.put("name", issue.getName());
                 array.add(mapIssue);
             }

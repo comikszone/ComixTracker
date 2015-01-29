@@ -15,34 +15,34 @@ and open the template in the editor.
                 template="#{startNavigationManagedBean.templateName}">          
     <ui:define name="articleContent">
         <f:metadata>
-            <f:viewParam name="id" value="#{comicsController.comicsId}"/>
+            <f:viewParam name="id" value="#{comicsPageManagedBean.comicsId}"/>
         </f:metadata>
-        #{comicsController.initComics()}  
+        #{comicsPageManagedBean.init()}
         <center>
             <p:panelGrid style="width:75% !important; border:none !important;">
                         <p:row>
                             <p:column colspan="1">
-                                <p:graphicImage value="#{comicsController.comics.image}"
+                                <p:graphicImage value="#{comicsPageManagedBean.comics.image}"
                                                 styleClass="content-image"
                                                 height="300"
                                                 width="300"/>
                             </p:column>
                             <p:column colspan="1" styleClass="content-info">
-                                <h:outputText value="#{comicsController.comics.name}" 
+                                <h:outputText value="#{comicsPageManagedBean.comics.name}" 
                                               styleClass="content-name"/>
                                 <br/>
-                                <h:outputText value="Publisher: #{comicsController.comics.publisherId.name}"/>
+                                <h:outputText value="Publisher: #{comicsPageManagedBean.comics.publisherId.name}"/>
                                 <br/>
-                                <h:outputText value="Imprint: #{comicsController.comics.imprintId.name}"/>
+                                <h:outputText value="Imprint: #{comicsPageManagedBean.comics.imprintId.name}"/>
                                 <br/>
-                                <h:outputText value="Description: #{comicsController.comics.description}"/>
+                                <h:outputText value="Description: #{comicsPageManagedBean.comics.description}"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="2">
                                     <c:choose>
                                         <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
-                                            <pf:rating value="#{comicsController.comics.rating}"
+                                            <pf:rating value="#{comicsPageManagedBean.comics.rating}"
                                                        totalStars="5"
                                                        step="1">
                                             </pf:rating>
@@ -62,23 +62,27 @@ and open the template in the editor.
                         </p:row>
                     </p:panelGrid>    
                     <p:accordionPanel var="volume" 
-                                      value="#{comicsController.comics.volumeList}"
+                                      value="#{comicsPageManagedBean.comics.volumeList}"
                                       multiple="true"
-                                      style="width:75% !important;">
-                        <p:tab title="#{volume.name}">
+                                      style="width:75% !important;"
+                                      id="issues">
+                        <!--c:set value="#{volume.name}" target="#{comicsPageManagedBean}" property="volume"/-->
+                        #{comicsPageManagedBean.setVolume(volume)}
+                        <p:tab title="#{comicsPageManagedBean.volume.name}">
+                            
+                            #{comicsPageManagedBean.initLazyModel()}
+                            #{comicsPageManagedBean.lazyIssueModel.pageSize}
                             <p:dataGrid var="issue"
-                                        value="#{volume.issueList}"
-                                        columns="4"
+                                        value="#{comicsPageManagedBean.lazyIssueModel}"
+                                        columns="5"
                                         layout="grid"
                                         paginator="true"
-                                        rows="5"
-                                        lazy="true"
+                                        rows="10"
                                         styleClass="border:none">
-                                               
                                 <h:panelGrid columns="1" styleClass="border:none">
                                     <p:row>
                                         <h:form>
-                                            <h:link outcome="#{comicsController.redirect(issue.id)}">
+                                            <h:link outcome="#{comicsPageManagedBean.redirect(issue.id)}">
                                                 <p:graphicImage value="#{issue.image}"
                                                                 styleClass="content-image"/>
                                             </h:link>
@@ -87,7 +91,7 @@ and open the template in the editor.
                                     <p:row>
                                         <p:link value="#{issue.name}" 
                                                 style="height:auto; width:60%;"
-                                                outcome="#{comicsController.redirect(issue.id)}"/>
+                                                outcome="#{comicsPageManagedBean.redirect(issue.id)}"/>
                                     </p:row>
                                 </h:panelGrid>
                                                 

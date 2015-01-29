@@ -77,7 +77,6 @@ td {
     color: #424242;
 }
 
-<<<<<<< HEAD
 .ui-widget {
     font-family: 'Droid Sans' !important;
 }
@@ -97,15 +96,14 @@ td {
 }
 
 .homepage-link {
-    position: absolute;
     margin-left: 1em;
-    text-align: left;
-}
-
-.homepage {
     color: #FFFFFF;
     font-family: 'Audiowide' !important;
     font-size: 2em !important;
+}
+
+.dirty-hack {
+    margin-left: -2em;
 }
 
 .wrapper {
@@ -136,7 +134,7 @@ td {
     font-size: 2.5em; 
     text-transform: uppercase;
 }
-=======
+
 .profile-page-column-attr-name{
     float: right;
 }
@@ -152,4 +150,3 @@ td {
 .profile-page-column-button{
     width: 100%;
 }
->>>>>>> master
