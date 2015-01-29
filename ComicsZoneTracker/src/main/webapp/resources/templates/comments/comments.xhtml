@@ -6,6 +6,13 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:form id="table">
+        <p:growl id="commentsMessage" showDetail="true" life="1000"/>
+        <p:confirmDialog
+            message="Are you sure you want to delete comment?"
+            header="Confirm action"
+            widgetVar="deleteConfirm">
+                
+        </p:confirmDialog>
         <p:dataGrid var="comment"
                     id="comments"
                     value="#{commentsManagedBean.comments}"
@@ -36,10 +43,8 @@
                             value="#{comment.text}"/>
                     </p:commandLink>
                 </f:facet>
-                <p:inputTextarea id="commentContent"
-                                readonly="true"
-                                cols="100"
-                                value="#{comment.text}"/>
+                <h:outputText id="commentContent"
+                              value="#{comment.text}"/>
             </p:panel>
         </p:dataGrid>
     </h:form>

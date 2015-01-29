@@ -34,20 +34,21 @@ public class CommentsManagedBean {
     private String selectedCommentText;
     private Comments editingComment;
     private String redirect;
-    /*private static final String wrongComment = "Your comment is too short.";
+    private static final String wrongComment = "Your comment is too short.";
     private static final String notAuthorized = "Please authorize to perform action.";
     private static final String wrongUser = "You cannot perform this action.";
     private static final String accessError = "Access error.";
+    private static final String contentError = "Content error";
     private FacesMessage facesMessageWrongComment;
     private FacesMessage facesMessageNotAuthorized;
-    private FacesMessage facesMessageWrongUser;*/
+    private FacesMessage facesMessageWrongUser;
     
     public void addComment() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         setCurrentUserNickname(externalContext);
         if (currentUserNickname == null) {
-            //facesContext.addMessage(null, facesMessageNotAuthorized);
+            facesContext.addMessage(null, facesMessageNotAuthorized);
             return;
         }
         UIViewRoot uiViewRoot = facesContext.getViewRoot();
@@ -56,7 +57,7 @@ public class CommentsManagedBean {
                 findComponent("commentAdderForm:commentAdderNewComment");
         String comment = (String)inputText.getValue();
         if (comment == null || comment.isEmpty()) {
-            //facesContext.addMessage(null, facesMessageWrongComment);
+            facesContext.addMessage(null, facesMessageWrongComment);
             return;
         }
         boolean added = commentsDao.addComment(comment, 
@@ -73,7 +74,7 @@ public class CommentsManagedBean {
         setCurrentUserNickname(externalContext);
         if (currentUserNickname == null) 
         {
-            //facesContext.addMessage(null, facesMessageNotAuthorized);
+            facesContext.addMessage(null, facesMessageNotAuthorized);
             editingComment = null;
             selectedCommentText = null;
             return;
@@ -81,7 +82,7 @@ public class CommentsManagedBean {
         if (!currentUserNickname.equals(editingComment.getUserId().getNickname()) &&
                 !externalContext.isUserInRole("admin")) 
         {
-            //facesContext.addMessage(null, facesMessageWrongUser);
+            facesContext.addMessage(null, facesMessageWrongUser);
             editingComment = null;
             selectedCommentText = null;
             return;
@@ -89,7 +90,7 @@ public class CommentsManagedBean {
         //Map<String, String> params = externalContext.getRequestParameterMap();
         //String editedText = params.get("editForm:editedComment");
         if (selectedCommentText == null || selectedCommentText.isEmpty()) {
-            //facesContext.addMessage(null, facesMessageWrongComment);
+            facesContext.addMessage(null, facesMessageWrongComment);
             editingComment = null;
             selectedCommentText = null;
             return;
@@ -108,13 +109,13 @@ public class CommentsManagedBean {
         ExternalContext externalContext = facesContext.getExternalContext();
         setCurrentUserNickname(externalContext);
         if (currentUserNickname == null) {
-            //facesContext.addMessage(null, facesMessageNotAuthorized);
+            facesContext.addMessage(null, facesMessageNotAuthorized);
             return;
         }
         if (!comment.getUserId().getNickname().equals(currentUserNickname) &&
                 !externalContext.isUserInRole("admin")) 
         {
-            //facesContext.addMessage(null, facesMessageWrongUser);
+            facesContext.addMessage(null, facesMessageWrongUser);
             return;
         }
         commentsDao.deleteComment(comment.getCommentId(), id, commentToType);
@@ -127,12 +128,12 @@ public class CommentsManagedBean {
     
     @PostConstruct
     private void init() {
-        /*facesMessageWrongComment = new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                accessError, wrongComment);
+        facesMessageWrongComment = new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                contentError, wrongComment);
         facesMessageNotAuthorized = new FacesMessage(FacesMessage.SEVERITY_INFO,
                 accessError, notAuthorized);
         facesMessageWrongUser = new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                accessError, wrongUser);*/
+                accessError, wrongUser);
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         //identify user

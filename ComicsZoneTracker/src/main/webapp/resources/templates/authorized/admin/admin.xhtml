@@ -100,6 +100,7 @@
                             <f:facet name="output">
                                 <h:outputText
                                     value="#{content.name}"
+                                    title="Click to edit"
                                     style="width: 100%; height: 100%;"/>
                             </f:facet>
                             <f:facet name="input">
@@ -114,7 +115,8 @@
                         <p:cellEditor>
                             <f:facet name="output">
                                 <p:graphicImage 
-                                    value="#{content.image}"/>
+                                    value="#{content.image}"
+                                    title="Click to edit"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputText value="#{content.image}"/>
@@ -126,13 +128,14 @@
                         <p:cellEditor>
                             <f:facet name="output">
                                 <h:outputText
-                                value="#{content.description}"
-                                style="width: 100%; height: 100%;"/>
+                                    value="#{content.description}"
+                                    title="Click to edit"
+                                    style="width: 100%; height: 100%;"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputTextarea
-                                value="#{content.description}"
-                                style="width: 100%; height: 100%;"/>
+                                    value="#{content.description}"
+                                    style="width: 100%; height: 100%;"/>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -143,7 +146,7 @@
                             style="width: 100%; height: 100%;"/>
                     </p:column>
                     
-                    <p:column headerText="Your choise">
+                    <p:column headerText="Your choice">
                         <p:commandButton
                             value="Approve"
                             action="#{contentFilterManagedBean.approve(content)}"
