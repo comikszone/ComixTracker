@@ -62,6 +62,7 @@ public class JsonProducer {
             Map map=new HashMap();
             map.put("id", aj.getId());
             map.put("name", aj.getName());
+            map.put("image", aj.getImage());
             array.add(map);
         }
         return array.toJSONString();
