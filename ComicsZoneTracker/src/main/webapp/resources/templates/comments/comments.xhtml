@@ -6,7 +6,7 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:form id="table">
-        <p:growl id="commentsMessage" showDetail="true" life="1000"/>
+        <p:growl id="commentsMessage" showDetail="true" life="1000" />
         <p:confirmDialog
             message="Are you sure you want to delete comment?"
             header="Confirm action"
@@ -21,7 +21,9 @@
                     rows = "10"
                     paginator="true"
                     paginatorTemplate="{CurrentPageReport} {PageLinks}">
-            <p:panel id="comment" header="#{comment.userId.nickname}">
+            <p:panel id="comment" 
+                     header="#{comment.userId.nickname}"
+                     style="text-align: left">
                 <f:facet name="actions">
                 
                     <p:commandLink
@@ -75,7 +77,7 @@
                     <p:commandButton id="commentAdderSubmit" 
                                    value="Send"
                                    action="#{commentsManagedBean.addComment()}"
-                                   update="@all"/>
+                                   update=":table @this"/>
                 </h:form>
             </p:panel>
         </c:when>

@@ -12,6 +12,7 @@ import com.comicszone.entitynetbeans.Volume;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.model.LazyDataModel;
 
 /**
@@ -19,7 +20,7 @@ import org.primefaces.model.LazyDataModel;
  * @author aypyatakov
  */
 @ManagedBean(name="comicsPageManagedBean")
-@RequestScoped
+@ViewScoped
 public class ComicsPageManagedBean {
     
     @EJB
