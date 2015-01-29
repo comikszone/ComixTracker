@@ -12,3 +12,11 @@ and open the template in the editor.
     width: 90%;
     height: 50px;
 }
+
+.comments-container {
+    width:75%;
+    margin-left: auto; 
+    margin-right: auto;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}

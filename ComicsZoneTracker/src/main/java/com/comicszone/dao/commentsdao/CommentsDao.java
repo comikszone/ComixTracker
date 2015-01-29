@@ -2,6 +2,8 @@ package com.comicszone.dao.commentsdao;
 
 import com.comicszone.dao.AbstractFacade;
 import com.comicszone.dao.ComicsFacade;
+import com.comicszone.dao.IssueFacade;
+import com.comicszone.dao.VolumeFacade;
 import com.comicszone.dao.userdao.UserBlockDao;
 import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Comments;
@@ -26,7 +28,13 @@ public class CommentsDao extends AbstractFacade<Comments> {
     private UserBlockDao userDao;
     
     @EJB
-    ComicsFacade comicsFacade;
+    private ComicsFacade comicsFacade;
+    
+    @EJB
+    private IssueFacade issueFacade;
+    
+    @EJB
+    private VolumeFacade volumeFacade;
     
     public CommentsDao() {
         super(Comments.class);
@@ -116,9 +124,11 @@ public class CommentsDao extends AbstractFacade<Comments> {
                 break;
                 
             case ISSUE:
+                commentsContainer = issueFacade.find(id);
                 break;
                 
             case VOLUME:
+                commentsContainer = volumeFacade.find(id);
                 break;
         }
         return commentsContainer;

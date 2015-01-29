@@ -20,6 +20,7 @@
                     columns="1"
                     rows = "10"
                     paginator="true"
+                    styleClass="comments-container"
                     paginatorTemplate="{CurrentPageReport} {PageLinks}">
             <p:panel id="comment" 
                      header="#{comment.userId.nickname}"
@@ -52,7 +53,7 @@
     </h:form>
     
     <p:dialog header="Edit comment" widgetVar="commentEditor" modal="true"
-              showEffect="fade" hideEffect="fade" closeOnEscape="true">
+              showEffect="fade" hideEffect="fade" closeOnEscape="true" id="dialog">
         <p:panel id="edit" style="height: 70%;">
             <h:form id="editForm" style="height: 70%;">
                 <p:inputTextarea 
@@ -62,27 +63,27 @@
                 <p:commandButton
                     value="Save"
                     action="#{commentsManagedBean.editComment()}"
-                    update="@all"/>
+                    update=":table :dialog"/>
             </h:form>
         </p:panel>
     </p:dialog>
     
-    <c:choose>
-        <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
-            <p:panel id="commentAdder" header="Your comment...">
-                <h:form id="commentAdderForm">
-                    <p:inputTextarea id="commentAdderNewComment" 
-                                    cols="100"/>
-                    <br/>
-                    <p:commandButton id="commentAdderSubmit" 
-                                   value="Send"
-                                   action="#{commentsManagedBean.addComment()}"
-                                   update=":table @this"/>
-                </h:form>
-            </p:panel>
-        </c:when>
-        <c:otherwise>
-            <p:outputLabel value="Please authorize or join us to leave comments."/>
-        </c:otherwise>
-    </c:choose>
+    <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+        <p:panel 
+            id="commentAdder" 
+            header="Your comment..." 
+            styleClass="comments-container">
+            <h:form id="commentAdderForm">
+                <p:inputTextarea 
+                    id="commentAdderNewComment" 
+                    style="width:100%"/>
+                <br/>
+                <p:commandButton 
+                    id="commentAdderSubmit" 
+                    value="Send"
+                    action="#{commentsManagedBean.addComment()}"
+                    update=":table :commentAdder"/>
+            </h:form>
+        </p:panel>
+    </c:if>
 </ui:composition>

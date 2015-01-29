@@ -44,5 +44,10 @@ and open the template in the editor.
                 </p:row>
             </p:panelGrid>
         </center>
+        <div>
+            <ui:include src="/resources/templates/comments/comments.xhtml">
+                <ui:param name="type" value="issue"/>
+            </ui:include>
+        </div>
     </ui:define>
 </ui:composition>
