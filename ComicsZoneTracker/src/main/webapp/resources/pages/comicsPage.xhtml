@@ -67,7 +67,11 @@ and open the template in the editor.
                                       multiple="true"
                                       style="width:75% !important;"
                                       id="issues">
-                        <p:tab title="#{volume.name}">
+                        <p:tab>
+                            <f:facet name="title">
+                                <p:link value="#{volume.name}" 
+                                        outcome="#{comicsPageManagedBean.redirect(volume)}"/>
+                            </f:facet>
                             <p:dataGrid var="issue"
                                         value="#{volume.issueList}"
                                         columns="5"
@@ -78,7 +82,7 @@ and open the template in the editor.
                                 <h:panelGrid columns="1" styleClass="border:none">
                                     <p:row>
                                         <h:form>
-                                            <h:link outcome="#{comicsPageManagedBean.redirect(issue.id)}">
+                                            <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
                                                 <p:graphicImage value="#{issue.image}"
                                                                 styleClass="content-image"/>
                                             </h:link>
@@ -87,7 +91,7 @@ and open the template in the editor.
                                     <p:row>
                                         <p:link value="#{issue.name}" 
                                                 style="height:auto; width:60%;"
-                                                outcome="#{comicsPageManagedBean.redirect(issue.id)}"/>
+                                                outcome="#{comicsPageManagedBean.redirect(issue)}"/>
                                     </p:row>
                                 </h:panelGrid>
                                                 

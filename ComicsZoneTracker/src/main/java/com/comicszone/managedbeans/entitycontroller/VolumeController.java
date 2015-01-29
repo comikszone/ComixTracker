@@ -50,7 +50,7 @@ public class VolumeController {
         this.volumeId = volumeId;
     }
     
-    public void init(Integer volumeId) {
+    public void init() {
         volume = volumeFacade.find(volumeId);
     }
 }

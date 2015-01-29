@@ -7,6 +7,8 @@ package com.comicszone.managedbeans.comicsPage;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.entitynetbeans.Content;
+import com.comicszone.entitynetbeans.ContentType;
 import com.comicszone.entitynetbeans.Issue;
 import com.comicszone.entitynetbeans.Volume;
 import javax.ejb.EJB;
@@ -74,9 +76,13 @@ public class ComicsPageManagedBean {
         lazyIssueModel = new LazyIssueDataModel(volume);
     }
     
-    public String redirect(Integer issueId)
+    public String redirect(Content content)
     {
-        return "/resources/pages/issuePage.jsf?faces-redirect=true&id=" + issueId;
+        if (content.getContentType() == ContentType.Issue)
+            return "/resources/pages/issuePage.jsf?faces-redirect=true&id=" + content.getId();
+        else if (content.getContentType() == ContentType.Volume)
+                return "/resources/pages/volumePage.jsf?faces-redirect=true&id=" + content.getId();
+        else return "/resources/templates/index.jsf";
     }
     
     /*public void rate(AjaxBehaviorEvent actionEvent) {
