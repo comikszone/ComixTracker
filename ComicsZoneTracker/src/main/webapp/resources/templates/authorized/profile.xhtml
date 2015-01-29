@@ -7,6 +7,11 @@
     <ui:define name="articleContent">
         <h:form id = "profileForm" 
                 enctype="multipart/form-data">
+            <p:growl
+                autoUpdate="true"
+                life="5000"
+                showDetail="true"
+                />
             <p:panelGrid id="profilePanel">
                 <p:row>
                     <p:column >
@@ -50,6 +55,7 @@
                         <p:inputMask id="birthday"
                                      styleClass="profile-page-column-value-text" 
                                      value="#{profileUserManagedBean.birthday}" 
+                                     placeholder="day/month/year"
                                      mask="99/99/9999"/>
                     </p:column>
                 </p:row>
