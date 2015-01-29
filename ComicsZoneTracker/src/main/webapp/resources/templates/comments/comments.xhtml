@@ -13,6 +13,7 @@
             widgetVar="deleteConfirm">
                 
         </p:confirmDialog>
+        <p:panel styleClass="comments-container">
         <p:dataGrid var="comment"
                     id="comments"
                     value="#{commentsManagedBean.comments}"
@@ -20,7 +21,6 @@
                     columns="1"
                     rows = "10"
                     paginator="true"
-                    styleClass="comments-container"
                     paginatorTemplate="{CurrentPageReport} {PageLinks}">
             <p:panel id="comment" 
                      header="#{comment.userId.nickname}"
@@ -50,6 +50,7 @@
                               value="#{comment.text}"/>
             </p:panel>
         </p:dataGrid>
+        </p:panel>
     </h:form>
     
     <p:dialog header="Edit comment" widgetVar="commentEditor" modal="true"
