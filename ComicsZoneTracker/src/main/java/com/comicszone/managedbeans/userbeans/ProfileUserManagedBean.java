@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -25,14 +27,14 @@ public class ProfileUserManagedBean {
     @EJB
     UserDataFacade userDAO;
 
-    public String getName(){
+    public String getName() {
         return user.getName();
     }
-    
-    public void setName(String name){
+
+    public void setName(String name) {
         user.setName(name);
     }
-    
+
     public String getNickname() {
         return user.getNickname();
     }
@@ -55,11 +57,17 @@ public class ProfileUserManagedBean {
     }
 
     public void setBirthday(String birthday) {
+        if (birthday.length() == 0) {
+            user.setBirthday(null);
+            return;
+        }
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         try {
             user.setBirthday(df.parse(birthday));
         } catch (ParseException ex) {
-            Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null,
+                    new FacesMessage("Error:", "Can't convert date of birthday"));
         }
     }
 
@@ -77,48 +85,62 @@ public class ProfileUserManagedBean {
         }
         return new DefaultStreamedContent(new ByteArrayInputStream(user.getAvatar()));
     }
-    
-    public UploadedFile getImage(){
+
+    public UploadedFile getImage() {
         return image;
     }
-    
-    public void setImage(UploadedFile image){
-        if (image.getSize()==0)
+
+    public void setImage(UploadedFile image) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (image.getSize() == 0) {
             return;
-        if (!isCurrectFileName(image.getContentType())){
+        }
+        if (!isCurrectFileName(image.getContentType())) {
+            context.addMessage(null,
+                    new FacesMessage("Error:", "Incorrect type of file;"));
             return;
         }
         user.setAvatar(image.getContents());
         this.image = image;
+
+        context.addMessage(null,
+                new FacesMessage("Success:", "File has been upload;"));
     }
-    
-    private boolean isCurrectFileName(String filename){
+
+    private boolean isCurrectFileName(String filename) {
         return filename.indexOf("image") == 0;
     }
-    
+
     public void saveChanges() {
-        userDAO.edit(user);
-        updateCurrentUserManagedBean();
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            userDAO.edit(user);
+            updateCurrentUserManagedBean();
+            context.addMessage(null,
+                    new FacesMessage("Success:", "Changes has been saved!"));
+        } catch (EJBException ex) {
+            context.addMessage(null,
+                    new FacesMessage("Error:", "Can't update user profile!"));
+        } 
     }
 
     public void resetChanges() {
         loadCurrentUserInfo();
     }
 
-    private void updateCurrentUserManagedBean(){
+    private void updateCurrentUserManagedBean() {
         CurrentUserManagedBean manBean = ((CurrentUserManagedBean) FacesContext
-                    .getCurrentInstance()
-                    .getExternalContext()
-                    .getSessionMap()
-                    .get("currentUserManagedBean"));
+                .getCurrentInstance()
+                .getExternalContext()
+                .getSessionMap()
+                .get("currentUserManagedBean"));
         manBean.setCurrentUser();
     }
-    
+
     @PostConstruct
     private void loadCurrentUserInfo() {
         try {
-            user = (Users)
-                    ((CurrentUserManagedBean) FacesContext
+            user = (Users) ((CurrentUserManagedBean) FacesContext
                     .getCurrentInstance()
                     .getExternalContext()
                     .getSessionMap()
