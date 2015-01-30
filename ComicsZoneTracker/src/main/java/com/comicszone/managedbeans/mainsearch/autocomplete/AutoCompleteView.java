@@ -26,13 +26,14 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 //import javax.inject.Scope;
  
  
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class AutoCompleteView {
     @EJB
     private ComicsFacade comicsFacade;
