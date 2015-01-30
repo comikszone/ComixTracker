@@ -168,4 +168,11 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         return query.getResultList().get(0);
     }
     
+    public List<Comics> findAll(int maxResult)
+    {
+        TypedQuery<Comics> query=em.createNamedQuery("Comics.findAllAscId",Comics.class);
+        query.setMaxResults(maxResult);
+        return query.getResultList();
+    }
+    
 }

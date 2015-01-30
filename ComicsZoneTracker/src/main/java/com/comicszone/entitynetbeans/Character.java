@@ -33,11 +33,13 @@ import javax.validation.constraints.Size;
 @Table(name = "character")
 @NamedQueries({
     @NamedQuery(name = "Character.findAll", query = "SELECT c FROM Character c"),
+    @NamedQuery(name = "Character.findAllAscId", query = "SELECT c FROM Character c ORDER BY c.Id ASC"),
     @NamedQuery(name = "Character.findByName", query = "SELECT c FROM Character c WHERE c.name = :name"),
     @NamedQuery(name = "Character.findByRealName", query = "SELECT c FROM Character c WHERE c.realName = :realName"),
     @NamedQuery(name = "Character.findByDescription", query = "SELECT c FROM Character c WHERE c.description = :description"),
     @NamedQuery(name = "Character.findByImage", query = "SELECT c FROM Character c WHERE c.image = :image"),
-    @NamedQuery(name = "Character.findByNameStartsWith", query = "SELECT c FROM Character c WHERE  LOWER(c.name) LIKE :name")})
+    @NamedQuery(name = "Character.findByNameStartsWith", query = "SELECT c FROM Character c WHERE  LOWER(c.name) LIKE :name"),
+    @NamedQuery(name = "Character.findByNameStartsWithAscId", query = "SELECT c FROM Character c WHERE  LOWER(c.name) LIKE :name ORDER BY c.Id")})
 public class Character implements Serializable,AjaxComicsCharacter {
     private static final long serialVersionUID = 1L;
     @Id

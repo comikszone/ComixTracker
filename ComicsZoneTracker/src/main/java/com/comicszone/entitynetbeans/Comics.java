@@ -37,6 +37,7 @@ import javax.validation.constraints.Size;
 @Table(name = "comics")
 @NamedQueries({
     @NamedQuery(name = "Comics.findAll", query = "SELECT c FROM Comics c"),
+    @NamedQuery(name = "Comics.findAllAscId", query = "SELECT c FROM Comics c ORDER BY c.Id ASC"),
     @NamedQuery(name = "Comics.findByName", query = "SELECT c FROM Comics c WHERE c.name = :name"),
     @NamedQuery(name = "Comics.findByDescription", query = "SELECT c FROM Comics c WHERE c.description = :description"),
     @NamedQuery(name = "Comics.findByImage", query = "SELECT c FROM Comics c WHERE c.image = :image"),
@@ -46,6 +47,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByEndDate", query = "SELECT c FROM Comics c WHERE c.endDate = :endDate"),
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
     @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
+    @NamedQuery(name = "Comics.findByNameStartsWithAscId", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name ORDER BY c.Id"),
     @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
     @NamedQuery(name = "Comics.findByChecking", query = "SELECT c FROM Comics c WHERE c.isChecked = :isChecked ORDER BY c.Id"),
     //forComicsCatalogue
