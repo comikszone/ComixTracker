@@ -37,6 +37,10 @@ public class CurrentUserManagedBean {
     public Date getBirthday() {
         return currentUser.getBirthday();
     }
+    
+    public int getId() {
+        return currentUser.getUserId();
+    }
 
     public String getEmail() {
         return currentUser.getEmail();

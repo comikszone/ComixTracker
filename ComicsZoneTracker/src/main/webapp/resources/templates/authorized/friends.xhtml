@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/authorized/authorized.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="articleContent">
+        <p:layout style="width:100%;">
+            <p:layoutUnit position="north" resizable="false" >
+                <p:panel header="Find users">
+                    <h:form id="userFinderForm">
+                        <h:panelGrid columns="2" cellpadding="0">
+                        <p:autoComplete
+                            id="userFinder"
+                            maxResults="5"
+                            completeMethod="#{userFriendsManagedBean.completeUser}"
+                            var="user"
+                            value="#{userFriendsManagedBean.selectedUser}"
+                            itemValue="#{user}"
+                            itemLabel="#{user.nickname}"
+                            converter="userConverter"
+                            forceSelection="true"
+                            >
+                            <p:ajax 
+                                event="itemSelect" 
+                                listener="#{comicsCatalogueView.onRowSelect}"
+                                update=":userFinderForm:userDetailPanel" 
+                                oncomplete="PF('userDetails').show()"/> 
+                            
+                            <p:column>
+                                <p:graphicImage
+                                    alt=""
+                                    value="#{user.avatar}"
+                                    width="70"
+                                    height="70"/>
+                            </p:column>
+                        
+                            <p:column>
+                                #{user.nickname}
+                            </p:column>
+                        </p:autoComplete>
+                            
+                    <p:commandButton 
+                        value="Add to friends!"
+                        update=":userFinderForm:userFinder"
+                        action="#{userFriendsManagedBean.addToFriends()}"/>
+                </h:panelGrid>
+                 
+             <!--Dialog window-->
+            <p:dialog header="User details" 
+                      widgetVar="userDetails" 
+                      modal="true" 
+                      showEffect="fade" 
+                      hideEffect="fade" 
+                      resizable="false" >
+                <p:outputPanel id="userDetailPanel" style="text-align:center;">
+                    <p:panelGrid  columns="2" 
+                                  rendered="#{not empty userFriendsManagedBean.selectedUser}" 
+                                  columnClasses="label,value">
+                    <f:facet name="header">
+                        <p:graphicImage 
+                            value="#{user.avatar}"
+                            width="200px"
+                            height="200px"
+                            styleClass="content-image"/> 
+                    </f:facet>
+                    <f:facet name="footer">
+                        <h:link value="Visit users page"
+                                outcome="comicsPage">
+<!--                            <f:param name="id" value="" />-->
+                        </h:link>
+                    </f:facet>
+ 
+                    <h:outputText value="Id:" />
+                    <h:outputText value="#{user.usesId}" />
+ 
+                    <h:outputText value="Name" />
+                    <h:outputText value="#{user.nickname}" />
+ 
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>       
+                        
+            </h:form>
+                </p:panel>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="west" resizable="true" size="500" minSize="100" maxSize="500">
+                
+             <h:form> 
+                    <p:dataScroller value="#{userFriendsManagedBean.friends}" 
+                                    var="friend" chunkSize="5"
+                                  
+                                    >
+                        <f:facet name="header">
+                            Scroll Down to Load More Friends
+                        </f:facet>
+ 
+                        <h:panelGrid columns="2" style="width:100%" >
+                            <p:graphicImage value="#{friend.avatar}"
+                                            
+                                            width="150"
+                                            height="150"
+                                            /> 
+ 
+                        <p:outputPanel>
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputText value="Nickname:" />
+                                <h:outputText value="#{friend.nickname}" 
+                                              style="font-weight: bold"/>
+ 
+                                <h:outputText value="Email:" />
+                                <h:outputText value="#{friend.email}" 
+                                              style="font-weight: bold"/>
+ 
+                                <h:outputText value="Online:" />
+                                <h:outputText value="#{friend.online}" 
+                                              style="font-weight: bold"/>
+                            </h:panelGrid>
+                        </p:outputPanel>
+                        </h:panelGrid>
+                    </p:dataScroller>
+                </h:form>
+            </p:layoutUnit>
+ 
+            <p:layoutUnit position="center">
+                Center
+            </p:layoutUnit>
+        </p:layout>
+    </ui:define>
+</ui:composition>
