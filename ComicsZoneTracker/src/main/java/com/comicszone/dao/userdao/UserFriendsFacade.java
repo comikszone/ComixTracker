@@ -9,6 +9,7 @@ import com.comicszone.entitynetbeans.Users;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -32,7 +33,14 @@ public class UserFriendsFacade extends AbstractUserFacade {
     }
     
     public void addToFriends(Users currentUser, Users friendUser) {
+        //EntityTransaction etr = entityManager.getTransaction();
+        //etr.begin();
         currentUser.getUsersList1().add(friendUser);
         friendUser.getUsersList1().add(currentUser);
+        entityManager.merge(currentUser);
+        entityManager.merge(friendUser);
+        //etr.commit();
+        
+        
     }
 }

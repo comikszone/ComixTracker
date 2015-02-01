@@ -5,10 +5,11 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
+        <h:form id="form">
         <p:layout style="width:100%;">
             <p:layoutUnit position="north" resizable="false" >
                 <p:panel header="Find users">
-                    <h:form id="userFinderForm">
+                    
                         <h:panelGrid columns="2" cellpadding="0">
                         <p:autoComplete
                             id="userFinder"
@@ -20,11 +21,12 @@
                             itemLabel="#{user.nickname}"
                             converter="userConverter"
                             forceSelection="true"
+                            dropdown="false"
+                            
                             >
                             <p:ajax 
                                 event="itemSelect" 
-                                listener="#{comicsCatalogueView.onRowSelect}"
-                                update=":userFinderForm:userDetailPanel" 
+                                update=":form:userDetailPanel" 
                                 oncomplete="PF('userDetails').show()"/> 
                             
                             <p:column>
@@ -39,55 +41,17 @@
                                 #{user.nickname}
                             </p:column>
                         </p:autoComplete>
-                            
-                    <p:commandButton 
-                        value="Add to friends!"
-                        update=":userFinderForm:userFinder"
-                        action="#{userFriendsManagedBean.addToFriends()}"/>
+                         
                 </h:panelGrid>
                  
-             <!--Dialog window-->
-            <p:dialog header="User details" 
-                      widgetVar="userDetails" 
-                      modal="true" 
-                      showEffect="fade" 
-                      hideEffect="fade" 
-                      resizable="false" >
-                <p:outputPanel id="userDetailPanel" style="text-align:center;">
-                    <p:panelGrid  columns="2" 
-                                  rendered="#{not empty userFriendsManagedBean.selectedUser}" 
-                                  columnClasses="label,value">
-                    <f:facet name="header">
-                        <p:graphicImage 
-                            value="#{user.avatar}"
-                            width="200px"
-                            height="200px"
-                            styleClass="content-image"/> 
-                    </f:facet>
-                    <f:facet name="footer">
-                        <h:link value="Visit users page"
-                                outcome="comicsPage">
-<!--                            <f:param name="id" value="" />-->
-                        </h:link>
-                    </f:facet>
- 
-                    <h:outputText value="Id:" />
-                    <h:outputText value="#{user.usesId}" />
- 
-                    <h:outputText value="Name" />
-                    <h:outputText value="#{user.nickname}" />
- 
-                    </p:panelGrid>
-                </p:outputPanel>
-            </p:dialog>       
-                        
-            </h:form>
+            
+            
                 </p:panel>
             </p:layoutUnit>
             
             <p:layoutUnit position="west" resizable="true" size="500" minSize="100" maxSize="500">
                 
-             <h:form> 
+             <h:form id="dataScroller"> 
                     <p:dataScroller value="#{userFriendsManagedBean.friends}" 
                                     var="friend" chunkSize="5"
                                   
@@ -127,5 +91,57 @@
                 Center
             </p:layoutUnit>
         </p:layout>
+            <!--Dialog user window-->
+            <p:dialog header="User details" 
+                      widgetVar="userDetails" 
+                      modal="true" 
+                      showEffect="fade" 
+                      hideEffect="fade" 
+                      resizable="false" 
+                      appendTo="form"
+                      >
+                <p:outputPanel id="userDetailPanel" style="text-align:center;">
+                    <p:panelGrid  columns="2" 
+                                  rendered="#{not empty userFriendsManagedBean.selectedUser}" 
+                                  columnClasses="label,value">
+                    <f:facet name="header">
+                        <p:graphicImage 
+                            value="#{user.avatar}"
+                            width="200px"
+                            height="200px"
+                            styleClass="content-image"/> 
+                    </f:facet>
+                    <f:facet name="footer">
+                        <p:outputPanel>
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:commandButton value="Add to friends!"
+                                                 update=":form:dataScroller"
+                                                 action="#{userFriendsManagedBean.addToFriends}"
+                                                 onclick="userDetails.hide()"
+                                                 
+                                                 />
+                                <p:commandButton value="To black list!" 
+                                                 type="button" 
+                                                 />
+                            </h:panelGrid>
+                        </p:outputPanel>
+                    </f:facet>
+                        
+                    <h:outputText value="Id:" />
+                    <h:outputText value="#{userFriendsManagedBean.selectedUser.userId}" />
+ 
+                    <h:outputText value="Nickname" />
+                    <h:outputText value="#{userFriendsManagedBean.selectedUser.nickname}" />
+                    
+                    <h:outputText value="Email" />
+                    <h:outputText value="#{userFriendsManagedBean.selectedUser.email}" />
+ 
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+            </h:form>
+        
+          <!--Dialog window-->
+            
     </ui:define>
 </ui:composition>

@@ -15,9 +15,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -51,18 +54,18 @@ public class UserFriendsManagedBean implements Serializable {
             
             friends = userFriendsFacade.getFriends(currentUser);
         } catch (CloneNotSupportedException ex) {
-            System.err.println("WAS EXCEPTION");
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }  
     }
     
     public List<Users> completeUser(String query) {
         List<Users> users = userFriendsFacade.getUsersWithNicknameStartsWith(query);
-        FacesContext.getCurrentInstance().getAttributes().put("users", users);
+        //FacesContext.getCurrentInstance().getAttributes().put("users", users);
         return users;
     }
     
     public void addToFriends() {
+        System.err.println("***METHOD RUN*****");
         userFriendsFacade.addToFriends(currentUser, selectedUser);
     }
     
