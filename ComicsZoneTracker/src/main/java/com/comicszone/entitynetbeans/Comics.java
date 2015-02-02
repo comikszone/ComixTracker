@@ -73,11 +73,11 @@ import javax.validation.constraints.Size;
                     + " JOIN v.comicsId c"
                     + " WHERE c.Id = :comicsId"),
     @NamedQuery(name = "Comics.getMarkedIssueCount",
-            query = "SELECT COUNT(p.issueList) FROM Users p"
-                    + " JOIN p.issueList i "
+            query = "SELECT COUNT(i.Id) FROM Issue i"
+                    + " JOIN i.usersList u "
                     + " JOIN i.volumeId v"
                     + " JOIN v.comicsId c"
-                    + " WHERE c.Id = :comicsId")})
+                    + " WHERE c.Id = :comicsId AND u.userId = :userId")})
 
 public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
 

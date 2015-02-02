@@ -190,9 +190,10 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
     }
 
     @Override
-    public Long getMarkedIssueCount(Integer comicsId) {
+    public Long getMarkedIssueCount(Integer comicsId, Integer userId) {
         TypedQuery<Long> query = em.createNamedQuery("Comics.getMarkedIssueCount", Long.class);
         query.setParameter("comicsId", comicsId);
+        query.setParameter("userId", userId);
         return query.getResultList().get(0);
     }
     

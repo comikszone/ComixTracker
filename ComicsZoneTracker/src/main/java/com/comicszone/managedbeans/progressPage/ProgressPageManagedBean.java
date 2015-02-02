@@ -71,10 +71,11 @@ public class ProgressPageManagedBean {
         }
     }
     
-    public Long getValue(Comics comics) {
-        long markedCount = comicsFacade.getMarkedIssueCount(comics.getId());
-        long totalCount = comicsFacade.getTotalIssueCount(comics.getId());
-        return (Math.round((double)(markedCount/totalCount)*100));
+    public Long getValue(Comics comics) throws CloneNotSupportedException {
+        double markedCount = comicsFacade.getMarkedIssueCount(comics.getId(), userManagedBean.getCurrentUser().getUserId());
+        double totalCount = comicsFacade.getTotalIssueCount(comics.getId());
+        double res = (markedCount/totalCount)*100;
+        return ((long)(res));
     }
 
     /**

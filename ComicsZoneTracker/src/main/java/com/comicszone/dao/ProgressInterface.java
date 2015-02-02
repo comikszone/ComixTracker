@@ -17,5 +17,5 @@ import javax.ejb.Local;
 public interface ProgressInterface {
     List<Comics> findByUserInProgress(Integer userId);
     Long getTotalIssueCount(Integer comicsId);
-    Long getMarkedIssueCount(Integer comicsId);
+    Long getMarkedIssueCount(Integer comicsId, Integer userId);
 }
