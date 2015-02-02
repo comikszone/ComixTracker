@@ -313,7 +313,8 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "Users{" + "userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", avatar=" + avatar + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", name=" + name + ", avatarUrl=" + avatarUrl + ", friendsList=" + friendsList + ", friendsList1=" + friendsList1 + ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
+        return "Users{" + "userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", avatar=" + avatar + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", name=" + name + ", avatarUrl=" + avatarUrl + 
+               ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
     }
 
     public void addFriendToFriendsList(Friends friend) {

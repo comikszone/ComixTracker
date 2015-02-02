@@ -32,25 +32,28 @@ public class UserFriendsFacade extends AbstractUserFacade {
     }
     
     public List<Users> getFriends(Users currentUser) {
-        List<Friends> friends = currentUser.getFriendsList1();
+        List<Friends> friends = currentUser.getFriendsList();
         List<Users> userFriends = new ArrayList<Users>();
         
         for(Friends currentFriend : friends) {
-            userFriends.add(currentFriend.getUsers());
+            userFriends.add(currentFriend.getUsers1());
         }
         //List<Users> friends = currentUser.getUsersList1();
         return userFriends;
     }
     
     public void addToFriends(Users currentUser, Users friendUser) {
-        System.err.println("********TRANSACTION");
         Friends friend = new Friends();
         friend.setUsers(currentUser);
         friend.setUsers1(friendUser);
         friend.setIsConfirmed(false);
         
         currentUser.addFriendToFriendsList(friend);
+        
         edit(currentUser);
+        //create(friend);
+        
+        
     }
     
     public List<Users> getFriendsWithNicknameStartsWith(Users currentUser) {

@@ -70,8 +70,8 @@ public class UserFriendsManagedBean implements Serializable {
     }
     
     public void addToFriends() {
-        System.err.println("***METHOD RUN*****");
         userFriendsFacade.addToFriends(currentUser, selectedUser);
+        //friendsLazyModel = userFriendsFacade.getFriends(currentUser);
     }
     
     public Users getSelectedUser() {

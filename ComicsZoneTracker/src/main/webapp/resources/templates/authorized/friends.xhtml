@@ -50,24 +50,45 @@
             </p:layoutUnit>
             
             <p:layoutUnit position="west" resizable="true" size="500" minSize="100" maxSize="500">
-                <h:form id="dataScroller"> 
-                    <p:dataScroller value="#{userFriendsManagedBean.friendsLazyModel}" 
-                                    var="friend" chunkSize="5"
-                                  
-                                    >
-                        <f:facet name="header">
-                            Scroll Down to Load More Friends
-                        </f:facet>
- 
-                        <h:panelGrid columns="2" style="width:100%" >
-                            <p:graphicImage value="#{friend.avatar}"
-                                            
-                                            width="150"
-                                            height="150"
-                                            /> 
- 
-                        <p:outputPanel>
-                            <h:panelGrid columns="2" cellpadding="5">
+                <h:form id="dataTable">
+                    <p:dataTable
+                        id="friendsTable"
+                        var="friend"
+                        widgetVar="friendsTable"
+                        rowKey="#{friend.userId}"
+                        value="#{userFriendsManagedBean.friendsLazyModel}" 
+                        paginator="true" 
+                        rows="3"
+                        paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} 
+                    {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                        rowsPerPageTemplate="3,6,9" 
+                        selectionMode="single" 
+                        selection="#{userFriendsManagedBean.selectedFriend}"
+                        emptyMessage="No friends found!"
+                        >
+                
+                <!--<p:ajax 
+                    event="rowSelect" 
+                    
+                    update=":form:comicsDetail"
+                    />
+                    oncomplete="PF('comicsDialog').show()"--> 
+                
+                <p:column width="50%" 
+                          headerText="Nickname" 
+                          sortBy="#{friend.nickname}" 
+                          filterBy="#{friend.nickname}"
+                          >
+                    <p:graphicImage value="#{friend.avatar}"
+                                         width="100%"
+                                         height="100%"
+                                         styleClass="content-image"/> 
+                </p:column>      
+                
+                <p:column width="50%" 
+                          headerText="Information">
+                    <p:outputPanel>
+                    <h:panelGrid columns="2" cellpadding="0">
                                 <h:outputText value="Nickname:" />
                                 <h:outputText value="#{friend.nickname}" 
                                               style="font-weight: bold"/>
@@ -79,11 +100,12 @@
                                 <h:outputText value="Online:" />
                                 <h:outputText value="#{friend.online}" 
                                               style="font-weight: bold"/>
-                            </h:panelGrid>
+                                
+                                </h:panelGrid>
                         </p:outputPanel>
-                        </h:panelGrid>
-                    </p:dataScroller>
-                </h:form>
+                </p:column>
+            </p:dataTable>
+        </h:form>
              
             </p:layoutUnit>
  
@@ -115,7 +137,7 @@
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:commandButton value="Add to friends!"
-                                                 update=":form:dataScroller"
+                                                 update=":form:dataTable"
                                                  action="#{userFriendsManagedBean.addToFriends}"
                                                  onclick="userDetails.hide()"
                                                  
