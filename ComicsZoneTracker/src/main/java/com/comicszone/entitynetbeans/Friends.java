@@ -12,10 +12,14 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -27,13 +31,17 @@ import javax.validation.constraints.NotNull;
 @Table(name = "friends")
 @NamedQueries({
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
-    @NamedQuery(name = "Friends.findByUser1Id", query = "SELECT f FROM Friends f WHERE f.friendsPK.user1Id = :user1Id"),
-    @NamedQuery(name = "Friends.findByUser2Id", query = "SELECT f FROM Friends f WHERE f.friendsPK.user2Id = :user2Id"),
+//    @NamedQuery(name = "Friends.findByUser1Id", query = "SELECT f FROM Friends f WHERE f.friendsPK.user1Id = :user1Id"),
+//    @NamedQuery(name = "Friends.findByUser2Id", query = "SELECT f FROM Friends f WHERE f.friendsPK.user2Id = :user2Id"),
     @NamedQuery(name = "Friends.findByIsConfirmed", query = "SELECT f FROM Friends f WHERE f.isConfirmed = :isConfirmed")})
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected FriendsPK friendsPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "friends_id_seq")
+    @SequenceGenerator(name = "friends_id_seq", sequenceName = "friends_id_seq", allocationSize = 1)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "is_confirmed")
@@ -48,26 +56,15 @@ public class Friends implements Serializable {
     public Friends() {
     }
 
-    public Friends(FriendsPK friendsPK) {
-        this.friendsPK = friendsPK;
+    public Integer getId() {
+        return id;
     }
 
-    public Friends(FriendsPK friendsPK, boolean isConfirmed) {
-        this.friendsPK = friendsPK;
-        this.isConfirmed = isConfirmed;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Friends(int user1Id, int user2Id) {
-        this.friendsPK = new FriendsPK(user1Id, user2Id);
-    }
-
-    public FriendsPK getFriendsPK() {
-        return friendsPK;
-    }
-
-    public void setFriendsPK(FriendsPK friendsPK) {
-        this.friendsPK = friendsPK;
-    }
+    
 
     public boolean getIsConfirmed() {
         return isConfirmed;
@@ -95,19 +92,21 @@ public class Friends implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (friendsPK != null ? friendsPK.hashCode() : 0);
+        int hash = 7;
+        hash = 89 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Friends)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Friends other = (Friends) object;
-        if ((this.friendsPK == null && other.friendsPK != null) || (this.friendsPK != null && !this.friendsPK.equals(other.friendsPK))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Friends other = (Friends) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -115,7 +114,9 @@ public class Friends implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Friends[ friendsPK=" + friendsPK + " ]";
+        return "Friends{" + "id=" + id + ", isConfirmed=" + isConfirmed + ", users=" + users + ", users1=" + users1 + '}';
     }
+
+  
     
 }
