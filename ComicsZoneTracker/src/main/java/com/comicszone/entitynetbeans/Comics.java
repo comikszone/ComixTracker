@@ -60,7 +60,24 @@ import javax.validation.constraints.Size;
             query = "SELECT COUNT(c) FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
     @NamedQuery(name = "Comics.countFoundByRating",
             query = "SELECT COUNT(c) FROM Comics c WHERE c.rating BETWEEN :rating AND :rating+1"),
-    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''")})
+    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
+    @NamedQuery(name = "Comics.findByUserInProgress", 
+            query = "SELECT DISTINCT c FROM Comics c "
+                     + "JOIN c.volumeList v "
+                     + "JOIN v.issueList i "
+                     + "JOIN i.usersList p "
+                     + "WHERE p.userId = :userId"),
+    @NamedQuery(name = "Comics.getTotalIssueCount",
+            query = "SELECT COUNT(i.Id) FROM Issue i"
+                    + " JOIN i.volumeId v "
+                    + " JOIN v.comicsId c"
+                    + " WHERE c.Id = :comicsId"),
+    @NamedQuery(name = "Comics.getMarkedIssueCount",
+            query = "SELECT COUNT(p.issueList) FROM Users p"
+                    + " JOIN p.issueList i "
+                    + " JOIN i.volumeId v"
+                    + " JOIN v.comicsId c"
+                    + " WHERE c.Id = :comicsId")})
 
 public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
 

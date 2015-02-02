@@ -22,7 +22,9 @@ public class ReadingFacade {
     private UserDataFacade userFacade;
     
     public void markAsRead(Users user, List<Issue> issueList) {
-        user.setIssueList(issueList);
+        List<Issue> prevList = user.getIssueList();
+        prevList.addAll(issueList);
+        user.setIssueList(prevList);
         userFacade.edit(user);
     }
 }

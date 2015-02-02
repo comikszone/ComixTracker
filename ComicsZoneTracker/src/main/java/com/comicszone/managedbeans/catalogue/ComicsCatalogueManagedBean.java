@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.catalogue;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +26,7 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name="comicsCatalogueView")
 @ViewScoped
-public class ComicsCatalogueManagedBean {
+public class ComicsCatalogueManagedBean implements Serializable {
     
     private final String columnComicsName = "Name";
     private final String columnComicsRating = "Rating";
