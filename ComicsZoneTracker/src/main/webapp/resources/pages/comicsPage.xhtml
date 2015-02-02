@@ -15,38 +15,43 @@ and open the template in the editor.
                 template="#{startNavigationManagedBean.templateName}">          
     <ui:define name="articleContent">
         <f:metadata>
-            <f:viewParam name="id" value="#{comicsPageManagedBean.comicsId}"/>
+            <f:viewParam name="id" value="#{comicsPageManagedBean.comicsController.comicsId}"/>
         </f:metadata>
-        #{comicsPageManagedBean.init()}
+        #{comicsPageManagedBean.comicsController.initComics()}
         <center>
             <p:panelGrid style="width:75% !important; border:none !important;">
                         <p:row>
                             <p:column colspan="1">
-                                <p:graphicImage value="#{comicsPageManagedBean.comics.image}"
+                                <p:graphicImage value="#{comicsPageManagedBean.comicsController.comics.image}"
                                                 styleClass="content-image"
                                                 height="300"
                                                 width="300"/>
                             </p:column>
                             <p:column colspan="1" styleClass="content-info">
-                                <h:outputText value="#{comicsPageManagedBean.comics.name}" 
+                                <h:outputText value="#{comicsPageManagedBean.comicsController.comics.name}" 
                                               styleClass="content-name"/>
                                 <br/>
-                                <h:outputText value="Publisher: #{comicsPageManagedBean.comics.publisherId.name}"/>
+                                <h:outputText value="Publisher: #{comicsPageManagedBean.comicsController.comics.publisherId.name}"/>
                                 <br/>
-                                <h:outputText value="Imprint: #{comicsPageManagedBean.comics.imprintId.name}"/>
+                                <h:outputText value="Imprint: #{comicsPageManagedBean.comicsController.comics.imprintId.name}"/>
                                 <br/>
-                                <h:outputText value="Description: #{comicsPageManagedBean.comics.description}"/>
+                                <h:outputText value="Description: #{comicsPageManagedBean.comicsController.comics.description}"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="2">
                                     <c:choose>
                                         <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
-                                            <pf:rating value="#{comicsPageManagedBean.comics.rating}"
-                                                       totalStars="5"
-                                                       step="1">
-                                                
-                                            </pf:rating>
+                                            <h:form>
+                                                <pf:rating  value="#{comicsPageManagedBean.comicsController.comics.rating}"
+                                                            totalStars="5"
+                                                            step="1">
+                                                    <f:ajax event="change" listener="#{comicsPageManagedBean.rate}"/>
+                                                </pf:rating>
+                                                <br/>
+                                                <p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
+                                                        value="Read!"/>
+                                            </h:form>
                                         </c:when>
                                         <c:otherwise>
                                             <p:link onclick="showPopUpWin('RegistrationWindow')"
@@ -63,7 +68,7 @@ and open the template in the editor.
                         </p:row>
                     </p:panelGrid>    
                     <p:accordionPanel var="volume" 
-                                      value="#{comicsPageManagedBean.comics.volumeList}"
+                                      value="#{comicsPageManagedBean.comicsController.comics.volumeList}"
                                       multiple="true"
                                       style="width:75% !important;"
                                       id="issues">

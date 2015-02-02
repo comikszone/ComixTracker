@@ -201,7 +201,7 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
