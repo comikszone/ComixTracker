@@ -48,6 +48,16 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Users.findByBanned", query = "SELECT u FROM Users u WHERE u.banned = :banned"),
     @NamedQuery(name = "Users.findByNicknameStartsWith", query = "SELECT u FROM Users u WHERE u.nickname LIKE :nickname")})
 public class Users implements Serializable {
+    @Lob
+    @Column(name = "avatar")
+    private byte[] avatar;
+    @JoinTable(name = "user_group", joinColumns = {
+        @JoinColumn(name = "nickname", referencedColumnName = "nickname")}, inverseJoinColumns = {
+        @JoinColumn(name = "nickname", referencedColumnName = "nickname")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Users> usersList;
+    @ManyToMany(mappedBy = "usersList", fetch = FetchType.LAZY)
+    private List<Users> usersList1;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -66,9 +76,6 @@ public class Users implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "pass")
     private String pass;
-//    @Lob
-    @Column(name = "avatar")
-    private byte[] avatar;
     @Basic(optional = false)
     @NotNull
     @Column(name = "sex")
@@ -91,13 +98,15 @@ public class Users implements Serializable {
     private String name;
     @Column(name="avatar_url")
     private String avatarUrl;
-    @JoinTable(name = "friends", joinColumns = {
-        @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Users> usersList;
-    @ManyToMany(mappedBy = "usersList", fetch = FetchType.LAZY)
-    private List<Users> usersList1;
+//    @JoinTable(name = "friends", joinColumns = {
+//        @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
+//        @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
+//    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Friends> friendsList;
+    //@ManyToMany(mappedBy = "usersList", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users1", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Friends> friendsList1;
     @JoinTable(name = "progress", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
         @JoinColumn(name = "issue_id", referencedColumnName = "issue_id")})
@@ -158,13 +167,6 @@ public class Users implements Serializable {
         this.pass = pass;
     }
 
-    public byte[] getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
-    }
 
     public int getSex() {
         return sex;
@@ -221,23 +223,6 @@ public class Users implements Serializable {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
-    
-
-    public List<Users> getUsersList() {
-        return usersList;
-    }
-
-    public void setUsersList(List<Users> usersList) {
-        this.usersList = usersList;
-    }
-
-    public List<Users> getUsersList1() {
-        return usersList1;
-    }
-
-    public void setUsersList1(List<Users> usersList1) {
-        this.usersList1 = usersList1;
-    }
 
     public List<Issue> getIssueList() {
         return issueList;
@@ -279,6 +264,23 @@ public class Users implements Serializable {
         this.messagesList1 = messagesList1;
     }
 
+    public List<Friends> getFriendsList() {
+        return friendsList;
+    }
+
+    public void setFriendsList(List<Friends> friendsList) {
+        this.friendsList = friendsList;
+    }
+
+    public List<Friends> getFriendsList1() {
+        return friendsList1;
+    }
+
+    public void setFriendsList1(List<Friends> friendsList1) {
+        this.friendsList1 = friendsList1;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -311,9 +313,41 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "Users{" + "userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", avatar=" + avatar + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", name=" + name + ", avatarUrl=" + avatarUrl + ", usersList=" + usersList + ", usersList1=" + usersList1 + ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
+        return "Users{" + "userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", avatar=" + avatar + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", name=" + name + ", avatarUrl=" + avatarUrl + ", friendsList=" + friendsList + ", friendsList1=" + friendsList1 + ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
     }
 
+    public void addFriendToFriendsList(Friends friend) {
+        friendsList.add(friend);
+    }
+    
+    public void addFriendToFriendsList1(Friends friend) {
+        friendsList1.add(friend);
+    }
+
+
+    public List<Users> getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
+    }
+
+    public List<Users> getUsersList1() {
+        return usersList1;
+    }
+
+    public void setUsersList1(List<Users> usersList1) {
+        this.usersList1 = usersList1;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
+    }
 
     
 

@@ -15,12 +15,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import org.primefaces.event.SelectEvent;
+import org.primefaces.model.LazyDataModel;
 
 /**
  *
@@ -35,15 +33,22 @@ public class UserFriendsManagedBean implements Serializable {
     private UserFriendsFacade userFriendsFacade;
     
     
-    private List<Users> friends;
+    private List<Users> friendsLazyModel;
+
     
+
     private Users currentUser;
     
     private Users selectedUser;
     
+    private Users selectedFriend;
+
+    
     @PostConstruct
     public void init() {
-        try {
+        
+        //friendsLazyModel = new LazyFriendsDataModel(userFriendsFacade);
+       try {
             currentUser = (Users) ((CurrentUserManagedBean) FacesContext
                     .getCurrentInstance()
                     .getExternalContext()
@@ -52,7 +57,7 @@ public class UserFriendsManagedBean implements Serializable {
                     .getCurrentUser()
                     .clone();
             
-            friends = userFriendsFacade.getFriends(currentUser);
+            friendsLazyModel = userFriendsFacade.getFriends(currentUser);
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -77,12 +82,26 @@ public class UserFriendsManagedBean implements Serializable {
         this.selectedUser = selectedUser;
     }
     
-    public void setFriends(List<Users> friends) {
-        this.friends = friends;
+    public Users getSelectedFriend() {
+        return selectedFriend;
     }
 
-    public List<Users> getFriends() {
-        return friends;
+    public void setSelectedFriend(Users selectedFriend) {
+        this.selectedFriend = selectedFriend;
     }
     
+    /*public LazyDataModel<Users> getFriendsLazyModel() {
+        return friendsLazyModel;
+    }
+
+    public void setFriendsLazyModel(LazyDataModel<Users> friendsLazyModel) {
+        this.friendsLazyModel = friendsLazyModel;
+    }*/
+    public List<Users> getFriendsLazyModel() {
+        return friendsLazyModel;
+    }
+
+    public void setFriendsLazyModel(List<Users> friendsLazyModel) {
+        this.friendsLazyModel = friendsLazyModel;
+    }
 }

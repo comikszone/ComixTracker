@@ -5,12 +5,16 @@
  */
 package com.comicszone.dao.userdao;
 
+import com.comicszone.entitynetbeans.Friends;
 import com.comicszone.entitynetbeans.Users;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -28,19 +32,32 @@ public class UserFriendsFacade extends AbstractUserFacade {
     }
     
     public List<Users> getFriends(Users currentUser) {
-        List<Users> friends = currentUser.getUsersList1();
-        return friends;
+        List<Friends> friends = currentUser.getFriendsList1();
+        List<Users> userFriends = new ArrayList<Users>();
+        
+        for(Friends currentFriend : friends) {
+            userFriends.add(currentFriend.getUsers());
+        }
+        //List<Users> friends = currentUser.getUsersList1();
+        return userFriends;
     }
     
     public void addToFriends(Users currentUser, Users friendUser) {
-        //EntityTransaction etr = entityManager.getTransaction();
-        //etr.begin();
-        currentUser.getUsersList1().add(friendUser);
-        friendUser.getUsersList1().add(currentUser);
-        entityManager.merge(currentUser);
-        entityManager.merge(friendUser);
-        //etr.commit();
+        System.err.println("********TRANSACTION");
+        Friends friend = new Friends();
+        friend.setUsers(currentUser);
+        friend.setUsers1(friendUser);
+        friend.setIsConfirmed(false);
         
-        
+        currentUser.addFriendToFriendsList(friend);
+        edit(currentUser);
+    }
+    
+    public List<Users> getFriendsWithNicknameStartsWith(Users currentUser) {
+            return null;
+    }
+    
+    public long getUsersCountFilteredByNickname(String nickName) {
+        return 1;
     }
 }

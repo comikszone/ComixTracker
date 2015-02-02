@@ -50,9 +50,8 @@
             </p:layoutUnit>
             
             <p:layoutUnit position="west" resizable="true" size="500" minSize="100" maxSize="500">
-                
-             <h:form id="dataScroller"> 
-                    <p:dataScroller value="#{userFriendsManagedBean.friends}" 
+                <h:form id="dataScroller"> 
+                    <p:dataScroller value="#{userFriendsManagedBean.friendsLazyModel}" 
                                     var="friend" chunkSize="5"
                                   
                                     >
@@ -85,10 +84,11 @@
                         </h:panelGrid>
                     </p:dataScroller>
                 </h:form>
+             
             </p:layoutUnit>
  
             <p:layoutUnit position="center">
-                Center
+                
             </p:layoutUnit>
         </p:layout>
             <!--Dialog user window-->
@@ -141,7 +141,6 @@
             </p:dialog>
             </h:form>
         
-          <!--Dialog window-->
-            
+          
     </ui:define>
 </ui:composition>
