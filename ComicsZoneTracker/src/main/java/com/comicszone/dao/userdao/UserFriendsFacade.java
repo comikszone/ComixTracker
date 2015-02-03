@@ -5,16 +5,15 @@
  */
 package com.comicszone.dao.userdao;
 
+import com.comicszone.dao.FriendsFacade;
 import com.comicszone.entitynetbeans.Friends;
 import com.comicszone.entitynetbeans.Users;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 /**
  *
@@ -23,6 +22,9 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class UserFriendsFacade extends AbstractUserFacade {
 
+    @EJB
+    private FriendsFacade friendsFacade;
+    
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager entityManager;
     
@@ -31,30 +33,10 @@ public class UserFriendsFacade extends AbstractUserFacade {
         return entityManager;
     }
     
-    public List<Users> getFriends(Users currentUser) {
-        List<Friends> friends = currentUser.getFriendsList();
-        List<Users> userFriends = new ArrayList<Users>();
-        
-        for(Friends currentFriend : friends) {
-            userFriends.add(currentFriend.getUsers1());
-        }
-        //List<Users> friends = currentUser.getUsersList1();
-        return userFriends;
-    }
     
-    public void addToFriends(Users currentUser, Users friendUser) {
-        Friends friend = new Friends();
-        friend.setUsers(currentUser);
-        friend.setUsers1(friendUser);
-        friend.setIsConfirmed(false);
-        
-        currentUser.addFriendToFriendsList(friend);
-        
-        edit(currentUser);
-        //create(friend);
-        
-        
-    }
+    
+   
+
     
     public List<Users> getFriendsWithNicknameStartsWith(Users currentUser) {
             return null;

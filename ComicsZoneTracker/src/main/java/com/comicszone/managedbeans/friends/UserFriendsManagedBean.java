@@ -5,6 +5,7 @@
  */
 package com.comicszone.managedbeans.friends;
 
+import com.comicszone.dao.FriendsFacade;
 import com.comicszone.dao.userdao.UserFriendsFacade;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
@@ -30,8 +31,10 @@ import org.primefaces.model.LazyDataModel;
 public class UserFriendsManagedBean implements Serializable {
     
     @EJB
-    private UserFriendsFacade userFriendsFacade;
+    private FriendsFacade friendsFacade;
     
+    @EJB 
+    private UserFriendsFacade userFriendsFacade;
     
     private List<Users> friendsLazyModel;
 
@@ -57,7 +60,7 @@ public class UserFriendsManagedBean implements Serializable {
                     .getCurrentUser()
                     .clone();
             
-            friendsLazyModel = userFriendsFacade.getFriends(currentUser);
+            friendsLazyModel = friendsFacade.getFriends(currentUser);
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -70,8 +73,8 @@ public class UserFriendsManagedBean implements Serializable {
     }
     
     public void addToFriends() {
-        userFriendsFacade.addToFriends(currentUser, selectedUser);
-        //friendsLazyModel = userFriendsFacade.getFriends(currentUser);
+        friendsFacade.addToFriends(currentUser, selectedUser);
+        setFriendsLazyModel(friendsFacade.getFriends(currentUser));
     }
     
     public Users getSelectedUser() {

@@ -25,15 +25,16 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author yesch_000
+ * @author Eschenko_DA
  */
 @Entity
 @Table(name = "friends")
 @NamedQueries({
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
-//    @NamedQuery(name = "Friends.findByUser1Id", query = "SELECT f FROM Friends f WHERE f.friendsPK.user1Id = :user1Id"),
-//    @NamedQuery(name = "Friends.findByUser2Id", query = "SELECT f FROM Friends f WHERE f.friendsPK.user2Id = :user2Id"),
-    @NamedQuery(name = "Friends.findByIsConfirmed", query = "SELECT f FROM Friends f WHERE f.isConfirmed = :isConfirmed")})
+    @NamedQuery(name = "Friends.findByUserIds",
+            query = "SELECT f FROM Friends f WHERE f.users.userId = :user_id AND f.users1.userId = :user1_id OR f.users.userId = :user1_id AND f.users1.userId = :user_id"),
+    @NamedQuery(name = "Friends.findByIsConfirmed", 
+            query = "SELECT f FROM Friends f WHERE f.isConfirmed = :isConfirmed")})
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,10 +48,10 @@ public class Friends implements Serializable {
     @Column(name = "is_confirmed")
     private boolean isConfirmed;
     @JoinColumn(name = "user1_id", referencedColumnName = "user_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Users users;
     @JoinColumn(name = "user2_id", referencedColumnName = "user_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Users users1;
 
     public Friends() {

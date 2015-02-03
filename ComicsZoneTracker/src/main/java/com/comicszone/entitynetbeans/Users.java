@@ -102,10 +102,10 @@ public class Users implements Serializable {
 //        @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
 //        @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
 //    @ManyToMany(fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Friends> friendsList;
     //@ManyToMany(mappedBy = "usersList", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "users1", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users1", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Friends> friendsList1;
     @JoinTable(name = "progress", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
@@ -300,11 +300,6 @@ public class Users implements Serializable {
         }
         return true;
     }
-
-//    @Override
-//    public String toString() {
-//        return "com.comicszone.entitynetbeans.Users[ userId=" + userId + " ]";
-//    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
