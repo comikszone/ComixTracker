@@ -50,4 +50,4 @@ ALTER TABLE issue ADD card text;
 
 ALTER TABLE messages ADD COLUMN msg_time timestamp;
 
-ALTER TABLE comments ADD COLUMN cmnt_time timestamp;
+ALTER TABLE comments ADD COLUMN comment_time timestamp;
