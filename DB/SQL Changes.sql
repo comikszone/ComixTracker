@@ -43,3 +43,10 @@ UPDATE volume
 
 UPDATE issue
   SET is_checked = TRUE;
+  
+ALTER TABLE comics ALTER rating SET DEFAULT 0;
+UPDATE comics SET rating = 0;
+ALTER TABLE comics ALTER rating SET NOT NULL;
+ALTER TABLE friends ADD is_confirmed boolean NOT NULL DEFAULT false;
+ALTER TABLE friends DROP CONSTRAINT key19;
+ALTER TABLE friends ADD id serial PRIMARY KEY;  
