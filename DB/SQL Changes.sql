@@ -43,3 +43,11 @@ UPDATE volume
 
 UPDATE issue
   SET is_checked = TRUE;
+  
+ALTER TABLE character ADD card text;
+
+ALTER TABLE issue ADD card text;
+
+ALTER TABLE messages ADD COLUMN msg_time timestamp;
+
+ALTER TABLE comments ADD COLUMN cmnt_time timestamp;
