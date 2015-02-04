@@ -175,4 +175,9 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         return query.getResultList();
     }
     
+    public List<Comics> findByChecking(boolean isChecked) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByChecking", Comics.class);
+        query.setParameter("isChecked", isChecked);
+        return query.getResultList();
+    }
 }

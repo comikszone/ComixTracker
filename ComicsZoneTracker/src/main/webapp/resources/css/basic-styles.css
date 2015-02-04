@@ -161,3 +161,12 @@ td {
 .profile-page-column-button{
     width: 100%;
 }
+
+//Maybe, it'll help us sometimes'
+/*.ui-widget {
+  font-size: 95% !important;
+}
+.ui-widget .ui-widget {
+  font-size: 100% !important;
+}*/
+
