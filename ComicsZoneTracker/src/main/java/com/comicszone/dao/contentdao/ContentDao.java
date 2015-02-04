@@ -2,6 +2,8 @@ package com.comicszone.dao.contentdao;
 
 import com.comicszone.dao.AbstractFacade;
 import com.comicszone.dao.ComicsFacade;
+import com.comicszone.dao.IssueFacade;
+import com.comicszone.dao.VolumeFacade;
 import com.comicszone.entitynetbeans.Content;
 import com.comicszone.entitynetbeans.ContentType;
 import java.util.List;
@@ -19,7 +21,13 @@ import javax.persistence.TypedQuery;
 public class ContentDao extends AbstractFacade<Content> {
     
     @EJB
-    ComicsFacade comicsFacade;
+    private ComicsFacade comicsFacade;
+    
+    @EJB
+    private VolumeFacade volumeFacade;
+    
+    @EJB
+    private IssueFacade issueFacade;
     
     public ContentDao() {
         super(Content.class);
@@ -63,9 +71,19 @@ public class ContentDao extends AbstractFacade<Content> {
                 return;
                 
             case Issue:
+                editingItem = issueFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setIsChecked(Boolean.TRUE);
                 return;
                 
             case Volume:
+                editingItem = volumeFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setIsChecked(Boolean.TRUE);
         }
     }
     
@@ -88,9 +106,19 @@ public class ContentDao extends AbstractFacade<Content> {
                 return;
                 
             case Issue:
+                editingItem = issueFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setName(name);
                 return;
                 
             case Volume:
+                editingItem = volumeFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setName(name);
         }
     }
     
@@ -109,9 +137,19 @@ public class ContentDao extends AbstractFacade<Content> {
                 return;
                 
             case Issue:
+                editingItem = issueFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setImage(image);
                 return;
                 
             case Volume:
+                editingItem = volumeFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setImage(image);
         }
     }
     
@@ -130,9 +168,19 @@ public class ContentDao extends AbstractFacade<Content> {
                 return;
                 
             case Issue:
+                editingItem = issueFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setDescription(description);
                 return;
                 
             case Volume:
+                editingItem = volumeFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setDescription(description);
         }
     }
     
@@ -153,9 +201,86 @@ public class ContentDao extends AbstractFacade<Content> {
                 return;
                 
             case Volume:
+                editingItem = volumeFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setDescription(item.getDescription());
+                editingItem.setImage(item.getImage());
+                editingItem.setName(item.getName());
+                editingItem.setIsChecked(item.getIsChecked());
                 return;
                 
             case Issue:
+                editingItem = issueFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setDescription(item.getDescription());
+                editingItem.setImage(item.getImage());
+                editingItem.setName(item.getName());
+                editingItem.setIsChecked(item.getIsChecked());
         }
+    }
+    
+    public boolean exists(Content item) {
+        if (item == null) {
+            return false;
+        }
+        ContentType type = item.getContentType();
+        Integer id = item.getId();
+        switch (type) {
+            case Comics:
+                item = comicsFacade.find(id);
+                if (item == null) {
+                    return false;
+                }
+                return true;
+                
+            case Issue:
+                item = issueFacade.find(id);
+                if (item == null) {
+                    return false;
+                }
+                return true;
+                
+            case Volume:
+                item = volumeFacade.find(id);
+                if (item == null) {
+                    return false;
+                }
+                return true;
+        }
+        return false;          
+    }
+    
+    public boolean isChecked(Content item) {
+        if (item == null) {
+            return true;
+        }
+        ContentType type = item.getContentType();
+        Integer id = item.getId();
+        switch (type) {
+            case Comics:
+                item = comicsFacade.find(id);
+                if (item == null) {
+                    return true;
+                }
+                break;
+                
+            case Issue:
+                item = issueFacade.find(id);
+                if (item == null) {
+                    return true;
+                }
+                break;
+                
+            case Volume:
+                item = volumeFacade.find(id);
+                if (item == null) {
+                    return true;
+                }
+        }
+        return item.getIsChecked();          
     }
  }
