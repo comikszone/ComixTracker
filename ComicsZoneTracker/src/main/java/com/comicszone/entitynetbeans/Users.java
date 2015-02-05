@@ -324,6 +324,16 @@ public class Users implements Serializable {
     public void addFriendToFriendsList1(Friends friend) {
         friendsList1.add(friend);
     }
+    
+    public void addMessageToMessagesList(Messages message)
+    {
+        messagesList.add(message);
+    }
+    
+    public void addMessageToMessagesList1(Messages message)
+    {
+        messagesList1.add(message);
+    }
 
 
     public List<Users> getUsersList() {
