@@ -65,4 +65,4 @@ ALTER TABLE  uvrating  ADD CONSTRAINT  Key21 PRIMARY KEY (volume_id,user_id);
 CREATE TABLE uirating  (user_id Integer NOT NULL, issue_id Integer NOT NULL, rating Real NOT NULL);
 ALTER TABLE  uirating  ADD CONSTRAINT  i_rated_by  FOREIGN KEY ( user_id ) REFERENCES  users  ( user_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE  uirating  ADD CONSTRAINT  i_rated  FOREIGN KEY ( issue_id ) REFERENCES  issue  ( issue_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE  uvrating  ADD CONSTRAINT  Key22 PRIMARY KEY (issue_id,user_id);
+ALTER TABLE  uirating  ADD CONSTRAINT  Key22 PRIMARY KEY (issue_id,user_id);
