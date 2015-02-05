@@ -73,3 +73,4 @@ ALTER TABLE volume ADD source Varchar;
 ALTER TABLE comics ADD source Varchar;
 
 ALTER TABLE comics RENAME COLUMN image TO img;
+ALTER TABLE character RENAME COLUMN image TO img;
