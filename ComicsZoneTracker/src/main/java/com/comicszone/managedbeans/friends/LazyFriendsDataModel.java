@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.comicszone.managedbeans.catalogue;
+package com.comicszone.managedbeans.friends;
 
-import com.comicszone.dao.ComicsFacade;
-import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.dao.userdao.UserFriendsFacade;
+import com.comicszone.entitynetbeans.Users;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,65 +18,52 @@ import org.primefaces.model.SortOrder;
  *
  * @author Eschenko_DA
  */
-public class LazyComicsDataModel extends LazyDataModel<Comics> {
+public class LazyFriendsDataModel extends LazyDataModel<Users> {
     
-    private final ComicsFacade comicsFacade;
+   /* private final UserFriendsFacade friendsFacade;
     
-    private List<Comics> datasource;
-    private final String columnComicsName;
-    private final String columnComicsRating;
+    private List<Users> datasource;
     
-    public LazyComicsDataModel(ComicsFacade comicsFacade,
-            String columnComicsName, String columnComicsRating) {
-        datasource = new ArrayList<Comics>();
-        this.comicsFacade = comicsFacade;
-        this.columnComicsName = columnComicsName.toLowerCase();
-        this.columnComicsRating = columnComicsRating.toLowerCase();
+    public LazyFriendsDataModel(UserFriendsFacade friendsFacade) {
+        datasource = new ArrayList<Users>();
+        this.friendsFacade = friendsFacade;
     }
 
     @Override
-    public Comics getRowData(String rowKey) {
-        for(Comics comics : datasource) {
-            if(comics.getId().toString().equals(rowKey))
-                return comics;
+    public Users getRowData(String rowKey) {
+        for(Users friend : datasource) {
+            if(friend.getUserId().toString().equals(rowKey))
+                return friend;
         }
- 
         return null;
     }
  
     @Override
-    public Object getRowKey(Comics comics) {
-        return comics.getId();
+    public Object getRowKey(Users friend) {
+        return friend;
     }
     
     @Override
-    public List<Comics> load(int first, int pageSize, String sortField, 
+    public List<Users> load(int first, int pageSize, String sortField, 
             SortOrder sortOrder, Map<String,Object> filters) {
         
-        List<Comics> data = new ArrayList<Comics>();
-        List<Comics> resultComics;
+        List<Users> data = new ArrayList<Users>();
+        List<Users> resultUsers;
         
-        //filtering and sorting
-        if (sortField == null) {
-            sortField = "rating";
-            sortOrder = SortOrder.DESCENDING;
-        }
         Iterator<String> itFilter = filters.keySet().iterator();
         if(itFilter.hasNext()) {
             
-            String nextColumn = itFilter.next();
-            String nextColumnValue = filters.get(nextColumn).toString();
+            String nickNameColumn = itFilter.next();
+            String nickNameValue = filters.get(nickNameColumn).toString();
             
-            if (nextColumn.equals(columnComicsName) && !itFilter.hasNext()) {
-                resultComics = comicsFacade.findByName(first,pageSize,
-                        nextColumnValue,sortField,sortOrder);
-                this.setRowCount((int)comicsFacade.getComicsCountFoundByName(nextColumnValue));
+            resultUsers = friendsFacade.getUsersWithNicknameStartsWith(first+pageSize,nickNameValue);
+            this.setRowCount((int)friendsFacade.getComicsCountFoundByName(nextColumnValue));
             }
             else if (nextColumn.equals(columnComicsRating) && !itFilter.hasNext()) {
                 Double rating = Double.valueOf(nextColumnValue);
-                resultComics = comicsFacade.findByRating(first,pageSize, 
+                resultComics = friendsFacade.findByRating(first+pageSize, 
                         rating,sortField,sortOrder);
-                this.setRowCount((int)comicsFacade.getComicsCountFoundByRating(rating));
+                this.setRowCount((int)friendsFacade.getComicsCountFoundByRating(rating));
             }
             else
             {
@@ -95,16 +82,16 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
                 Double columnRatingValue = Double.valueOf(filters.get(columnRating).toString());
                 
                 
-                resultComics = comicsFacade.findByNameAndRating(first,pageSize,
+                resultComics = friendsFacade.findByNameAndRating(first+pageSize,
                         columnNameValue,columnRatingValue,sortField,sortOrder);
-                long count = comicsFacade.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
+                long count = friendsFacade.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
                 this.setRowCount((int)count);
             }
             
         }
         else {
-            resultComics = comicsFacade.findAllForCatalogue(first,pageSize,sortField,sortOrder);
-            this.setRowCount((int)(comicsFacade.getComicsCount()));
+            resultComics = friendsFacade.findAllForCatalogue(first+pageSize,sortField,sortOrder);
+            this.setRowCount((int)(friendsFacade.getComicsCount()));
         }
         
         data.addAll(resultComics);
@@ -125,5 +112,5 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
         else {
             return data;
         }
-    }
+    }*/
 }

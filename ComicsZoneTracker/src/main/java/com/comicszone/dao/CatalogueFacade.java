@@ -16,13 +16,13 @@ import org.primefaces.model.SortOrder;
  */
 @Local
 public interface CatalogueFacade {
-    List<Comics> findAllForCatalogue(Integer maxResult, String sortField, 
+    List<Comics> findAllForCatalogue(Integer first, Integer pageSize, String sortField, 
             SortOrder sortOrder);
-    List<Comics> findByNameAndRating(Integer maxResult, String name, 
+    List<Comics> findByNameAndRating(Integer first, Integer pageSize, String name, 
             Double rating, String sortField, SortOrder sortOrder);
-    List<Comics> findByRating(Integer maxResult, Double rating, 
+    List<Comics> findByRating(Integer first, Integer pageSize, Double rating, 
             String sortField, SortOrder sortOrder);
-    List<Comics> findByName(Integer maxResult, String name, 
+    List<Comics> findByName(Integer first, Integer pageSize, String name, 
             String sortField, SortOrder sortOrder);
     long getComicsCount();
     long getComicsCountFoundByNameAndRating(String name, Double rating);
