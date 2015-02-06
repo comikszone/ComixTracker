@@ -1,7 +1,8 @@
 package com.comicszone.managedbeans.contentfilter;
 
-import com.comicszone.dao.contentdao.ContentDao;
+import com.comicszone.dao.contentdao.ContentFacade;
 import com.comicszone.entitynetbeans.Content;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -14,16 +15,16 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class ContentFilterManagedBean {
+public class ContentFilterManagedBean implements Serializable {
     
     @EJB
-    ContentDao contentDao;
+    ContentFacade contentDao;
     
     private List<Content> content;
     private Content editingItem;
     
     @PostConstruct
-    private void init() {
+    public void init() {
         content = contentDao.findByChecking(Boolean.FALSE);
     }
     

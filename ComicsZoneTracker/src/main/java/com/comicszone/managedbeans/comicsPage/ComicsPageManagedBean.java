@@ -12,6 +12,7 @@ import com.comicszone.entitynetbeans.ContentType;
 import com.comicszone.entitynetbeans.Issue;
 import com.comicszone.entitynetbeans.Volume;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -28,7 +29,7 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name="comicsPageManagedBean")
 @ViewScoped
-public class ComicsPageManagedBean {
+public class ComicsPageManagedBean implements Serializable {
     
     @EJB
     private ComicsFacade comicsFacade; 
@@ -72,20 +73,10 @@ public class ComicsPageManagedBean {
         this.comicsId = comicsId;
     }
     
-//    public LazyDataModel<Issue> getLazyIssueModel() {
-//        return lazyIssueModel;
-//    }
-    
     public void init() {
         comicsController.setComicsId(comicsId);
         comicsController.initComics();
     }
-    
-//    private LazyDataModel<Issue> lazyIssueModel;
-//    
-//    public void initLazyModel() {
-//        lazyIssueModel = new LazyIssueDataModel(volume);
-//    }
     
     public String redirect(Content content)
     {

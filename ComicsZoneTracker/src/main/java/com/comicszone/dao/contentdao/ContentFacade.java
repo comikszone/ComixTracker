@@ -16,12 +16,12 @@ import javax.persistence.TypedQuery;
  * @author alexander
  */
 @Stateless
-public class ContentDao extends AbstractFacade<Content> {
+public class ContentFacade extends AbstractFacade<Content> {
     
     @EJB
     ComicsFacade comicsFacade;
     
-    public ContentDao() {
+    public ContentFacade() {
         super(Content.class);
     }
     

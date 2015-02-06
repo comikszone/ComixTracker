@@ -7,13 +7,15 @@ package com.comicszone.managedbeans.progressPage;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.entitynetbeans.Content;
+import com.comicszone.entitynetbeans.ContentType;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
 /**
@@ -23,7 +25,7 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean
 @ViewScoped
-public class ProgressPageManagedBean {
+public class ProgressPageManagedBean implements Serializable {
     @EJB
     private ComicsFacade comicsFacade;
     @ManagedProperty(value="#{currentUserManagedBean}")
@@ -90,6 +92,10 @@ public class ProgressPageManagedBean {
      */
     public void setUsersComics(List<Comics> usersComics) {
         this.usersComics = usersComics;
+    }
+    
+    public String redirect(Content content) {
+        return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + content.getId();
     }
     
 }

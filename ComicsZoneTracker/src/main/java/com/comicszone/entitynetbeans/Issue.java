@@ -45,7 +45,18 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Issue.findByVotes", query = "SELECT i FROM Issue i WHERE i.votes = :votes"),
     @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
     @NamedQuery(name = "Issue.findByChecking", query = "SELECT i FROM Issue i WHERE i.isChecked = :isChecked ORDER BY i.Id"),
-    @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate")})
+    @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
+    @NamedQuery(name = "Issue.findMarkedByUserAndComics", 
+            query = "SELECT i FROM Issue i "
+                  + "JOIN i.usersList u "
+                  + "JOIN i.volumeId v "
+                  + "JOIN v.comicsId c "
+                  + "WHERE c.Id = :comicsId AND u.userId = :userId"),
+    @NamedQuery(name = "Issue.findByComics", 
+            query = "SELECT i FROM Issue i "
+                  + "JOIN i.volumeId v "
+                  + "JOIN v.comicsId c "
+                  + "WHERE c.Id = :comicsId")})
 public class Issue implements Serializable, CommentsContainer, Content, AjaxComicsCharacter {
 
     private static final long serialVersionUID = 1L;

@@ -17,6 +17,7 @@ import com.comicszone.managedbeans.entitycontroller.ComicsController;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -25,6 +26,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleSelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -33,12 +36,16 @@ import org.primefaces.event.SelectEvent;
 @ManagedBean
 @ViewScoped
 public class ReadingPageManagedBean implements Serializable {
+    
     @EJB
     private ComicsFacade comicsFacade;
+    
     @ManagedProperty(value="#{comicsController}")
     private ComicsController comicsController;
+    
     @EJB
     private ReadingFacade readingFacade;
+    
     @ManagedProperty(value="#{currentUserManagedBean}")
     private CurrentUserManagedBean userManagedBean;
     
@@ -46,6 +53,7 @@ public class ReadingPageManagedBean implements Serializable {
 //    private List<Volume> selectedVolumes;
     private Issue selectedIssue;
     private List<Issue> selectedIssues;
+    private List<Issue> prevSelectedIssues;
 
     public ComicsFacade getComicsFacade() {
         return comicsFacade;
@@ -77,35 +85,26 @@ public class ReadingPageManagedBean implements Serializable {
         this.userManagedBean = userManagedBean;
     }
     
-//    public Volume getSelectedVolume() {
-//        return selectedVolume;
-//    }
-//
-//    public void setSelectedVolume(Volume selectedVolume) {
-//        this.selectedVolume = selectedVolume;
-//    }
-    
+        /**
+     * @return the selectedIssue
+     */
     public Issue getSelectedIssue() {
         return selectedIssue;
     }
 
+    /**
+     * @param selectedIssue the selectedIssue to set
+     */
     public void setSelectedIssue(Issue selectedIssue) {
         this.selectedIssue = selectedIssue;
     }
-    
-//    public List<Volume> getSelectedVolumes() {
-//        return selectedVolumes;
-//    }
-// 
-//    public void setSelectedVolumes(List<Volume> selectedVolumes) {
-//        this.selectedVolumes = selectedVolumes;
-//    }
     
     public List<Issue> getSelectedIssues() {
         return selectedIssues;
     }
  
     public void setSelectedIssues(List<Issue> selectedIssues) {
+        prevSelectedIssues = this.selectedIssues;
         this.selectedIssues = selectedIssues;
     }
     
@@ -117,22 +116,64 @@ public class ReadingPageManagedBean implements Serializable {
         this.readingFacade = readingFacade;
     }
     
-    public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Issue Selected",
-                ((Issue) event.getObject()).getName());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    public void init() {
+        try {
+            Integer comicsId = comicsController.getComics().getId();
+            Integer userId = userManagedBean.getCurrentUser().getUserId();
+            List<Issue> prevIssues = readingFacade.getIssueFacade().findMarkedByUserAndComics(comicsId, userId);
+            if (!prevIssues.isEmpty())
+                selectedIssues = prevIssues;
+        }
+        catch (CloneNotSupportedException ex) {
+            ex.printStackTrace();
+        }
     }
     
-    public void markAsRead(ActionEvent actionEvent) {
+    public void onHeaderCheckboxClick(ToggleSelectEvent event) {
+        if (!selectedIssues.isEmpty()) {
+            try {
+                Users currentUser = userManagedBean.getCurrentUser();
+                readingFacade.markAsRead(currentUser, selectedIssues);
+            }
+            catch (CloneNotSupportedException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void selectAll() {
+        setSelectedIssues(readingFacade.getIssueFacade().findByComics(comicsController.getComics().getId()));
         try {
             Users currentUser = userManagedBean.getCurrentUser();
             readingFacade.markAsRead(currentUser, selectedIssues);
         }
         catch (CloneNotSupportedException ex) {
-            System.err.println("Same user!");
+            ex.printStackTrace();
         }
     }
     
+    public void onRowSelect(SelectEvent event) {
+        try {
+            Users currentUser = userManagedBean.getCurrentUser();
+            readingFacade.markAsRead(currentUser, selectedIssues);
+        }
+        catch (CloneNotSupportedException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void onRowUnselect(UnselectEvent event) {
+        prevSelectedIssues.removeAll(selectedIssues);
+        Issue issueToUnmark = prevSelectedIssues.get(0);
+        try {
+            Users currentUser = userManagedBean.getCurrentUser();
+            readingFacade.unMark(currentUser, issueToUnmark);
+        }
+        catch (CloneNotSupportedException ex) {
+            ex.printStackTrace();
+        }
+    }
+        
     public String redirect(Content content)
     {
         if (content.getContentType() == ContentType.Issue)

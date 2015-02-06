@@ -5,12 +5,8 @@
  */
 package com.comicszone.managedbeans.comicsPage;
 
-import com.comicszone.dao.ComicsFacade;
-import com.comicszone.dao.IssueFacade;
-import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Issue;
 import com.comicszone.entitynetbeans.Volume;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.primefaces.model.LazyDataModel;

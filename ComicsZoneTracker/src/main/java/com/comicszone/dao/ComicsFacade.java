@@ -6,32 +6,13 @@
 package com.comicszone.dao;
 
 import com.comicszone.entitynetbeans.Comics;
-import com.comicszone.entitynetbeans.Imprint;
-import com.comicszone.entitynetbeans.Publisher;
-import com.comicszone.entitynetbeans.Volume;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
-//import org.json.simple.JSONArray;
 import org.primefaces.model.SortOrder;
 
 /**
@@ -65,9 +46,9 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         }
 
     @Override
-    public List<Comics> get12Best() {
+    public List<Comics> getBest(Integer quantity) {
         TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
-        query.setMaxResults(12);
+        query.setMaxResults(quantity);
         List<Comics> results = query.getResultList();
         return results;
     }

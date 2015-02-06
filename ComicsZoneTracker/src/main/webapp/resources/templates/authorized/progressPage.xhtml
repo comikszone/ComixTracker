@@ -13,16 +13,22 @@ and open the template in the editor.
                 xmlns:pf="http://jsf.playerfinder.net/components"
                 template="/resources/templates/authorized/authorized.xhtml">          
     <ui:define name="articleContent">
+        Welcome, #{currentUserManagedBean.name}!
         <center>
-            <p:dataList var="comics" value="#{progressPageManagedBean.usersComics}">
-                <h:panelGrid columns="2">
-                    <h:column>
-                        <h:outputText value="#{comics.name}"/>
-                    </h:column>
-                    <h:column>
-                        <p:progressBar style="width: 500px" value="#{progressPageManagedBean.getValue(comics)}"/>
-                    </h:column>
-                </h:panelGrid>
+            <p:dataList var="comics" 
+                        value="#{progressPageManagedBean.usersComics}"
+                        type="definition">
+                <p:panelGrid columns="2">
+                    <p:row>
+                    <p:column style="margin-right: 50%">
+                        <p:link value="#{comics.name}" outcome="#{progressPageManagedBean.redirect(comics)}"/>
+                        <br/>
+                    </p:column>
+                    <p:column>
+                        <p:progressBar style="width: 50em" value="#{progressPageManagedBean.getValue(comics)}"/>
+                    </p:column>
+                    </p:row>
+                </p:panelGrid>
             </p:dataList>
         </center>    
     </ui:define>
