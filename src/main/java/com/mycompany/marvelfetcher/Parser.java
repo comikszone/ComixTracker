@@ -53,19 +53,19 @@ public class Parser {
         }
     };
     
-    public static String parseSubArr(JSONArray jArr, int i, String arrNode, int k, String subArrNode) { //for date
+    public static String parseSubArr(JSONArray jArr, int i, String subArr, int k, String subArrNode) { //for date
         
         try {
-            return jArr.getJSONObject(i).getJSONArray(arrNode).getJSONObject(k).getString(subArrNode).replace("'", "\"");
+            return jArr.getJSONObject(i).getJSONArray(subArr).getJSONObject(k).getString(subArrNode).replace("'", "\"");
         }
         catch(JSONException e) {
             return "null";
         }
     };
     
-    public static String parseSubArrNode(JSONArray jArr, int i, String node, String array, int k, String subNode) { //for comics list in character JSON
+    public static String parseSubArrNode(JSONArray jArr, int i, String node, String subArr, int k, String subArrNode) { //for comics list in character JSON
         try{
-            return jArr.getJSONObject(i).getJSONObject(node).getJSONArray(array).getJSONObject(k).getString(subNode);
+            return jArr.getJSONObject(i).getJSONObject(node).getJSONArray(subArr).getJSONObject(k).getString(subArrNode);
         }
         catch(JSONException e) {
             return "null";
