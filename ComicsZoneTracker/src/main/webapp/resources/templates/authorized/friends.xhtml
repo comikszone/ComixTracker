@@ -48,12 +48,13 @@
 
                     </p:panel>
                 <!--</p:layoutUnit>-->
-
-                <!--<p:layoutUnit position="west" resizable="true" size="500" minSize="100" maxSize="500"-->
-                              <!--style="height: 100%;">-->
-                     <p:panelGrid columns="2">
-                         <p:row>
-                         <p:column>
+                <p:layout style="width:100%;">
+                    <p:layoutUnit position="west" resizable="true" size="500" minSize="100" 
+                                  maxSize="500" style="height: 100%;">
+                              <!--<table>-->
+                                  <!--<tr>-->
+                                      <!--<td>-->  
+                                  
                     <p:dataTable
                         id="friendsTable"
                         var="friend"
@@ -72,7 +73,7 @@
 
                         <p:ajax 
                             event="rowSelect" 
-                            update="@all"
+                            update=":form:messages"
                             listener="#{messagesManagedBean.setFriendId(userFriendsManagedBean.selectedFriend.userId)}"
                             
                             />
@@ -115,24 +116,80 @@
                             </p:outputPanel>
                         </p:column>
                     </p:dataTable>
-                         </p:column>
-                <!--</p:layoutUnit>-->
+                                  <!--</td>-->
+                </p:layoutUnit>
 
-                <!--<p:layoutUnit position="center">-->
-                <p:column>
-                        <f:metadata>
-                    <f:viewParam name="id" value="#{messagesManagedBean.friendId}"/>
-                     </f:metadata>
-                <div>
-                    <ui:include src="/resources/templates/authorized/messages4.xhtml">
+                <p:layoutUnit position="center">
+                
+                     <p:panel 
+            id="messageAdder" 
+            header="Your message" 
+            styleClass="comments-container">
+            <!--<h:form id="messagesAdderForm">-->
+                <p:inputTextarea 
+                    id="messagesAdderNewMessage" 
+                    style="width:100% ;"/>
+                <br/>
+                <p:commandButton 
+                    id="messagesAdderSubmit" 
+                    value="Send"
+                    action="#{messagesManagedBean.addMessage()}"
+                    update=":form:messages :form:messageAdder"/>
+            <!--</h:form>-->
+        </p:panel>
+<!--    </c:if>-->
+
+
+    <!--<h:form id="table">-->
+        <p:growl id="messagessMessage" showDetail="true" life="1000" />
+        <p:confirmDialog
+            message="Are you sure you want to delete comment?"
+            header="Confirm action"
+            widgetVar="deleteConfirm">
+                
+        </p:confirmDialog>
+        <p:panel styleClass="comments-container">
+            <p:dataTable var="message"
+                    id="messages"
+                    emptyMessage="No messages"
+                paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} 
+                    {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                    value="#{messagesManagedBean.dataModel}" 
+
+                paginator="true" 
+                rowsPerPageTemplate="10,20,30" 
+                rows="10"
+                lazy="true">
+                <p:column width="30%"
+                          sortBy="#{message.msgTime}" 
+                          filterBy="#{message.text}" 
+                          >
+                    <p:panel id="messageid" 
+                         header="#{message.sender.nickname}:#{message.msgTime}"
+                         style="color: ;text-align: left; background-color: #{message.sender.userId eq messagesManagedBean.currentUser.userId ? '#B7FFFF' : '#C5FFD4'}">
+                         <f:facet name="actions">
+                            <p:commandLink
+                                styleClass="ui-panel-titlebar-icon ui-corner-all 
+                                ui-state-default ui-icon ui-icon-close"
+                                action="#{messagesManagedBean.deleteMessage(message)}"
+                                update=":form:messages">
+                            </p:commandLink>
+                        </f:facet>
+                        <p:graphicImage value="#{message.sender.avatarUrl}" width="100" height="100"/>
+                        <h:outputText value="#{message.text}" />
+                    </p:panel>
+                </p:column>
+        </p:dataTable>
+        </p:panel>
+                <!--<td style="width: 60%;">-->
+<!--                    <ui:include src="/resources/templates/authorized/messages4.xhtml">
                         <ui:param name="type" value="comics"/>
-                    </ui:include>
-                </div>
-                    </p:column>
-                         </p:row>
-                     </p:panelGrid>  
-                <!--</p:layoutUnit>-->
-            <!--</p:layout>-->
+                    </ui:include>-->
+                <!--</td>-->
+                    <!--</tr>-->
+                              <!--</table>-->
+                </p:layoutUnit>-->
+            </p:layout>
             <!--Dialog user window-->
             <p:dialog header="User details" 
                       widgetVar="userDetails" 
