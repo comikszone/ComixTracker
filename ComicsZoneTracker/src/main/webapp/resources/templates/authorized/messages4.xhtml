@@ -10,7 +10,7 @@
             id="messageAdder" 
             header="Your message" 
             styleClass="comments-container">
-            <h:form id="messagesAdderForm">
+            <!--<h:form id="messagesAdderForm">-->
                 <p:inputTextarea 
                     id="messagesAdderNewMessage" 
                     style="width:100% ;"/>
@@ -19,13 +19,13 @@
                     id="messagesAdderSubmit" 
                     value="Send"
                     action="#{messagesManagedBean.addMessage()}"
-                    update=":table :messageAdder"/>
-            </h:form>
+                    update="@all"/>
+            <!--</h:form>-->
         </p:panel>
 <!--    </c:if>-->
 
 
-    <h:form id="table">
+    <!--<h:form id="table">-->
         <p:growl id="messagessMessage" showDetail="true" life="1000" />
         <p:confirmDialog
             message="Are you sure you want to delete comment?"
@@ -57,7 +57,7 @@
                                 styleClass="ui-panel-titlebar-icon ui-corner-all 
                                 ui-state-default ui-icon ui-icon-close"
                                 action="#{messagesManagedBean.deleteMessage(message)}"
-                                update=":table">
+                                update="@all">
                             </p:commandLink>
                         </f:facet>
                         <p:graphicImage value="#{message.sender.avatarUrl}" width="100" height="100"/>
@@ -66,7 +66,7 @@
                 </p:column>
         </p:dataTable>
         </p:panel>
-    </h:form>
+    <!--</h:form>-->
     
    
     

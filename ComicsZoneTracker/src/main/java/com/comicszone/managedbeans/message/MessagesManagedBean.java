@@ -40,7 +40,7 @@ public class MessagesManagedBean {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = facesContext.getViewRoot();
         InputTextarea inputText = null;
-        inputText = (InputTextarea) uiViewRoot.findComponent("messagesAdderForm:messagesAdderNewMessage");
+        inputText = (InputTextarea) uiViewRoot.findComponent(":form:messagesAdderNewMessage");
         String messageText = (String)inputText.getValue();
         if (messageText == null || messageText.isEmpty()) {
             facesContext.addMessage(null, facesMessageWrongMessage);
@@ -100,6 +100,7 @@ public class MessagesManagedBean {
     }
 
     public void setFriendId(Integer friendId) {
+        System.err.println("selected friend id="+friendId);
         dataModel=new  LazyMessagesDataModel(messagesFacade, currentUser.getUserId(), friendId, currentUser.getUserId());
         this.friendId = friendId;
     }

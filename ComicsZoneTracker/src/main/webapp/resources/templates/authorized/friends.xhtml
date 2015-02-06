@@ -6,11 +6,11 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
         <h:form id="form">
-            <p:layout style="width:100%;">
-                <p:layoutUnit position="north" resizable="false" style="height: 100%;" >
+            <!--<p:layout style="width:100%;">-->
+                <!--<p:layoutUnit position="north" resizable="false" style="height: 100%;" >-->
                     <p:panel header="Find new friends">
-
-                        <h:panelGrid columns="2" cellpadding="0">
+                        <p:panelGrid columns="1" style="width: 100%;">
+                        <p:panelGrid columns="2" >
                             <p:autoComplete
                                 id="userFinder"
                                 maxResults="5"
@@ -41,16 +41,19 @@
                                     #{user.nickname}
                                 </p:column>
                             </p:autoComplete>
-
-                        </h:panelGrid>
+                        </p:panelGrid>
+                        </p:panelGrid>
 
 
 
                     </p:panel>
-                </p:layoutUnit>
+                <!--</p:layoutUnit>-->
 
-                <p:layoutUnit position="west" resizable="true" size="500" minSize="100" maxSize="500"
-                              style="height: 100%;">
+                <!--<p:layoutUnit position="west" resizable="true" size="500" minSize="100" maxSize="500"-->
+                              <!--style="height: 100%;">-->
+                     <p:panelGrid columns="2">
+                         <p:row>
+                         <p:column>
                     <p:dataTable
                         id="friendsTable"
                         var="friend"
@@ -67,12 +70,12 @@
                         emptyMessage="No friends found!"
                         >
 
-                        <!--<p:ajax 
+                        <p:ajax 
                             event="rowSelect" 
+                            update="@all"
+                            listener="#{messagesManagedBean.setFriendId(userFriendsManagedBean.selectedFriend.userId)}"
                             
-                            update=":form:comicsDetail"
                             />
-                            oncomplete="PF('comicsDialog').show()"--> 
 
                         <p:column width="50%" 
                                   headerText="Nickname" 
@@ -112,13 +115,24 @@
                             </p:outputPanel>
                         </p:column>
                     </p:dataTable>
+                         </p:column>
+                <!--</p:layoutUnit>-->
 
-                </p:layoutUnit>
-
-                <p:layoutUnit position="center">
-
-                </p:layoutUnit>
-            </p:layout>
+                <!--<p:layoutUnit position="center">-->
+                <p:column>
+                        <f:metadata>
+                    <f:viewParam name="id" value="#{messagesManagedBean.friendId}"/>
+                     </f:metadata>
+                <div>
+                    <ui:include src="/resources/templates/authorized/messages4.xhtml">
+                        <ui:param name="type" value="comics"/>
+                    </ui:include>
+                </div>
+                    </p:column>
+                         </p:row>
+                     </p:panelGrid>  
+                <!--</p:layoutUnit>-->
+            <!--</p:layout>-->
             <!--Dialog user window-->
             <p:dialog header="User details" 
                       widgetVar="userDetails" 
