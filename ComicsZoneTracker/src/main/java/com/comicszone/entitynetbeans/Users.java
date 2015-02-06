@@ -319,6 +319,14 @@ public class Users implements Serializable {
     public void addFriendToFriendsList1(Friends friend) {
         friendsList1.add(friend);
     }
+    
+    public void removeFriendFromFriendsList(Friends friend) {
+        friendsList.remove(friend);
+    }
+    
+    public void removeFriendFromFriendsList1(Friends friend) {
+        friendsList1.remove(friend);
+    }
 
 
     public List<Users> getUsersList() {

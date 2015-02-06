@@ -7,9 +7,7 @@ package com.comicszone.entitynetbeans;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -47,6 +45,10 @@ public class Friends implements Serializable {
     @NotNull
     @Column(name = "is_confirmed")
     private boolean isConfirmed;
+    @Basic(optional = true)
+    @NotNull
+    @Column(name = "are_friends")
+    private boolean areFriends;
     @JoinColumn(name = "user1_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Users users;
@@ -91,6 +93,14 @@ public class Friends implements Serializable {
         this.users1 = users1;
     }
 
+    public boolean areFriends() {
+        return areFriends;
+    }
+
+    public void setAreFriends(boolean areFriends) {
+        this.areFriends = areFriends;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -115,9 +125,6 @@ public class Friends implements Serializable {
 
     @Override
     public String toString() {
-        return "Friends{" + "id=" + id + ", isConfirmed=" + isConfirmed + ", users=" + users + ", users1=" + users1 + '}';
+        return "Friends{" + "id=" + id + ", isConfirmed=" + isConfirmed + ", areFriends=" + areFriends + ", users=" + users + ", users1=" + users1 + '}';
     }
-
-  
-    
 }

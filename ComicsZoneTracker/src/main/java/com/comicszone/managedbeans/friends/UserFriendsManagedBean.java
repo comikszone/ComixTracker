@@ -11,6 +11,7 @@ import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import com.comicszone.managedbeans.userbeans.ProfileUserManagedBean;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +46,10 @@ public class UserFriendsManagedBean implements Serializable {
     private Users selectedUser;
     
     private Users selectedFriend;
+    
+    private Users selectedInfoFriend;
 
+    
     
     @PostConstruct
     public void init() {
@@ -67,13 +71,22 @@ public class UserFriendsManagedBean implements Serializable {
     }
     
     public List<Users> completeUser(String query) {
+        
         List<Users> users = userFriendsFacade.getUsersWithNicknameStartsWith(query);
-        //FacesContext.getCurrentInstance().getAttributes().put("users", users);
+        List<Users> friends = friendsFacade.getFriends(currentUser);
+        
+        users.removeAll(friends);
+        
         return users;
     }
     
     public void addToFriends() {
         friendsFacade.addToFriends(currentUser, selectedUser);
+        setFriendsLazyModel(friendsFacade.getFriends(currentUser));
+    }
+    
+    public void removeFromFrieds() {
+        friendsFacade.removeFromFriends(currentUser, selectedInfoFriend);
         setFriendsLazyModel(friendsFacade.getFriends(currentUser));
     }
     
@@ -107,4 +120,12 @@ public class UserFriendsManagedBean implements Serializable {
     public void setFriendsLazyModel(List<Users> friendsLazyModel) {
         this.friendsLazyModel = friendsLazyModel;
     }
+    public Users getSelectedInfoFriend() {
+        return selectedInfoFriend;
+    }
+
+    public void setSelectedInfoFriend(Users selectedInfoFriend) {
+        this.selectedInfoFriend = selectedInfoFriend;
+    }
+    
 }

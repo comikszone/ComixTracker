@@ -35,22 +35,10 @@ public class FriendsFacade extends AbstractFacade<Friends> {
     
     private boolean areFriends(Users currentUser, Users friendUser) {
         
-        TypedQuery<Friends> query = 
-                em.createNamedQuery("Friends.findByUserIds", Friends.class);
-        
-        query.setParameter("user_id", currentUser.getUserId());
-        query.setParameter("user1_id", friendUser.getUserId());
-        
-        List<Friends> result = query.getResultList();
-        
-        for(Friends friend : result) {
-            System.err.println("\n" + friend + "\n");
-        }
-        
-        return !query.getResultList().isEmpty();
+        return getFriends(currentUser).contains(friendUser);
     }
     
-    public List<Users> getFriends(Users currentUser) {
+    private boolean wereFriends(Users currentUser, Users friendUser) {
         
         List<Friends> myFriends = currentUser.getFriendsList();
         List<Friends> myFriends1 = currentUser.getFriendsList1();
@@ -65,6 +53,28 @@ public class FriendsFacade extends AbstractFacade<Friends> {
             userFriends.add(currentFriend.getUsers());
         }
         
+        return userFriends.contains(friendUser);
+    }
+    
+    public List<Users> getFriends(Users currentUser) {
+        
+        List<Friends> myFriends = currentUser.getFriendsList();
+        List<Friends> myFriends1 = currentUser.getFriendsList1();
+        
+        List<Users> userFriends = new ArrayList<Users>();
+        
+        for(Friends currentFriend : myFriends) {
+            if (currentFriend.areFriends()) {
+                userFriends.add(currentFriend.getUsers1());
+            }
+        }
+        
+        for(Friends currentFriend : myFriends1) {
+            if (currentFriend.areFriends()) {
+                userFriends.add(currentFriend.getUsers());
+            }
+        }
+        
         return userFriends;
     }
     
@@ -73,7 +83,8 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         Friends friend = new Friends();
         friend.setUsers(currentUser);
         friend.setUsers1(friendUser);
-        friend.setIsConfirmed(false);
+        friend.setIsConfirmed(true);
+        friend.setAreFriends(true);
         
         if (!areFriends(currentUser, friendUser) && !currentUser.equals(friendUser)) {
             
@@ -81,6 +92,20 @@ public class FriendsFacade extends AbstractFacade<Friends> {
             friendUser.addFriendToFriendsList1(friend);
         
             create(friend);  
+        }
+    }
+    
+    public void removeFromFriends(Users currentUser, Users friendUser) {
+        
+        if (areFriends(currentUser, friendUser)) {
+            TypedQuery<Friends> query =em.createNamedQuery("Friends.findByUserIds", Friends.class);
+            query.setParameter("user_id", currentUser.getUserId());
+            query.setParameter("user1_id", friendUser.getUserId());
+            Friends friend = query.getResultList().get(0);
+            friend.setAreFriends(false);
+            
+            currentUser.removeFriendFromFriendsList(friend);
+            friendUser.removeFriendFromFriendsList1(friend);
         }
     }
 }
