@@ -35,11 +35,11 @@ public class CommentsManagedBean implements Serializable {
     private String selectedCommentText;
     private Comments editingComment;
     private String redirect;
-    private static final String wrongComment = "Your comment is too short.";
-    private static final String notAuthorized = "Please authorize to perform action.";
-    private static final String wrongUser = "You cannot perform this action.";
-    private static final String accessError = "Access error.";
-    private static final String contentError = "Content error";
+    private static final String WRONG_COMMENT = "Your comment is too short.";
+    private static final String NOT_AUTHORIZED = "Please authorize to perform action.";
+    private static final String WRONG_USER = "You cannot perform this action.";
+    private static final String ACCESS_ERROR = "Access error.";
+    private static final String CONTENT_ERROR = "Content error";
     private FacesMessage facesMessageWrongComment;
     private FacesMessage facesMessageNotAuthorized;
     private FacesMessage facesMessageWrongUser;
@@ -130,11 +130,11 @@ public class CommentsManagedBean implements Serializable {
     @PostConstruct
     private void init() {
         facesMessageWrongComment = new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                contentError, wrongComment);
+                CONTENT_ERROR, WRONG_COMMENT);
         facesMessageNotAuthorized = new FacesMessage(FacesMessage.SEVERITY_INFO,
-                accessError, notAuthorized);
+                ACCESS_ERROR, NOT_AUTHORIZED);
         facesMessageWrongUser = new FacesMessage(FacesMessage.SEVERITY_INFO, 
-                accessError, wrongUser);
+                ACCESS_ERROR, WRONG_USER);
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         //identify user

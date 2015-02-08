@@ -54,7 +54,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
     }
     
     @Override
-    public List<Comics> findAllForCatalogue(Integer maxResult, String sortField, SortOrder sortOrder) {
+    public List<Comics> findAllForCatalogue(Integer first, Integer pageSize, String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
         
@@ -62,12 +62,13 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             "CASE WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " + 
             "c." + sortField + " " + sortOrderString);
         
-        query.setMaxResults(maxResult);
+        query.setFirstResult(first);
+        query.setMaxResults(pageSize);
         return query.getResultList();
     }
 
     @Override
-    public List<Comics> findByNameAndRating(Integer maxResult, String name, 
+    public List<Comics> findByNameAndRating(Integer first, Integer pageSize, String name, 
             Double rating, String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
@@ -80,14 +81,15 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
                 + "c." + sortField + " " + sortOrderString);
         
         
-        query.setMaxResults(maxResult);
+        query.setFirstResult(first);
+        query.setMaxResults(pageSize);
         query.setParameter("name", name.toLowerCase() + "%");
         query.setParameter("rating", rating);
         return query.getResultList();
     }
 
     @Override
-    public List<Comics> findByRating(Integer maxResult, Double rating,
+    public List<Comics> findByRating(Integer first, Integer pageSize, Double rating,
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
@@ -99,12 +101,13 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
                 + "c." + sortField + " " + sortOrderString);
         
         query.setParameter("rating", rating);
-        query.setMaxResults(maxResult);
+        query.setFirstResult(first);
+        query.setMaxResults(pageSize);
         return query.getResultList();
     }
 
     @Override
-    public List<Comics> findByName(Integer maxResult, String name,
+    public List<Comics> findByName(Integer first, Integer pageSize, String name,
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
@@ -116,7 +119,8 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
                 + "c." + sortField + " " + sortOrderString);
         
         query.setParameter("name", name.toLowerCase()+"%");
-        query.setMaxResults(maxResult);
+        query.setFirstResult(first);
+        query.setMaxResults(pageSize);
         return query.getResultList();
     }
     
@@ -178,4 +182,9 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         return query.getResultList().get(0);
     }
     
+    public List<Comics> findByChecking(boolean isChecked) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByChecking", Comics.class);
+        query.setParameter("isChecked", isChecked);
+        return query.getResultList();
+    }
 }

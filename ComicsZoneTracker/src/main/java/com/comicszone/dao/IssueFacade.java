@@ -53,4 +53,9 @@ public class IssueFacade extends AbstractFacade<Issue> implements Finder {
         return query.getResultList();
     }
 
+    public List<Issue> findByChecking(boolean isChecked) {
+        TypedQuery<Issue> query =em.createNamedQuery("Issue.findByChecking", Issue.class);
+        query.setParameter("isChecked", isChecked);
+        return query.getResultList();
+    }
 }
