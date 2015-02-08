@@ -11,6 +11,7 @@ import com.comicszone.entitynetbeans.Content;
 import com.comicszone.entitynetbeans.ContentType;
 import com.comicszone.entitynetbeans.Issue;
 import com.comicszone.entitynetbeans.Volume;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -23,7 +24,7 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name="comicsPageManagedBean")
 @ViewScoped
-public class ComicsPageManagedBean {
+public class ComicsPageManagedBean implements Serializable {
     
     @EJB
     private ComicsFacade comicsFacade;

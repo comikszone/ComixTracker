@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -16,7 +17,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name="comicsController")
 @ViewScoped
-public class ComicsController {
+public class ComicsController implements Serializable {
     @EJB
     private ComicsFacade comicsFacade;
     private Comics comics;

@@ -50,7 +50,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByNameStartsWithAscId", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name ORDER BY c.Id"),
     @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
     @NamedQuery(name = "Comics.findByChecking", query = "SELECT c FROM Comics c WHERE c.isChecked = :isChecked ORDER BY c.Id"),
-    //forComicsCatalogue
+    //for ComicsCatalogue
     @NamedQuery(name = "Comics.count", 
             query = "SELECT COUNT(c) FROM Comics c"),
     @NamedQuery(name = "Comics.countFoundByNameAndRating", 
@@ -60,8 +60,12 @@ import javax.validation.constraints.Size;
             query = "SELECT COUNT(c) FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
     @NamedQuery(name = "Comics.countFoundByRating",
             query = "SELECT COUNT(c) FROM Comics c WHERE c.rating BETWEEN :rating AND :rating+1"),
-    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''")})
-
+    //for news
+    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"), 
+    @NamedQuery(name = "Comics.getComicsWithNewCommentsAfterUser", query = "SELECT DISTINCT c FROM Comics c INNER JOIN c.commentsList cl WHERE cl.commentTime > (SELECT MAX(ccl.commentTime) FROM  Comics cc INNER JOIN cc.commentsList ccl WHERE cc.Id = c.Id AND ccl.userId = :userId)"),
+    @NamedQuery(name = "Comics.getMaxCommentDateForUser", query = "SELECT MAX(cl.commentTime) FROM  Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.userId = :userId"), 
+    @NamedQuery(name = "Comics.getCountOfNewCommentsForUser", query = "SELECT COUNT(cl.commentId) FROM Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.commentTime > (SELECT MAX(ccl.commentTime) FROM  Comics cc INNER JOIN cc.commentsList ccl WHERE cc.Id = c.Id AND ccl.userId = :userId)"),
+    @NamedQuery(name = "Comics.getCommentsAfterDateToComics", query = "SELECT DISTINCT cl FROM Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.commentTime > :date ORDER BY cl.commentTime")})
 public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
 
     private static final long serialVersionUID = 1L;

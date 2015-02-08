@@ -9,6 +9,7 @@ import com.comicszone.dao.CharacterFacade;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import com.comicszone.entitynetbeans.Character;
+import java.io.Serializable;
 import javax.ejb.EJB;
 
 /**
@@ -17,7 +18,7 @@ import javax.ejb.EJB;
  */
 @ManagedBean(name="characterController")
 @RequestScoped
-public class CharacterController {
+public class CharacterController implements Serializable {
     @EJB
     public CharacterFacade characterFacade;
     public Integer characterId;

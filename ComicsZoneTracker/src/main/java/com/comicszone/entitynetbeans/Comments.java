@@ -6,6 +6,7 @@
 package com.comicszone.entitynetbeans;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -46,6 +49,10 @@ public class Comments implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "text")
     private String text;
+    @Basic(optional = false)
+    @Column(name = "comment_time", insertable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date commentTime;
     @JoinColumn(name = "comics_id", referencedColumnName = "comics_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Comics comicsId;
@@ -117,6 +124,14 @@ public class Comments implements Serializable {
 
     public void setVolumeId(Volume volumeId) {
         this.volumeId = volumeId;
+    }
+    
+    public Date getCommentTime() {
+        return commentTime;
+    }
+    
+    public void setCommentTime(Date commentTime) {
+        this.commentTime = commentTime;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.comicszone.managedbeans;
 
 import java.io.IOException;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -9,7 +10,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @RequestScoped
-public class StartNavigationManagedBean {
+public class StartNavigationManagedBean implements Serializable {
     private String templateName;
     
     public void returnStartPage() throws IOException{

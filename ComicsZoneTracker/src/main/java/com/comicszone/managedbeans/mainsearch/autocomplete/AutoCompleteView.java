@@ -17,6 +17,7 @@ import com.comicszone.dao.Finder;
 import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ import javax.faces.context.FacesContext;
  
 @ManagedBean
 @ViewScoped
-public class AutoCompleteView {
+public class AutoCompleteView implements Serializable {
     @EJB
     private ComicsFacade comicsFacade;
     @EJB
