@@ -11,25 +11,25 @@ import com.comicszone.entitynetbeans.CommentsContainer;
 import com.comicszone.entitynetbeans.Issue;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.entitynetbeans.Volume;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
 /**
  *
  * @author alexander
  */
 @Stateless
+@Path("/comments")
 public class CommentsFacade extends AbstractFacade<Comments> {
     
     @EJB
@@ -111,7 +111,28 @@ public class CommentsFacade extends AbstractFacade<Comments> {
         comment.setText(newText);
         return true;
     }
-
+    
+    @GET
+    @Path("/{commentsContainerType}/id/{commentsContainerId}")
+    @Produces("application/json")
+    public List<Comments> getCommentsTo(
+            @PathParam("commentsContainerType") String type,
+            @PathParam("commentsContainerId") String id) 
+    {
+        String typeLowerCase = type.toLowerCase();
+        Integer containerId = Integer.parseInt(id);
+        if (typeLowerCase.equals("comics")) {
+            return getCommentsTo(containerId, CommentToType.COMICS);
+        }
+        if (typeLowerCase.equals("issue")) {
+            return getCommentsTo(containerId, CommentToType.ISSUE);
+        }
+        if (typeLowerCase.equals("volume")) {
+            return getCommentsTo(containerId, CommentToType.VOLUME);
+        }
+        return null;
+    }
+    
     public List<Comments> getCommentsTo(Integer id, CommentToType type) {
         CommentsContainer commentsContainer = findCommentsContainer(id, type);
         if (commentsContainer == null) {
