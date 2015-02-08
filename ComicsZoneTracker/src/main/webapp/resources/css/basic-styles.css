@@ -146,6 +146,10 @@ td {
     text-transform: uppercase;
 }
 
+.slideshow-image {
+    width: 33vw;
+}
+
 .profile-page-column-attr-name{
     float: right;
 }
