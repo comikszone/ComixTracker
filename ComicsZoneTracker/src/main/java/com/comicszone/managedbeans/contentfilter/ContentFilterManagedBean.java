@@ -3,7 +3,7 @@ package com.comicszone.managedbeans.contentfilter;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.VolumeFacade;
-import com.comicszone.dao.contentdao.ContentDao;
+import com.comicszone.dao.contentdao.ContentFacade;
 import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Content;
 import com.comicszone.entitynetbeans.Issue;
@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 public class ContentFilterManagedBean implements Serializable {
     
     @EJB
-    private ContentDao contentDao;
+    private ContentFacade contentDao;
     
     @EJB
     private ComicsFacade comicsFacade;

@@ -2,6 +2,7 @@ package com.comicszone.managedbeans.userbeans;
 
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Users;
+import java.io.Serializable;
 import java.security.Principal;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -12,7 +13,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @SessionScoped
-public class CurrentUserManagedBean {
+public class CurrentUserManagedBean implements Serializable {
 
     private Users currentUser;
     @EJB
@@ -36,10 +37,6 @@ public class CurrentUserManagedBean {
 
     public Date getBirthday() {
         return currentUser.getBirthday();
-    }
-    
-    public int getId() {
-        return currentUser.getUserId();
     }
 
     public String getEmail() {

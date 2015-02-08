@@ -1,6 +1,7 @@
 package com.comicszone.managedbeans.logout;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpSession;
 
 @ManagedBean
 @RequestScoped
-public class LogoutManagedBean {
+public class LogoutManagedBean implements Serializable {
     public void logout(){
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();

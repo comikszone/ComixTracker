@@ -5,7 +5,7 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
-import com.comicszone.dao.userdao.UserRegistrationDao;
+import com.comicszone.dao.userdao.UserRegistrationFacade;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.util.passwordcreators.IPasswordCreator;
 import com.comicszone.managedbeans.util.passwordcreators.SimplePasswordCreator;
@@ -28,7 +28,7 @@ import org.json.simple.parser.ParseException;
 public abstract class SocialNetworkAuthorization {
 
     @EJB
-    private UserRegistrationDao userRegistrationDao;
+    private UserRegistrationFacade userRegistrationDao;
 
     private final int PASSWORD_LENGTH = 20;
     

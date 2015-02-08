@@ -5,7 +5,7 @@
  */
 package com.comicszone.managedbeans.block;
 
-import com.comicszone.dao.userdao.UserBlockDao;
+import com.comicszone.dao.userdao.UserBlockFacade;
 import com.comicszone.entitynetbeans.Users;
 import java.util.List;
 import javax.ejb.EJB;
@@ -27,7 +27,7 @@ import javax.faces.context.FacesContext;
 public class BlockUserManagedBean {
     
     @EJB
-    UserBlockDao userBlockDao;
+    UserBlockFacade userBlockDao;
     
     private Users selectedUser;
     

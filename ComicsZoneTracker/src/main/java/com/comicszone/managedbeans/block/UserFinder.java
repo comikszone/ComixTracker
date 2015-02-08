@@ -5,7 +5,7 @@
  */
 package com.comicszone.managedbeans.block;
 
-import com.comicszone.dao.userdao.UserBlockDao;
+import com.comicszone.dao.userdao.UserBlockFacade;
 import com.comicszone.entitynetbeans.Users;
 import javax.ejb.EJB;
 import javax.faces.bean.ApplicationScoped;
@@ -20,7 +20,7 @@ import javax.faces.bean.ManagedBean;
 public class UserFinder {
     
     @EJB
-    private UserBlockDao userBlockDao;
+    private UserBlockFacade userBlockDao;
     
     public Users find(Integer id) {
         return userBlockDao.find(id);

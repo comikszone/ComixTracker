@@ -7,7 +7,7 @@ package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.VolumeFacade;
 import com.comicszone.entitynetbeans.Volume;
-import javax.annotation.PostConstruct;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -19,7 +19,7 @@ import javax.faces.bean.ViewScoped;
 
 @ManagedBean
 @ViewScoped
-public class VolumeController {
+public class VolumeController implements Serializable {
     @EJB
     private VolumeFacade volumeFacade;
     

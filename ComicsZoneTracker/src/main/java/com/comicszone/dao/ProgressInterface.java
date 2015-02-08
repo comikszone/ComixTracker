@@ -14,6 +14,8 @@ import javax.ejb.Local;
  * @author GuronPavorro
  */
 @Local
-public interface SlideshowInterface {
-    public List<Comics> getBest(Integer quantity);
+public interface ProgressInterface {
+    List<Comics> findByUserInProgress(Integer userId);
+    Long getTotalIssueCount(Integer comicsId);
+    Long getMarkedIssueCount(Integer comicsId, Integer userId);
 }

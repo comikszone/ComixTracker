@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-public class UserRegistrationDao extends AbstractUserFacade {
+public class UserRegistrationFacade extends AbstractUserFacade {
 
     @EJB
     private GroupFacade groupFacade;

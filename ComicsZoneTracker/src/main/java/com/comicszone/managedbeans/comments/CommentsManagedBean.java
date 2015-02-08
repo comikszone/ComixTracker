@@ -1,9 +1,10 @@
 package com.comicszone.managedbeans.comments;
 
-import com.comicszone.dao.commentsdao.CommentsDao;
-import com.comicszone.dao.commentsdao.CommentsDao.CommentToType;
+import com.comicszone.dao.commentsdao.CommentsFacade;
+import com.comicszone.dao.commentsdao.CommentsFacade.CommentToType;
 import com.comicszone.entitynetbeans.Comments;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -23,9 +24,9 @@ import org.primefaces.component.inputtextarea.InputTextarea;
  */
 @ManagedBean
 @ViewScoped
-public class CommentsManagedBean {
+public class CommentsManagedBean implements Serializable {
     @EJB
-    CommentsDao commentsDao;
+    CommentsFacade commentsDao;
     
     private String currentUserNickname;
     private List<Comments> comments;
