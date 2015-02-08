@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:pf="http://jsf.playerfinder.net/components"
+                template="/resources/templates/authorized/authorized.xhtml">          
+    <ui:define name="articleContent">
+        Welcome, #{currentUserManagedBean.name}!
+        <center>
+            <p:dataList var="comics" 
+                        value="#{progressPageManagedBean.usersComics}"
+                        type="definition">
+                <p:panelGrid columns="2">
+                    <p:row>
+                    <p:column style="margin-right: 50%">
+                        <p:link value="#{comics.name}" outcome="#{progressPageManagedBean.redirect(comics)}"/>
+                        <br/>
+                    </p:column>
+                    <p:column>
+                        <p:progressBar style="width: 50em" value="#{progressPageManagedBean.getValue(comics)}"/>
+                    </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dataList>
+        </center>    
+    </ui:define>
+</ui:composition>

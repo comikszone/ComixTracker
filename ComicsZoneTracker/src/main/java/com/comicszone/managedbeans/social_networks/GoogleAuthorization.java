@@ -18,6 +18,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -34,7 +35,7 @@ import org.json.simple.parser.ParseException;
  */
 @ManagedBean
 @SessionScoped
-public class GoogleAuthorization extends SocialNetworkAuthorization {
+public class GoogleAuthorization extends SocialNetworkAuthorization implements Serializable {
     private static final String CLIENT_ID = "232041634310-t8k3nf1cbede85kbu8ljsc16j2fdfbvf.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "KYTJxAdhHkJ1ccx7uy9HIgKn";
     private static final String CALLBACK_URI = "http://www.comicszonetracker.tk/resources/templates/unauthorized/redirect_page.jsf";

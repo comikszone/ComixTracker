@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author alexander
  */
 @Stateless
-public class UserBlockDao extends AbstractUserFacade {
+public class UserBlockFacade extends AbstractUserFacade {
 
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager entityManager;

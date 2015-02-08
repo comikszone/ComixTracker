@@ -9,17 +9,14 @@ package com.comicszone.managedbeans.social_networks;
  *
  * @author ArsenyPC
  */
-import com.comicszone.dao.userdao.UserRegistrationDao;
 import com.comicszone.entitynetbeans.Users;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.FileHandler;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -37,7 +34,7 @@ import org.json.simple.parser.ParseException;
  * @author ArsenyPC
  */
 @ManagedBean
-public class FacebookAuthorization extends SocialNetworkAuthorization {
+public class FacebookAuthorization extends SocialNetworkAuthorization implements Serializable {
     private static final String CLIENT_ID = "361365270701323";
     private static final String CLIENT_SECRET = "0b2cf81509ba71c7df172ab46fa49a57";
     private static final String CALLBACK_URI = "http://www.comicszonetracker.tk/resources/templates/unauthorized/facebook_redirect_page.jsf";

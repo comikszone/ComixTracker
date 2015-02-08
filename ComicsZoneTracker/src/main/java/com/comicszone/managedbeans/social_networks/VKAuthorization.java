@@ -5,11 +5,12 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
-import com.comicszone.dao.userdao.UserRegistrationDao;
+import com.comicszone.dao.userdao.UserRegistrationFacade;
 import com.comicszone.entitynetbeans.Users;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -35,7 +36,7 @@ import org.json.simple.parser.ParseException;
  * @author ArsenyPC
  */
 @ManagedBean
-public class VKAuthorization extends SocialNetworkAuthorization {
+public class VKAuthorization extends SocialNetworkAuthorization implements Serializable {
     private static final String CLIENT_ID = "4695923";
     private static final String CLIENT_SECRET = "DN8uqaag7oUAPSfYCe2n";
     private static final String CALLBACK_URI = "http://www.comicszonetracker.tk/resources/templates/unauthorized/vk_redirect_page.jsf";

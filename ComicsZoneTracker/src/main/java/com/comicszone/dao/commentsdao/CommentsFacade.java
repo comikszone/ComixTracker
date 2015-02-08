@@ -4,7 +4,7 @@ import com.comicszone.dao.AbstractFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.VolumeFacade;
-import com.comicszone.dao.userdao.UserBlockDao;
+import com.comicszone.dao.userdao.UserBlockFacade;
 import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Comments;
 import com.comicszone.entitynetbeans.CommentsContainer;
@@ -22,10 +22,10 @@ import javax.persistence.PersistenceContext;
  * @author alexander
  */
 @Stateless
-public class CommentsDao extends AbstractFacade<Comments> {
+public class CommentsFacade extends AbstractFacade<Comments> {
     
     @EJB
-    private UserBlockDao userDao;
+    private UserBlockFacade userDao;
     
     @EJB
     private ComicsFacade comicsFacade;
@@ -36,7 +36,7 @@ public class CommentsDao extends AbstractFacade<Comments> {
     @EJB
     private VolumeFacade volumeFacade;
     
-    public CommentsDao() {
+    public CommentsFacade() {
         super(Comments.class);
     }
     
