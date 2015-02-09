@@ -36,6 +36,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.comicszone.dao.ProgressFacade.class);
         resources.add(com.comicszone.dao.commentsdao.CommentsFacade.class);
         resources.add(com.comicszone.webservice.JsonProducer.class);
     }
