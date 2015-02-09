@@ -5,7 +5,7 @@
  */
 package com.comicszone.managedbeans.friends;
 
-import com.comicszone.dao.userdao.UserFriendsFacade;
+import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Users;
 import java.util.ArrayList;
 import java.util.Iterator;

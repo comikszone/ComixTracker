@@ -42,7 +42,7 @@ import org.primefaces.model.SortOrder;
 @LocalBean
 //@Path("/comics")
 //@Produces({"text/xml", "application/json"})
-public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowInterface,CatalogueFacade{
+public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowInterface,CatalogueInterface{
 
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
@@ -73,13 +73,13 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
     }
     
     @Override
-    public List<Comics> findAllForCatalogue(Integer first, Integer pageSize, String sortField, SortOrder sortOrder) {
+    public List<Comics> findAllForCatalogue(Integer first, Integer pageSize, 
+            String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
         
-        Query query = em.createQuery("SELECT c FROM Comics c ORDER BY " +
-            "CASE WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " + 
-            "c." + sortField + " " + sortOrderString);
+        Query query = em.createQuery("SELECT c FROM Comics c ORDER BY c."
+                + sortField + " " + sortOrderString);
         
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
@@ -95,10 +95,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE LOWER(c.name) LIKE :name "
                 + "AND c.rating BETWEEN :rating AND :rating+1 "
-                + "ORDER BY CASE "
-                + "WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " 
-                + "c." + sortField + " " + sortOrderString);
-        
+                + "ORDER BY c." + sortField + " " + sortOrderString);
         
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
@@ -115,9 +112,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE c.rating BETWEEN :rating AND :rating+1 "
-                + "ORDER BY CASE "
-                + "WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " 
-                + "c." + sortField + " " + sortOrderString);
+                + "ORDER BY c." + sortField + " " + sortOrderString);
         
         query.setParameter("rating", rating);
         query.setFirstResult(first);
@@ -133,9 +128,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE LOWER(c.name) LIKE :name "
-                + "ORDER BY CASE "
-                + "WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " 
-                + "c." + sortField + " " + sortOrderString);
+                + "ORDER BY c." + sortField + " " + sortOrderString);
         
         query.setParameter("name", name.toLowerCase()+"%");
         query.setFirstResult(first);

@@ -6,7 +6,7 @@
 package com.comicszone.managedbeans.friends;
 
 import com.comicszone.dao.FriendsFacade;
-import com.comicszone.dao.userdao.UserFriendsFacade;
+import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import com.comicszone.managedbeans.userbeans.ProfileUserManagedBean;
@@ -35,11 +35,9 @@ public class UserFriendsManagedBean implements Serializable {
     private FriendsFacade friendsFacade;
     
     @EJB 
-    private UserFriendsFacade userFriendsFacade;
+    private UserDataFacade userDataFacade;
     
     private List<Users> friendsLazyModel;
-
-    
 
     private Users currentUser;
     
@@ -49,7 +47,6 @@ public class UserFriendsManagedBean implements Serializable {
     
     private Users selectedInfoFriend;
 
-    
     
     @PostConstruct
     public void init() {
@@ -72,10 +69,11 @@ public class UserFriendsManagedBean implements Serializable {
     
     public List<Users> completeUser(String query) {
         
-        List<Users> users = userFriendsFacade.getUsersWithNicknameStartsWith(query);
+        List<Users> users = userDataFacade.getUsersWithNicknameStartsWith(query);
         List<Users> friends = friendsFacade.getFriends(currentUser);
         
         users.removeAll(friends);
+        users.remove(currentUser);
         
         return users;
     }
