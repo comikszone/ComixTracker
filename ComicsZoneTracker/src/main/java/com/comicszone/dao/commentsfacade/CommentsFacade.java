@@ -13,7 +13,9 @@ import com.comicszone.entitynetbeans.Users;
 import com.comicszone.entitynetbeans.Volume;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,6 +25,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import org.json.simple.JSONArray;
 
 /**
  *
@@ -114,23 +117,37 @@ public class CommentsFacade extends AbstractFacade<Comments> {
     
     @GET
     @Path("/{commentsContainerType}/id/{commentsContainerId}")
-    @Produces("application/json")
-    public List<Comments> getCommentsTo(
+    public String getCommentsTo(
             @PathParam("commentsContainerType") String type,
             @PathParam("commentsContainerId") String id) 
     {
         String typeLowerCase = type.toLowerCase();
         Integer containerId = Integer.parseInt(id);
+        List<Comments> comments = null;
         if (typeLowerCase.equals("comics")) {
-            return getCommentsTo(containerId, CommentToType.COMICS);
+            comments = getCommentsTo(containerId, CommentToType.COMICS);
         }
-        if (typeLowerCase.equals("issue")) {
-            return getCommentsTo(containerId, CommentToType.ISSUE);
+        else if (typeLowerCase.equals("issue")) {
+            comments = getCommentsTo(containerId, CommentToType.ISSUE);
         }
-        if (typeLowerCase.equals("volume")) {
-            return getCommentsTo(containerId, CommentToType.VOLUME);
+        else if (typeLowerCase.equals("volume")) {
+            comments = getCommentsTo(containerId, CommentToType.VOLUME);
         }
-        return null;
+        if (comments == null) {
+            return "";
+        }
+        String idAttribute = "id", authorAttribute = "author", 
+                textAttribute = "text", timeAttribute = "time";
+        JSONArray json = new JSONArray();
+        for (Comments comment : comments) {
+            Map mapForJSON = new HashMap();
+            mapForJSON.put(idAttribute, comment.getCommentId());
+            mapForJSON.put(authorAttribute, comment.getUserId().getUserId());
+            mapForJSON.put(textAttribute, comment.getText());
+            mapForJSON.put(timeAttribute, comment.getCommentTime());
+            json.add(mapForJSON);
+        }
+        return json.toJSONString();
     }
     
     public List<Comments> getCommentsTo(Integer id, CommentToType type) {
