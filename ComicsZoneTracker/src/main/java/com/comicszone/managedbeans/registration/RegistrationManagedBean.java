@@ -1,5 +1,6 @@
 package com.comicszone.managedbeans.registration;
 
+import java.io.Serializable;
 import com.comicszone.dao.userdao.UserRegistrationFacade;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -10,7 +11,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @RequestScoped
-public class RegistrationManagedBean {
+public class RegistrationManagedBean implements Serializable {
 
     @EJB
     UserRegistrationFacade registrationDao;

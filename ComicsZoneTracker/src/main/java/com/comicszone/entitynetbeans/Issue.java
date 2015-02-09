@@ -46,6 +46,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
     @NamedQuery(name = "Issue.findByChecking", query = "SELECT i FROM Issue i WHERE i.isChecked = :isChecked ORDER BY i.Id"),
     @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
+    //for news
+    @NamedQuery(name = "Issue.getIssuesWithNewCommentsAfterUser", query = "SELECT DISTINCT i FROM Issue i INNER JOIN i.commentsList il WHERE il.commentTime > (SELECT MAX(iil.commentTime) FROM  Issue ii INNER JOIN ii.commentsList iil WHERE ii.Id = i.Id AND iil.userId = :userId)"),
+    @NamedQuery(name = "Issue.getMaxCommentDateForUser", query = "SELECT MAX(il.commentTime) FROM  Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.userId = :userId"), 
+    @NamedQuery(name = "Issue.getCountOfNewCommentsForUser", query = "SELECT COUNT(il.commentId) FROM Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.commentTime > (SELECT MAX(iil.commentTime) FROM  Issue ii INNER JOIN ii.commentsList iil WHERE ii.Id = i.Id AND iil.userId = :userId)"), 
+    @NamedQuery(name = "Issue.getCommentsAfterDateToIssue", query = "SELECT DISTINCT il FROM Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.commentTime > :date ORDER BY il.commentTime"),
+
     @NamedQuery(name = "Issue.findMarkedByUserAndComics", 
             query = "SELECT i FROM Issue i "
                   + "JOIN i.usersList u "

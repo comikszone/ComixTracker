@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.catalogue;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +75,7 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
             }
             else if (nextColumn.equals(columnComicsRating) && !itFilter.hasNext()) {
                 Double rating = Double.valueOf(nextColumnValue);
-                resultComics = comicsFacade.findByRating(first,pageSize, 
+                resultComics = comicsFacade.findByRating(first,pageSize,
                         rating,sortField,sortOrder);
                 this.setRowCount((int)comicsFacade.getComicsCountFoundByRating(rating));
             }
@@ -95,6 +96,7 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
                 Double columnRatingValue = Double.valueOf(filters.get(columnRating).toString());
                 
                 
+
                 resultComics = comicsFacade.findByNameAndRating(first,pageSize,
                         columnNameValue,columnRatingValue,sortField,sortOrder);
                 long count = comicsFacade.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);

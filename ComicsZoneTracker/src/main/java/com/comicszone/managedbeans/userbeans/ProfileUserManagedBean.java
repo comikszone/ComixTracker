@@ -3,6 +3,7 @@ package com.comicszone.managedbeans.userbeans;
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Users;
 import java.io.ByteArrayInputStream;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +21,7 @@ import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 @SessionScoped
-public class ProfileUserManagedBean {
+public class ProfileUserManagedBean implements Serializable {
 
     private UploadedFile image;
     private Users user;

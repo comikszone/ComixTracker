@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.block;
 
 import com.comicszone.dao.userdao.UserBlockFacade;
 import com.comicszone.entitynetbeans.Users;
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -24,7 +25,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class BlockUserManagedBean {
+public class BlockUserManagedBean implements Serializable {
     
     @EJB
     UserBlockFacade userBlockDao;

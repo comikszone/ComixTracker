@@ -20,7 +20,7 @@ article {
     z-index: 999;
 }
 
-.wrapper {
+.custom-wrapper {
     min-height: 100%;
     margin: 0 auto -2em;
 }
@@ -31,7 +31,7 @@ footer {
     background-color: #ECEFF1;
 }
 
-.push {
+.custom-push {
     height: 2em;
 }
 
@@ -117,12 +117,12 @@ td {
     margin-left: -2em;
 }
 
-.wrapper {
+.custom-wrapper {
     min-height: 100%;
     margin: 0 auto -2em !important;
 }
 
-.push {
+.custom-push {
     height: 2em;
 }
 

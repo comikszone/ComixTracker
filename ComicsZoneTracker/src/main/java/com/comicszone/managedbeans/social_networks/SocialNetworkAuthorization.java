@@ -10,6 +10,7 @@ import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.util.passwordcreators.IPasswordCreator;
 import com.comicszone.managedbeans.util.passwordcreators.SimplePasswordCreator;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -25,7 +26,7 @@ import org.json.simple.parser.ParseException;
  *
  * @author ArsenyPC
  */
-public abstract class SocialNetworkAuthorization {
+public abstract class SocialNetworkAuthorization implements Serializable {
 
     @EJB
     private UserRegistrationFacade userRegistrationDao;

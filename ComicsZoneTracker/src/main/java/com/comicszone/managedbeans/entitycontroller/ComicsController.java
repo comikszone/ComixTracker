@@ -8,7 +8,6 @@ package com.comicszone.managedbeans.entitycontroller;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entitynetbeans.Comics;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
