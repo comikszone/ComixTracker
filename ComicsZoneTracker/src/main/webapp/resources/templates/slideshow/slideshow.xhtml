@@ -10,10 +10,10 @@
         <h:outputScript library="scripts" name="slick.min.js"/>
     </h:head>
     <h:body>
-        <div class="slideshow" style="width:75%">
+        <div class="slideshow" style="max-width:75%">
             <ui:repeat var="comics" value="#{slideshowController.comicsList}">
                 <div>
-                <h:panelGrid columns="1" cellpadding="6" columnClasses="label,value">
+                <h:panelGrid columns="1" columnClasses="label,value">
                 <p:row>
                     <h:form>
                         <h:link outcome="#{slideshowController.redirect(comics.id)}">
@@ -32,6 +32,6 @@
             </ui:repeat>
         </div>
         <script type="text/javascript" src="/resources/scripts/slideshow.js"></script>
-        <script type="text/javascript" src="/resources/slick/slick.min.js"></script>
+        <script type="text/javascript" src="/resources/scripts/slick.min.js"></script>
     </h:body>
 </html>

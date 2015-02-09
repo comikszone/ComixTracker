@@ -147,7 +147,8 @@ td {
 }
 
 .slideshow-image {
-    width: 33vw;
+    width: 400px;
+    transition: all 300ms ease;
 }
 
 .profile-page-column-attr-name{
@@ -164,6 +165,14 @@ td {
 
 .profile-page-column-button{
     width: 100%;
+}
+
+.slick-slide {
+    opacity: 0.6;
+}
+
+.slick-center {
+    opacity: 1;
 }
 
 //Maybe, it'll help us sometimes'
