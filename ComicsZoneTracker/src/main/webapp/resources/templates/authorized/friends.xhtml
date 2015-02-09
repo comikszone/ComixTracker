@@ -175,6 +175,10 @@
                                                 ui-state-default ui-icon ui-icon-close"
                                             action="#{messagesManagedBean.deleteMessage(message)}"
                                             update=":form:messages">
+                                            <p:confirm
+                                                header="Confirm deletion"
+                                                message="Are you sure you want to delete this message?"
+                                                icon="ui-icon-alert"/>
                                         </p:commandLink>
                                     </f:facet>
                                     <p:graphicImage 
@@ -284,6 +288,17 @@
             </p:dialog>
         </h:form>
 
-
+    <p:confirmDialog
+        global="true"
+        widgetVar="confirm">
+        <p:commandButton
+            styleClass="ui-confirmdialog-yes"
+            value="Yes"
+            type="button"/>
+        <p:commandButton
+            styleClass="ui-confirmdialog-no"
+            value="No"
+            type="button"/>
+     </p:confirmDialog>
     </ui:define>
 </ui:composition>
