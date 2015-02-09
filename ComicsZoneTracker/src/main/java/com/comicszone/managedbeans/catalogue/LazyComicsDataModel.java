@@ -69,13 +69,13 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
             String nextColumnValue = filters.get(nextColumn).toString();
             
             if (nextColumn.equals(columnComicsName) && !itFilter.hasNext()) {
-                resultComics = comicsFacade.findByName(first+pageSize,
+                resultComics = comicsFacade.findByName(first, pageSize,
                         nextColumnValue,sortField,sortOrder);
                 this.setRowCount((int)comicsFacade.getComicsCountFoundByName(nextColumnValue));
             }
             else if (nextColumn.equals(columnComicsRating) && !itFilter.hasNext()) {
                 Double rating = Double.valueOf(nextColumnValue);
-                resultComics = comicsFacade.findByRating(first+pageSize, 
+                resultComics = comicsFacade.findByRating(first, pageSize, 
                         rating,sortField,sortOrder);
                 this.setRowCount((int)comicsFacade.getComicsCountFoundByRating(rating));
             }
@@ -96,7 +96,7 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
                 Double columnRatingValue = Double.valueOf(filters.get(columnRating).toString());
                 
                 
-                resultComics = comicsFacade.findByNameAndRating(first+pageSize,
+                resultComics = comicsFacade.findByNameAndRating(first, pageSize,
                         columnNameValue,columnRatingValue,sortField,sortOrder);
                 long count = comicsFacade.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
                 this.setRowCount((int)count);
@@ -104,7 +104,7 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
             
         }
         else {
-            resultComics = comicsFacade.findAllForCatalogue(first+pageSize,sortField,sortOrder);
+            resultComics = comicsFacade.findAllForCatalogue(first,pageSize,sortField,sortOrder);
             this.setRowCount((int)(comicsFacade.getComicsCount()));
         }
         

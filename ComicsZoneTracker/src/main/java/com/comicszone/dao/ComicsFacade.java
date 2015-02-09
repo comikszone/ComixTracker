@@ -6,32 +6,13 @@
 package com.comicszone.dao;
 
 import com.comicszone.entitynetbeans.Comics;
-import com.comicszone.entitynetbeans.Imprint;
-import com.comicszone.entitynetbeans.Publisher;
-import com.comicszone.entitynetbeans.Volume;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
-//import org.json.simple.JSONArray;
 import org.primefaces.model.SortOrder;
 
 /**
@@ -42,7 +23,7 @@ import org.primefaces.model.SortOrder;
 @LocalBean
 //@Path("/comics")
 //@Produces({"text/xml", "application/json"})
-public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowInterface,CatalogueFacade{
+public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowInterface,CatalogueFacade, ProgressInterface{
 
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
@@ -55,7 +36,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
     public ComicsFacade() {
         super(Comics.class);
     }
-    
+        
     @Override
     public List<Comics> findByNameStartsWith(String name) {
             TypedQuery<Comics> query =em.createNamedQuery("Comics.findByNameStartsWith", Comics.class);
@@ -65,15 +46,15 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         }
 
     @Override
-    public List<Comics> get12Best() {
+    public List<Comics> getBest(Integer quantity) {
         TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
-        query.setMaxResults(12);
+        query.setMaxResults(quantity);
         List<Comics> results = query.getResultList();
         return results;
     }
     
     @Override
-    public List<Comics> findAllForCatalogue(Integer maxResult, String sortField, SortOrder sortOrder) {
+    public List<Comics> findAllForCatalogue(Integer first, Integer pageSize, String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
         
@@ -81,12 +62,13 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             "CASE WHEN c." + sortField + " IS NULL THEN 1 ELSE 0 END, " + 
             "c." + sortField + " " + sortOrderString);
         
-        query.setMaxResults(maxResult);
+        query.setFirstResult(first);
+        query.setMaxResults(pageSize);
         return query.getResultList();
     }
 
     @Override
-    public List<Comics> findByNameAndRating(Integer maxResult, String name, 
+    public List<Comics> findByNameAndRating(Integer first, Integer pageSize, String name, 
             Double rating, String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
@@ -99,14 +81,15 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
                 + "c." + sortField + " " + sortOrderString);
         
         
-        query.setMaxResults(maxResult);
+        query.setFirstResult(first);
+        query.setMaxResults(pageSize);
         query.setParameter("name", name.toLowerCase() + "%");
         query.setParameter("rating", rating);
         return query.getResultList();
     }
 
     @Override
-    public List<Comics> findByRating(Integer maxResult, Double rating,
+    public List<Comics> findByRating(Integer first, Integer pageSize, Double rating,
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
@@ -118,12 +101,13 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
                 + "c." + sortField + " " + sortOrderString);
         
         query.setParameter("rating", rating);
-        query.setMaxResults(maxResult);
+        query.setFirstResult(first);
+        query.setMaxResults(pageSize);
         return query.getResultList();
     }
 
     @Override
-    public List<Comics> findByName(Integer maxResult, String name,
+    public List<Comics> findByName(Integer first, Integer pageSize, String name,
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
@@ -135,7 +119,8 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
                 + "c." + sortField + " " + sortOrderString);
         
         query.setParameter("name", name.toLowerCase()+"%");
-        query.setMaxResults(maxResult);
+        query.setFirstResult(first);
+        query.setMaxResults(pageSize);
         return query.getResultList();
     }
     
@@ -173,6 +158,28 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         TypedQuery<Comics> query=em.createNamedQuery("Comics.findAllAscId",Comics.class);
         query.setMaxResults(maxResult);
         return query.getResultList();
+    }
+
+    @Override
+    public List<Comics> findByUserInProgress(Integer userId) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByUserInProgress", Comics.class);
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+
+    @Override
+    public Long getTotalIssueCount(Integer comicsId) {
+        TypedQuery<Long> query = em.createNamedQuery("Comics.getTotalIssueCount", Long.class);
+        query.setParameter("comicsId", comicsId);
+        return query.getResultList().get(0);
+    }
+
+    @Override
+    public Long getMarkedIssueCount(Integer comicsId, Integer userId) {
+        TypedQuery<Long> query = em.createNamedQuery("Comics.getMarkedIssueCount", Long.class);
+        query.setParameter("comicsId", comicsId);
+        query.setParameter("userId", userId);
+        return query.getResultList().get(0);
     }
     
     public List<Comics> findByChecking(boolean isChecked) {
