@@ -6,55 +6,47 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
         <h:form id="form">
-            <!--<p:layout style="width:100%;">-->
-                <!--<p:layoutUnit position="north" resizable="false" style="height: 100%;" >-->
-                    <p:panel header="Find new friends">
-                        <!--<p:panelGrid columns="1" style="width: 100%;">-->
-                        <p:panelGrid columns="2" >
-                            <p:autoComplete
-                                id="userFinder"
-                                maxResults="5"
-                                completeMethod="#{userFriendsManagedBean.completeUser}"
-                                var="user"
-                                value="#{userFriendsManagedBean.selectedUser}"
-                                itemValue="#{user}"
-                                itemLabel="#{user.nickname}"
-                                converter="userConverter"
-                                forceSelection="true"
-                                dropdown="false"
+            <p:panel header="Find new friends">
+                <p:panelGrid columns="1" >
+                    <p:autoComplete
+                        id="friendsFinder"
+                        maxResults="5"
+                        completeMethod="#{userFriendsManagedBean.completeUser}"
+                        var="user"
+                        value="#{userFriendsManagedBean.selectedUser}"
+                        itemValue="#{user}"
+                        itemLabel="#{user.nickname}"
+                        converter="userConverter"
+                        forceSelection="true"
+                        dropdown="false">
+                        
+                        <p:ajax 
+                            event="itemSelect" 
+                            update=":form:userDetailPanel" 
+                            oncomplete="PF('userDetails').show()"/> 
 
-                                >
-                                <p:ajax 
-                                    event="itemSelect" 
-                                    update=":form:userDetailPanel" 
-                                    oncomplete="PF('userDetails').show()"/> 
+                        <p:column>
+                            <p:graphicImage
+                                value="#{user.avatarUrl}"
+                                width="80"
+                                height="80"/>
+                        </p:column>
 
-                                <p:column>
-                                    <p:graphicImage
-                                        alt=""
-                                        value="#{user.avatarUrl}"
-                                        width="70"
-                                        height="70"/>
-                                </p:column>
-
-                                <p:column>
-                                    #{user.nickname}
-                                </p:column>
-                            </p:autoComplete>
-                        </p:panelGrid>
-                        <!--</p:panelGrid>-->
-
-
-
-                    </p:panel>
-                <!--</p:layoutUnit>-->
-                <p:layout style="width:100%;">
-                    <p:layoutUnit position="west" resizable="true" size="500" minSize="100" 
-                                  maxSize="500" style="height: 100%;">
-                              <!--<table>-->
-                                  <!--<tr>-->
-                                      <!--<td>-->  
-                                  
+                        <p:column>
+                            #{user.nickname}
+                        </p:column>
+                    </p:autoComplete>
+                </p:panelGrid>
+            </p:panel>
+             
+                    <!--<div style="float: left">-->
+                    
+                    <!--<p:panelGrid columns="2" layout="grid">-->
+                        <!--<p:column style="float: left">-->
+                        
+                        <table style="border: 1px solid black;">
+                 <tr >
+                     <td style="border: 1px solid black; width: 30%" >
                     <p:dataTable
                         id="friendsTable"
                         var="friend"
@@ -69,6 +61,7 @@
                         selectionMode="single" 
                         selection="#{userFriendsManagedBean.selectedFriend}"
                         emptyMessage="No friends found!"
+                        style="margin: 3%; vertical-align: top"
                         >
 
                         <p:ajax 
@@ -116,80 +109,90 @@
                             </p:outputPanel>
                         </p:column>
                     </p:dataTable>
-                                  <!--</td>-->
-                </p:layoutUnit>
+                         
+                     </td>
+                            <!--</p:column>-->             
+                    <!--</div>-->
+                    <!--<p:column style="float:right">-->
+                    <!--<div>-->
+                    <td style="border: 1px solid black">
+                        <p:panel 
+                            id="messageAdder" 
+                            header="Your message" 
+                            styleClass="comments-container">
+                            
+                        <p:inputTextarea 
+                            id="messagesAdderNewMessage" 
+                            style="width:100% ;"/>
+                        <br/>
+                        
+                        <p:commandButton 
+                            id="messagesAdderSubmit" 
+                            value="Send"
+                            action="#{messagesManagedBean.addMessage()}"
+                            update=":form:messages :form:messageAdder"/>
+                        
+                        <p:commandButton 
+                            id="messagesRefresh" 
+                            value="Refresh"
+                            update=":form:messages :form:messageAdder"/>
+                        </p:panel>
 
-                <p:layoutUnit position="center">
-                
-                     <p:panel 
-            id="messageAdder" 
-            header="Your message" 
-            styleClass="comments-container">
-            <!--<h:form id="messagesAdderForm">-->
-                <p:inputTextarea 
-                    id="messagesAdderNewMessage" 
-                    style="width:100% ;"/>
-                <br/>
-                <p:commandButton 
-                    id="messagesAdderSubmit" 
-                    value="Send"
-                    action="#{messagesManagedBean.addMessage()}"
-                    update=":form:messages :form:messageAdder"/>
-            <!--</h:form>-->
-        </p:panel>
-<!--    </c:if>-->
+                        <p:growl id="messagessMessage" showDetail="true" life="1000" />
+                        
+                        <p:confirmDialog
+                            message="Are you sure you want to delete comment?"
+                            header="Confirm action"
+                            widgetVar="deleteConfirm"/>
+                        
+                        <p:panel styleClass="comments-container">
+                            <p:dataTable 
+                                var="message"
+                                id="messages"
+                                emptyMessage="No messages"
+                                paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} 
+                                {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                value="#{messagesManagedBean.dataModel}" 
+                                paginator="true" 
+                                rowsPerPageTemplate="10,20,30" 
+                                rows="10"
+                                lazy="true">
+                                
+                                <p:column 
+                                    width="30%"
+                                    sortBy="#{message.msgTime}" 
+                                    filterBy="#{message.text}" 
+                                >
+                                <p:panel 
+                                    id="messageid" 
+                                    header="#{message.sender.nickname}:#{message.msgTime}"
+                                    style="color: ;text-align: left; background-color: #{message.sender.userId eq messagesManagedBean.currentUser.userId ? '#B7FFFF' : '#C5FFD4'}">
+                                    
+                                    <f:facet name="actions">
+                                        <p:commandLink
+                                            styleClass="ui-panel-titlebar-icon ui-corner-all 
+                                                ui-state-default ui-icon ui-icon-close"
+                                            action="#{messagesManagedBean.deleteMessage(message)}"
+                                            update=":form:messages">
+                                        </p:commandLink>
+                                    </f:facet>
+                                    <p:graphicImage 
+                                        value="#{message.sender.avatarUrl}" 
+                                        width="100" 
+                                        height="100"/>
+                                    <h:outputText value="#{message.text}" />
+                                </p:panel>
+                                    
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    <!--</div>-->
+                    </td>
+                 </tr>
+             </table>
+                    <!--</p:column>-->
+                    <!--</p:panelGrid>-->
 
-
-    <!--<h:form id="table">-->
-        <p:growl id="messagessMessage" showDetail="true" life="1000" />
-        <p:confirmDialog
-            message="Are you sure you want to delete comment?"
-            header="Confirm action"
-            widgetVar="deleteConfirm">
-                
-        </p:confirmDialog>
-        <p:panel styleClass="comments-container">
-            <p:dataTable var="message"
-                    id="messages"
-                    emptyMessage="No messages"
-                paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} 
-                    {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                    value="#{messagesManagedBean.dataModel}" 
-
-                paginator="true" 
-                rowsPerPageTemplate="10,20,30" 
-                rows="10"
-                lazy="true">
-                <p:column width="30%"
-                          sortBy="#{message.msgTime}" 
-                          filterBy="#{message.text}" 
-                          >
-                    <p:panel id="messageid" 
-                         header="#{message.sender.nickname}:#{message.msgTime}"
-                         style="color: ;text-align: left; background-color: #{message.sender.userId eq messagesManagedBean.currentUser.userId ? '#B7FFFF' : '#C5FFD4'}">
-                         <f:facet name="actions">
-                            <p:commandLink
-                                styleClass="ui-panel-titlebar-icon ui-corner-all 
-                                ui-state-default ui-icon ui-icon-close"
-                                action="#{messagesManagedBean.deleteMessage(message)}"
-                                update=":form:messages">
-                            </p:commandLink>
-                        </f:facet>
-                        <p:graphicImage value="#{message.sender.avatarUrl}" width="100" height="100"/>
-                        <h:outputText value="#{message.text}" />
-                    </p:panel>
-                </p:column>
-        </p:dataTable>
-        </p:panel>
-                <!--<td style="width: 60%;">-->
-<!--                    <ui:include src="/resources/templates/authorized/messages4.xhtml">
-                        <ui:param name="type" value="comics"/>
-                    </ui:include>-->
-                <!--</td>-->
-                    <!--</tr>-->
-                              <!--</table>-->
-                </p:layoutUnit>-->
-            </p:layout>
             <!--Dialog user window-->
             <p:dialog header="User details" 
                       widgetVar="userDetails" 
@@ -233,6 +236,7 @@
                     </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>
+            
             
             <!--Dialog friend window-->
             <p:dialog header="Friend details" 
