@@ -45,8 +45,8 @@
                         <!--<p:column style="float: left">-->
                         
                         <table style="border: 1px solid black;">
-                 <tr >
-                     <td style="border: 1px solid black; width: 30%" >
+                 <tr>
+                     <td style="border: 1px solid black; width: 30%;  vertical-align: top" >
                     <p:dataTable
                         id="friendsTable"
                         var="friend"
@@ -61,7 +61,7 @@
                         selectionMode="single" 
                         selection="#{userFriendsManagedBean.selectedFriend}"
                         emptyMessage="No friends found!"
-                        style="margin: 3%; vertical-align: top"
+                        style="margin: 3%;"
                         >
 
                         <p:ajax 
@@ -119,23 +119,24 @@
                         <p:panel 
                             id="messageAdder" 
                             header="Your message" 
-                            styleClass="comments-container">
+                            style="margin: 3%">
                             
                         <p:inputTextarea 
                             id="messagesAdderNewMessage" 
                             style="width:100% ;"/>
                         <br/>
                         
-                        <p:commandButton 
+                        <p:commandButton
+                            style="margin-right: -90%"
                             id="messagesAdderSubmit" 
                             value="Send"
                             action="#{messagesManagedBean.addMessage()}"
                             update=":form:messages :form:messageAdder"/>
-                        
-                        <p:commandButton 
+                        <p:commandButton
                             id="messagesRefresh" 
                             value="Refresh"
                             update=":form:messages :form:messageAdder"/>
+                        
                         </p:panel>
 
                         <p:growl id="messagessMessage" showDetail="true" life="1000" />
