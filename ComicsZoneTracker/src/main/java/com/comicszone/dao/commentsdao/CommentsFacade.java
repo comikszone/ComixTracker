@@ -95,6 +95,7 @@ public class CommentsFacade extends AbstractFacade<Comments> {
         setContainerId(newComment, commentsContainer, type);
         newComment.setUserId(author);
         newComment.setText(commentText);
+        newComment.setCommentTime(new Date(System.currentTimeMillis()));
         create(newComment);
         commentsContainer.getCommentsList().add(newComment);
         return true;

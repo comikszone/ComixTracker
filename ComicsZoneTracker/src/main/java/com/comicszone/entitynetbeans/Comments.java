@@ -50,7 +50,7 @@ public class Comments implements Serializable {
     @Column(name = "text")
     private String text;
     @Basic(optional = false)
-    @Column(name = "comment_time", insertable = false)
+    @Column(name = "comment_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date commentTime;
     @JoinColumn(name = "comics_id", referencedColumnName = "comics_id")
