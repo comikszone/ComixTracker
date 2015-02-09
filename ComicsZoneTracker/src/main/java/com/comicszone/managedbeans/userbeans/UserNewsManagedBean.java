@@ -1,6 +1,6 @@
 package com.comicszone.managedbeans.userbeans;
 
-import com.comicszone.dao.commentsfacade.CommentsFacade;
+import com.comicszone.dao.commentsdao.CommentsFacade;
 import com.comicszone.entitynetbeans.Comments;
 import com.comicszone.entitynetbeans.CommentsContainer;
 import java.io.Serializable;

@@ -41,6 +41,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Volume.findByRating", query = "SELECT v FROM Volume v WHERE v.rating = :rating"),
     @NamedQuery(name = "Volume.findByVotes", query = "SELECT v FROM Volume v WHERE v.votes = :votes"),
     @NamedQuery(name = "Volume.findByChecking", query = "SELECT v FROM Volume v WHERE v.isChecked = :isChecked ORDER BY v.volumeId"),
+    //for news
     @NamedQuery(name = "Volume.getVolumesWithNewCommentsAfterUser", query = "SELECT DISTINCT v FROM Volume v INNER JOIN v.commentsList vl WHERE vl.commentTime > (SELECT MAX(vvl.commentTime) FROM  Volume vv INNER JOIN vv.commentsList vvl WHERE vv.volumeId = v.volumeId AND vvl.userId = :userId)"),
     @NamedQuery(name = "Volume.getMaxCommentDateForUser", query = "SELECT MAX(vl.commentTime) FROM  Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.userId = :userId"), 
     @NamedQuery(name = "Volume.getCountOfNewCommentsForUser", query = "SELECT COUNT(vl.commentId) FROM Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.commentTime > (SELECT MAX(vvl.commentTime) FROM  Volume vv INNER JOIN vv.commentsList vvl WHERE vv.volumeId = v.volumeId AND vvl.userId = :userId)"),

@@ -7,17 +7,17 @@ package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.CharacterFacade;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import com.comicszone.entitynetbeans.Character;
 import java.io.Serializable;
 import javax.ejb.EJB;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author ArsenyPC
  */
 @ManagedBean(name="characterController")
-@RequestScoped
+@ViewScoped
 public class CharacterController implements Serializable {
     @EJB
     public CharacterFacade characterFacade;

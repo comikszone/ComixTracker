@@ -46,10 +46,23 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
     @NamedQuery(name = "Issue.findByChecking", query = "SELECT i FROM Issue i WHERE i.isChecked = :isChecked ORDER BY i.Id"),
     @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
+    //for news
     @NamedQuery(name = "Issue.getIssuesWithNewCommentsAfterUser", query = "SELECT DISTINCT i FROM Issue i INNER JOIN i.commentsList il WHERE il.commentTime > (SELECT MAX(iil.commentTime) FROM  Issue ii INNER JOIN ii.commentsList iil WHERE ii.Id = i.Id AND iil.userId = :userId)"),
     @NamedQuery(name = "Issue.getMaxCommentDateForUser", query = "SELECT MAX(il.commentTime) FROM  Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.userId = :userId"), 
     @NamedQuery(name = "Issue.getCountOfNewCommentsForUser", query = "SELECT COUNT(il.commentId) FROM Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.commentTime > (SELECT MAX(iil.commentTime) FROM  Issue ii INNER JOIN ii.commentsList iil WHERE ii.Id = i.Id AND iil.userId = :userId)"), 
-    @NamedQuery(name = "Issue.getCommentsAfterDateToIssue", query = "SELECT DISTINCT il FROM Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.commentTime > :date ORDER BY il.commentTime")})
+    @NamedQuery(name = "Issue.getCommentsAfterDateToIssue", query = "SELECT DISTINCT il FROM Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.commentTime > :date ORDER BY il.commentTime"),
+
+    @NamedQuery(name = "Issue.findMarkedByUserAndComics", 
+            query = "SELECT i FROM Issue i "
+                  + "JOIN i.usersList u "
+                  + "JOIN i.volumeId v "
+                  + "JOIN v.comicsId c "
+                  + "WHERE c.Id = :comicsId AND u.userId = :userId"),
+    @NamedQuery(name = "Issue.findByComics", 
+            query = "SELECT i FROM Issue i "
+                  + "JOIN i.volumeId v "
+                  + "JOIN v.comicsId c "
+                  + "WHERE c.Id = :comicsId")})
 public class Issue implements Serializable, CommentsContainer, Content, AjaxComicsCharacter {
 
     private static final long serialVersionUID = 1L;
@@ -205,7 +218,7 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

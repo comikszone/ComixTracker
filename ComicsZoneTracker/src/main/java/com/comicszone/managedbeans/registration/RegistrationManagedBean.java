@@ -1,7 +1,7 @@
 package com.comicszone.managedbeans.registration;
 
-import com.comicszone.dao.userdao.UserRegistrationDao;
 import java.io.Serializable;
+import com.comicszone.dao.userdao.UserRegistrationFacade;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -14,7 +14,7 @@ import javax.faces.context.FacesContext;
 public class RegistrationManagedBean implements Serializable {
 
     @EJB
-    UserRegistrationDao registrationDao;
+    UserRegistrationFacade registrationDao;
     
     public String registrationNewUser(){
         FacesContext facesContext = FacesContext.getCurrentInstance();

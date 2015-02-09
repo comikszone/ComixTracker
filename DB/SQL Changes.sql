@@ -42,7 +42,7 @@ UPDATE volume
   SET is_checked = TRUE;
 
 UPDATE issue
-  SET is_checked = TRUE;
+	SET is_checked = TRUE;
   
 ALTER TABLE character ADD card text;
 
@@ -65,6 +65,27 @@ ALTER TABLE  uvrating  ADD CONSTRAINT  Key21 PRIMARY KEY (volume_id,user_id);
 CREATE TABLE uirating  (user_id Integer NOT NULL, issue_id Integer NOT NULL, rating Real NOT NULL);
 ALTER TABLE  uirating  ADD CONSTRAINT  i_rated_by  FOREIGN KEY ( user_id ) REFERENCES  users  ( user_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE  uirating  ADD CONSTRAINT  i_rated  FOREIGN KEY ( issue_id ) REFERENCES  issue  ( issue_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE  uvrating  ADD CONSTRAINT  Key22 PRIMARY KEY (issue_id,user_id);
+ALTER TABLE  uirating  ADD CONSTRAINT  Key22 PRIMARY KEY (issue_id,user_id);
+
+ALTER TABLE character ADD source Varchar;
+ALTER TABLE issue ADD source Varchar;
+ALTER TABLE volume ADD source Varchar;
+ALTER TABLE comics ADD source Varchar;
+
+ALTER TABLE comics RENAME COLUMN image TO img;
+ALTER TABLE character RENAME COLUMN image TO img;
+
+
+ALTER TABLE comics ALTER rating SET DEFAULT 0;
+UPDATE comics SET rating = 0;
+ALTER TABLE comics ALTER rating SET NOT NULL;
+ALTER TABLE friends ADD is_confirmed boolean NOT NULL DEFAULT false;
+ALTER TABLE friends DROP CONSTRAINT key19;
+ALTER TABLE friends ADD id serial PRIMARY KEY;
+ALTER TABLE friends ADD are_friends boolean NOT NULL DEFAULT true; 
+
+ALTER TABLE MESSAGES ADD COLUMN MSG_TIME TIMESTAMP;
+ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_SENDER BOOLEAN DEFAULT TRUE;
+ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_RECEIVER BOOLEAN DEFAULT TRUE;
 
 ALTER TABLE comments ALTER COLUMN comment_time SET DEFAULT now();

@@ -5,7 +5,7 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
-import com.comicszone.dao.userdao.UserRegistrationDao;
+import com.comicszone.dao.userdao.UserRegistrationFacade;
 import com.comicszone.entitynetbeans.Users;
 import java.io.BufferedReader;
 import java.io.IOException;
