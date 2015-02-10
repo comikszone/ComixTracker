@@ -39,7 +39,7 @@ import org.json.simple.parser.ParseException;
 public class VKAuthorization extends SocialNetworkAuthorization implements Serializable {
     private static final String CLIENT_ID = "4695923";
     private static final String CLIENT_SECRET = "DN8uqaag7oUAPSfYCe2n";
-    private static final String CALLBACK_URI = "http://www.comicszonetracker.tk/resources/templates/unauthorized/vk_redirect_page.jsf";
+    private static final String CALLBACK_URI = "http://localhost:8080/resources/templates/unauthorized/vk_redirect_page.jsf";
     private static final String VK_URL = "https://oauth.vk.com/authorize";
     private static final String ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
     private static final String PERSONAL_INFO_URL = "https://api.vk.com/method/users.get";
@@ -91,7 +91,7 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
         String userId = parseJson(json, "user_id");
         String urlUserInfo = PERSONAL_INFO_URL
                 + "?uids=" + userId
-                + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo"
+                + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo_max"
                 + "&access_token=" + accessToken;
         json = getResponseJson(urlUserInfo);
         return json;
@@ -137,7 +137,7 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
         String firstName = getJsonValue(json, "first_name");
         String lastName = getJsonValue(json, "last_name");
         String name = firstName + " " + lastName;
-        String photo = getJsonValue(json, "photo");
+        String photo = getJsonValue(json, "photo_max");
         String bDate = getJsonValue(json, "bdate");
         Users user = new Users();
         user.setNickname(nickname);
