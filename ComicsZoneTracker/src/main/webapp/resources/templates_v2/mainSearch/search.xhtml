@@ -8,38 +8,34 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-<h:form> 
+<h:form role="search"> 
     <h:panelGrid columns="3" cellpadding="0"> 
         <p:autoComplete id="comicsPojo" 
-                    value="#{autoCompleteView.ajaxComicsCharacter}" 
-                    completeMethod="#{autoCompleteView.completeComics}"
-                    var="aj" 
-                    itemLabel="#{aj.name}"
-                       itemValue="#{aj}"
-                    converter="ajaxComicsCharacterConverter"
-                    queryDelay="0"
-                    forceSelection="true"
-                    dropdown="false"
-         >
+                        value="#{autoCompleteView.ajaxComicsCharacter}" 
+                        completeMethod="#{autoCompleteView.completeComics}"
+                        var="aj" 
+                        itemLabel="#{aj.name}"
+                        itemValue="#{aj}"
+                        converter="ajaxComicsCharacterConverter"
+                        queryDelay="0"
+                        forceSelection="true"
+                        dropdown="false">
             <p:ajax event="itemSelect" listener="#{autoCompleteView.handleSelect}" />  
-            <p:column>
+            <p:column style="z-index: 2">
                 #{aj.name}
             </p:column>
-            <p:column>
-                <p:graphicImage value="#{aj.image}" width="100" height="100"/>
+            <p:column style="width:content-box">
+                <p:graphicImage value="#{aj.image}" style="width:50%"/>
             </p:column>
         </p:autoComplete>
-        <p:selectOneMenu id="console" value="#{autoCompleteView.category}"
-                         style="margin-top: 0.5%">
+        <p:selectOneMenu id="console" 
+                         value="#{autoCompleteView.category}"
+                         style="margin-top: 1.45%">
             <p:ajax listener="#{autoCompleteView.onCategoryChange}"/>
             <f:selectItem itemLabel="Comics" itemValue="Comics" />
             <f:selectItem itemLabel="Characters" itemValue="Characters" />
         </p:selectOneMenu>
- 
-    
-
      </h:panelGrid>
-
 </h:form>
     </h:body>
 </html>

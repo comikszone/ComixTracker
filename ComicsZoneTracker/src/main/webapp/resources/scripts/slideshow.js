@@ -3,19 +3,15 @@ $(document).ready(function(){
         dots: true,
         arrows: true,
         slidesToShow: 3,
-        adaptiveHeight: true,
+        slidesToScroll: 3,
         autoplay: true,
         autoplaySpeed: 2000,
-        centerMode: true,
-        centerPadding: '0px',
         responsive: [
         {
             breakpoint: 960,
             settings: {
                 slidesToShow: 1,
-                slidesToScroll: 1,
-                centerMode: true,
-                centerPadding: '20px'
+                slidesToScroll: 1
             }
         } 
         ]

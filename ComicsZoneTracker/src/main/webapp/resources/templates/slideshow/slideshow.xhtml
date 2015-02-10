@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
@@ -10,7 +8,7 @@
         <h:outputScript library="scripts" name="slick.min.js"/>
     </h:head>
     <h:body>
-        <div class="slideshow" style="max-width:75%">
+        <div class="slideshow">
             <ui:repeat var="comics" value="#{slideshowController.comicsList}">
                 <div>
                 <h:panelGrid columns="1" columnClasses="label,value">
@@ -34,4 +32,4 @@
         <script type="text/javascript" src="/resources/scripts/slideshow.js"></script>
         <script type="text/javascript" src="/resources/scripts/slick.min.js"></script>
     </h:body>
-</html>
+</ui:composition>
