@@ -2,31 +2,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <h:outputStylesheet library="css" name="slick.css"/>
+        <h:outputStylesheet library="css" name="slick-theme.css"/>
+        <h:outputScript library="scripts" name="slick.min.js"/>
+    </h:head>
     <h:body>
-        <p:carousel value="#{slideshowController.comicsList}" 
-                    var="comics" 
-                    numVisible="3"
-                    circular="true"
-                    autoPlayInterval="3000">
-            <h:panelGrid columns="1" cellpadding="6" columnClasses="label,value">
+        <div class="slideshow" style="max-width:75%">
+            <ui:repeat var="comics" value="#{slideshowController.comicsList}">
+                <div>
+                <h:panelGrid columns="1" columnClasses="label,value">
                 <p:row>
                     <h:form>
                         <h:link outcome="#{slideshowController.redirect(comics.id)}">
                             <p:graphicImage value="#{comics.image}"
-                                            styleClass="content-image"
-                                            width="400"
-                                            height="400"/>
+                                            styleClass="content-image slideshow-image"/>
                         </h:link>
                     </h:form>
                 </p:row>
                 <p:row>
                     <p:link value="#{comics.name}" 
                             outcome="#{slideshowController.redirect(comics.id)}" 
-                            style="font-size: 0.9em; font-weight: 900"/>
+                            style="font-weight: 900"/>
                 </p:row>
             </h:panelGrid>
-
-       </p:carousel>
+                </div>
+            </ui:repeat>
+        </div>
+        <script type="text/javascript" src="/resources/scripts/slideshow.js"></script>
+        <script type="text/javascript" src="/resources/scripts/slick.min.js"></script>
     </h:body>
 </html>
