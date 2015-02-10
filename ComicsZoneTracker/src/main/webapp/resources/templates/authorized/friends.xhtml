@@ -74,12 +74,13 @@
 
                             <p:panel header="#{friend.nickname}" >
                             
-                            <p:panelGrid columns="2">
+                                <p:panelGrid 
+                                    columns="2" 
+                                    columnClasses="friends-avatatar-column-width, 
+                                                   friends-info-column-width">
                                 <p:graphicImage 
                                         value="#{friend.avatarUrl}"
-                                        width="100%"
-                                        height="100%"
-                                        styleClass="content-image"/>
+                                        width="100%"/>
                                 
                                 <p:panelGrid columns="1">
                                     <h:outputText 
@@ -180,11 +181,16 @@
                                                 icon="ui-icon-alert"/>
                                         </p:commandLink>
                                     </f:facet>
-                                    <p:graphicImage 
-                                        value="#{message.sender.avatarUrl}" 
-                                        width="100" 
-                                        height="100"/>
-                                    <h:outputText value="#{message.text}" />
+                                    <p:panelGrid columns="2" style="background-color: inherit;"
+                                                 columnClasses="friend-avatar-message-column,
+                                                                friend-message-column">
+                                        <p:graphicImage 
+                                            value="#{message.sender.avatarUrl}" 
+                                            width="100%"
+                                            rendered="#{message.sender.avatarUrl != null}"
+                                            />
+                                        <h:outputText value="#{message.text}" />
+                                    </p:panelGrid>
                                 </p:panel>
                                     
                                 </p:column>

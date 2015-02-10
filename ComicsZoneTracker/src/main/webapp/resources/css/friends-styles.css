@@ -20,3 +20,21 @@ and open the template in the editor.
 .message-column {
     vertical-align: top;
 }
+
+.friends-avatatar-column-width {
+    width: 35%;
+}
+
+.friends-info-column-width {
+    width: 65%;
+}
+
+.friend-avatar-message-column {
+    width: 20%;
+    background-color: inherit;
+}
+
+.friend-message-column {
+    width: 80%;
+    background-color: inherit;
+}
