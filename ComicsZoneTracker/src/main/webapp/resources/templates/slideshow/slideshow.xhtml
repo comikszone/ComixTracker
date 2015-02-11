@@ -5,7 +5,6 @@
     <h:head>
         <h:outputStylesheet library="css" name="slick.css"/>
         <h:outputStylesheet library="css" name="slick-theme.css"/>
-        <h:outputScript library="scripts" name="slick.min.js"/>
     </h:head>
     <h:body>
         <div class="slideshow">
@@ -29,7 +28,7 @@
                 </div>
             </ui:repeat>
         </div>
-        <script type="text/javascript" src="/resources/scripts/slideshow.js"></script>
-        <script type="text/javascript" src="/resources/scripts/slick.min.js"></script>
+        <h:outputScript library="scripts" name="slideshow.js"/>
+        <h:outputScript library="scripts" name="slick.min.js"/>
     </h:body>
 </ui:composition>
