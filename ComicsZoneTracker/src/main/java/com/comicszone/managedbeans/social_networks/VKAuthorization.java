@@ -91,7 +91,7 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
         String userId = parseJson(json, "user_id");
         String urlUserInfo = PERSONAL_INFO_URL
                 + "?uids=" + userId
-                + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo"
+                + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo_max"
                 + "&access_token=" + accessToken;
         json = getResponseJson(urlUserInfo);
         return json;
@@ -137,7 +137,7 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
         String firstName = getJsonValue(json, "first_name");
         String lastName = getJsonValue(json, "last_name");
         String name = firstName + " " + lastName;
-        String photo = getJsonValue(json, "photo");
+        String photo = getJsonValue(json, "photo_max");
         String bDate = getJsonValue(json, "bdate");
         Users user = new Users();
         user.setNickname(nickname);
