@@ -39,7 +39,7 @@
                 </p:panelGrid>
             </p:panel>
              
-            <table>
+            <table style="width:100%;">
                 <tr>
                     <td class="friends-column">
                     <p:dataTable
@@ -47,7 +47,7 @@
                         var="friend"
                         widgetVar="friendsTable"
                         rowKey="#{friend.userId}"
-                        value="#{userFriendsManagedBean.friendsLazyModel}" 
+                        value="#{userFriendsManagedBean.friends}" 
                         paginator="true" 
                         rows="3"
                         paginatorPosition="bottom"
@@ -208,7 +208,7 @@
                       showEffect="fade" 
                       hideEffect="fade" 
                       resizable="false" 
-                      appendTo="form"
+                      
                       >
                 <p:outputPanel id="userDetailPanel" style="text-align:center;">
                     <p:panelGrid  columns="2" 
@@ -217,9 +217,13 @@
                         <f:facet name="header">
                             <p:graphicImage 
                                 value="#{userFriendsManagedBean.selectedUser.avatarUrl}"
-                                width="200px"
-                                height="200px"
-                                styleClass="content-image"/> 
+                                width="100%"
+                                rendered="#{userFriendsManagedBean.selectedUser.avatarUrl != null}"
+                                />
+                            <p:graphicImage
+                                alt="NO PHOTO"
+                                rendered="#{userFriendsManagedBean.selectedUser.avatarUrl == null}"
+                                /> 
                         </f:facet>
                         <f:facet name="footer">
                             <p:outputPanel>
@@ -227,7 +231,7 @@
                                                  update="@all"
                                                  action="#{userFriendsManagedBean.addToFriends}"
                                                  onclick="userDetails.close()"
-                                                 ajax="false"
+                                                 
                                                  />
                             </p:outputPanel>
                         </f:facet>
@@ -289,19 +293,21 @@
                     </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>
-        </h:form>
-
-    <p:confirmDialog
-        global="true"
-        widgetVar="confirm">
-        <p:commandButton
-            styleClass="ui-confirmdialog-yes"
-            value="Yes"
-            type="button"/>
-        <p:commandButton
-            styleClass="ui-confirmdialog-no"
-            value="No"
-            type="button"/>
-     </p:confirmDialog>
+        
+        <p:confirmDialog
+            global="true"
+            widgetVar="confirm">
+            
+            <p:commandButton
+                styleClass="ui-confirmdialog-yes"
+                value="Yes"
+                type="button"/>
+            <p:commandButton
+                styleClass="ui-confirmdialog-no"
+                value="No"
+                type="button"/>
+         </p:confirmDialog>
+     </h:form>      
+            
     </ui:define>
 </ui:composition>
