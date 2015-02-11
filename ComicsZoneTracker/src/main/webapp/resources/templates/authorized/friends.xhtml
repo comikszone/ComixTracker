@@ -167,8 +167,7 @@
                                 <p:panel 
                                     id="messageid" 
                                     header="#{message.sender.nickname}:#{message.msgTime}"
-                                    style="text-align: left; background-color: #{message.sender.userId eq messagesManagedBean.currentUser.userId ? '#B7FFFF' : '#C5FFD4'}">
-                                    
+                                    style="text-align: left; background: #{message.sender.userId eq messagesManagedBean.currentUser.userId ? 'radial-gradient(circle,#4FC3F7, #E1F5FE)' : 'radial-gradient(circle,#9CCC65, #DCEDC8)'}">
                                     <f:facet name="actions">
                                         <p:commandLink
                                             styleClass="ui-panel-titlebar-icon ui-corner-all 
