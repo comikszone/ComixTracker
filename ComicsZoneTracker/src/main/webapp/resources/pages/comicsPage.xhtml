@@ -18,8 +18,7 @@ and open the template in the editor.
             <f:viewParam name="id" value="#{comicsPageManagedBean.comicsController.comicsId}"/>
         </f:metadata>
         #{comicsPageManagedBean.comicsController.initComics()}
-        <center>
-            <p:panelGrid style="width:75% !important; border:none !important;">
+            <p:panelGrid style="border:none !important;">
                         <p:row>
                             <p:column colspan="1">
                                 <p:graphicImage value="#{comicsPageManagedBean.comicsController.comics.image}"
@@ -72,7 +71,6 @@ and open the template in the editor.
                     <p:accordionPanel var="volume" 
                                       value="#{comicsPageManagedBean.comicsController.comics.volumeList}"
                                       multiple="true"
-                                      style="width:75% !important;"
                                       id="issues">
                         <p:tab>
                             <f:facet name="title">
@@ -105,7 +103,6 @@ and open the template in the editor.
                             </p:dataGrid>
                         </p:tab>
                     </p:accordionPanel>
-                </center>
                 <div>
                     <ui:include src="/resources/templates/comments/comments.xhtml">
                         <ui:param name="type" value="comics"/>
