@@ -29,10 +29,10 @@ import javax.validation.constraints.NotNull;
 @Table(name = "friends")
 @NamedQueries({
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
-    @NamedQuery(name = "Friends.findByUserIds",
-            query = "SELECT f FROM Friends f WHERE f.users.userId = :user_id AND f.users1.userId = :user1_id OR f.users.userId = :user1_id AND f.users1.userId = :user_id"),
-    @NamedQuery(name = "Friends.findByIsConfirmed", 
-            query = "SELECT f FROM Friends f WHERE f.isConfirmed = :isConfirmed")})
+    @NamedQuery(name = "Friends.findByUsers",
+            query = "SELECT f FROM Friends f WHERE f.users = :user AND f.users1 = :user1 OR f.users = :user1 AND f.users1 = :user"),
+    @NamedQuery(name = "Friends.findFriends",
+            query = "SELECT f FROM Friends f WHERE (f.users = :user OR f.users1 = :user) AND f.areFriends = true")})
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

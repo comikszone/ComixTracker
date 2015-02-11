@@ -6,6 +6,7 @@ import com.comicszone.entitynetbeans.Messages;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -77,6 +78,10 @@ public class MessagesManagedBean {
     
     public List<Messages> getMessages() {
         return messagesFacade.getMessagesByIdSenderAndReceiver(currentUser.getUserId(), friendId,currentUser.getUserId());
+    }
+    
+    public String getFormatedDataTime(Messages message) {
+        return new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(message.getMsgTime());
     }
     
     @PostConstruct
