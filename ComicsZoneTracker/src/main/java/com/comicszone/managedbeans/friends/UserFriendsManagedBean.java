@@ -11,6 +11,7 @@ import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import com.comicszone.managedbeans.userbeans.ProfileUserManagedBean;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,9 +80,13 @@ public class UserFriendsManagedBean implements Serializable {
         setFriends(friendsFacade.getFriends(currentUser));
     }
     
-    public void removeFromFrieds() {
-        friendsFacade.removeFromFriends(currentUser, selectedInfoFriend);
+    public void removeFromFrieds(Users friend) {
+        friendsFacade.removeFromFriends(currentUser, friend);
         setFriends(friendsFacade.getFriends(currentUser));
+    }
+    
+    public String getFormatedData(Users friend) {
+        return new SimpleDateFormat("dd-MM-yyyy").format(friend.getBirthday());
     }
     
     public Users getSelectedUser() {

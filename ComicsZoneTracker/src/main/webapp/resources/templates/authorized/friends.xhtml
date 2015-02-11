@@ -49,7 +49,7 @@
                         rowKey="#{friend.userId}"
                         value="#{userFriendsManagedBean.friends}" 
                         paginator="true" 
-                        rows="3"
+                        rows="10"
                         paginatorPosition="bottom"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -73,7 +73,20 @@
                             filterBy="#{friend.nickname}">
 
                             <p:panel header="#{friend.nickname}" >
-                            
+                                
+                                <f:facet name="actions">
+                                    <p:commandLink
+                                        styleClass="ui-panel-titlebar-icon ui-corner-all 
+                                                    ui-state-default ui-icon ui-icon-close"
+                                        action="#{userFriendsManagedBean.removeFromFrieds(friend)}"
+                                        update=":form:friendsTable">
+                                        
+                                        <p:confirm
+                                            message="Are you sure you want to delete this friend?"
+                                            icon="ui-icon-alert"/>
+                                    </p:commandLink>
+                                </f:facet>
+                                
                                 <p:panelGrid 
                                     columns="2" 
                                     columnClasses="friends-avatatar-column-width, 
@@ -98,15 +111,14 @@
                                         class="friends-info"/>
                                     
                                     <h:outputText 
+                                        value="#{userFriendsManagedBean.getFormatedData(friend)}"
+                                        rendered="#{friend.birthday != null}"
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
                                         value="#{friend.online}"
                                         rendered="#{friend.online != null}"
                                         class="friends-info"/>
-                                    
-                                    <p:commandButton 
-                                        value="More Info!"
-                                        update=":form:friendDetailPanel"
-                                        action="#{userFriendsManagedBean.setSelectedInfoFriend(friend)}"
-                                        oncomplete="PF('friendDetails').show()"/>
                                     
                                 </p:panelGrid>
                             </p:panelGrid>
@@ -126,27 +138,16 @@
                             style="width:100%;"/>
                         <br/>  
                         
-                        <div style="float: right;"> 
                         <p:commandButton
                             id="messagesAdderSubmit" 
                             value="Send"
                             action="#{messagesManagedBean.addMessage()}"
-                            update=":form:messages :form:messageAdder"/>
-                        </div>
-                        <p:commandButton
-                            id="messagesRefresh" 
-                            value="Refresh"
-                            update=":form:messages :form:messageAdder"/>
-                        
+                            update=":form:messages :form:messageAdder"
+                            style="margin-right: -88%"/>
                         </p:panel>
 
                         <p:growl id="messagessMessage" showDetail="true" life="1000" />
-                        
-                        <p:confirmDialog
-                            message="Are you sure you want to delete comment?"
-                            header="Confirm action"
-                            widgetVar="deleteConfirm"/>
-                        
+       
                         <p:panel style="margin: 0 1% 1% 1%">
                             <p:dataTable 
                                 var="message"
@@ -160,14 +161,28 @@
                                 rows="10"
                                 lazy="true">
                                 
+                                <f:facet name="header">
+                                    <p:commandButton
+                                        id="messagesRefresh" 
+                                        value="Refresh"
+                                        update=":form:messages :form:messageAdder"
+                                        style="margin-right: -88%"/>
+                                </f:facet>
+                                
                                 <p:column
                                     sortBy="#{message.msgTime}" 
                                     filterBy="#{message.text}" 
                                 >
                                 <p:panel 
                                     id="messageid" 
-                                    header="#{message.sender.nickname}:#{message.msgTime}"
+                                    
                                     style="text-align: left; background: #{message.sender.userId eq messagesManagedBean.currentUser.userId ? 'radial-gradient(circle,#4FC3F7, #E1F5FE)' : 'radial-gradient(circle,#9CCC65, #DCEDC8)'}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{message.sender.nickname}"
+                                                      style="font-weight: bold;"/>
+                                        <br/>
+                                        <h:outputText value="#{messagesManagedBean.getFormatedDataTime(message)}"/>
+                                    </f:facet>
                                     <f:facet name="actions">
                                         <p:commandLink
                                             styleClass="ui-panel-titlebar-icon ui-corner-all 
@@ -180,7 +195,7 @@
                                                 icon="ui-icon-alert"/>
                                         </p:commandLink>
                                     </f:facet>
-                                    <p:panelGrid columns="2" style="background-color: inherit;"
+                                    <p:panelGrid columns="2"
                                                  columnClasses="friend-avatar-message-column,
                                                                 friend-message-column">
                                         <p:graphicImage 
@@ -188,7 +203,9 @@
                                             width="100%"
                                             rendered="#{message.sender.avatarUrl != null}"
                                             />
-                                        <h:outputText value="#{message.text}" />
+                                        
+                                        <h:outputText value="#{message.text}" style="word-wrap: break-word"/>
+
                                     </p:panelGrid>
                                 </p:panel>
                                     
@@ -250,7 +267,7 @@
             
             
             <!--Dialog friend window-->
-            <p:dialog header="Friend details" 
+<!--            <p:dialog header="Friend details" 
                       widgetVar="friendDetails" 
                       modal="true" 
                       showEffect="fade" 
@@ -260,11 +277,11 @@
                       >
                 <p:outputPanel id="friendDetailPanel" style="text-align:center;">
                     <p:panelGrid  columns="2" 
-                                  rendered="#{not empty userFriendsManagedBean.selectedInfoFriend}" 
+                                  rendered="" 
                                   columnClasses="label,value">
                         <f:facet name="header">
                             <p:graphicImage 
-                                value="#{userFriendsManagedBean.selectedInfoFriend.avatarUrl}"
+                                value=""
                                 width="200px"
                                 height="200px"
                                 styleClass="content-image"/> 
@@ -273,7 +290,7 @@
                             <p:outputPanel>
                                 <p:commandButton value="Remove from friends!"
                                                  update="@all"
-                                                 action="#{userFriendsManagedBean.removeFromFrieds}"
+                                                 action=""
                                                  onclick="userDetails.close()"
                                                  ajax="false"
                                                  />
@@ -281,17 +298,17 @@
                         </f:facet>
 
                         <h:outputText value="Id:" />
-                        <h:outputText value="#{userFriendsManagedBean.selectedInfoFriend.userId}" />
+                        <h:outputText value="" />
 
                         <h:outputText value="Nickname" />
-                        <h:outputText value="#{userFriendsManagedBean.selectedInfoFriend.nickname}" />
+                        <h:outputText value="" />
 
                         <h:outputText value="Email" />
-                        <h:outputText value="#{userFriendsManagedBean.selectedInfoFriend.email}" />
+                        <h:outputText value="" />
 
                     </p:panelGrid>
                 </p:outputPanel>
-            </p:dialog>
+            </p:dialog>-->
         
         <p:confirmDialog
             global="true"
