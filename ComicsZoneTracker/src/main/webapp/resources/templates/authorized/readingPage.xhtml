@@ -20,33 +20,33 @@ and open the template in the editor.
         #{readingPageManagedBean.comicsController.initComics()}
         #{readingPageManagedBean.init()}
         <center>
-            <p:panelGrid style="width:75% !important; border:none !important;">
-                        <p:row>
-                            <p:column colspan="1">
-                                <p:graphicImage value="#{readingPageManagedBean.comicsController.comics.image}"
-                                                styleClass="content-image"
-                                                height="300"
-                                                width="300"/>
-                            </p:column>
-                            <p:column colspan="1" styleClass="content-info">
-                                <h:outputText value="#{readingPageManagedBean.comicsController.comics.name}" 
-                                              styleClass="content-name"/>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
+            <table class="table">
+                <tbody>
+            <tr>
+                <td class="col-lg-6">
+                    <p:graphicImage value="#{readingPageManagedBean.comicsController.comics.image}"
+                                    styleClass="content-image"/>
+                    </td>
+                    <td>
+                        <h1  class="content-info">#{readingPageManagedBean.comicsController.comics.name} 
+                                      </h1>
+                    </td>
+            </tr>
+                </tbody>
+            </table>
             <h:form id="mainTable">
                 <p:commandButton action="#{readingPageManagedBean.selectAll}" 
                                  value="I've read it all!"
                                  update=":mainTable:tables"/>
             <p:dataList  id="tables"
-                        var="volume" 
+                         var="volume" 
                         value="#{readingPageManagedBean.comicsController.comics.volumeList}"
                         type="definition">
                             <p:dataTable  var="issue" 
                                               value="#{volume.issueList}"
                                               selection="#{readingPageManagedBean.selectedIssues}"
                                               rowKey="#{issue.id}"
-                                              style="text-align: right; width: 75%">
+                                              style="text-align: right;">
                                 <p:ajax event="toggleSelect"
                                         listener="#{readingPageManagedBean.onHeaderCheckboxClick}"
                                         update=":mainTable:tables"/>

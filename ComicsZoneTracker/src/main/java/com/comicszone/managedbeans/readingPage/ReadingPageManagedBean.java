@@ -16,6 +16,7 @@ import com.comicszone.entitynetbeans.Volume;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -121,8 +122,14 @@ public class ReadingPageManagedBean implements Serializable {
             Integer comicsId = comicsController.getComics().getId();
             Integer userId = userManagedBean.getCurrentUser().getUserId();
             List<Issue> prevIssues = readingFacade.getIssueFacade().findMarkedByUserAndComics(comicsId, userId);
-            if (!prevIssues.isEmpty())
+            if (!prevIssues.isEmpty()) {
                 selectedIssues = prevIssues;
+                prevSelectedIssues = prevIssues;
+            }
+            else {
+                selectedIssues = new ArrayList<Issue>();
+                prevSelectedIssues = new ArrayList<Issue>();
+            }
         }
         catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -132,8 +139,11 @@ public class ReadingPageManagedBean implements Serializable {
     public void onHeaderCheckboxClick(ToggleSelectEvent event) {
         if (!selectedIssues.isEmpty()) {
             try {
+                List<Issue> temp = selectedIssues;
+                temp.removeAll(prevSelectedIssues);
                 Users currentUser = userManagedBean.getCurrentUser();
-                readingFacade.markAsRead(currentUser, selectedIssues);
+                for (Issue issue: temp)
+                    readingFacade.markAsRead(currentUser, issue);
             }
             catch (CloneNotSupportedException ex) {
                 ex.printStackTrace();
@@ -143,9 +153,12 @@ public class ReadingPageManagedBean implements Serializable {
     
     public void selectAll() {
         setSelectedIssues(readingFacade.getIssueFacade().findByComics(comicsController.getComics().getId()));
+        List<Issue> temp = selectedIssues;
+        temp.removeAll(prevSelectedIssues);
         try {
             Users currentUser = userManagedBean.getCurrentUser();
-            readingFacade.markAsRead(currentUser, selectedIssues);
+            for (Issue issue: temp)
+                readingFacade.markAsRead(currentUser, issue);
         }
         catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -153,9 +166,13 @@ public class ReadingPageManagedBean implements Serializable {
     }
     
     public void onRowSelect(SelectEvent event) {
+        List<Issue> temp = selectedIssues;
+        if (!prevSelectedIssues.isEmpty())
+            temp.removeAll(prevSelectedIssues);
+        Issue issueToMark = temp.get(0);
         try {
             Users currentUser = userManagedBean.getCurrentUser();
-            readingFacade.markAsRead(currentUser, selectedIssues);
+            readingFacade.markAsRead(currentUser, issueToMark);
         }
         catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -163,7 +180,8 @@ public class ReadingPageManagedBean implements Serializable {
     }
     
     public void onRowUnselect(UnselectEvent event) {
-        prevSelectedIssues.removeAll(selectedIssues);
+        if (!selectedIssues.isEmpty())
+            prevSelectedIssues.removeAll(selectedIssues);
         Issue issueToUnmark = prevSelectedIssues.get(0);
         try {
             Users currentUser = userManagedBean.getCurrentUser();

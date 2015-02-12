@@ -121,6 +121,7 @@ td {
     border-width: 1px;
     max-width: 100%;
     transition: all 300ms ease;
+    margin-left: auto; margin-right: auto
 }
 
 .profile-page-column-attr-name{

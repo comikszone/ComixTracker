@@ -51,18 +51,18 @@ public class ReadingFacade {
         this.issueFacade = issueFacade;
     }
         
-    public void markAsRead(Users user, List<Issue> issueList) {
-        List<Issue> prevList = user.getIssueList();
-        prevList.addAll(issueList);
-        user.setIssueList(prevList);
+    public void markAsRead(Users user, Issue issueToMark) {
+        user.getIssueList().add(issueToMark);
+        issueToMark.getUsersList().add(user);
         getUserFacade().edit(user);
+        getIssueFacade().edit(issueToMark);
     }
     
     public void unMark(Users user, Issue issueToUnmark) {
-        List<Issue> prevList = user.getIssueList();
-        prevList.remove(issueToUnmark);
-        user.setIssueList(prevList);
+        user.getIssueList().remove(issueToUnmark);
+        issueToUnmark.getUsersList().remove(user);
         getUserFacade().edit(user);
+        getIssueFacade().edit(issueToUnmark);
     }
 
 }

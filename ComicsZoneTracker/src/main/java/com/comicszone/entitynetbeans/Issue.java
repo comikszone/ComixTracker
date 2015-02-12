@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -95,7 +96,7 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     private Boolean isChecked;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
     private List<Character> characterList;
-    @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY, cascade=CascadeType.MERGE)
     private List<Users> usersList;
     @OneToMany(mappedBy = "issueId", fetch = FetchType.LAZY)
     @OrderBy("commentId")

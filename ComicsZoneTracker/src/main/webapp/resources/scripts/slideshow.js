@@ -10,17 +10,13 @@ $(document).ready(function(){
         {
             breakpoint: 1200,
             settings: {
+                arrows: false,
+                centerMode: true,
+                centerPadding: '0px',
                 slidesToShow: 2,
                 slidesToScroll: 2
             }
-        },
-        {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-            }
-        } 
+        }
         ]
     });
 });
