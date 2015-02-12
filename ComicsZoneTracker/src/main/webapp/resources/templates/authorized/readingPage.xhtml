@@ -35,13 +35,14 @@ and open the template in the editor.
                 </tbody>
             </table>
             <h:form id="mainTable">
-                <p:commandButton action="#{readingPageManagedBean.selectAll}" 
-                                 value="I've read it all!"
-                                 update=":mainTable:tables"/>
-            <p:dataList  id="tables"
-                         var="volume" 
-                        value="#{readingPageManagedBean.comicsController.comics.volumeList}"
-                        type="definition">
+                <p:commandLink actionListener="#{readingPageManagedBean.selectAll}" 
+                               value="I've read it all!"
+                               update=":mainTable:tables"
+                               styleClass="btn btn-large btn-primary"
+                               action="#{readingPageManagedBean.redirect(comicsController.comics)}"/>
+            <ui:repeat  id="tables"
+                        var="volume" 
+                        value="#{readingPageManagedBean.comicsController.comics.volumeList}">
                             <p:dataTable  var="issue" 
                                               value="#{volume.issueList}"
                                               selection="#{readingPageManagedBean.selectedIssues}"
@@ -65,7 +66,7 @@ and open the template in the editor.
                                             <h:outputText value="#{issue.name}"/>
                                     </p:column>
                                 </p:dataTable>
-            </p:dataList>
+            </ui:repeat>
             </h:form>      
                 </center>
             </ui:define>

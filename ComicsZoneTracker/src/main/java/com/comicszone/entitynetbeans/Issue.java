@@ -96,7 +96,7 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     private Boolean isChecked;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
     private List<Character> characterList;
-    @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY, cascade=CascadeType.MERGE)
+    @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
     private List<Users> usersList;
     @OneToMany(mappedBy = "issueId", fetch = FetchType.LAZY)
     @OrderBy("commentId")

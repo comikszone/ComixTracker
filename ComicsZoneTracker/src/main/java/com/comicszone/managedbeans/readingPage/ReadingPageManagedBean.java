@@ -122,14 +122,8 @@ public class ReadingPageManagedBean implements Serializable {
             Integer comicsId = comicsController.getComics().getId();
             Integer userId = userManagedBean.getCurrentUser().getUserId();
             List<Issue> prevIssues = readingFacade.getIssueFacade().findMarkedByUserAndComics(comicsId, userId);
-            if (!prevIssues.isEmpty()) {
-                selectedIssues = prevIssues;
-                prevSelectedIssues = prevIssues;
-            }
-            else {
-                selectedIssues = new ArrayList<Issue>();
-                prevSelectedIssues = new ArrayList<Issue>();
-            }
+            selectedIssues = prevIssues;
+            prevSelectedIssues = prevIssues;
         }
         catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -154,7 +148,8 @@ public class ReadingPageManagedBean implements Serializable {
     public void selectAll() {
         setSelectedIssues(readingFacade.getIssueFacade().findByComics(comicsController.getComics().getId()));
         List<Issue> temp = selectedIssues;
-        temp.removeAll(prevSelectedIssues);
+        if (prevSelectedIssues != null)
+            temp.removeAll(prevSelectedIssues);
         try {
             Users currentUser = userManagedBean.getCurrentUser();
             for (Issue issue: temp)
@@ -196,9 +191,11 @@ public class ReadingPageManagedBean implements Serializable {
     {
         if (content.getContentType() == ContentType.Issue)
             return "/resources/pages/issuePage.jsf?faces-redirect=true&id=" + content.getId();
-        else if (content.getContentType() == ContentType.Volume)
+        if (content.getContentType() == ContentType.Volume)
                 return "/resources/pages/volumePage.jsf?faces-redirect=true&id=" + content.getId();
-        else return "/resources/templates/index.jsf";
+        if (content.getContentType() == ContentType.Comics)
+                return "/resources/templates/authorized/progressPage.jsf?faces-redirect=true&id=" + content.getId();
+        return "";
     }
 
 }

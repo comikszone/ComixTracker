@@ -53,8 +53,8 @@ public class ReadingFacade {
         
     public void markAsRead(Users user, Issue issueToMark) {
         user.getIssueList().add(issueToMark);
-        issueToMark.getUsersList().add(user);
         getUserFacade().edit(user);
+        issueToMark.getUsersList().add(user);
         getIssueFacade().edit(issueToMark);
     }
     
