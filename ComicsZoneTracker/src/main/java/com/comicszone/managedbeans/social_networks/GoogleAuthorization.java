@@ -48,23 +48,19 @@ public class GoogleAuthorization extends SocialNetworkAuthorization implements S
     private String userUrl;
     private String authCode;
 
-    @Override
     public String getUserUrl() {
         return userUrl;
     }
 
-    @Override
     public String getAuthCode() {
         return authCode;
     }
 
-    @Override
     public void setAuthCode(String authCode) {
         this.authCode = authCode;
     }
 
     @PostConstruct
-    @Override
     public void buildUserUrl() {
         flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, CLIENT_ID,
                 CLIENT_SECRET, SCOPE).build();
