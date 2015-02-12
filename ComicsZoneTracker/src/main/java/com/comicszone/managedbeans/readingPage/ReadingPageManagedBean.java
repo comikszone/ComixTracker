@@ -26,6 +26,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -50,9 +51,8 @@ public class ReadingPageManagedBean implements Serializable {
     @ManagedProperty(value="#{currentUserManagedBean}")
     private CurrentUserManagedBean userManagedBean;
     
-//    private Volume selectedVolume;
-//    private List<Volume> selectedVolumes;
-    private Issue selectedIssue;
+    private Volume selectedVolume;
+    private List<Volume> selectedVolumes;
     private List<Issue> selectedIssues;
     private List<Issue> prevSelectedIssues;
 
@@ -87,17 +87,17 @@ public class ReadingPageManagedBean implements Serializable {
     }
     
         /**
-     * @return the selectedIssue
+     * @return the selectedVolume
      */
-    public Issue getSelectedIssue() {
-        return selectedIssue;
+    public Volume getSelectedVolume() {
+        return selectedVolume;
     }
 
     /**
-     * @param selectedIssue the selectedIssue to set
+     * @param selectedVolume the selectedIssue to set
      */
-    public void setSelectedIssue(Issue selectedIssue) {
-        this.selectedIssue = selectedIssue;
+    public void setSelectedVolume(Volume selectedVolume) {
+        this.selectedVolume = selectedVolume;
     }
     
     public List<Issue> getSelectedIssues() {
@@ -143,9 +143,20 @@ public class ReadingPageManagedBean implements Serializable {
                 ex.printStackTrace();
             }
         }
+        else {
+            try {
+                Users currentUser = userManagedBean.getCurrentUser();
+                for (Issue issue: (List<Issue>)((DataTable) event.getSource()).getValue())
+                    readingFacade.unMark(currentUser, issue);
+            }
+            catch (CloneNotSupportedException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
     
     public void selectAll() {
+        init();
         setSelectedIssues(readingFacade.getIssueFacade().findByComics(comicsController.getComics().getId()));
         List<Issue> temp = selectedIssues;
         if (prevSelectedIssues != null)
@@ -191,6 +202,20 @@ public class ReadingPageManagedBean implements Serializable {
         if (content.getContentType() == ContentType.Comics)
                 return "/resources/templates/authorized/progressPage.jsf?faces-redirect=true&id=" + content.getId();
         return "";
+    }
+
+    /**
+     * @return the selectedVolumes
+     */
+    public List<Volume> getSelectedVolumes() {
+        return selectedVolumes;
+    }
+
+    /**
+     * @param selectedVolumes the selectedVolumes to set
+     */
+    public void setSelectedVolumes(List<Volume> selectedVolumes) {
+        this.selectedVolumes = selectedVolumes;
     }
 
 }

@@ -51,7 +51,10 @@ and open the template in the editor.
                                               rowSelectMode="add">
                                 <p:ajax event="toggleSelect"
                                         listener="#{readingPageManagedBean.onHeaderCheckboxClick}"
-                                        update=":mainTable:tables"/>
+                                        update=":mainTable:tables">
+                                    <f:setPropertyActionListener target="#{readingPageManagedBean.selectedVolume}"
+                                                                 value="#{volume}"/>
+                                </p:ajax>
                                 <p:ajax event="rowSelectCheckbox" 
                                         listener="#{readingPageManagedBean.onRowSelect}"
                                         update=":mainTable:tables"/>
@@ -59,7 +62,7 @@ and open the template in the editor.
                                         listener="#{readingPageManagedBean.onRowUnselect}"
                                         update=":mainTable:tables"/>
                                 <p:column selectionMode="multiple" style="width:5%">
-                                    </p:column>
+                                </p:column>
                                 <p:column>                                        
                                     <f:facet name="header">
                                         <h:outputText value="#{volume.name}"/>
