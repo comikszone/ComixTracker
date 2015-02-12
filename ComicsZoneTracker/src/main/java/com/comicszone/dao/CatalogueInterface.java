@@ -15,7 +15,7 @@ import org.primefaces.model.SortOrder;
  * @author Eschenko_DA
  */
 @Local
-public interface CatalogueFacade {
+public interface CatalogueInterface {
     List<Comics> findAllForCatalogue(Integer first, Integer pageSize, String sortField, 
             SortOrder sortOrder);
     List<Comics> findByNameAndRating(Integer first, Integer pageSize, String name, 

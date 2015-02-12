@@ -33,45 +33,19 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         return em;
     }
     
-    private boolean areFriends(Users currentUser, Users friendUser) {
-        
-        return getFriends(currentUser).contains(friendUser);
-    }
-    
-    private boolean wereFriends(Users currentUser, Users friendUser) {
-        
-        List<Friends> myFriends = currentUser.getFriendsList();
-        List<Friends> myFriends1 = currentUser.getFriendsList1();
-        
-        List<Users> userFriends = new ArrayList<Users>();
-        
-        for(Friends currentFriend : myFriends) {
-            userFriends.add(currentFriend.getUsers1());
-        }
-        
-        for(Friends currentFriend : myFriends1) {
-            userFriends.add(currentFriend.getUsers());
-        }
-        
-        return userFriends.contains(friendUser);
-    }
-    
     public List<Users> getFriends(Users currentUser) {
         
-        List<Friends> myFriends = currentUser.getFriendsList();
-        List<Friends> myFriends1 = currentUser.getFriendsList1();
+        TypedQuery<Friends> query =em.createNamedQuery("Friends.findFriends", Friends.class);
+        query.setParameter("user", currentUser);
+        List<Friends> friends = query.getResultList();
         
         List<Users> userFriends = new ArrayList<Users>();
-        
-        for(Friends currentFriend : myFriends) {
-            if (currentFriend.areFriends()) {
-                userFriends.add(currentFriend.getUsers1());
+        for (Friends friend : friends) {
+            if (friend.getUsers().equals(currentUser)) {
+                userFriends.add(friend.getUsers1());
             }
-        }
-        
-        for(Friends currentFriend : myFriends1) {
-            if (currentFriend.areFriends()) {
-                userFriends.add(currentFriend.getUsers());
+            else {
+                userFriends.add(friend.getUsers());
             }
         }
         
@@ -79,33 +53,50 @@ public class FriendsFacade extends AbstractFacade<Friends> {
     }
     
     public void addToFriends(Users currentUser, Users friendUser) {
-        
-        Friends friend = new Friends();
-        friend.setUsers(currentUser);
-        friend.setUsers1(friendUser);
-        friend.setIsConfirmed(false);
-        friend.setAreFriends(false);
-        
-        if (!areFriends(currentUser, friendUser) && !currentUser.equals(friendUser)) {
+        List<Friends> friends = findFriendsByUsers(currentUser,friendUser);
+        if (friends.isEmpty()) {
+            Friends friend = new Friends();
+            friend.setUsers(currentUser);
+            friend.setUsers1(friendUser);
+            friend.setIsConfirmed(true);
+            friend.setAreFriends(true);
             
             currentUser.addFriendToFriendsList(friend);
             friendUser.addFriendToFriendsList1(friend);
         
-            create(friend);  
+            create(friend); 
+        }
+        else if (!friends.get(0).areFriends()) {
+            Friends friend = friends.get(0);
+            friend.setAreFriends(true);
+            
+            currentUser.addFriendToFriendsList(friend);
+            friendUser.addFriendToFriendsList1(friend);
+            
+            edit(friend);
         }
     }
     
     public void removeFromFriends(Users currentUser, Users friendUser) {
         
-        if (areFriends(currentUser, friendUser)) {
-            TypedQuery<Friends> query =em.createNamedQuery("Friends.findByUserIds", Friends.class);
-            query.setParameter("user_id", currentUser.getUserId());
-            query.setParameter("user1_id", friendUser.getUserId());
-            Friends friend = query.getResultList().get(0);
-            friend.setAreFriends(false);
+        List<Friends> friends = findFriendsByUsers(currentUser,friendUser);
+        if (!friends.isEmpty() && friends.get(0).areFriends()) {
+            Friends friend = friends.get(0);
             
             currentUser.removeFriendFromFriendsList(friend);
             friendUser.removeFriendFromFriendsList1(friend);
+            
+            friend.setAreFriends(false);
+            
+            edit(friend);
         }
+    }
+    
+    private List<Friends> findFriendsByUsers(Users currentUser, Users friendUser) {
+        
+        TypedQuery<Friends> query =em.createNamedQuery("Friends.findByUsers", Friends.class);
+        query.setParameter("user", currentUser);
+        query.setParameter("user1", friendUser);
+        return query.getResultList();
     }
 }
