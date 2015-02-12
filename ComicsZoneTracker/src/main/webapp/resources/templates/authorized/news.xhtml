@@ -6,6 +6,9 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
         <h:form id="news">
+            <p:tabView>
+            <p:tab
+                title="Comments">
             <p:dataScroller
                 chunkSize="10"
                 value="#{userNewsManagedBean.newContainers}"
@@ -19,12 +22,22 @@
                     <p:link
                         value="#{container.name}"
                         outcome="#{userNewsManagedBean.redirect(container)}"/>
-                    <h:outputText
-                        value=": #{userNewsManagedBean.getNumberOfNewComments(index)}."/>
                     <br/>
                     <h:outputText
-                        value="Wow! 
-                        #{userNewsManagedBean.getCommentsDifference(index)}"/>
+                        value="Comments left after your last comment: 
+                        #{userNewsManagedBean.getNumberOfNewComments(index)}"/>
+                    <br/>
+                    <h:outputText
+                        value="Comments you haven't read: 
+                        #{userNewsManagedBean.getNumberOfUnreadComments(index)}"/>
+                    <br/>
+                    <h:outputText
+                        value="You haven't commented it 
+                        #{userNewsManagedBean.getPeriodFromUser(index)}."/>
+                    <br/>
+                    <h:outputText
+                        value="Last comment to it was 
+                        #{userNewsManagedBean.getPeriodFromLastComment(index)} ago."/>
                     <br/>
                     <p:commandButton
                         value="#{userNewsManagedBean.getValueOfViewButton(index)}"
@@ -49,6 +62,32 @@
                     </p:dataGrid>
                 </p:panel>
             </p:dataScroller>
+            </p:tab>
+            
+            <p:tab
+                title="Friend requests"
+                id="req">
+            <p:dataScroller
+                chunkSize="10"
+                var="request"
+                rowIndexVar="index"
+                value="">
+                <p:panel
+                    header="Friend request"
+                    style="text-align: left;">
+                    <h:outputText
+                        value="User 
+                        wants to add you as a friend."/>
+                    <p:commandButton
+                        update=":news"
+                        value="Add to friends"/>
+                    <p:commandButton
+                        update=":news"
+                        value="Decline request"/>
+                </p:panel>
+            </p:dataScroller>
+            </p:tab>
+            </p:tabView>
         </h:form>
     </ui:define>
 </ui:composition>

@@ -87,3 +87,37 @@ ALTER TABLE friends ADD are_friends boolean NOT NULL DEFAULT true;
 ALTER TABLE MESSAGES ADD COLUMN MSG_TIME TIMESTAMP;
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_SENDER BOOLEAN DEFAULT TRUE;
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_RECEIVER BOOLEAN DEFAULT TRUE;
+
+CREATE TABLE user_comments_news (
+	news_id integer NOT NULL,
+	user_id integer NOT NULL,
+	comics_id integer,
+	issue_id integer,
+	volume_id integer,
+	viewed boolean NOT NULL,
+	CONSTRAINT pk_user_comments_news PRIMARY KEY(news_id),
+	CONSTRAINT fk_user_comments_news_user_id FOREIGN KEY(user_id) REFERENCES users (user_id),
+	CONSTRAINT fk_user_comments_news_comics_id FOREIGN KEY(comics_id) REFERENCES comics (comics_id),
+	CONSTRAINT fk_user_comments_news_issue_id FOREIGN KEY(issue_id) REFERENCES issue (issue_id),
+	CONSTRAINT fk_user_comments_news_volume_id FOREIGN KEY(volume_id) REFERENCES volume (volume_id)
+);
+
+CREATE SEQUENCE user_comments_news_news_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER SEQUENCE user_comments_news_news_id_seq
+  OWNER TO "ComicsZoneRole";
+ALTER TABLE user_comments_news
+ALTER COLUMN news_id
+SET DEFAULT nextval('user_comments_news_news_id_seq');
+INSERT INTO user_comments_news (user_id, comics_id, issue_id, volume_id, viewed)
+SELECT DISTINCT user_id, comics_id, issue_id, volume_id, TRUE
+FROM comments
+EXCEPT
+SELECT user_id, comics_id, issue_id, volume_id, TRUE
+FROM user_comments_news;
+ALTER TABLE user_comments_news ADD COLUMN last_seen TIMESTAMP;
+UPDATE user_comments_news SET last_seen = now();

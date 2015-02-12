@@ -83,8 +83,8 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         Friends friend = new Friends();
         friend.setUsers(currentUser);
         friend.setUsers1(friendUser);
-        friend.setIsConfirmed(true);
-        friend.setAreFriends(true);
+        friend.setIsConfirmed(false);
+        friend.setAreFriends(false);
         
         if (!areFriends(currentUser, friendUser) && !currentUser.equals(friendUser)) {
             

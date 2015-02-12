@@ -1,5 +1,6 @@
 package com.comicszone.managedbeans.comments;
 
+import com.comicszone.dao.CommentsNewsFacade;
 import com.comicszone.dao.commentsdao.CommentsFacade;
 import com.comicszone.dao.commentsdao.CommentsFacade.CommentToType;
 import com.comicszone.entitynetbeans.Comments;
@@ -25,8 +26,12 @@ import org.primefaces.component.inputtextarea.InputTextarea;
 @ManagedBean
 @ViewScoped
 public class CommentsManagedBean implements Serializable {
+    
     @EJB
-    CommentsFacade commentsDao;
+    private CommentsFacade commentsDao;
+    
+    @EJB
+    private CommentsNewsFacade newsFacade;
     
     private String currentUserNickname;
     private List<Comments> comments;
@@ -149,6 +154,8 @@ public class CommentsManagedBean implements Serializable {
         String type = (String)faceletContext.getAttribute("type");
         setCommentToType(type);
         comments = commentsDao.getCommentsTo(id, commentToType);
+        newsFacade.setViewed(currentUserNickname, id, commentToType, Boolean.TRUE);
+        newsFacade.updateNewsDate(currentUserNickname, id, commentToType);
     }
     
     public boolean isCommentEditable(Comments comment) {
