@@ -46,23 +46,19 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
     private String userUrl;
     private String authCode;
 
-    @Override
     public String getUserUrl() {
         return userUrl;
     }
 
-    @Override
     public String getAuthCode() {
         return authCode;
     }
 
-    @Override
     public void setAuthCode(String authCode) {
         this.authCode = authCode;
     }
 
     @PostConstruct
-    @Override
     public void buildUserUrl() {
         String url = VK_URL + "?client_id=" + CLIENT_ID
                 + "&redirect_uri=" + CALLBACK_URI
@@ -71,44 +67,28 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
     }
 
     @Override
-    public String fetchPersonalInfo() throws IOException {
-        String urlAccessToken = ACCESS_TOKEN_URL
-                + "?client_id=" + CLIENT_ID
-                + "&client_secret=" + CLIENT_SECRET
-                + "&code=" + authCode
-                + "&redirect_uri=" + CALLBACK_URI;
-        String json = getResponseJson(urlAccessToken);
-        try {
+    public String fetchPersonalInfo() throws IOException, ParseException {
+            String urlAccessToken = ACCESS_TOKEN_URL
+                    + "?client_id=" + CLIENT_ID
+                    + "&client_secret=" + CLIENT_SECRET
+                    + "&code=" + authCode
+                    + "&redirect_uri=" + CALLBACK_URI;
+            String json = getResponseJson(urlAccessToken);
             if (getJsonValue(json,"error")!=null)
             {
                 ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
                 context.redirect("/");
             }
-        } catch (ParseException ex) {
-            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String accessToken = parseJson(json, "access_token");
-        String userId = parseJson(json, "user_id");
-        String urlUserInfo = PERSONAL_INFO_URL
-                + "?uids=" + userId
-                + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo_max"
-                + "&access_token=" + accessToken;
-        json = getResponseJson(urlUserInfo);
-        return json;
+            String accessToken = getJsonValue(json, "access_token");
+            String userId = getJsonValue(json, "user_id");
+            String urlUserInfo = PERSONAL_INFO_URL
+                    + "?uids=" + userId
+                    + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo_max"
+                    + "&access_token=" + accessToken;
+            json = getResponseJson(urlUserInfo);
+            return json;
     }
 
-    private String parseJson(String json, String parameter) {
-        JSONParser jsonParser = new JSONParser();
-        try {
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
-            String token = jsonObject.get(parameter).toString();
-//            String jsonComponent=array.get(index).toString();
-            return token;
-        } catch (ParseException ex) {
-            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "";
-    }
 
     private String getResponseJson(String url) throws IOException {
         HttpClient client = new DefaultHttpClient();

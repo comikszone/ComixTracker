@@ -33,15 +33,7 @@ public abstract class SocialNetworkAuthorization implements Serializable {
 
     private final int PASSWORD_LENGTH = 20;
     
-    public abstract String getUserUrl();
-
-    public abstract String getAuthCode();
-
-    public abstract void setAuthCode(String authCode);
-
-    public abstract void buildUserUrl();
-
-    public abstract String fetchPersonalInfo() throws IOException;
+    public abstract String fetchPersonalInfo() throws IOException, ParseException;
 
     public abstract Users createUser() throws IOException, ParseException;
 
@@ -71,8 +63,6 @@ public abstract class SocialNetworkAuthorization implements Serializable {
     }
 
     public String getJsonValue(JSONObject jsonObject, String parameter) throws ParseException {
-        JSONParser jsonParser = new JSONParser();
-//        JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
         Object obj = jsonObject.get(parameter);
         if (obj == null) {
             return null;
