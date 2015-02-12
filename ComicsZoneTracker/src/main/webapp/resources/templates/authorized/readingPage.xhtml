@@ -47,7 +47,8 @@ and open the template in the editor.
                                               value="#{volume.issueList}"
                                               selection="#{readingPageManagedBean.selectedIssues}"
                                               rowKey="#{issue.id}"
-                                              style="text-align: right;">
+                                              style="text-align: right;"
+                                              rowSelectMode="add">
                                 <p:ajax event="toggleSelect"
                                         listener="#{readingPageManagedBean.onHeaderCheckboxClick}"
                                         update=":mainTable:tables"/>

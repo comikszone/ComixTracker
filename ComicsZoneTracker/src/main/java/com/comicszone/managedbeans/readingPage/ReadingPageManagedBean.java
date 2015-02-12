@@ -161,10 +161,7 @@ public class ReadingPageManagedBean implements Serializable {
     }
     
     public void onRowSelect(SelectEvent event) {
-        List<Issue> temp = selectedIssues;
-        if (!prevSelectedIssues.isEmpty())
-            temp.removeAll(prevSelectedIssues);
-        Issue issueToMark = temp.get(0);
+        Issue issueToMark = (Issue)event.getObject();
         try {
             Users currentUser = userManagedBean.getCurrentUser();
             readingFacade.markAsRead(currentUser, issueToMark);
@@ -175,9 +172,7 @@ public class ReadingPageManagedBean implements Serializable {
     }
     
     public void onRowUnselect(UnselectEvent event) {
-        if (!selectedIssues.isEmpty())
-            prevSelectedIssues.removeAll(selectedIssues);
-        Issue issueToUnmark = prevSelectedIssues.get(0);
+        Issue issueToUnmark = (Issue)event.getObject();
         try {
             Users currentUser = userManagedBean.getCurrentUser();
             readingFacade.unMark(currentUser, issueToUnmark);
