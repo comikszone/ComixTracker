@@ -102,7 +102,7 @@ public class CommentsManagedBean implements Serializable {
             return;
         }
         boolean edited = commentsDao.editComment(editingComment.getCommentId(), 
-                selectedCommentText, id, commentToType);
+                selectedCommentText);
         editingComment = null;
         selectedCommentText = null;
         if (edited) {
