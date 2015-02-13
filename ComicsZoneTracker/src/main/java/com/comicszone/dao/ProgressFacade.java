@@ -29,7 +29,7 @@ import org.json.simple.JSONArray;
 
 @Stateless
 @LocalBean
-@Path("/users")
+@Path("/progress")
 public class ProgressFacade extends AbstractFacade<Users> implements ProgressInterface {
     
     @EJB
@@ -48,7 +48,7 @@ public class ProgressFacade extends AbstractFacade<Users> implements ProgressInt
     }
 
     @GET
-    @Path("/{userId}/progress")
+    @Path("/{userId}/")
     public String getReadComics(@PathParam("userId") String Id) {
         Integer userId = Integer.parseInt(Id);
         List<Comics> readComics = findByUserInProgress(userId);
@@ -56,6 +56,7 @@ public class ProgressFacade extends AbstractFacade<Users> implements ProgressInt
         for (Comics comics: readComics) {
             Map map = new HashMap();
             map.put("id", comics.getId());
+            map.put("name", comics.getName());
             map.put("marked", getMarkedIssueCount(comics.getId(), userId));
             map.put("total", getTotalIssueCount(comics.getId()));
             json.add(map);
