@@ -102,10 +102,10 @@ public class Users implements Serializable {
 //        @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
 //        @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
 //    @ManyToMany(fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user1", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Friends> friendsList;
     //@ManyToMany(mappedBy = "usersList", fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "users1", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user2", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Friends> friendsList1;
     @JoinTable(name = "progress", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "user_id")}, inverseJoinColumns = {

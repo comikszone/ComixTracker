@@ -37,16 +37,15 @@ public class UserFriendsManagedBean implements Serializable {
     private UserDataFacade userDataFacade;
     
     private List<Users> friends;
+    
+    private List<Users> followers;
 
     private Users currentUser;
     
     private Users selectedUser;
     
     private Users selectedFriend;
-    
-    private Users selectedInfoFriend;
 
-    
     @PostConstruct
     public void init() {
        try {
@@ -59,6 +58,7 @@ public class UserFriendsManagedBean implements Serializable {
                     .clone();
             
             friends = friendsFacade.getFriends(currentUser);
+            followers = friendsFacade.getFolowers(currentUser);
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -113,12 +113,12 @@ public class UserFriendsManagedBean implements Serializable {
         this.friends = friends;
     }
 
-    public Users getSelectedInfoFriend() {
-        return selectedInfoFriend;
+    public List<Users> getFollowers() {
+        return followers;
     }
 
-    public void setSelectedInfoFriend(Users selectedInfoFriend) {
-        this.selectedInfoFriend = selectedInfoFriend;
+    public void setFollowers(List<Users> followers) {
+        this.followers = followers;
     }
     
 }

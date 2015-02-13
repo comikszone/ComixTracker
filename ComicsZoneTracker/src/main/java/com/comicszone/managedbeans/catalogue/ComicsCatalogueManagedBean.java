@@ -44,7 +44,7 @@ public class ComicsCatalogueManagedBean {
     public List<Integer> getIntRatings() {
         return Arrays.asList(intRatings);
     }
-
+    
     private List<Rating> ratings;
     private Rating rating;
      
@@ -105,10 +105,5 @@ public class ComicsCatalogueManagedBean {
     public void setRating(Rating rating) {
         this.rating = rating;
     }
-    
-    /*public void rate(AjaxBehaviorEvent actionEvent) {
-        Double score = (Double)((UIRating) actionEvent.getComponent())
-            .getValue();
-        selectedComics.setRating(score);
-    }*/
+
 }

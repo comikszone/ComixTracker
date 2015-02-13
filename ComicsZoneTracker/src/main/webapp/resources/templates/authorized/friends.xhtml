@@ -49,7 +49,7 @@
                         rowKey="#{friend.userId}"
                         value="#{userFriendsManagedBean.friends}" 
                         paginator="true" 
-                        rows="10"
+                        rows="3"
                         paginatorPosition="bottom"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -127,7 +127,7 @@
                     </p:dataTable> 
                     </td>
                             
-                    <td class="message-column">
+                    <td class="message-column" rowspan="3">
                         <p:panel 
                             id="messageAdder" 
                             header="Your message" 
@@ -214,6 +214,175 @@
                         </p:panel>
                     </td>
                  </tr>
+                <tr>
+                    <td class="friends-column">
+                    <p:dataTable
+                        id="followersTable"
+                        var="follower"
+                        widgetVar="followersTable"
+                        rowKey="#{follower.userId}"
+                        value="#{userFriendsManagedBean.followers}" 
+                        paginator="true" 
+                        rows="3"
+                        paginatorPosition="bottom"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
+                        {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                        
+                        emptyMessage="No followers found!"
+                        style="margin: auto 1% 1% 1%;"
+                        >
+
+                        <p:column 
+                            width="100%" 
+                            headerText="Nickname" 
+                            sortBy="#{follower.nickname}" 
+                            filterBy="#{follower.nickname}">
+
+                            <p:panel header="#{follower.nickname}" >
+                                
+                                <f:facet name="actions">
+                                    <p:commandLink
+                                        styleClass="ui-panel-titlebar-icon ui-corner-all 
+                                                    ui-state-default ui-icon ui-icon-close"
+                                        action="#{userFriendsManagedBean.removeFromFrieds(friend)}"
+                                        update=":form:friendsTable">
+                                        
+                                        <p:confirm
+                                            message="Are you sure you want to delete this friend?"
+                                            icon="ui-icon-alert"/>
+                                    </p:commandLink>
+                                </f:facet>
+                                
+                                <p:panelGrid 
+                                    columns="2" 
+                                    columnClasses="friends-avatatar-column-width, 
+                                                   friends-info-column-width">
+                                <p:graphicImage 
+                                        value="#{follower.avatarUrl}"
+                                        width="100%"/>
+                                
+                                <p:panelGrid columns="1">
+                                    <h:outputText 
+                                        value="#{follower.nickname}"
+                                        class="friends-info"
+                                        />
+                                    
+                                    <h:outputText 
+                                        value="#{follower.email}" 
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{follower.name}"
+                                        rendered="#{follower.name != null}"
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{userFriendsManagedBean.getFormatedData(follower)}"
+                                        rendered="#{follower.birthday != null}"
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{follower.online}"
+                                        rendered="#{follower.online != null}"
+                                        class="friends-info"/>
+                                    
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            </p:panel>
+                        </p:column>
+                    </p:dataTable>
+                        </td>  
+                </tr>
+                    <tr>
+                    <td class="friends-column">
+                    <p:dataTable
+                        id="followTable"
+                        var="friend"
+                        widgetVar="friendsTable"
+                        rowKey="#{friend.userId}"
+                        value="#{userFriendsManagedBean.friends}" 
+                        paginator="true" 
+                        rows="3"
+                        paginatorPosition="bottom"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
+                        {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                        selectionMode="single" 
+                        selection="#{userFriendsManagedBean.selectedFriend}"
+                        emptyMessage="No friends found!"
+                        style="margin: auto 1% 1% 1%;"
+                        >
+
+                        <p:ajax 
+                            event="rowSelect" 
+                            update=":form:messages"
+                            listener="#{messagesManagedBean.setFriendId(userFriendsManagedBean.selectedFriend.userId)}"
+                            
+                            />
+
+                        <p:column 
+                            width="100%" 
+                            headerText="Nickname" 
+                            sortBy="#{friend.nickname}" 
+                            filterBy="#{friend.nickname}">
+
+                            <p:panel header="#{friend.nickname}" >
+                                
+                                <f:facet name="actions">
+                                    <p:commandLink
+                                        styleClass="ui-panel-titlebar-icon ui-corner-all 
+                                                    ui-state-default ui-icon ui-icon-close"
+                                        action="#{userFriendsManagedBean.removeFromFrieds(friend)}"
+                                        update=":form:friendsTable">
+                                        
+                                        <p:confirm
+                                            message="Are you sure you want to delete this friend?"
+                                            icon="ui-icon-alert"/>
+                                    </p:commandLink>
+                                </f:facet>
+                                
+                                <p:panelGrid 
+                                    columns="2" 
+                                    columnClasses="friends-avatatar-column-width, 
+                                                   friends-info-column-width">
+                                <p:graphicImage 
+                                        value="#{friend.avatarUrl}"
+                                        width="100%"/>
+                                
+                                <p:panelGrid columns="1">
+                                    <h:outputText 
+                                        value="#{friend.nickname}"
+                                        class="friends-info"
+                                        />
+                                    
+                                    <h:outputText 
+                                        value="#{friend.email}" 
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{friend.name}"
+                                        rendered="#{friend.name != null}"
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{userFriendsManagedBean.getFormatedData(friend)}"
+                                        rendered="#{friend.birthday != null}"
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{friend.online}"
+                                        rendered="#{friend.online != null}"
+                                        class="friends-info"/>
+                                    
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            </p:panel>
+                        </p:column>
+                    </p:dataTable> 
+                    </td>     
+                </tr>    
+                
+                
+                
              </table>
                     
 
