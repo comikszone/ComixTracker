@@ -14,9 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PostPersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,12 +24,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "ucrating")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Ucrating.findAll", query = "SELECT u FROM Ucrating u"),
     @NamedQuery(name = "Ucrating.findByUserId", query = "SELECT u FROM Ucrating u WHERE u.ucratingPK.userId = :userId"),
     @NamedQuery(name = "Ucrating.findByComicsId", query = "SELECT u FROM Ucrating u WHERE u.ucratingPK.comicsId = :comicsId"),
-    @NamedQuery(name = "Ucrating.findByRating", query = "SELECT u FROM Ucrating u WHERE u.rating = :rating")})
+    @NamedQuery(name = "Ucrating.findByRating", query = "SELECT u FROM Ucrating u WHERE u.rating = :rating"),
+    @NamedQuery(name = "Ucrating.findByUserAndComics", 
+                query = "SELECT u FROM Ucrating u WHERE u.ucratingPK.userId = :userId AND u.ucratingPK.comicsId = :comicsId"),
+    @NamedQuery(name = "Ucrating.countByComics", query = "SELECT COUNT(u) FROM Ucrating u WHERE u.ucratingPK.comicsId = :comicsId")})
 public class Ucrating implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -37,7 +39,7 @@ public class Ucrating implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "rating")
-    private float rating;
+    private Float rating;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Users users;
@@ -52,7 +54,7 @@ public class Ucrating implements Serializable {
         this.ucratingPK = ucratingPK;
     }
 
-    public Ucrating(UcratingPK ucratingPK, float rating) {
+    public Ucrating(UcratingPK ucratingPK, Float rating) {
         this.ucratingPK = ucratingPK;
         this.rating = rating;
     }
@@ -69,11 +71,11 @@ public class Ucrating implements Serializable {
         this.ucratingPK = ucratingPK;
     }
 
-    public float getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 

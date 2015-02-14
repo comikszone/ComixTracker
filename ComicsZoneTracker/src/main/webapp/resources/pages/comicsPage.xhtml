@@ -18,6 +18,8 @@ and open the template in the editor.
             <f:viewParam name="id" value="#{comicsPageManagedBean.comicsController.comicsId}"/>
         </f:metadata>
         #{comicsPageManagedBean.comicsController.initComics()}
+        #{ratingController.setType(comicsPageManagedBean.comicsController.comics.contentType)}
+        #{ratingController.setContentId(comicsPageManagedBean.comicsController.comicsId)}
             <p:panelGrid style="border:none !important;">
                         <p:row>
                             <p:column colspan="1">
@@ -43,11 +45,12 @@ and open the template in the editor.
                             <p:column colspan="2">
                                     <c:choose>
                                         <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                                            #{ratingController.init()}
                                             <h:form>
-                                                <pf:rating  value="#{comicsPageManagedBean.comicsController.comics.rating}"
+                                                <pf:rating  value="#{ratingController.ratingFacade.ucrating.rating}"
                                                             totalStars="5"
                                                             step="1">
-                                                    <f:ajax event="change" listener="#{comicsPageManagedBean.rate}"/>
+                                                    <f:ajax event="change" listener="#{ratingController.rate}"/>
                                                 </pf:rating>
                                                 <br/>
                                                 <p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 

@@ -16,7 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,12 +23,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "uvrating")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Uvrating.findAll", query = "SELECT u FROM Uvrating u"),
     @NamedQuery(name = "Uvrating.findByUserId", query = "SELECT u FROM Uvrating u WHERE u.uvratingPK.userId = :userId"),
     @NamedQuery(name = "Uvrating.findByVolumeId", query = "SELECT u FROM Uvrating u WHERE u.uvratingPK.volumeId = :volumeId"),
-    @NamedQuery(name = "Uvrating.findByRating", query = "SELECT u FROM Uvrating u WHERE u.rating = :rating")})
+    @NamedQuery(name = "Uvrating.findByRating", query = "SELECT u FROM Uvrating u WHERE u.rating = :rating"),
+    @NamedQuery(name = "Uvrating.findByUserAndVolume", 
+                query = "SELECT u FROM Uvrating u WHERE u.uvratingPK.userId = :userId AND u.uvratingPK.volumeId = :volumeId"),
+    @NamedQuery(name = "Uvrating.countByVolume", query = "SELECT COUNT(u) FROM Uvrating u WHERE u.uvratingPK.volumeId = :volumeId")})
 public class Uvrating implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -37,7 +38,7 @@ public class Uvrating implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "rating")
-    private float rating;
+    private Float rating;
     @JoinColumn(name = "volume_id", referencedColumnName = "volume_id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Volume volume;
@@ -52,7 +53,7 @@ public class Uvrating implements Serializable {
         this.uvratingPK = uvratingPK;
     }
 
-    public Uvrating(UvratingPK uvratingPK, float rating) {
+    public Uvrating(UvratingPK uvratingPK, Float rating) {
         this.uvratingPK = uvratingPK;
         this.rating = rating;
     }
@@ -69,11 +70,11 @@ public class Uvrating implements Serializable {
         this.uvratingPK = uvratingPK;
     }
 
-    public float getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 

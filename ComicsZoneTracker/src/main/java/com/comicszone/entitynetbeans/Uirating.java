@@ -16,7 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,12 +23,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "uirating")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Uirating.findAll", query = "SELECT u FROM Uirating u"),
     @NamedQuery(name = "Uirating.findByUserId", query = "SELECT u FROM Uirating u WHERE u.uiratingPK.userId = :userId"),
     @NamedQuery(name = "Uirating.findByIssueId", query = "SELECT u FROM Uirating u WHERE u.uiratingPK.issueId = :issueId"),
-    @NamedQuery(name = "Uirating.findByRating", query = "SELECT u FROM Uirating u WHERE u.rating = :rating")})
+    @NamedQuery(name = "Uirating.findByRating", query = "SELECT u FROM Uirating u WHERE u.rating = :rating"),
+    @NamedQuery(name = "Uirating.findByUserAndIssue", 
+                query = "SELECT u FROM Uirating u WHERE u.uiratingPK.userId = :userId AND u.uiratingPK.issueId = :issueId"),
+    @NamedQuery(name = "Uirating.countByIssue", query = "SELECT COUNT(u) FROM Uirating u WHERE u.uiratingPK.issueId = :issueId")})
 public class Uirating implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -37,7 +38,7 @@ public class Uirating implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "rating")
-    private float rating;
+    private Float rating;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Users users;
@@ -52,7 +53,7 @@ public class Uirating implements Serializable {
         this.uiratingPK = uiratingPK;
     }
 
-    public Uirating(UiratingPK uiratingPK, float rating) {
+    public Uirating(UiratingPK uiratingPK, Float rating) {
         this.uiratingPK = uiratingPK;
         this.rating = rating;
     }
@@ -69,11 +70,11 @@ public class Uirating implements Serializable {
         this.uiratingPK = uiratingPK;
     }
 
-    public float getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 
