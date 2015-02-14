@@ -164,7 +164,7 @@ public class ReadingFacade {
             Issue issue = issueFacade.find(contentId);
             if (issue == null)
                 return Response.status(Response.Status.NOT_FOUND).build();
-            if (user.getIssueList().contains(issue) && issue.getUsersList().contains(user))
+            if (!(user.getIssueList().contains(issue) || issue.getUsersList().contains(user)))
                 return Response.status(Response.Status.CONFLICT).build();
             unMark(user, issue);
             return Response.status(Response.Status.OK).build();
