@@ -86,8 +86,8 @@ ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_RECEIVER BOOLEAN DEFAULT TRUE;
 ALTER TABLE users ADD COLUMN source Varchar DEFAULT 'Wikia';
 
 ---MISC Use _only_ before using marvel migration code (comics.sql, chars.sql)
-ALTER TABLE comics SET source = 'Wikia';
-ALTER TABLE volume SET source = 'Wikia';
-ALTER TABLE issue SET source = 'Wikia';
-ALTER TABLE character SET source = 'Wikia';
+UPDATE comics SET source = 'Wikia';
+UPDATE volume SET source = 'Wikia';
+UPDATE issue SET source = 'Wikia';
+UPDATE character SET source = 'Wikia';
 ---/MISC
