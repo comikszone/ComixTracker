@@ -9,12 +9,16 @@ and open the template in the editor.
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui" 
       template="#{startNavigationManagedBean.templateName}"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:pf="http://jsf.playerfinder.net/components">
     <ui:define name="articleContent">
         <f:metadata>
             <f:viewParam name="id" value="#{volumeController.volumeId}"/>
         </f:metadata>
         #{volumeController.init()}
+        #{ratingController.setType(volumeController.volume.contentType)}
+        #{ratingController.setContentId(volumeController.volumeId)}
         <center>
             <p:panelGrid style="width:75%;">
                 <f:facet name="header">
@@ -40,6 +44,32 @@ and open the template in the editor.
                        <h:outputText value="Rating: #{volumeController.volume.rating}"/>
                        <br/>
                        <h:outputText value="Votes: #{volumeController.volume.votes}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <c:choose>
+                            <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                                #{ratingController.init()}
+                                <h:form>
+                                    <pf:rating  value="#{ratingController.ratingFacade.uvrating.rating}"
+                                                totalStars="5"
+                                                step="1">
+                                        <f:ajax event="change" listener="#{ratingController.rate}"/>
+                                    </pf:rating>
+                                    </h:form>
+                            </c:when>
+                            <c:otherwise>
+                                <p:link onclick="showPopUpWin('RegistrationWindow')"
+                                        href='#'
+                                        value="Join"/>
+                                    or 
+                                    <p:link onclick="showPopUpWin('LoginWindow')"
+                                            href='#'
+                                            value="Sign In"/>
+                                    to rate and comment!
+                            </c:otherwise>
+                        </c:choose>
                     </p:column>
                 </p:row>
             </p:panelGrid>

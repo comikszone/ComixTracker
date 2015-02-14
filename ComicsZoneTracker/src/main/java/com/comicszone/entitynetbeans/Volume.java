@@ -25,6 +25,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -47,6 +49,10 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Volume.getCountOfNewCommentsForUser", query = "SELECT COUNT(vl.commentId) FROM Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.commentTime > (SELECT MAX(vvl.commentTime) FROM  Volume vv INNER JOIN vv.commentsList vvl WHERE vv.volumeId = v.volumeId AND vvl.userId = :userId)"),
     @NamedQuery(name = "Volume.getCommentsAfterDateToVolume", query = "SELECT DISTINCT vl FROM Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.commentTime > :date ORDER BY vl.commentTime")})
 public class Volume implements Serializable, CommentsContainer, Content {
+    @Column(name = "is_read")
+    private Boolean isRead;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "volume")
+    private List<Uvrating> uvratingList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "volume_volume_id_seq")
@@ -211,6 +217,24 @@ public class Volume implements Serializable, CommentsContainer, Content {
     @Override
     public String getExtraInfo() {
         return "Comics: " + comicsId.getName();
+    }
+
+    public Boolean getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Uvrating> getUvratingList() {
+        return uvratingList;
+    }
+
+    public void setUvratingList(List<Uvrating> uvratingList) {
+        this.uvratingList = uvratingList;
     }
     
 }

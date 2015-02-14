@@ -39,7 +39,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.comicszone.dao.ProgressFacade.class);
         resources.add(com.comicszone.dao.ReadingFacade.class);
         resources.add(com.comicszone.dao.commentsdao.CommentsFacade.class);
-        resources.add(com.comicszone.webservice.JsonProducer.class);     
+        resources.add(com.comicszone.webservice.JsonProducer.class);
     }
     
 }
