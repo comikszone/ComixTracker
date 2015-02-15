@@ -2,27 +2,84 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html">
-    <p:panel id="regPanel">
-        <h:form id="registrationForm">
-            <h2>Registration</h2>
-            <p:panelGrid columns="2">
-                Nickname: <p:inputText id="nickname"/>
-                Email: <p:inputText id="email"/>
-                Password: <p:password id="password"/>
-                Confirm Password: <p:password id="confirmPassword" />
-                <p:commandButton ajax="false" value="Ok" action="#{registrationManagedBean.registrationNewUser()}"/>
-                <p:commandButton
-                    onclick="document.getElementById('RegistrationWindow').style.display = 'none'"
-                    value="Cancel" />
-            </p:panelGrid>
-            <div style="text-align: center">
-                    <a href="#{vKAuthorization.userUrl}"><img src="../../images/icons/vkontakte.png" 
+    <p:dialog id="regPanel" widgetVar="reg" modal="true" header="Registration" draggable="false" resizable="false">
+        <h:form id="registrationForm" role="form">
+                        <h:panelGrid cellpadding="5" columns="3" style="margin: 0 auto 0 auto">
+                    <a href="#{vKAuthorization.userUrl}"><img src="/resources/images/icons/vkontakte.png" 
                       border="0"/></a>
-                    <a href="#{facebookAuthorization.userUrl}"><img src="../../images/icons/facebook.png"
+                    <a href="#{facebookAuthorization.userUrl}"><img src="/resources/images/icons/facebook.png"
                       border="0"/></a>
-                    <a href="#{googleAuthorization.userUrl}"><img src="../../images/icons/google_plus.png"
+                    <a href="#{googleAuthorization.userUrl}"><img src="/resources/images/icons/google_plus.png"
                       border="0"/></a>
-                </div>
+                        </h:panelGrid>
+            <br/>
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                </span>
+                                <p:inputText id="nickname" placeholder="Nickname"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                    
+                <tr>
+                    <td>
+                        <div class="form-group">
+                    <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-envelope"></i>
+                    </span>
+                    <p:inputText id="email" placeholder="Email"/>
+                    </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                    <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-lock"></i>
+                    </span>
+                    <p:password id="password" placeholder="Password"/>
+                    </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                    <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-lock"></i>
+                    </span>
+                    <p:password id="confirmPassword" placeholder="Confirm Password"/>
+                    </div>
+                        </div>
+                        </td>
+                </tr>
+            </table>
+            <table style="margin: 0 auto 0 auto">
+                <tr>
+                    <td>
+                        <p:commandButton ajax="false" 
+                                     value="Ok" 
+                                     action="#{registrationManagedBean.registrationNewUser()}" 
+                                     styleClass="btn btn-primary"/>  
+                    </td>
+                    <td>
+                        <p:commandButton onclick="PF('reg').hide()"
+                                     value="Cancel" 
+                                     styleClass="btn btn-default"
+                                     type="button"/>
+                    </td>
+                </tr>  
+            </table>
         </h:form>
-    </p:panel>
+    </p:dialog>
 </ui:composition>

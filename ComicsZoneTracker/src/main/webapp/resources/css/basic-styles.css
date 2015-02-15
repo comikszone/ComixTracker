@@ -10,10 +10,6 @@ html, #container {
     height: 100%;
 }
 
-h-body {
-    padding-top: 70px;
-}
-
 .container {
     width: 80%;
 }
@@ -138,6 +134,10 @@ td {
 
 .profile-page-column-button{
     width: 100%;
+}
+
+.ui-selectonemenu-trigger {
+    width: 25px !important;
 }
 
 //Maybe, it'll help us sometimes'

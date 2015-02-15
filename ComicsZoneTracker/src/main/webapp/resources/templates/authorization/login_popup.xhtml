@@ -1,27 +1,38 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
-    <p:panel id="loginPanel">
-        <form  method="POST" action="j_security_check">
-            <h2>Login</h2>
+    <p:dialog id="loginPanel" widgetVar="login" modal="true" header="Login">
+        <form  method="POST" action="j_security_check" role="form">
+            <div style="margin-left: auto; margin-right: auto;">
+                <a href="#{vKAuthorization.userUrl}"><img src="/resources/images/icons/vkontakte.png" 
+                    border="0"/></a>
+                <a href="#{facebookAuthorization.userUrl}"><img src="/resources/images/icons/facebook.png"
+                   border="0"/></a>
+                <a href="#{googleAuthorization.userUrl}"><img src="/resources/images/icons/google_plus.png"
+                   border="0"/></a>
+            </div>
             <p:panelGrid columns="2">
-                Username: <input type="text" name="j_username" /> <br/>
-                Password: <input type="password" name="j_password" /> <br/>
-                <input type="submit" value="Login" />
-                <input type="button"
-                       onclick="document.getElementById('LoginWindow').style.display = 'none'"
-                       value="Cancel" />
-                <div>
-                    <a href="#{vKAuthorization.userUrl}"><img src="../../images/icons/vkontakte.png" 
-                      border="0"/></a>
-                    <a href="#{facebookAuthorization.userUrl}"><img src="../../images/icons/facebook.png"
-                      border="0"/></a>
-                    <a href="#{googleAuthorization.userUrl}"><img src="../../images/icons/google_plus.png"
-                      border="0"/></a>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-user"></i>
+                    </span>
+                    <input type="text" name="j_username" class="form-control" placeholder="Username"/>
                 </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-lock"></i>
+                    </span>
+                    <input type="password" name="j_password" class="form-control" placeholder="Password"/>
+                </div>
+                <br/>
+                <input type="submit" value="Login" class="btn btn-primary"/>
+                <input type="button"
+                       onclick="PF('login').hide()"
+                       value="Cancel" 
+                       class="btn btn-default"/>
             </p:panelGrid>
         </form>
-    </p:panel>
+    </p:dialog>
 </ui:composition>
 
 

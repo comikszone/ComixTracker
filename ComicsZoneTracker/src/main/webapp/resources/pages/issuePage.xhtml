@@ -20,7 +20,7 @@ and open the template in the editor.
         #{ratingController.setType(issueController.issue.contentType)}
         #{ratingController.setContentId(issueController.issueId)}
         <center>
-            <p:panelGrid style="width:75%;">
+            <p:panelGrid style="width:80%;">
                 <f:facet name="header">
                     <p:row>
                         <p:column colspan="2">
@@ -60,11 +60,11 @@ and open the template in the editor.
                                     </h:form>
                             </c:when>
                             <c:otherwise>
-                                <p:link onclick="showPopUpWin('RegistrationWindow')"
+                                <p:link onclick="PF('reg').show()"
                                         href='#'
                                         value="Join"/>
                                     or 
-                                    <p:link onclick="showPopUpWin('LoginWindow')"
+                                    <p:link onclick="PF('login').show()"
                                             href='#'
                                             value="Sign In"/>
                                     to rate and comment!

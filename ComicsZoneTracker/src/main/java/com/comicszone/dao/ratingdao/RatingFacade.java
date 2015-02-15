@@ -72,7 +72,7 @@ public class RatingFacade implements RatingInterface {
     @Override
     public void rateContent(Content content, Users user, Float rating) {
         ContentType type = content.getContentType();
-        Long quantity = 1l;
+        Long quantity = 0l;
         switch (type) {
             case Comics: 
                 ucrating.setRating(rating);
