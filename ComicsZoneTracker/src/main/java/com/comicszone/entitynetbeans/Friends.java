@@ -38,7 +38,12 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Friends.findFollowers",
             query = "SELECT f FROM Friends f "
                     + "WHERE f.user1 = :user AND f.user1Subscribed = false AND f.user2Subscribed = true "
-                    + "OR f.user2 = :user AND f.user1Subscribed = true AND f.user2Subscribed = false")
+                    + "OR f.user2 = :user AND f.user1Subscribed = true AND f.user2Subscribed = false"),
+    @NamedQuery(name = "Friends.findPotentialFriends",
+            query = "SELECT f FROM Friends f WHERE "
+                    + "f.user1 = :user AND f.user1Subscribed = true AND f.user2Subscribed = false "
+                    + "OR f.user2 = :user AND f.user1Subscribed = false AND f.user2Subscribed = true")
+        
 })
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -48,10 +53,6 @@ public class Friends implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = true)
-    @NotNull
-    @Column(name = "were_friends")
-    private boolean wereFriends;
     @Basic(optional = true)
     @NotNull
     @Column(name = "user1_subscribed")
@@ -93,15 +94,7 @@ public class Friends implements Serializable {
     public void setUser2(Users user2) {
         this.user2 = user2;
     }
-
-    public boolean wereFriends() {
-        return wereFriends;
-    }
-
-    public void setWereFriends(boolean wereFriends) {
-        this.wereFriends = wereFriends;
-    }
-
+    
     public boolean isUser1Subscribed() {
         return user1Subscribed;
     }
@@ -142,7 +135,9 @@ public class Friends implements Serializable {
 
     @Override
     public String toString() {
-        return "Friends{" + "id=" + id + ", wereFriends=" + wereFriends + ", user1Subscribed=" + user1Subscribed + ", user2Subscribed=" + user2Subscribed + ", user1=" + user1 + ", user2=" + user2 + '}';
+        return "Friends{" + "id=" + id + ", user1Subscribed=" + user1Subscribed + ", user2Subscribed=" + user2Subscribed + ", user1=" + user1 + ", user2=" + user2 + '}';
     }
+
+    
 
 }

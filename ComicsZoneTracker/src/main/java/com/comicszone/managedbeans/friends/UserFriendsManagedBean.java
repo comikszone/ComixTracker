@@ -40,6 +40,8 @@ public class UserFriendsManagedBean implements Serializable {
     
     private List<Users> followers;
 
+    private List<Users> unconfirmedFriends;
+    
     private Users currentUser;
     
     private Users selectedUser;
@@ -59,6 +61,7 @@ public class UserFriendsManagedBean implements Serializable {
             
             friends = friendsFacade.getFriends(currentUser);
             followers = friendsFacade.getFolowers(currentUser);
+            unconfirmedFriends = friendsFacade.getPotentialFriends(currentUser);
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -67,22 +70,28 @@ public class UserFriendsManagedBean implements Serializable {
     public List<Users> completeUser(String query) {
         
         List<Users> users = userDataFacade.getUsersWithNicknameStartsWith(query);
-        List<Users> currentUserfriends = friendsFacade.getFriends(currentUser);
         
-        users.removeAll(currentUserfriends);
+        users.removeAll(friendsFacade.getFriends(currentUser));
+        users.removeAll(friendsFacade.getPotentialFriends(currentUser));
         users.remove(currentUser);
         
         return users;
     }
     
-    public void addToFriends() {
-        friendsFacade.addToFriends(currentUser, selectedUser);
+    public void addToFriends(Users unconfirmedUser) {
+        friendsFacade.addToFriends(currentUser, unconfirmedUser);
+        //send add news to unconfirmedUser
         setFriends(friendsFacade.getFriends(currentUser));
+        setFollowers(friendsFacade.getFolowers(currentUser));
+        setUnconfirmedFriends(friendsFacade.getPotentialFriends(currentUser));
     }
     
     public void removeFromFrieds(Users friend) {
         friendsFacade.removeFromFriends(currentUser, friend);
+        //send remove news to friend.
         setFriends(friendsFacade.getFriends(currentUser));
+        setFollowers(friendsFacade.getFolowers(currentUser));
+        setUnconfirmedFriends(friendsFacade.getPotentialFriends(currentUser));
     }
     
     public String getFormatedData(Users friend) {
@@ -120,5 +129,13 @@ public class UserFriendsManagedBean implements Serializable {
     public void setFollowers(List<Users> followers) {
         this.followers = followers;
     }
-    
+
+    public List<Users> getUnconfirmedFriends() {
+        return unconfirmedFriends;
+    }
+
+    public void setUnconfirmedFriends(List<Users> unconfirmedFriends) {
+        this.unconfirmedFriends = unconfirmedFriends;
+    }
+
 }

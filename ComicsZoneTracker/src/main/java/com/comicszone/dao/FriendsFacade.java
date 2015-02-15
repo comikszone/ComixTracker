@@ -70,6 +70,23 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         return userFollowers;
     }
     
+    public List<Users> getPotentialFriends(Users currentUser) {
+        TypedQuery<Friends> query =em.createNamedQuery("Friends.findPotentialFriends", Friends.class);
+        query.setParameter("user", currentUser);
+        List<Friends> potentialFriends = query.getResultList();
+        
+        List<Users> userPotentialFriends = new ArrayList<Users>();
+        for (Friends potentialFriend : potentialFriends) {
+            if (potentialFriend.getUser1().equals(currentUser)) {
+                userPotentialFriends.add(potentialFriend.getUser2());
+            }
+            else {
+                userPotentialFriends.add(potentialFriend.getUser1());
+            }
+        }
+        return userPotentialFriends;
+    }
+    
     public void addToFriends(Users currentUser, Users friendUser) {
         
         if (currentUser.equals(friendUser)) {
@@ -85,9 +102,6 @@ public class FriendsFacade extends AbstractFacade<Friends> {
             friend.setUser1Subscribed(true);
             friend.setUser2Subscribed(false);
             
-            //currentUser.addFriendToFriendsList(friend);
-            //friendUser.addFriendToFriendsList1(friend);
-        
             create(friend);
             return;
         }
