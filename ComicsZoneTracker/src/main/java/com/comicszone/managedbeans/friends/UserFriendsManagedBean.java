@@ -91,6 +91,7 @@ public class UserFriendsManagedBean implements Serializable {
     
     public void removeFromFrieds(Users friend) {
         friendsFacade.removeFromFriends(currentUser, friend);
+        
         //send remove news to friend.
         setFriends(friendsFacade.getFriends(currentUser));
         setFollowers(friendsFacade.getFolowers(currentUser));
