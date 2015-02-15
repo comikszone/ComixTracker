@@ -70,8 +70,8 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         return userFollowers;
     }
     
-    public List<Users> getPotentialFriends(Users currentUser) {
-        TypedQuery<Friends> query =em.createNamedQuery("Friends.findPotentialFriends", Friends.class);
+    public List<Users> getUnconfirmedFriends(Users currentUser) {
+        TypedQuery<Friends> query =em.createNamedQuery("Friends.findUnconfirmedFriends", Friends.class);
         query.setParameter("user", currentUser);
         List<Friends> potentialFriends = query.getResultList();
         

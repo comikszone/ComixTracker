@@ -39,7 +39,7 @@ import javax.validation.constraints.NotNull;
             query = "SELECT f FROM Friends f "
                     + "WHERE f.user1 = :user AND f.user1Subscribed = false AND f.user2Subscribed = true "
                     + "OR f.user2 = :user AND f.user1Subscribed = true AND f.user2Subscribed = false"),
-    @NamedQuery(name = "Friends.findPotentialFriends",
+    @NamedQuery(name = "Friends.findUnconfirmedFriends",
             query = "SELECT f FROM Friends f WHERE "
                     + "f.user1 = :user AND f.user1Subscribed = true AND f.user2Subscribed = false "
                     + "OR f.user2 = :user AND f.user1Subscribed = false AND f.user2Subscribed = true")
