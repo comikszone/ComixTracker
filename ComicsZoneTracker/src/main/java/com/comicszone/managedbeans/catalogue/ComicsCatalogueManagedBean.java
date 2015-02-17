@@ -45,7 +45,7 @@ public class ComicsCatalogueManagedBean implements Serializable {
     public List<Integer> getIntRatings() {
         return Arrays.asList(intRatings);
     }
-
+    
     private List<Rating> ratings;
     private Rating rating;
      
@@ -106,10 +106,5 @@ public class ComicsCatalogueManagedBean implements Serializable {
     public void setRating(Rating rating) {
         this.rating = rating;
     }
-    
-    /*public void rate(AjaxBehaviorEvent actionEvent) {
-        Double score = (Double)((UIRating) actionEvent.getComponent())
-            .getValue();
-        selectedComics.setRating(score);
-    }*/
+
 }
