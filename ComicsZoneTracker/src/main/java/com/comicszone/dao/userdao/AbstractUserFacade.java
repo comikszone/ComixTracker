@@ -34,4 +34,13 @@ public abstract class AbstractUserFacade extends AbstractFacade<Users> {
         query.setMaxResults(5);
         return query.getResultList();
     }
+    
+    public List<Users> getBannedUsersWithNicknameStartsWith(boolean banned, String nickname) {
+        TypedQuery<Users> query = getEntityManager().
+                createNamedQuery("Users.findBannedOrUnbannedByNicknameStartsWith", Users.class);
+        query.setParameter("banned", banned);
+        query.setParameter("nickname", nickname.toLowerCase() + "%");
+        query.setMaxResults(5);
+        return query.getResultList();
+    }
 }
