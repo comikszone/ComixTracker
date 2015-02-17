@@ -44,23 +44,19 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
     private String userUrl;
     private String authCode;
 
-    @Override
     public String getUserUrl() {
         return userUrl;
     }
 
-    @Override
     public String getAuthCode() {
         return authCode;
     }
 
-    @Override
     public void setAuthCode(String authCode) {
         this.authCode = authCode;
     }
 
     @PostConstruct
-    @Override
     public void buildUserUrl() {
         String url = FACEBOOK_URL + "?client_id=" + CLIENT_ID
                 + "&redirect_uri=" + CALLBACK_URI
@@ -69,28 +65,29 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
     }
 
     @Override
-    public String fetchPersonalInfo() throws IOException {
+    public String fetchPersonalInfo() throws IOException, ParseException {
         String urlAccessToken = ACCESS_TOKEN_URL
                 + "?client_id=" + CLIENT_ID
                 + "&client_secret=" + CLIENT_SECRET
                 + "&code=" + authCode
                 + "&redirect_uri=" + CALLBACK_URI;
         String response = getResponseString(urlAccessToken);
-        try {
+        try
+        {
             if (getJsonValue(response, "error")!=null)
             {
                 ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
                 context.redirect("/");
             }
-        } catch (ParseException ex) {
-            Logger.getLogger(FacebookAuthorization.class.getName()).log(Level.SEVERE, null, ex);
         }
+        catch (ParseException e)
+        {}
         String accessToken = getAccessToken(response);
 //        String userId=getAccessToken();
         String urlUserInfo = PERSONAL_INFO_URL
                 + "?access_token=" + accessToken;
         String json = getResponseString(urlUserInfo);
-        String personalFacebookId = getPersonalFacebookId(json, "id");
+        String personalFacebookId = getJsonValue(json, "id");
         String pictureUrl = "https://graph.facebook.com/" + personalFacebookId + "/picture?return_ssl_resources=true";
         json = addPictureUrl(json, pictureUrl);
         return json;
@@ -116,18 +113,18 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
         return result.toString();
     }
 
-    private String getPersonalFacebookId(String json, String parameter) {
-        JSONParser jsonParser = new JSONParser();
-        try {
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
-            String jsonId = jsonObject.get(parameter).toString();
-//            String jsonComponent=array.get(index).toString();
-            return jsonId;
-        } catch (ParseException ex) {
-            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "";
-    }
+//    private String getPersonalFacebookId(String json, String parameter) {
+//        JSONParser jsonParser = new JSONParser();
+//        try {
+//            JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
+//            String jsonId = jsonObject.get(parameter).toString();
+////            String jsonComponent=array.get(index).toString();
+//            return jsonId;
+//        } catch (ParseException ex) {
+//            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return "";
+//    }
 
     private String addPictureUrl(String json, String pictureUrl) {
         JSONParser jsonParser = new JSONParser();
@@ -148,7 +145,7 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
         String startJson = fetchPersonalInfo();
         JSONParser jsonParser = new JSONParser();
         JSONObject json = (JSONObject) jsonParser.parse(startJson);
-        String error=getJsonValue(json, "error");
+//        String error=getJsonValue(json, "error");
         String id = getJsonValue(json, "id");
 //        return id;
         String nickname = "Facebook" + id;

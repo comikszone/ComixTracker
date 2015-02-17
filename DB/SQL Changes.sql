@@ -80,9 +80,17 @@ ALTER TABLE friends DROP CONSTRAINT key19;
 ALTER TABLE friends ADD id serial PRIMARY KEY;
 ALTER TABLE friends ADD are_friends boolean NOT NULL DEFAULT true; 
 
-ALTER TABLE MESSAGES ADD COLUMN MSG_TIME TIMESTAMP;
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_SENDER BOOLEAN DEFAULT TRUE;
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_RECEIVER BOOLEAN DEFAULT TRUE;
+
+ALTER TABLE users ADD COLUMN source Varchar DEFAULT 'Wikia';
+
+---MISC Use _only_ before using marvel migration code (comics.sql, chars.sql)
+UPDATE comics SET source = 'Wikia';
+UPDATE volume SET source = 'Wikia';
+UPDATE issue SET source = 'Wikia';
+UPDATE character SET source = 'Wikia';
+---/MISC
 
 CREATE TABLE user_comments_news (
 	news_id integer NOT NULL,

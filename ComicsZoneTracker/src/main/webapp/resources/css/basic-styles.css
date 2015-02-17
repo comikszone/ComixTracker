@@ -162,6 +162,11 @@ td {
     width: 100%;
 }
 
+.icon-on-start-page{
+    height: 50%;
+    width: 25px;
+}
+
 //Maybe, it'll help us sometimes'
 /*.ui-widget {
   font-size: 95% !important;
