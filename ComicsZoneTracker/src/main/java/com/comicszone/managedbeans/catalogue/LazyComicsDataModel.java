@@ -5,9 +5,8 @@
  */
 package com.comicszone.managedbeans.catalogue;
 
-import com.comicszone.dao.ComicsFacade;
+import com.comicszone.dao.CatalogueInterface;
 import com.comicszone.entitynetbeans.Comics;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,16 +20,16 @@ import org.primefaces.model.SortOrder;
  */
 public class LazyComicsDataModel extends LazyDataModel<Comics> {
     
-    private final ComicsFacade comicsFacade;
+    private final CatalogueInterface catalogue;
     
     private List<Comics> datasource;
     private final String columnComicsName;
     private final String columnComicsRating;
     
-    public LazyComicsDataModel(ComicsFacade comicsFacade,
+    public LazyComicsDataModel(CatalogueInterface comicsFacade,
             String columnComicsName, String columnComicsRating) {
         datasource = new ArrayList<Comics>();
-        this.comicsFacade = comicsFacade;
+        this.catalogue = comicsFacade;
         this.columnComicsName = columnComicsName.toLowerCase();
         this.columnComicsRating = columnComicsRating.toLowerCase();
     }
@@ -68,15 +67,15 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
             String nextColumnValue = filters.get(nextColumn).toString();
             
             if (nextColumn.equals(columnComicsName) && !itFilter.hasNext()) {
-                resultComics = comicsFacade.findByName(first,pageSize,
+                resultComics = catalogue.findByName(first,pageSize,
                         nextColumnValue,sortField,sortOrder);
-                this.setRowCount((int)comicsFacade.getComicsCountFoundByName(nextColumnValue));
+                this.setRowCount((int)catalogue.getComicsCountFoundByName(nextColumnValue));
             }
             else if (nextColumn.equals(columnComicsRating) && !itFilter.hasNext()) {
                 Double rating = Double.valueOf(nextColumnValue);
-                resultComics = comicsFacade.findByRating(first,pageSize,
+                resultComics = catalogue.findByRating(first,pageSize,
                         rating,sortField,sortOrder);
-                this.setRowCount((int)comicsFacade.getComicsCountFoundByRating(rating));
+                this.setRowCount((int)catalogue.getComicsCountFoundByRating(rating));
             }
             else
             {
@@ -94,37 +93,19 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
                 String columnNameValue = filters.get(columnName).toString();
                 Double columnRatingValue = Double.valueOf(filters.get(columnRating).toString());
                 
-                resultComics = comicsFacade.findByNameAndRating(first,pageSize,
+                resultComics = catalogue.findByNameAndRating(first,pageSize,
                         columnNameValue,columnRatingValue,sortField,sortOrder);
-                long count = comicsFacade.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
+                long count = catalogue.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
                 this.setRowCount((int)count);
             }
             
         }
         else {
-            resultComics = comicsFacade.findAllForCatalogue(first,pageSize,sortField,sortOrder);
-            this.setRowCount((int)(comicsFacade.getComicsCount()));
+            resultComics = catalogue.findAllForCatalogue(first,pageSize,sortField,sortOrder);
+            this.setRowCount((int)(catalogue.getComicsCount()));
         }
         
         datasource = resultComics;
-        
         return resultComics;
-        
-        //rowCount
-        //int resultComicsCount = resultComics.size();
-        
-        //paginate
-        /*if(resultComicsCount > pageSize) {
-            try {
-                return resultComics.subList(first, first + pageSize);
-            }
-            catch(IndexOutOfBoundsException e) {
-                return resultComics.subList(first, first + (resultComicsCount % pageSize));
-            }
-        }
-        else {
-            return resultComics;
-        }*/
-        
     }
 }
