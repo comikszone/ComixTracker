@@ -30,9 +30,21 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
     @NamedQuery(name = "Friends.findByUsers",
-            query = "SELECT f FROM Friends f WHERE f.users = :user AND f.users1 = :user1 OR f.users = :user1 AND f.users1 = :user"),
+            query = "SELECT f FROM Friends f WHERE f.user1 = :user1 AND f.user2 = :user2 OR f.user1 = :user2 AND f.user2 = :user1"),
     @NamedQuery(name = "Friends.findFriends",
-            query = "SELECT f FROM Friends f WHERE (f.users = :user OR f.users1 = :user) AND f.areFriends = true")})
+            query = "SELECT f FROM Friends f "
+                    + "WHERE (f.user1 = :user OR f.user2 = :user) "
+                    + "AND f.user1Subscribed = true AND f.user2Subscribed = true"),
+    @NamedQuery(name = "Friends.findFollowers",
+            query = "SELECT f FROM Friends f "
+                    + "WHERE f.user1 = :user AND f.user1Subscribed = false AND f.user2Subscribed = true "
+                    + "OR f.user2 = :user AND f.user1Subscribed = true AND f.user2Subscribed = false"),
+    @NamedQuery(name = "Friends.findUnconfirmedFriends",
+            query = "SELECT f FROM Friends f WHERE "
+                    + "f.user1 = :user AND f.user1Subscribed = true AND f.user2Subscribed = false "
+                    + "OR f.user2 = :user AND f.user1Subscribed = false AND f.user2Subscribed = true")
+        
+})
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,20 +53,20 @@ public class Friends implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "is_confirmed")
-    private boolean isConfirmed;
     @Basic(optional = true)
     @NotNull
-    @Column(name = "are_friends")
-    private boolean areFriends;
+    @Column(name = "user1_subscribed")
+    private boolean user1Subscribed;
+    @Basic(optional = true)
+    @NotNull
+    @Column(name = "user2_subscribed")
+    private boolean user2Subscribed;
     @JoinColumn(name = "user1_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Users users;
+    private Users user1;
     @JoinColumn(name = "user2_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Users users1;
+    private Users user2;
 
     public Friends() {
     }
@@ -67,38 +79,36 @@ public class Friends implements Serializable {
         this.id = id;
     }
 
+    public Users getUser1() {
+        return user1;
+    }
+
+    public void setUser1(Users user1) {
+        this.user1 = user1;
+    }
+
+    public Users getUser2() {
+        return user2;
+    }
+
+    public void setUser2(Users user2) {
+        this.user2 = user2;
+    }
     
-
-    public boolean getIsConfirmed() {
-        return isConfirmed;
+    public boolean isUser1Subscribed() {
+        return user1Subscribed;
     }
 
-    public void setIsConfirmed(boolean isConfirmed) {
-        this.isConfirmed = isConfirmed;
+    public void setUser1Subscribed(boolean user1Subscribed) {
+        this.user1Subscribed = user1Subscribed;
     }
 
-    public Users getUsers() {
-        return users;
+    public boolean isUser2Subscribed() {
+        return user2Subscribed;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
-    }
-
-    public Users getUsers1() {
-        return users1;
-    }
-
-    public void setUsers1(Users users1) {
-        this.users1 = users1;
-    }
-
-    public boolean areFriends() {
-        return areFriends;
-    }
-
-    public void setAreFriends(boolean areFriends) {
-        this.areFriends = areFriends;
+    public void setUser2Subscribed(boolean user2Subscribed) {
+        this.user2Subscribed = user2Subscribed;
     }
 
     @Override
@@ -125,6 +135,9 @@ public class Friends implements Serializable {
 
     @Override
     public String toString() {
-        return "Friends{" + "id=" + id + ", isConfirmed=" + isConfirmed + ", areFriends=" + areFriends + ", users=" + users + ", users1=" + users1 + '}';
+        return "Friends{" + "id=" + id + ", user1Subscribed=" + user1Subscribed + ", user2Subscribed=" + user2Subscribed + ", user1=" + user1 + ", user2=" + user2 + '}';
     }
+
+    
+
 }

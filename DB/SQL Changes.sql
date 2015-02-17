@@ -125,3 +125,8 @@ SELECT user_id, comics_id, issue_id, volume_id, TRUE
 FROM user_comments_news;
 ALTER TABLE user_comments_news ADD COLUMN last_seen TIMESTAMP;
 UPDATE user_comments_news SET last_seen = now();
+
+ALTER TABLE friends DROP is_confirmed;
+ALTER TABLE friends ADD user1_subscribed boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE friends ADD user2_subscribed boolean NOT NULL DEFAULT FALSE;
+ALTER TABLE friends DROP are_friends;
