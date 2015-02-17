@@ -106,10 +106,4 @@ public class ComicsCatalogueManagedBean implements Serializable {
     public void setRating(Rating rating) {
         this.rating = rating;
     }
-    
-    /*public void rate(AjaxBehaviorEvent actionEvent) {
-        Double score = (Double)((UIRating) actionEvent.getComponent())
-            .getValue();
-        selectedComics.setRating(score);
-    }*/
 }

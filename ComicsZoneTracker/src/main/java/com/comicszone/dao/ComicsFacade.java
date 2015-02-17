@@ -57,12 +57,16 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
         Query query = em.createQuery("SELECT c FROM Comics c ORDER BY c."
-                + sortField + " " + sortOrderString);
+                + sortField + " " + sortOrderString 
+                + ",c.Id " + otherOrderString);
+        
         
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
+        
         return query.getResultList();
     }
 
@@ -71,16 +75,19 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             Double rating, String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE LOWER(c.name) LIKE :name "
-                + "AND c.rating BETWEEN :rating AND :rating+1 "
-                + "ORDER BY c." + sortField + " " + sortOrderString);
+                + "AND c.rating BETWEEN :rating AND :rating+1.0 "
+                + "ORDER BY c." + sortField + " " + sortOrderString 
+                + ",c.Id " + otherOrderString);
         
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
         query.setParameter("name", name.toLowerCase() + "%");
         query.setParameter("rating", rating);
+        
         return query.getResultList();
     }
 
@@ -89,14 +96,17 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
         Query query = em.createQuery("SELECT c FROM Comics c "
-                + "WHERE c.rating BETWEEN :rating AND :rating+1 "
-                + "ORDER BY c." + sortField + " " + sortOrderString);
+                + "WHERE c.rating BETWEEN :rating AND :rating+1.0 "
+                + "ORDER BY c." + sortField + " " + sortOrderString 
+                + ",c.Id " + otherOrderString);
         
         query.setParameter("rating", rating);
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
+        
         return query.getResultList();
     }
 
@@ -105,15 +115,19 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE LOWER(c.name) LIKE :name "
-                + "ORDER BY c." + sortField + " " + sortOrderString);
+                + "ORDER BY c." + sortField + " " + sortOrderString 
+                + ",c.Id " + otherOrderString);
         
         query.setParameter("name", name.toLowerCase()+"%");
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
+        
         return query.getResultList();
+        
     }
     
     @Override

@@ -53,13 +53,12 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
     @Override
     public List<Comics> load(int first, int pageSize, String sortField, 
             SortOrder sortOrder, Map<String,Object> filters) {
-        
-        List<Comics> data = new ArrayList<Comics>();
+        System.err.println("FIRST***** " + first + "PAGESIZE***** " + pageSize);
         List<Comics> resultComics;
         
         //filtering and sorting
         if (sortField == null) {
-            sortField = "rating";
+            sortField = columnComicsRating;
             sortOrder = SortOrder.DESCENDING;
         }
         Iterator<String> itFilter = filters.keySet().iterator();
@@ -95,8 +94,6 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
                 String columnNameValue = filters.get(columnName).toString();
                 Double columnRatingValue = Double.valueOf(filters.get(columnRating).toString());
                 
-                
-
                 resultComics = comicsFacade.findByNameAndRating(first,pageSize,
                         columnNameValue,columnRatingValue,sortField,sortOrder);
                 long count = comicsFacade.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
@@ -109,23 +106,25 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
             this.setRowCount((int)(comicsFacade.getComicsCount()));
         }
         
-        data.addAll(resultComics);
-        datasource = data;
+        datasource = resultComics;
+        
+        return resultComics;
         
         //rowCount
-        int dataSize = data.size();
+        //int resultComicsCount = resultComics.size();
         
         //paginate
-        if(dataSize > pageSize) {
+        /*if(resultComicsCount > pageSize) {
             try {
-                return data.subList(first, first + pageSize);
+                return resultComics.subList(first, first + pageSize);
             }
             catch(IndexOutOfBoundsException e) {
-                return data.subList(first, first + (dataSize % pageSize));
+                return resultComics.subList(first, first + (resultComicsCount % pageSize));
             }
         }
         else {
-            return data;
-        }
+            return resultComics;
+        }*/
+        
     }
 }
