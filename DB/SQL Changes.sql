@@ -91,3 +91,6 @@ UPDATE volume SET source = 'Wikia';
 UPDATE issue SET source = 'Wikia';
 UPDATE character SET source = 'Wikia';
 ---/MISC
+
+ALTER TABLE users ADD COLUMN recovery_password_time timestamp;
+ALTER TABLE users ADD COLUMN recovery_password_id Varchar;
