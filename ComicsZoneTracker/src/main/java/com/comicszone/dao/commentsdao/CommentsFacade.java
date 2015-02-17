@@ -128,7 +128,7 @@ public class CommentsFacade extends AbstractFacade<Comments> {
     }
     
     @PUT
-    @Path("/add/commentsContainerType/{commentsContainerType}/id/{id}")
+    @Path("/add/{commentsContainerType}/id/{id}")
     @Consumes("application/json")
     public Response addComment(Comments newComment, 
             @PathParam("commentsContainerType") String containerType, 
