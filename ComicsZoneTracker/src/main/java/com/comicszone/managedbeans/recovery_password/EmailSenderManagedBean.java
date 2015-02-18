@@ -35,7 +35,7 @@ public class EmailSenderManagedBean implements Serializable {
     private UserDataFacade userDataFacade;
     private final int PASSWORD_LENGTH = 20;
     private String message;
-    
+    private String errorMessage;
     public void sendEmail() throws MessagingException, IOException{
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
@@ -44,11 +44,11 @@ public class EmailSenderManagedBean implements Serializable {
         List<Users> users=userDataFacade.findUserByEmail(email);
         if (users==null || users.size()!=1)
         {
-            message="Email isn't correct!";
+            message="Can't find that email, sorry";
         }
         else
         {
-            message="Check your email, please";
+            message="We’ve sent you an email containing a link that will allow you to reset your password for the next 24 hours. ";
             Users user=users.get(0);
             IPasswordCreator passwordCreator = new SimplePasswordCreator();
             String uid = passwordCreator.createPassword(PASSWORD_LENGTH);
@@ -59,7 +59,17 @@ public class EmailSenderManagedBean implements Serializable {
             userDataFacade.edit(user);
             SmtpMessageSender messageSender=new SmtpMessageSender();
             String link="https://www.comicszonetracker.tk/resources/templates/unauthorized/new_password.jsf?uid=" + uid;
-            String text="<a href='"+link+"'>"+link+"</a>";
+            String href="<a href='"+link+"'>"+link+"</a>";
+            StringBuilder stringBuilder=new StringBuilder();
+            stringBuilder.append("We heard that you lost your ComicsZoneTracker password. Sorry about that!<br/>");
+            stringBuilder.append("But don't worry! You can use the following link to reset your password:<br/> <br/>");
+            stringBuilder.append(href);
+            stringBuilder.append("<br/> <br/>");
+            stringBuilder.append("If you don't use this link within 24 hours, it will expire. To get a new password reset link, visit");
+            stringBuilder.append("https://www.comicszonetracker.tk/resources/templates/unauthorized/recover_password.jsf<br/> <br/>");
+            stringBuilder.append("Thanks,<br/>");
+            stringBuilder.append("Your friends at ComicsZoneTracker");
+            String text=stringBuilder.toString();
             messageSender.sendEmail(email, text);
         }
     }
@@ -67,4 +77,14 @@ public class EmailSenderManagedBean implements Serializable {
     public String getMessage() {
         return message;
     }   
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+        message="It looks like you clicked on an invalid password reset link. Please try again.";
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+    
 }
