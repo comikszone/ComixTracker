@@ -28,8 +28,11 @@
         <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                #{currentUserManagedBean.nickname}
+                #{currentUserManagedBean.nameToStartPage}
             <span class="caret"></span></a>
+            <i>
+                <img src="#{currentUserManagedBean.avatar}"/>
+            </i>
             <ul class="dropdown-menu">
                 <li>
                     <p:link value="My profile"
@@ -41,34 +44,23 @@
                         <p:link value="Admin page"
                                 styleClass="without-decoration light-grey"
                                 outcome="/resources/templates/authorized/admin/admin.xhtml"/>
-                    </td>
-                </c:if>
-
-                <td>
-                    <p:outputLabel 
-                        styleClass="light-grey" 
-                        value="#{currentUserManagedBean.nameToStartPage}"/>
-                </td>
-
-                <td>
+                    </c:if>
+                </li>
+                 <li>
                     <p:graphicImage 
                         value="#{currentUserManagedBean.avatar}"
                         styleClass="icon-on-start-page"
                         />
-                </td>
-
-                <td>
-                    </c:if>
                 </li>
-                <li>
+                                <li>
                     <h:form>
                     <h:commandLink
                             value="Logout" 
                             action="#{logoutManagedBean.logout()}"/>
                     </h:form>
-                </li>                      
-            </ul>
-        </li>
+                </li>
+                </ul>
+                </li> 
         </ul>
     </ui:define>
     <ui:define name="articleContent">

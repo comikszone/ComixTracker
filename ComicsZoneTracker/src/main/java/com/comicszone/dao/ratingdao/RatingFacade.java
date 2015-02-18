@@ -1,18 +1,12 @@
 package com.comicszone.dao.ratingdao;
 
-import com.comicszone.dao.ComicsFacade;
-import com.comicszone.dao.IssueFacade;
-import com.comicszone.dao.VolumeFacade;
 import com.comicszone.dao.contentdao.ContentFacade;
-import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Content;
 import com.comicszone.entitynetbeans.ContentType;
-import com.comicszone.entitynetbeans.Issue;
 import com.comicszone.entitynetbeans.Ucrating;
 import com.comicszone.entitynetbeans.Uirating;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.entitynetbeans.Uvrating;
-import com.comicszone.entitynetbeans.Volume;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -71,29 +65,36 @@ public class RatingFacade implements RatingInterface {
 
     @Override
     public void rateContent(Content content, Users user, Float rating) {
-        ContentType type = content.getContentType();
-        Long quantity = 0l;
-        switch (type) {
+        switch (content.getContentType()) {
             case Comics: 
                 ucrating.setRating(rating);
                 ucratingFacade.edit(ucrating);
-                quantity = ucratingFacade.getCountByComics(content.getId());
                 break;
             case Volume:
                 uvrating.setRating(rating);
                 uvratingFacade.edit(uvrating);
-                quantity = uvratingFacade.getCountByVolume(content.getId());
                 break;
             case Issue:
                 uirating.setRating(rating);
                 uiratingFacade.edit(uirating);
-                quantity = uiratingFacade.getCountByIssue(content.getId());
                 break;
         }
         if (content.getRating() != null)
-            content.setRating((rating + content.getRating())/quantity);
+            content.setRating((getAverageRating(content).floatValue()));
         else content.setRating(rating);
         contentFacade.edit(content);
+    }
+    
+    public Double getAverageRating(Content content) {
+        switch(content.getContentType()) {
+            case Comics:
+                return ucratingFacade.getAverageRating(content.getId());
+            case Volume:
+                return uvratingFacade.getAverageRating(content.getId());
+            case Issue:
+                return uiratingFacade.getAverageRating(content.getId());
+        }
+        return 0d;
     }
      
     /**
