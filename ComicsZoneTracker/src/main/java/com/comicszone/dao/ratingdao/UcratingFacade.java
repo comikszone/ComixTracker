@@ -30,13 +30,7 @@ public class UcratingFacade extends AbstractFacade<Ucrating> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
-    public Long getCountByComics(Integer comicsId) {
-        TypedQuery<Long> query = em.createNamedQuery("Ucrating.countByComics", Long.class);
-        query.setParameter("comicsId", comicsId);
-        return query.getResultList().get(0);
-    }
-    
+        
     public Ucrating findByUserAndComics(Integer userId, Integer comicsId) {
         TypedQuery<Ucrating> query =em.createNamedQuery("Ucrating.findByUserAndComics", Ucrating.class);
         query.setParameter("userId", userId);
@@ -44,6 +38,12 @@ public class UcratingFacade extends AbstractFacade<Ucrating> {
         if (!query.getResultList().isEmpty())
             return query.getResultList().get(0);
         else return null;
+    }
+    
+    public Double getAverageRating(Integer comicsId) {
+        TypedQuery<Double> query = em.createNamedQuery("Ucrating.getAverageRating", Double.class);
+        query.setParameter("comicsId", comicsId);
+        return query.getResultList().get(0);
     }
     
 }

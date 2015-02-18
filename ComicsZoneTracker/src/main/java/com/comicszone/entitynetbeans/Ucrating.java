@@ -31,7 +31,8 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Ucrating.findByRating", query = "SELECT u FROM Ucrating u WHERE u.rating = :rating"),
     @NamedQuery(name = "Ucrating.findByUserAndComics", 
                 query = "SELECT u FROM Ucrating u WHERE u.ucratingPK.userId = :userId AND u.ucratingPK.comicsId = :comicsId"),
-    @NamedQuery(name = "Ucrating.countByComics", query = "SELECT COUNT(u) FROM Ucrating u WHERE u.comics.Id = :comicsId")})
+    @NamedQuery(name = "Ucrating.countByComics", query = "SELECT COUNT(u) FROM Ucrating u WHERE u.comics.Id = :comicsId"),
+    @NamedQuery(name = "Ucrating.getAverageRating", query = "SELECT AVG(u.rating) FROM Ucrating u WHERE u.comics.Id = :comicsId")})
 public class Ucrating implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
