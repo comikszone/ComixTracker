@@ -51,15 +51,15 @@ public class EmailSenderManagedBean implements Serializable {
             message="Check your email, please";
             Users user=users.get(0);
             IPasswordCreator passwordCreator = new SimplePasswordCreator();
-            String password = passwordCreator.createPassword(PASSWORD_LENGTH);
+            String uid = passwordCreator.createPassword(PASSWORD_LENGTH);
             IPasswordEncryptor encryptor = new SHA256Encriptor();
-            String encryptedPassword = encryptor.getEncodedPassword(password);
-            user.setRecoveryPasswordId(encryptedPassword);
+            String encryptedUid = encryptor.getEncodedPassword(uid);
+            user.setRecoveryPasswordId(encryptedUid);
             user.setRecoveryPasswordTime(new Date(System.currentTimeMillis()));
             userDataFacade.edit(user);
             SmtpMessageSender messageSender=new SmtpMessageSender();
-            String link="http://localhost:8080/resources/templates/unauthorized/new_password.jsf?uid=" + password;
-            String text="<a href='"+link+"'>"+link+"</a";
+            String link="http://localhost:8080/resources/templates/unauthorized/new_password.jsf?uid=" + uid;
+            String text="<a href='"+link+"'>"+link+"</a>";
             messageSender.sendEmail(email, text);
         }
     }

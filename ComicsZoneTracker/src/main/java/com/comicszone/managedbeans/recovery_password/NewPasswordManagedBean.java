@@ -34,7 +34,7 @@ public class NewPasswordManagedBean implements Serializable{
     private String uid;
     private String message;
     private Users user;
-    private long DAY=60*1000;
+    private long HOUR=60*60*1000;
     
     public void init()
     {
@@ -55,7 +55,7 @@ public class NewPasswordManagedBean implements Serializable{
             Date currentData=new Date();
             Date uidTime=user.getRecoveryPasswordTime();
             long delta=currentData.getTime()-uidTime.getTime();
-            if (delta>DAY)
+            if (delta>HOUR)
             try {
                 ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
                 context.redirect("/");
