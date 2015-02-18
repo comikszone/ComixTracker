@@ -40,14 +40,16 @@ public class UserRegistrationFacade extends AbstractUserFacade {
         Users tempUser = getUserWithNickname(user.getNickname());
         if (tempUser != null) {
             tempUser.setPass(password);
-            tempUser.setBirthday(user.getBirthday());
-            tempUser.setAvatarUrl(user.getAvatarUrl());
-            tempUser.setName(user.getName());
+//            tempUser.setBirthday(user.getBirthday());
+//            tempUser.setAvatarUrl(user.getAvatarUrl());
+//            tempUser.setName(user.getName());
             edit(tempUser);
             return;
         }
 
         user.setPass(password);
+        user.setRealNickname(user.getName());
+        user.setIsSocial(Boolean.TRUE);
         create(user);
 
         UserGroup group = new UserGroup("user", user.getNickname());

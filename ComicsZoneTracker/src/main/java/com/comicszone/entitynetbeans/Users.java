@@ -43,10 +43,10 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Users.findByPass", query = "SELECT u FROM Users u WHERE u.pass = :pass"),
     @NamedQuery(name = "Users.findBySex", query = "SELECT u FROM Users u WHERE u.sex = :sex"),
     @NamedQuery(name = "Users.findByBirthday", query = "SELECT u FROM Users u WHERE u.birthday = :birthday"),
-    @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
+    @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email AND u.isSocial=FALSE"),
     @NamedQuery(name = "Users.findByOnline", query = "SELECT u FROM Users u WHERE u.online = :online"),
     @NamedQuery(name = "Users.findByBanned", query = "SELECT u FROM Users u WHERE u.banned = :banned"),
-    @NamedQuery(name = "Users.findByRecoveryPasswordId", query = "SELECT u FROM Users u WHERE u.recoveryPasswordId = :uid"),
+    @NamedQuery(name = "Users.findByRecoveryPasswordId", query = "SELECT u FROM Users u WHERE u.recoveryPasswordId = :uid AND u.isSocial=FALSE"),
     @NamedQuery(name = "Users.findByNicknameStartsWith", query = "SELECT u FROM Users u WHERE LOWER(u.nickname) LIKE :nickname")})
 public class Users implements Serializable {
     @Lob
@@ -104,6 +104,10 @@ public class Users implements Serializable {
     private Date recoveryPasswordTime;
     @Column(name = "recovery_password_id")
     private String recoveryPasswordId;
+    @Column (name = "real_nickname")
+    private String realNickname;
+    @Column (name = "is_social")
+    private Boolean isSocial;
 //    @JoinTable(name = "friends", joinColumns = {
 //        @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
 //        @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
@@ -246,6 +250,22 @@ public class Users implements Serializable {
         this.recoveryPasswordId = recoveryPasswordId;
     }
 
+    public String getRealNickname() {
+        return realNickname;
+    }
+
+    public void setRealNickname(String realNickname) {
+        this.realNickname = realNickname;
+    }
+
+    public Boolean getIsSocial() {
+        return isSocial;
+    }
+
+    public void setIsSocial(Boolean isSocial) {
+        this.isSocial = isSocial;
+    }
+
     public List<Issue> getIssueList() {
         return issueList;
     }
@@ -330,8 +350,10 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "Users{" + "avatar=" + avatar + ", usersList=" + usersList + ", usersList1=" + usersList1 + ", userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", name=" + name + ", avatarUrl=" + avatarUrl + ", recoveryPasswordTime=" + recoveryPasswordTime + ", recoveryPasswordId=" + recoveryPasswordId + ", friendsList=" + friendsList + ", friendsList1=" + friendsList1 + ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
+        return "Users{" + "avatar=" + avatar + ", usersList=" + usersList + ", usersList1=" + usersList1 + ", userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", name=" + name + ", avatarUrl=" + avatarUrl + ", recoveryPasswordTime=" + recoveryPasswordTime + ", recoveryPasswordId=" + recoveryPasswordId + ", realNickname=" + realNickname + ", isSocial=" + isSocial + ", friendsList=" + friendsList + ", friendsList1=" + friendsList1 + ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
     }
+
+
 
 
 

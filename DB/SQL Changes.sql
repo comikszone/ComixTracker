@@ -94,3 +94,6 @@ UPDATE character SET source = 'Wikia';
 
 ALTER TABLE users ADD COLUMN recovery_password_time timestamp;
 ALTER TABLE users ADD COLUMN recovery_password_id Varchar;
+
+alter table users add column real_nickname character varying default false;
+alter table users add column is_social boolean default false;
