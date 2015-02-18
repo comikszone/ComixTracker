@@ -13,6 +13,7 @@ html, #container {
 .container {
     width: 80%;
 }
+
 .custom-wrapper {
     min-height: 100%;
     margin: 0 auto -2em;
@@ -137,8 +138,8 @@ td {
 }
 
 .icon-on-start-page{
-    height: 50%;
-    width: 25px;
+    height: 22px;
+    width: 22px;
 }
 
 .ui-selectonemenu-trigger {
