@@ -11,6 +11,7 @@ html, body, #container {
 }
 
 header {
+    //update .icon-on-start-page, if you update height here
     height: 45px;
     z-index: 4;
 }
@@ -163,8 +164,8 @@ td {
 }
 
 .icon-on-start-page{
-    height: 50%;
-    width: 25px;
+    height: 22px;
+    width: 22px;
 }
 
 //Maybe, it'll help us sometimes'
