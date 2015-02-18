@@ -58,7 +58,7 @@ public class EmailSenderManagedBean implements Serializable {
             user.setRecoveryPasswordTime(new Date(System.currentTimeMillis()));
             userDataFacade.edit(user);
             SmtpMessageSender messageSender=new SmtpMessageSender();
-            String link="http://localhost:8080/resources/templates/unauthorized/new_password.jsf?uid=" + uid;
+            String link="https://www.comicszonetracker.tk/resources/templates/unauthorized/new_password.jsf?uid=" + uid;
             String text="<a href='"+link+"'>"+link+"</a>";
             messageSender.sendEmail(email, text);
         }
