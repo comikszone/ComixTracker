@@ -65,7 +65,7 @@ public class EmailSenderManagedBean implements Serializable {
             stringBuilder.append("But don't worry! You can use the following link to reset your password:<br/> <br/>");
             stringBuilder.append(href);
             stringBuilder.append("<br/> <br/>");
-            stringBuilder.append("If you don't use this link within 24 hours, it will expire. To get a new password reset link, visit");
+            stringBuilder.append("If you don't use this link within 24 hours, it will expire. To get a new password reset link, visit ");
             stringBuilder.append("https://www.comicszonetracker.tk/resources/templates/unauthorized/recover_password.jsf<br/> <br/>");
             stringBuilder.append("Thanks,<br/>");
             stringBuilder.append("Your friends at ComicsZoneTracker");
