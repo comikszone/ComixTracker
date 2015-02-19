@@ -50,6 +50,8 @@ public class UserFriendsManagedBean implements Serializable {
     
     private Users selectedFriend;
 
+    private Users selectedFollower;
+    
     @PostConstruct
     public void init() {
        try {
@@ -149,4 +151,13 @@ public class UserFriendsManagedBean implements Serializable {
     public void setFollowersIsEmpty(boolean followersIsEmpty) {
         this.followersIsEmpty = followersIsEmpty;
     }
+
+    public Users getSelectedFollower() {
+        return selectedFollower;
+    }
+
+    public void setSelectedFollower(Users selectedFollower) {
+        this.selectedFollower = selectedFollower;
+    }
+    
 }

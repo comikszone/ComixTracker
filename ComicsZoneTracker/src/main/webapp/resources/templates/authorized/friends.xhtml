@@ -64,9 +64,8 @@
 
                         <p:ajax 
                             event="rowSelect" 
-                            update=":form:messages"
-                            listener="#{messagesManagedBean.setFriendId(userFriendsManagedBean.selectedFriend.userId)}"
-                            
+                            update="@all"
+                            listener="#{messagesManagedBean.friendSelected(userFriendsManagedBean.selectedFriend.userId)}"                            
                             />
 
                         <p:column 
@@ -143,11 +142,16 @@
                         paginatorPosition="bottom"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                        
+                        selectionMode="single" 
+                        selection="#{userFriendsManagedBean.selectedFollower}"                        
                         emptyMessage="No followers found!"
                         style="margin: auto 1% 1% 1%;"
                         >
-
+                        <p:ajax 
+                            event="rowSelect" 
+                            update="@all"
+                            listener="#{messagesManagedBean.followerSelected(userFriendsManagedBean.selectedFollower.userId)}"                            
+                            />
                         <p:column 
                             width="100%" 
                             headerText="Nickname" 
@@ -281,7 +285,8 @@
                         <p:panel 
                             id="messageAdder" 
                             header="Your message" 
-                            style="margin: auto 1% 0 1%">
+                            style="margin: auto 1% 0 1%"
+                            rendered="#{messagesManagedBean.showMessageAdder eq true and messagesManagedBean.showMessages eq true}">
                             
                         <p:inputTextarea 
                             id="messagesAdderNewMessage" 
@@ -299,7 +304,8 @@
                         <p:growl id="messagessMessage" showDetail="true" life="1000" />
        
                         <p:panel style="margin: 0 1% 1% 1%">
-                            <p:dataTable 
+                            <p:dataTable
+                                rendered="#{messagesManagedBean.showMessages eq true}"
                                 var="message"
                                 id="messages"
                                 emptyMessage="No messages"

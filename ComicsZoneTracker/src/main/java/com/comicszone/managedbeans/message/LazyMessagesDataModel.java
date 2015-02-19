@@ -57,6 +57,7 @@ public class LazyMessagesDataModel extends LazyDataModel<Messages> {
     @Override
     public List<Messages> load(int first, int pageSize, String sortField, 
             SortOrder sortOrder, Map<String,Object> filters) {
+        System.err.println("load invoked!!!!!!!!!!!!!!");
         if (sortField==null) 
         {
             sortOrder=SortOrder.DESCENDING;

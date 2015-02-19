@@ -37,6 +37,8 @@ public class MessagesManagedBean {
     private Integer friendId;
     private Users friendUser;
     private LazyDataModel<Messages> dataModel;
+    private boolean showMessageAdder=false;
+    private boolean showMessages=false;
     public void addMessage() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = facesContext.getViewRoot();
@@ -106,6 +108,8 @@ public class MessagesManagedBean {
 
     public void setFriendId(Integer friendId) {
         System.err.println("selected friend id="+friendId);
+//        showMessageAdder=true;
+//        showMessages=true;
         dataModel=new  LazyMessagesDataModel(messagesFacade, currentUser.getUserId(), friendId, currentUser.getUserId());
         this.friendId = friendId;
     }
@@ -133,5 +137,32 @@ public class MessagesManagedBean {
     public void setDataModel(LazyDataModel<Messages> dataModel) {
         this.dataModel = dataModel;
     }
-  
+
+    public boolean isShowMessageAdder() {
+        return showMessageAdder;
+    }
+
+    public void setShowMessageAdder(boolean showMessageAdder) {
+        this.showMessageAdder = showMessageAdder;
+    }
+
+    public boolean isShowMessages() {
+        return showMessages;
+    }
+
+    public void setShowMessages(boolean showMessages) {
+        this.showMessages = showMessages;
+    }
+    public void friendSelected(Integer id)
+    {
+        friendId=id;
+        showMessageAdder=true;
+        showMessages=true;
+    }
+    public void followerSelected(Integer id)
+    {
+        friendId=id;
+        showMessageAdder=false;
+        showMessages=true;
+    }
 }
