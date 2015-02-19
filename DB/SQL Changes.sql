@@ -92,8 +92,6 @@ UPDATE issue SET source = 'Wikia';
 UPDATE character SET source = 'Wikia';
 ---/MISC
 
-ALTER TABLE users ADD COLUMN source Varchar;
-
 ALTER TABLE ucrating ALTER COLUMN rating SET DEFAULT 0;
 ALTER TABLE uvrating ALTER COLUMN rating SET DEFAULT 0;
 ALTER TABLE uirating ALTER COLUMN rating SET DEFAULT 0;
