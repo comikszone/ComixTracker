@@ -85,7 +85,6 @@ ALTER TABLE friends ADD CONSTRAINT friend_of FOREIGN KEY ( user2_id ) REFERENCES
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_SENDER BOOLEAN DEFAULT TRUE;
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_RECEIVER BOOLEAN DEFAULT TRUE;
 
-ALTER TABLE users ADD COLUMN source Varchar DEFAULT 'Wikia';
 
 ---MISC Use _only_ before using marvel migration code (comics.sql, chars.sql)
 UPDATE comics SET source = 'Wikia';
