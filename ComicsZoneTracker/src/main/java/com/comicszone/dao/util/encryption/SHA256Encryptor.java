@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class SHA256Encriptor implements IPasswordEncryptor{
+public class SHA256Encryptor implements IPasswordEncryptor{
 
     @Override
     public String getEncodedPassword(String password) {

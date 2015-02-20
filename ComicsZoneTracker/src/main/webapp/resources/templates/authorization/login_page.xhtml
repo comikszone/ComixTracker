@@ -1,20 +1,23 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/resources/templates/unauthorized.xhtml"
+                template="/resources/templates/unauthorized/unauthorized.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html">
     <ui:define name="articleContent">
-        <p:panel id="loginPanel">
-            <form method="POST" action="j_security_check">
+        <p:panel>
+            <h:form>
                 <h2>Login</h2>
-                Username: <input type="text" name="j_username" class="form-control"/><br />
-                Password: <input type="password" name="j_password" class="form-control"/><br />
-                <input type="submit" value="Login" />
-                <input type="button"
-                       onclick="window.history.back();"
-                       value="Back" />
-            </form>
+                Username: <p:inputText value="#{authorisationManagedBean.nickname}"/><br />
+                Password: <p:password value="#{authorisationManagedBean.password}"/><br />
+                <p:commandButton 
+                                 ajax="false"
+                                 action="#{authorisationManagedBean.doLogin()}" value="Login" />
+                <p:commandButton type="button"
+                                 ajax="false"
+                                 onclick="window.history.back();"
+                                 value="Back" />
+            </h:form>
         </p:panel>
     </ui:define>
 </ui:composition>
