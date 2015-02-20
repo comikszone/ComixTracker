@@ -64,5 +64,6 @@ public class CurrentUserManagedBean implements Serializable {
         Principal prin = FacesContext.getCurrentInstance()
                 .getExternalContext().getUserPrincipal();
         currentUser = userDAO.getUserWithNickname(prin.getName());
+        System.out.println("123");
     }
 }
