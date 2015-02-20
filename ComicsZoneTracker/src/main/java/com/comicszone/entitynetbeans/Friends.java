@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,20 +33,49 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
     @NamedQuery(name = "Friends.findByUsers",
             query = "SELECT f FROM Friends f WHERE f.user1 = :user1 AND f.user2 = :user2 OR f.user1 = :user2 AND f.user2 = :user1"),
+    @NamedQuery(name = "Friends.findByStatus", query = "SELECT f FROM Friends f WHERE f.status = :status"),
     @NamedQuery(name = "Friends.findFriends",
             query = "SELECT f FROM Friends f "
                     + "WHERE (f.user1 = :user OR f.user2 = :user) "
-                    + "AND f.user1Subscribed = true AND f.user2Subscribed = true"),
+                    + "AND f.status = com.comicszone.entitynetbeans.FriendshipStatus.friends"),
     @NamedQuery(name = "Friends.findFollowers",
             query = "SELECT f FROM Friends f "
-                    + "WHERE f.user1 = :user AND f.user1Subscribed = false AND f.user2Subscribed = true "
-                    + "OR f.user2 = :user AND f.user1Subscribed = true AND f.user2Subscribed = false"),
-    @NamedQuery(name = "Friends.findUnconfirmedFriends",
+                    + "WHERE f.user1 = :user "
+                    + "AND (f.status = com.comicszone.entitynetbeans.FriendshipStatus.user2_subscribed "
+                    + "OR f.status = com.comicszone.entitynetbeans.FriendshipStatus.user1_deleted_user2)"
+                    + "OR f.user2 = :user "
+                    + "AND (f.status = com.comicszone.entitynetbeans.FriendshipStatus.user1_subscribed "
+                    + "OR f.status = com.comicszone.entitynetbeans.FriendshipStatus.user2_deleted_user1)"),
+    @NamedQuery(name = "Friends.findUnconfirmedFriends", 
             query = "SELECT f FROM Friends f WHERE "
-                    + "f.user1 = :user AND f.user1Subscribed = true AND f.user2Subscribed = false "
-                    + "OR f.user2 = :user AND f.user1Subscribed = false AND f.user2Subscribed = true")
-        
+                    + "f.user1 = :user "
+                    + "AND (f.status = com.comicszone.entitynetbeans.FriendshipStatus.user1_subscribed "
+                    + "OR f.status = com.comicszone.entitynetbeans.FriendshipStatus.user2_deleted_user1)"
+                    + "OR f.user2 = :user "
+                    + "AND (f.status = com.comicszone.entitynetbeans.FriendshipStatus.user2_subscribed "
+                    + "OR f.status = com.comicszone.entitynetbeans.FriendshipStatus.user1_deleted_user2)"),
 })
+/*@NamedNativeQueries({
+    @NamedNativeQuery(name = "Friends.findFriends1", 
+            query = "SELECT * FROM friends "
+                    + "WHERE (user1_id = ? OR user2_id = ?) "
+                    + "AND friendship_status = 'friends'", 
+            resultClass = Friends.class),
+    @NamedNativeQuery(name = "Friends.findFollowers1", 
+            query = "SELECT * FROM friends "
+                    + "WHERE user1_id = ? "
+                    + "AND friendship_status = 'user2_subscribed' "
+                    + "OR user2_id = ? "
+                    + "AND friendship_status = 'user1_subscribed'",
+            resultClass = Friends.class),
+    @NamedNativeQuery(name = "Friends.findUnconfirmedFriends1",
+            query = "SELECT * FROM friends WHERE "
+                    + "user1_id = ? "
+                    + "AND friendship_status = 'user1_subscribed' "
+                    + "OR user2_id = ? "
+                    + "AND friendship_status = 'user2_subscribed'",
+            resultClass = Friends.class)
+})*/
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,20 +84,17 @@ public class Friends implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = true)
-    @NotNull
-    @Column(name = "user1_subscribed")
-    private boolean user1Subscribed;
-    @Basic(optional = true)
-    @NotNull
-    @Column(name = "user2_subscribed")
-    private boolean user2Subscribed;
     @JoinColumn(name = "user1_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Users user1;
     @JoinColumn(name = "user2_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Users user2;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "friendship_status")
+    @Enumerated(EnumType.STRING)
+    private FriendshipStatus status;
 
     public Friends() {
     }
@@ -95,20 +123,12 @@ public class Friends implements Serializable {
         this.user2 = user2;
     }
     
-    public boolean isUser1Subscribed() {
-        return user1Subscribed;
+    public FriendshipStatus getStatus() {
+        return status;
     }
-
-    public void setUser1Subscribed(boolean user1Subscribed) {
-        this.user1Subscribed = user1Subscribed;
-    }
-
-    public boolean isUser2Subscribed() {
-        return user2Subscribed;
-    }
-
-    public void setUser2Subscribed(boolean user2Subscribed) {
-        this.user2Subscribed = user2Subscribed;
+    
+    public void setStatus(FriendshipStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -135,9 +155,7 @@ public class Friends implements Serializable {
 
     @Override
     public String toString() {
-        return "Friends{" + "id=" + id + ", user1Subscribed=" + user1Subscribed + ", user2Subscribed=" + user2Subscribed + ", user1=" + user1 + ", user2=" + user2 + '}';
+        return "Friends{id=" + id + ", status=" + status +", user1=" + user1 + ", user2=" + user2 + '}';
     }
-
-    
 
 }

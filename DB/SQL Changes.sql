@@ -130,3 +130,7 @@ ALTER TABLE friends DROP is_confirmed;
 ALTER TABLE friends ADD user1_subscribed boolean NOT NULL DEFAULT FALSE;
 ALTER TABLE friends ADD user2_subscribed boolean NOT NULL DEFAULT FALSE;
 ALTER TABLE friends DROP are_friends;
+
+ALTER TABLE friends ADD COLUMN friendship_status VARCHAR(30) DEFAULT 'nobody_subscribed';
+ALTER TABLE friends DROP COLUMN user1_subscribed;
+ALTER TABLE friends DROP COLUMN user2_subscribed;

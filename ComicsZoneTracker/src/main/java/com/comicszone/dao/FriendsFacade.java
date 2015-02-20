@@ -6,6 +6,7 @@
 package com.comicszone.dao;
 
 import com.comicszone.entitynetbeans.Friends;
+import com.comicszone.entitynetbeans.FriendshipStatus;
 import com.comicszone.entitynetbeans.Users;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,8 @@ public class FriendsFacade extends AbstractFacade<Friends> {
     public List<Users> getFriends(Users currentUser) {
         
         TypedQuery<Friends> query =em.createNamedQuery("Friends.findFriends", Friends.class);
+        //query.setParameter(1, currentUser.getUserId());
+        //query.setParameter(2, currentUser.getUserId());
         query.setParameter("user", currentUser);
         List<Friends> friends = query.getResultList();
         
@@ -52,9 +55,11 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         return userFriends;
     }
     
-    public List<Users> getFolowers(Users currentUser) {
+    public List<Users> getFollowers(Users currentUser) {
         
         TypedQuery<Friends> query =em.createNamedQuery("Friends.findFollowers", Friends.class);
+        //query.setParameter(1, currentUser.getUserId());
+        //query.setParameter(2, currentUser.getUserId());
         query.setParameter("user", currentUser);
         List<Friends> followers = query.getResultList();
         
@@ -72,6 +77,8 @@ public class FriendsFacade extends AbstractFacade<Friends> {
     
     public List<Users> getUnconfirmedFriends(Users currentUser) {
         TypedQuery<Friends> query =em.createNamedQuery("Friends.findUnconfirmedFriends", Friends.class);
+        //query.setParameter(1, currentUser.getUserId());
+        //query.setParameter(2, currentUser.getUserId());
         query.setParameter("user", currentUser);
         List<Friends> potentialFriends = query.getResultList();
         
@@ -98,8 +105,9 @@ public class FriendsFacade extends AbstractFacade<Friends> {
             Friends friend = new Friends();
             friend.setUser1(currentUser);
             friend.setUser2(friendUser);
-            friend.setUser1Subscribed(true);
-            friend.setUser2Subscribed(false);
+            //friend.setUser1Subscribed(true);
+            //friend.setUser2Subscribed(false);
+            friend.setStatus(FriendshipStatus.user1_subscribed);
             
             create(friend);
             return;
@@ -108,15 +116,34 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         Friends friend = friends.get(0);
         boolean isCurrentUserUser1 = friend.getUser1().equals(currentUser);
         
-        if (friend.isUser1Subscribed() && friend.isUser2Subscribed()) {
+        //if (friend.isUser1Subscribed() && friend.isUser2Subscribed()) {
+        if (friend.getStatus().equals(FriendshipStatus.friends)) {
             return;
         }
         
         if (isCurrentUserUser1) {
-            friend.setUser1Subscribed(true);
+            //friend.setUser1Subscribed(true);
+            if (friend.getStatus().equals(FriendshipStatus.user2_subscribed) ||
+                    friend.getStatus().equals(FriendshipStatus.user1_deleted_user2))
+            {
+                friend.setStatus(FriendshipStatus.friends);
+            }
+            else if (friend.getStatus().equals(FriendshipStatus.nobody_subscribed))
+            {
+                friend.setStatus(FriendshipStatus.user1_subscribed);
+            }
         }
         else {
-            friend.setUser2Subscribed(true);
+            //friend.setUser2Subscribed(true);
+            if (friend.getStatus().equals(FriendshipStatus.user1_subscribed) ||
+                    friend.getStatus().equals(FriendshipStatus.user2_deleted_user1))
+            {
+                friend.setStatus(FriendshipStatus.friends);
+            }
+            else if (friend.getStatus().equals(FriendshipStatus.nobody_subscribed)) 
+            {
+                friend.setStatus(FriendshipStatus.user2_subscribed);
+            }
         }
         edit(friend);
     }
@@ -133,17 +160,32 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         boolean isCurrentUserUser1 = friend.getUser1().equals(currentUser);
         
         if (isCurrentUserUser1) {
-            friend.setUser1Subscribed(false);
+            //friend.setUser1Subscribed(false);
+            if (friend.getStatus().equals(FriendshipStatus.friends)) {
+                friend.setStatus(FriendshipStatus.user1_deleted_user2);
+            }
+            else if (friend.getStatus().equals(FriendshipStatus.user2_deleted_user1)
+                    || friend.getStatus().equals(FriendshipStatus.user1_subscribed)) 
+            {
+                friend.setStatus(FriendshipStatus.nobody_subscribed);
+            }
         }
         else {
-            friend.setUser2Subscribed(false);
+            if (friend.getStatus().equals(FriendshipStatus.friends)) {
+                friend.setStatus(FriendshipStatus.user2_deleted_user1);
+            }
+            else if (friend.getStatus().equals(FriendshipStatus.user1_deleted_user2)
+                    || friend.getStatus().equals(FriendshipStatus.user2_subscribed)) 
+            {
+                friend.setStatus(FriendshipStatus.nobody_subscribed);
+            }
         }
         edit(friend);
     }
     
     private List<Friends> findFriendsByUsers(Users currentUser, Users friendUser) {
         
-        TypedQuery<Friends> query =em.createNamedQuery("Friends.findByUsers", Friends.class);
+        TypedQuery<Friends> query = em.createNamedQuery("Friends.findByUsers", Friends.class);
         query.setParameter("user1", currentUser);
         query.setParameter("user2", friendUser);
         return query.getResultList();

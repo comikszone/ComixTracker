@@ -62,7 +62,7 @@ public class UserFriendsManagedBean implements Serializable {
                     .clone();
             
             friends = friendsFacade.getFriends(currentUser);
-            followers = friendsFacade.getFolowers(currentUser);
+            followers = friendsFacade.getFollowers(currentUser);
             unconfirmedFriends = friendsFacade.getUnconfirmedFriends(currentUser);
             followersIsEmpty = followers.isEmpty();
         } catch (CloneNotSupportedException ex) {
@@ -85,7 +85,7 @@ public class UserFriendsManagedBean implements Serializable {
         friendsFacade.addToFriends(currentUser, unconfirmedUser);
         //send add news to unconfirmedUser
         setFriends(friendsFacade.getFriends(currentUser));
-        setFollowers(friendsFacade.getFolowers(currentUser));
+        setFollowers(friendsFacade.getFollowers(currentUser));
         setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
     }
     
@@ -94,7 +94,7 @@ public class UserFriendsManagedBean implements Serializable {
         
         //send remove news to friend.
         setFriends(friendsFacade.getFriends(currentUser));
-        setFollowers(friendsFacade.getFolowers(currentUser));
+        setFollowers(friendsFacade.getFollowers(currentUser));
         setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
     }
     
