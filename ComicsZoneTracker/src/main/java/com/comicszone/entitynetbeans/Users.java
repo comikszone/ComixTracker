@@ -45,12 +45,24 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Users.findByBirthday", query = "SELECT u FROM Users u WHERE u.birthday = :birthday"),
     @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
     @NamedQuery(name = "Users.findByOnline", query = "SELECT u FROM Users u WHERE u.online = :online"),
-    @NamedQuery(name = "Users.findByBanned", query = "SELECT u FROM Users u WHERE u.banned = :banned")})
+    @NamedQuery(name = "Users.findByBanned", query = "SELECT u FROM Users u WHERE u.banned = :banned"),
+    @NamedQuery(name = "Users.findByNicknameStartsWith", query = "SELECT u FROM Users u WHERE u.nickname LIKE :nickname")})
 public class Users implements Serializable {
+    @Lob
+    @Column(name = "avatar")
+    private byte[] avatar;
+    @JoinTable(name = "user_group", joinColumns = {
+        @JoinColumn(name = "nickname", referencedColumnName = "nickname")}, inverseJoinColumns = {
+        @JoinColumn(name = "nickname", referencedColumnName = "nickname")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Users> usersList;
+    @ManyToMany(mappedBy = "usersList", fetch = FetchType.LAZY)
+    private List<Users> usersList1;
+
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "users_user_id_seq")
-    @SequenceGenerator(name = "users_user_id_seq", sequenceName = "users_user_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_user_id_seq")
+    @SequenceGenerator(name = "users_user_id_seq", sequenceName = "users_user_id_seq", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "user_id")
     private Integer userId;
@@ -64,9 +76,6 @@ public class Users implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "pass")
     private String pass;
-//    @Lob
-    @Column(name = "avatar")
-    private byte[] avatar;
     @Basic(optional = false)
     @NotNull
     @Column(name = "sex")
@@ -76,7 +85,6 @@ public class Users implements Serializable {
     private Date birthday;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Недопустимый адрес электронной почты")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "email")
     private String email;
@@ -86,13 +94,19 @@ public class Users implements Serializable {
     @NotNull
     @Column(name = "banned")
     private boolean banned;
-    @JoinTable(name = "friends", joinColumns = {
-        @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Users> usersList;
-    @ManyToMany(mappedBy = "usersList", fetch = FetchType.LAZY)
-    private List<Users> usersList1;
+    @Column(name="name")
+    private String name;
+    @Column(name="avatar_url")
+    private String avatarUrl;
+//    @JoinTable(name = "friends", joinColumns = {
+//        @JoinColumn(name = "user2_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
+//        @JoinColumn(name = "user1_id", referencedColumnName = "user_id")})
+//    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Friends> friendsList;
+    //@ManyToMany(mappedBy = "usersList", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "users1", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Friends> friendsList1;
     @JoinTable(name = "progress", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
         @JoinColumn(name = "issue_id", referencedColumnName = "issue_id")})
@@ -112,6 +126,12 @@ public class Users implements Serializable {
 
     public Users(Integer userId) {
         this.userId = userId;
+    }
+
+    public Users(String nickname, String email, String password) {
+        this.nickname = nickname;
+        this.email = email;
+        this.pass = password;
     }
 
     public Users(Integer userId, String nickname, String pass, int sex, String email, boolean banned) {
@@ -147,13 +167,6 @@ public class Users implements Serializable {
         this.pass = pass;
     }
 
-    public byte[] getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
-    }
 
     public int getSex() {
         return sex;
@@ -195,20 +208,20 @@ public class Users implements Serializable {
         this.banned = banned;
     }
 
-    public List<Users> getUsersList() {
-        return usersList;
+    public String getName() {
+        return name;
     }
 
-    public void setUsersList(List<Users> usersList) {
-        this.usersList = usersList;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<Users> getUsersList1() {
-        return usersList1;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setUsersList1(List<Users> usersList1) {
-        this.usersList1 = usersList1;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public List<Issue> getIssueList() {
@@ -251,6 +264,23 @@ public class Users implements Serializable {
         this.messagesList1 = messagesList1;
     }
 
+    public List<Friends> getFriendsList() {
+        return friendsList;
+    }
+
+    public void setFriendsList(List<Friends> friendsList) {
+        this.friendsList = friendsList;
+    }
+
+    public List<Friends> getFriendsList1() {
+        return friendsList1;
+    }
+
+    public void setFriendsList1(List<Friends> friendsList1) {
+        this.friendsList1 = friendsList1;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -272,8 +302,65 @@ public class Users implements Serializable {
     }
 
     @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Users[ userId=" + userId + " ]";
+        return "Users{" + "userId=" + userId + ", nickname=" + nickname + ", pass=" + pass + ", avatar=" + avatar + ", sex=" + sex + ", birthday=" + birthday + ", email=" + email + ", online=" + online + ", banned=" + banned + ", name=" + name + ", avatarUrl=" + avatarUrl + 
+               ", issueList=" + issueList + ", userGroupList=" + userGroupList + ", commentsList=" + commentsList + ", messagesList=" + messagesList + ", messagesList1=" + messagesList1 + '}';
+    }
+
+    public void addFriendToFriendsList(Friends friend) {
+        friendsList.add(friend);
     }
     
+    public void addFriendToFriendsList1(Friends friend) {
+        friendsList1.add(friend);
+    }
+    public void addMessageToMessagesList(Messages message)
+    {
+        messagesList.add(message);
+    }
+    
+    public void addMessageToMessagesList1(Messages message)
+    {
+        messagesList1.add(message);
+    }
+
+    public void removeFriendFromFriendsList(Friends friend) {
+        friendsList.remove(friend);
+    }
+    
+    public void removeFriendFromFriendsList1(Friends friend) {
+        friendsList1.remove(friend);
+    }
+
+    public List<Users> getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
+    }
+
+    public List<Users> getUsersList1() {
+        return usersList1;
+    }
+
+    public void setUsersList1(List<Users> usersList1) {
+        this.usersList1 = usersList1;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
+    }
+
+    
+
 }

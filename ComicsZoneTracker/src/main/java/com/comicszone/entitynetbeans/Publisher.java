@@ -47,6 +47,8 @@ public class Publisher implements Serializable {
     private String name;
     @OneToMany(mappedBy = "publisherId", fetch = FetchType.LAZY)
     private List<Comics> comicsList;
+    @OneToMany(mappedBy = "publisherId", fetch = FetchType.LAZY)
+    private List<Character> characterList;
 
     public Publisher() {
     }
@@ -84,6 +86,15 @@ public class Publisher implements Serializable {
         this.comicsList = comicsList;
     }
 
+    public List<Character> getCharacterList() {
+        return characterList;
+    }
+
+    public void setCharacterList(List<Character> characterList) {
+        this.characterList = characterList;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;

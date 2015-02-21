@@ -38,7 +38,7 @@ public class Realm implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "name")
-    private long name;
+    private String name;
     @OneToMany(mappedBy = "realmId", fetch = FetchType.LAZY)
     private List<Character> characterList;
 
@@ -49,7 +49,7 @@ public class Realm implements Serializable {
         this.realmId = realmId;
     }
 
-    public Realm(Long realmId, long name) {
+    public Realm(Long realmId, String name) {
         this.realmId = realmId;
         this.name = name;
     }
@@ -62,11 +62,11 @@ public class Realm implements Serializable {
         this.realmId = realmId;
     }
 
-    public long getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(long name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -80,23 +80,35 @@ public class Realm implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (realmId != null ? realmId.hashCode() : 0);
+        int hash = 7;
+        hash = 37 * hash + (this.realmId != null ? this.realmId.hashCode() : 0);
+        hash = 37 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 37 * hash + (this.characterList != null ? this.characterList.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Realm)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Realm other = (Realm) object;
-        if ((this.realmId == null && other.realmId != null) || (this.realmId != null && !this.realmId.equals(other.realmId))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Realm other = (Realm) obj;
+        if (this.realmId != other.realmId && (this.realmId == null || !this.realmId.equals(other.realmId))) {
+            return false;
+        }
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if (this.characterList != other.characterList && (this.characterList == null || !this.characterList.equals(other.characterList))) {
             return false;
         }
         return true;
     }
+
+
 
     @Override
     public String toString() {

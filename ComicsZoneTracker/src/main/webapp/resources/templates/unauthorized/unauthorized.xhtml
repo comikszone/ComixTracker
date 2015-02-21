@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/basic.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <ui:define name="headerContent">
+        <div class="left-align">
+            <p:link value="ComicsZone"
+                    styleClass="without-decoration homepage-link"
+                    outcome="/resources/templates/index.xhtml"/>
+        </div>
+        <div class="right-align">
+            <h:form prependId='false'>
+                <p:button value="Sign in"
+                          
+                          href="#"
+                          onclick="showPopUpWin('LoginWindow')"/>
+                <p:button href="#" value="Join ComicsZone"
+                    onclick="showPopUpWin('RegistrationWindow')" />
+            </h:form>
+            <div id="RegistrationWindow" style="display:none">
+                    <ui:include src="/resources/templates/registration/registration.xhtml"/>
+            </div>
+            <div id="LoginWindow" style="display:none">
+                    <ui:include src="/resources/templates/authorization/login_popup.xhtml"/>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

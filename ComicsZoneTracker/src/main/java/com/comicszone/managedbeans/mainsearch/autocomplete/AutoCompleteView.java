@@ -10,47 +10,38 @@ package com.comicszone.managedbeans.mainsearch.autocomplete;
  * @author ArsenyPC
  */
 
-import com.comicszone.dao.AjaxComicsCharacter;
-import com.comicszone.dao.CharacterDaoImpl;
-import com.comicszone.dao.ComicsDaoImpl;
-import com.comicszone.dao.ComicsDaoImpl;
+import com.comicszone.entitynetbeans.AjaxComicsCharacter;
+import com.comicszone.dao.CharacterFacade;
+import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.Finder;
 import com.comicszone.entitynetbeans.Comics;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-//import javax.inject.Scope;
-import org.primefaces.event.SelectEvent;
  
  
 @ManagedBean
-@SessionScoped
-public class AutoCompleteView {
-//    @EJB
-    private ComicsDaoImpl comicsDaoImpl;
-//    @EJB
-    private CharacterDaoImpl characterDaoImpl;
+@ViewScoped
+public class AutoCompleteView implements Serializable {
+    @EJB
+    private ComicsFacade comicsFacade;
+    @EJB
+    private CharacterFacade characterFacade;
     private AjaxComicsCharacter ajaxComicsCharacter;
     private String category;
     private Finder finder;
-    public AutoCompleteView() {
-        comicsDaoImpl=new ComicsDaoImpl();
-        characterDaoImpl=new CharacterDaoImpl();
-        finder=comicsDaoImpl;
+
+    @PostConstruct
+    public void init() {
+        finder=comicsFacade;
     }
+    
     public AjaxComicsCharacter getAjaxComicsCharacter() {
         return ajaxComicsCharacter;
     }
@@ -62,9 +53,9 @@ public class AutoCompleteView {
     public void onCategoryChange()
     {
         if (category.equals("Comics"))
-            finder=comicsDaoImpl;
+            finder=comicsFacade;
         else
-            finder=characterDaoImpl;
+            finder=characterFacade;
     }
     public String getCategory() {
         return category;
@@ -73,10 +64,23 @@ public class AutoCompleteView {
     public void setCategory(String category) {
         this.category = category;
     }
+    public void handleSelect() throws IOException
+    {
+        String url=redirect();
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        context.redirect(url);
+    }
      
     public List<AjaxComicsCharacter> completeComics(String query) {
         List<AjaxComicsCharacter> ajaxComicsCharacters=(List<AjaxComicsCharacter>) finder.findByNameStartsWith(query.toLowerCase());
         FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put("finder", finder);
         return ajaxComicsCharacters;
+    }
+    public String redirect()
+    {
+        if (ajaxComicsCharacter instanceof Comics)
+            return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
+        else
+            return "/resources/pages/characterPage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
     }
 }

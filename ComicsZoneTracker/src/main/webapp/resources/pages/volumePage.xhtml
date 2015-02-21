@@ -1,0 +1,77 @@
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      template="#{startNavigationManagedBean.templateName}"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="articleContent">
+        <f:metadata>
+            <f:viewParam name="id" value="#{volumeController.volumeId}"/>
+        </f:metadata>
+        #{volumeController.init()}
+        <center>
+            <p:panelGrid style="width:75%;">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="2">
+                           #{volumeController.volume.name}
+                        </p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:graphicImage value="#{volumeController.volume.image}"
+                                        styleClass="content-image"
+                                        height="300"
+                                        width="300"/>
+                    </p:column>
+                    <p:column colspan="1" styleClass="content-info">
+                        <h:outputText value="#{volumeController.volume.name}" 
+                                      styleClass="content-name"/>
+                        <br/>
+                       <h:outputText value="Description: #{volumeController.volume.description}"/>
+                       <br/>
+                       <h:outputText value="Rating: #{volumeController.volume.rating}"/>
+                       <br/>
+                       <h:outputText value="Votes: #{volumeController.volume.votes}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <div style="width:75% !important">
+            <p:dataGrid var="issue"
+                        value="#{volumeController.volume.issueList}"
+                        columns="5"
+                        layout="grid"
+                        paginator="true"
+                        rows="10">
+                <h:panelGrid columns="1" styleClass="border:none">
+                    <p:row>
+                        <h:form>
+                            <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
+                                <p:graphicImage value="#{issue.image}"
+                                                styleClass="content-image"/>
+                            </h:link>
+                        </h:form>
+                    </p:row>
+                    <p:row>
+                        <p:link value="#{issue.name}" 
+                                style="height:auto; width:60%;"
+                                outcome="#{comicsPageManagedBean.redirect(issue)}"/>
+                    </p:row>
+                </h:panelGrid>                               
+            </p:dataGrid>
+            </div>
+        </center>
+        <div>
+            <ui:include src="/resources/templates/comments/comments.xhtml">
+                <ui:param name="type" value="volume"/>
+            </ui:include>
+        </div>
+    </ui:define>
+</ui:composition>
