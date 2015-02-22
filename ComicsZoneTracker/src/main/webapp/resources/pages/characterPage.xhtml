@@ -8,32 +8,25 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui" 
-      template="#{startNavigationManagedBean.templateName}"
+      template="/resources/templates/contentPage.xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="articleContent">
+    <ui:define name="init">
         <f:metadata>
             <f:viewParam name="id" value="#{characterController.characterId}"/>
         </f:metadata>
         #{characterController.initCharacter()}
-        <center>
-            <p:panelGrid>
-                <p:row>
-                    <p:column colspan="1">
-                        <p:graphicImage value="#{characterController.character.image}"
-                                        styleClass="content-image"
-                                        height="300"
-                                        width="300"/>
-                    </p:column>
-                    <p:column colspan="1" styleClass="content-info">
-                        <h:outputText value="#{characterController.character.name}" 
-                                              styleClass="content-name"/>
-                        <br/>
-                        <h:outputText value="Real name: #{characterController.character.realName}"/>
-                       <br/>
-                       <h:outputText value="Description: #{characterController.character.description}"/>
-                    </p:column>
-                </p:row>
-            </p:panelGrid>
-        </center>
+    </ui:define>
+    <ui:define name="image">
+        <p:graphicImage value="#{characterController.character.image}"
+                        styleClass="content-image"
+                        height="300"
+                        width="300"/>
+    </ui:define>
+    <ui:define name="name">
+        <h:outputText value="#{characterController.character.name}" 
+                        styleClass="content-name"/>
+    </ui:define>
+    <ui:define name="description">
+        <h:outputText value="Description: #{characterController.character.description}"/>
     </ui:define>
 </ui:composition>
