@@ -1,6 +1,6 @@
 package com.comicszone.managedbeans.comments;
 
-import com.comicszone.dao.CommentsNewsFacade;
+import com.comicszone.dao.newsdao.CommentsNewsFacade;
 import com.comicszone.dao.commentsdao.CommentsFacade;
 import com.comicszone.dao.commentsdao.CommentsFacade.CommentToType;
 import com.comicszone.entitynetbeans.Comments;

@@ -1,6 +1,6 @@
 package com.comicszone.managedbeans.userbeans;
 
-import com.comicszone.dao.CommentsNewsFacade;
+import com.comicszone.dao.newsdao.CommentsNewsFacade;
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Comments;
 import com.comicszone.entitynetbeans.CommentsContainer;
@@ -25,7 +25,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
  */
 @ManagedBean
 @ViewScoped
-public class UserNewsManagedBean implements Serializable {
+public class UserCommentsNewsManagedBean implements Serializable {
     
     @EJB
     private CommentsNewsFacade commentsNewsFacade;

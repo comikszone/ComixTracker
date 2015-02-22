@@ -11,7 +11,7 @@
                 title="Comments">
             <p:dataScroller
                 chunkSize="10"
-                value="#{userNewsManagedBean.newContainers}"
+                value="#{userCommentsNewsManagedBean.newContainers}"
                 rowIndexVar="index"
                 var="container">
                 <p:panel 
@@ -21,32 +21,32 @@
                         value="New comments on #{container.contentType} "/>
                     <p:link
                         value="#{container.name}"
-                        outcome="#{userNewsManagedBean.redirect(container)}"/>
+                        outcome="#{userCommentsNewsManagedBean.redirect(container)}"/>
                     <br/>
                     <h:outputText
                         value="Comments left after your last comment: 
-                        #{userNewsManagedBean.getNumberOfNewComments(index)}"/>
+                        #{userCommentsNewsManagedBean.getNumberOfNewComments(index)}"/>
                     <br/>
                     <h:outputText
                         value="Comments you haven't read: 
-                        #{userNewsManagedBean.getNumberOfUnreadComments(index)}"/>
+                        #{userCommentsNewsManagedBean.getNumberOfUnreadComments(index)}"/>
                     <br/>
                     <h:outputText
                         value="You haven't commented it 
-                        #{userNewsManagedBean.getPeriodFromUser(index)}."/>
+                        #{userCommentsNewsManagedBean.getPeriodFromUser(index)}."/>
                     <br/>
                     <h:outputText
                         value="Last comment to it was 
-                        #{userNewsManagedBean.getPeriodFromLastComment(index)} ago."/>
+                        #{userCommentsNewsManagedBean.getPeriodFromLastComment(index)} ago."/>
                     <br/>
                     <p:commandButton
-                        value="#{userNewsManagedBean.getValueOfViewButton(index)}"
+                        value="#{userCommentsNewsManagedBean.getValueOfViewButton(index)}"
                         update=":news"
-                        action="#{userNewsManagedBean.resetShowingComments(index)}"/>
+                        action="#{userCommentsNewsManagedBean.resetShowingComments(index)}"/>
                     <p:dataGrid
-                        rendered="#{userNewsManagedBean.areCommentsShowing(index)}"
+                        rendered="#{userCommentsNewsManagedBean.areCommentsShowing(index)}"
                         var="newComment"
-                        value="#{userNewsManagedBean.getNewComments(index)}"
+                        value="#{userCommentsNewsManagedBean.getNewComments(index)}"
                         emptyMessage="No comments"
                         columns="1"
                         rows = "5"
@@ -65,25 +65,49 @@
             </p:tab>
             
             <p:tab
-                title="Friend requests"
+                title="Friends"
                 id="req">
             <p:dataScroller
                 chunkSize="10"
                 var="request"
                 rowIndexVar="index"
-                value="">
+                value="#{userFriendsNewsManagedBean.news}">
                 <p:panel
+                    rendered="#{userFriendsNewsManagedBean.isForAddAsFriend(index)}"
                     header="Friend request"
-                    style="text-align: left;">
+                    style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
                     <h:outputText
-                        value="User 
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).get} 
                         wants to add you as a friend."/>
                     <p:commandButton
-                        update=":news"
-                        value="Add to friends"/>
+                        update="req"
+                        value="Add to friends"
+                        action="#{userFriendsNewsManagedBean.addToFriends(index)}"/>
                     <p:commandButton
-                        update=":news"
-                        value="Decline request"/>
+                        update="req"
+                        value="Decline request"
+                        action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
+                    <p:commandButton
+                        update="req"
+                        value="Put off decision"
+                        action="#{userFriendsNewsManagedBean.setViewed(request)}"/>
+                </p:panel>
+                
+                <p:panel
+                    rendered="#{userFriendsNewsManagedBean.isForDeletion(index)}"
+                    header="Deletion"
+                    style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
+                    <h:outputText
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index)} 
+                        removed you from friends."/>
+                    <p:commandButton
+                        update="req"
+                        value="Unfollow"
+                        action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
+                    <p:commandButton
+                        update="req"
+                        value="Put off decision"
+                        action="#{userFriendsNewsManagedBean.setViewed(request)}"/>
                 </p:panel>
             </p:dataScroller>
             </p:tab>

@@ -6,7 +6,9 @@
 package com.comicszone.entitynetbeans;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,6 +21,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -95,6 +98,8 @@ public class Friends implements Serializable {
     @Column(name = "friendship_status")
     @Enumerated(EnumType.STRING)
     private FriendshipStatus status;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "friendsNoteId", fetch = FetchType.LAZY)
+    private List<UserFriendsNews> friendsNews;
 
     public Friends() {
     }
@@ -129,6 +134,14 @@ public class Friends implements Serializable {
     
     public void setStatus(FriendshipStatus status) {
         this.status = status;
+    }
+
+    public List<UserFriendsNews> getFriendsNews() {
+        return friendsNews;
+    }
+
+    public void setFriendsNews(List<UserFriendsNews> friendsNews) {
+        this.friendsNews = friendsNews;
     }
 
     @Override

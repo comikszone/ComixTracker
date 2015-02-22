@@ -123,6 +123,8 @@ public class Users implements Serializable {
     private List<Messages> messagesList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
     private List<UserCommentsNews> commentsNews;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<UserFriendsNews> friendsNews;
 
     public Users() {
     }
@@ -289,6 +291,14 @@ public class Users implements Serializable {
 
     public void setCommentsNews(List<UserCommentsNews> commentsNews) {
         this.commentsNews = commentsNews;
+    }
+
+    public List<UserFriendsNews> getFriendsNews() {
+        return friendsNews;
+    }
+
+    public void setFriendsNews(List<UserFriendsNews> friendsNews) {
+        this.friendsNews = friendsNews;
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.comicszone.dao.commentsdao;
 
 import com.comicszone.dao.AbstractFacade;
 import com.comicszone.dao.ComicsFacade;
-import com.comicszone.dao.CommentsNewsFacade;
+import com.comicszone.dao.newsdao.CommentsNewsFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.VolumeFacade;
 import com.comicszone.dao.userdao.UserBlockFacade;

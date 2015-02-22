@@ -1,5 +1,9 @@
-package com.comicszone.dao;
+package com.comicszone.dao.newsdao;
 
+import com.comicszone.dao.AbstractFacade;
+import com.comicszone.dao.ComicsFacade;
+import com.comicszone.dao.IssueFacade;
+import com.comicszone.dao.VolumeFacade;
 import com.comicszone.dao.commentsdao.CommentsFacade;
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Comics;

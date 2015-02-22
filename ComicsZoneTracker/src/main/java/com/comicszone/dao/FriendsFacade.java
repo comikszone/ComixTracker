@@ -5,11 +5,13 @@
  */
 package com.comicszone.dao;
 
+import com.comicszone.dao.newsdao.FriendsNewsFacade;
 import com.comicszone.entitynetbeans.Friends;
 import com.comicszone.entitynetbeans.FriendshipStatus;
 import com.comicszone.entitynetbeans.Users;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,6 +26,9 @@ public class FriendsFacade extends AbstractFacade<Friends> {
     
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+    
+    @EJB
+    private FriendsNewsFacade newsFacade;
 
     public FriendsFacade() {
         super(Friends.class);
@@ -100,7 +105,7 @@ public class FriendsFacade extends AbstractFacade<Friends> {
             return;
         }
         List<Friends> friends = findFriendsByUsers(currentUser,friendUser);
-            
+        
         if (friends.isEmpty()) {
             Friends friend = new Friends();
             friend.setUser1(currentUser);
@@ -110,11 +115,14 @@ public class FriendsFacade extends AbstractFacade<Friends> {
             friend.setStatus(FriendshipStatus.user1_subscribed);
             
             create(friend);
+            newsFacade.createNews(friend, friendUser, false);
+            newsFacade.createNews(friend, currentUser, true);
             return;
         }
         
         Friends friend = friends.get(0);
         boolean isCurrentUserUser1 = friend.getUser1().equals(currentUser);
+        newsFacade.setViewed(friend, currentUser, true);
         
         //if (friend.isUser1Subscribed() && friend.isUser2Subscribed()) {
         if (friend.getStatus().equals(FriendshipStatus.friends)) {
@@ -127,10 +135,12 @@ public class FriendsFacade extends AbstractFacade<Friends> {
                     friend.getStatus().equals(FriendshipStatus.user1_deleted_user2))
             {
                 friend.setStatus(FriendshipStatus.friends);
+                newsFacade.setViewed(friend, friendUser, true);
             }
             else if (friend.getStatus().equals(FriendshipStatus.nobody_subscribed))
             {
                 friend.setStatus(FriendshipStatus.user1_subscribed);
+                newsFacade.setViewed(friend, friendUser, false);
             }
         }
         else {
@@ -139,10 +149,12 @@ public class FriendsFacade extends AbstractFacade<Friends> {
                     friend.getStatus().equals(FriendshipStatus.user2_deleted_user1))
             {
                 friend.setStatus(FriendshipStatus.friends);
+                newsFacade.setViewed(friend, friendUser, true);
             }
             else if (friend.getStatus().equals(FriendshipStatus.nobody_subscribed)) 
             {
                 friend.setStatus(FriendshipStatus.user2_subscribed);
+                newsFacade.setViewed(friend, friendUser, false);
             }
         }
         edit(friend);
@@ -158,33 +170,37 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         
         Friends friend = friends.get(0);
         boolean isCurrentUserUser1 = friend.getUser1().equals(currentUser);
+        newsFacade.setViewed(friend, currentUser, true);
         
         if (isCurrentUserUser1) {
             //friend.setUser1Subscribed(false);
             if (friend.getStatus().equals(FriendshipStatus.friends)) {
                 friend.setStatus(FriendshipStatus.user1_deleted_user2);
+                newsFacade.setViewed(friend, friendUser, false);
             }
             else if (friend.getStatus().equals(FriendshipStatus.user2_deleted_user1)
                     || friend.getStatus().equals(FriendshipStatus.user1_subscribed)) 
             {
                 friend.setStatus(FriendshipStatus.nobody_subscribed);
+                newsFacade.setViewed(friend, friendUser, true);
             }
         }
         else {
             if (friend.getStatus().equals(FriendshipStatus.friends)) {
                 friend.setStatus(FriendshipStatus.user2_deleted_user1);
+                newsFacade.setViewed(friend, friendUser, false);
             }
             else if (friend.getStatus().equals(FriendshipStatus.user1_deleted_user2)
                     || friend.getStatus().equals(FriendshipStatus.user2_subscribed)) 
             {
                 friend.setStatus(FriendshipStatus.nobody_subscribed);
+                newsFacade.setViewed(friend, friendUser, true);
             }
         }
         edit(friend);
     }
     
     private List<Friends> findFriendsByUsers(Users currentUser, Users friendUser) {
-        
         TypedQuery<Friends> query = em.createNamedQuery("Friends.findByUsers", Friends.class);
         query.setParameter("user1", currentUser);
         query.setParameter("user2", friendUser);

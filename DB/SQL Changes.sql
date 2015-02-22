@@ -108,10 +108,7 @@ CREATE TABLE user_comments_news (
 
 CREATE SEQUENCE user_comments_news_news_id_seq
   INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
+  START 1;
 ALTER SEQUENCE user_comments_news_news_id_seq
   OWNER TO "ComicsZoneRole";
 ALTER TABLE user_comments_news
@@ -134,3 +131,22 @@ ALTER TABLE friends DROP are_friends;
 ALTER TABLE friends ADD COLUMN friendship_status VARCHAR(30) DEFAULT 'nobody_subscribed';
 ALTER TABLE friends DROP COLUMN user1_subscribed;
 ALTER TABLE friends DROP COLUMN user2_subscribed;
+
+CREATE SEQUENCE user_friends_news_news_id_seq
+  INCREMENT 1
+  START 1;
+ALTER TABLE user_friends_news_news_id_seq
+  OWNER TO "ComicsZoneRole";
+
+
+CREATE TABLE user_friends_news (
+	news_id INTEGER DEFAULT nextval('user_friends_news_news_id_seq'),
+	user_id INTEGER NOT NULL,
+	friends_note_id INTEGER NOT NULL,
+	viewed BOOLEAN NOT NULL DEFAULT FALSE,
+	CONSTRAINT user_friends_news_pk PRIMARY KEY(news_id),
+	CONSTRAINT user_friends_news_user_id FOREIGN KEY(user_id) 
+		REFERENCES users(user_id),
+	CONSTRAINT user_friends_news_friends_note_id FOREIGN KEY(friends_note_id) 
+		REFERENCES friends(id)
+);
