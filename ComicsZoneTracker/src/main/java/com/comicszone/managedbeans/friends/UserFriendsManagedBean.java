@@ -8,11 +8,13 @@ package com.comicszone.managedbeans.friends;
 import com.comicszone.dao.FriendsFacade;
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Users;
+import com.comicszone.managedbeans.message.MessagesManagedBean;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import com.comicszone.managedbeans.userbeans.ProfileUserManagedBean;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -52,6 +54,8 @@ public class UserFriendsManagedBean implements Serializable {
 
     private Users selectedFollower;
     
+    private MessagesManagedBean mmb;
+    
     @PostConstruct
     public void init() {
        try {
@@ -62,11 +66,14 @@ public class UserFriendsManagedBean implements Serializable {
                     .get("currentUserManagedBean"))
                     .getCurrentUser()
                     .clone();
-            
             friends = friendsFacade.getFriends(currentUser);
             followers = friendsFacade.getFolowers(currentUser);
             unconfirmedFriends = friendsFacade.getUnconfirmedFriends(currentUser);
             followersIsEmpty = followers.isEmpty();
+            if (!friends.isEmpty())
+            {
+                setSelectedFriend(friends.get(0));
+            }
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -84,11 +91,19 @@ public class UserFriendsManagedBean implements Serializable {
     }
     
     public void addToFriends(Users unconfirmedUser) {
+                    mmb = (MessagesManagedBean) FacesContext
+                    .getCurrentInstance()
+                    .getViewRoot()
+                    .getViewMap()
+                    .get("messagesManagedBean");
+                    System.err.println("mmb_______***____"+mmb);
         friendsFacade.addToFriends(currentUser, unconfirmedUser);
         //send add news to unconfirmedUser
         setFriends(friendsFacade.getFriends(currentUser));
         setFollowers(friendsFacade.getFolowers(currentUser));
         setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
+        setSelectedFriend(unconfirmedUser);
+        mmb.setFriendId(unconfirmedUser.getUserId());
     }
     
     public void removeFromFrieds(Users friend) {
