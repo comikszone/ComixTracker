@@ -22,11 +22,11 @@
                 selectionMode="single" 
                 selection="#{comicsCatalogueView.selectedComics}"
                 emptyMessage="No comics found!"
-                lazy="true">
+                lazy="true"
+                styleClass="table-responsive">
                 
                 <p:ajax 
                     event="rowSelect" 
-                    
                     update=":form:comicsDetail" 
                     oncomplete="PF('comicsDialog').show()"/> 
                 
@@ -46,21 +46,14 @@
                     <f:facet name="filter" >
                         <p:selectOneMenu 
                             onchange="PF('comicsTable').filter()">
-                                         <!--value="#{comicsCatalogueView.rating}"-->
-                                         <!--converter="ratingConverter"-->
-                                         <!--var="r">-->
+                                         
                             <f:selectItem itemLabel="All ratings" 
                                           itemValue="#{null}" /> 
                             <f:selectItems value="#{comicsCatalogueView.ratings}"
                                            var="rating"
                                            itemLabel="#{rating.value} - #{rating.value+1}"
                                            itemValue="#{rating.value}" 
-                                           
                                            />   
-                            
-<!--                          <p:column>
-                                <p:graphicImage value="#{r.image}"/>
-                          </p:column>     -->
                             
                         </p:selectOneMenu>
                     </f:facet>
@@ -72,19 +65,16 @@
                                 value="#{comics.rating}"
                                 >
                     </pf:rating>
-                    <h:outputText value="Rating: "
-                        style="padding-left: 10px;" />
-                    <h:outputText value="#{comics.rating}" />
                 </h:panelGroup>
                     
                 </p:column>
                 <p:column width="15%"
                           headerText="#{comicsCatalogueView.columnComicsImage}" > 
                             
-                    <p:graphicImage value="#{comics.image}"
-                                         width="100%"
-                                         height="100%"
-                                         styleClass="content-image"/> 
+                    <p:graphicImage 
+                        value="#{comics.image}"
+                        width="100%"
+                        styleClass="content-image"/> 
                 </p:column>
                 <p:column headerText="#{comicsCatalogueView.columnComicsDescription}">
                     <h:outputText value="#{comics.description}"/>
@@ -92,6 +82,7 @@
             </p:dataTable>
             
             <!--Dialog window-->
+             <!--Dialog window-->
             <p:dialog header="Comics Detail" 
                       widgetVar="comicsDialog" 
                       modal="true" 
@@ -105,9 +96,8 @@
                     <f:facet name="header">
                         <p:graphicImage 
                             value="#{comicsCatalogueView.selectedComics.image}"
-                                         width="200px"
-                                         height="200px"
-                                         styleClass="content-image"/> 
+                            width="200px"
+                            styleClass="content-image"/> 
                     </f:facet>
                     <f:facet name="footer">
                         <h:link value="Visit comics page"
@@ -116,19 +106,13 @@
                         </h:link>
                     </f:facet>
  
-                    <h:outputText value="Id:" />
-                    <h:outputText value="#{comicsCatalogueView.selectedComics.id}" />
- 
-                    <h:outputText value="Name" />
+                    <h:outputText value="Name" style="color: black; font-size: 12pt" />
                     <h:outputText value="#{comicsCatalogueView.selectedComics.name}" />
  
-                    <h:outputText value="Rating:" />
+                    <h:outputText value="Rating:" style="color: black; font-size: 12pt" />
                     <pf:rating value="#{comicsCatalogueView.selectedComics.rating}" 
                                disabled="true" totalStars="5"
                                step="0.1"/>
- 
-                    <h:outputText value="Description:" />
-                    <h:outputText value="#{comicsCatalogueView.selectedComics.description}"/>
                         
                     </p:panelGrid>
                 </p:outputPanel>

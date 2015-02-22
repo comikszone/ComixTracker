@@ -1,23 +1,24 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        <p:panel id="loginPanel">
-            <form method="POST" action="j_security_check">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/unauthorized/unauthorized.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <ui:define name="articleContent">
+        <p:panel>
+            <h:form>
                 <h2>Login</h2>
-                Username: <input type="text" name="j_username" /><br />
-                Password: <input type="password" name="j_password" /><br />
-                <input type="submit" value="Login" />
-                <input type="button"
-                       onclick="window.history.back();"
-                       value="Back" />
-            </form>
+                Username: <p:inputText value="#{authorisationManagedBean.nickname}"/><br />
+                Password: <p:password value="#{authorisationManagedBean.password}"/><br />
+                <p:commandButton 
+                                 ajax="false"
+                                 action="#{authorisationManagedBean.doLogin()}" value="Login" />
+                <p:commandButton type="button"
+                                 ajax="false"
+                                 onclick="window.history.back();"
+                                 value="Back" />
+            </h:form>
         </p:panel>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>
 

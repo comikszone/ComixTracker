@@ -6,22 +6,14 @@
 package com.comicszone.managedbeans.comicsPage;
 
 import com.comicszone.dao.ComicsFacade;
-import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Content;
 import com.comicszone.entitynetbeans.ContentType;
-import com.comicszone.entitynetbeans.Issue;
-import com.comicszone.entitynetbeans.Volume;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.AjaxBehaviorEvent;
-import net.playerfinder.jsf.components.rating.UIRating;
-import org.primefaces.model.LazyDataModel;
 
 /**
  *
@@ -72,7 +64,6 @@ public class ComicsPageManagedBean implements Serializable {
     public void setComicsId(Integer comicsId) {
         this.comicsId = comicsId;
     }
-    
     public void init() {
         comicsController.setComicsId(comicsId);
         comicsController.initComics();
@@ -89,10 +80,4 @@ public class ComicsPageManagedBean implements Serializable {
         else return "/resources/templates/index.jsf";
     }
     
-    public void rate(AjaxBehaviorEvent actionEvent) {
-        Comics comics = getComicsController().getComics();
-        Float score = (Float)((UIRating) actionEvent.getComponent()).getValue();
-        comics.setRating(score);
-        comicsFacade.edit(comics);
-    }
 }

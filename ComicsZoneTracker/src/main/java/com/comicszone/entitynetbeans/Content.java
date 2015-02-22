@@ -22,6 +22,8 @@ public interface Content extends Serializable {
     public void setImage(String image);
     public String getDescription();
     public void setDescription(String description);
+    public Float getRating();
+    public void setRating(Float rating);
     public String getExtraInfo();
     public Boolean getIsChecked();
     public void setIsChecked(Boolean isChecked);

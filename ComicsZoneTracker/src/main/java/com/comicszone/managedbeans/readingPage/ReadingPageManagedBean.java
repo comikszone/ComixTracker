@@ -16,6 +16,7 @@ import com.comicszone.entitynetbeans.Volume;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -25,6 +26,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -49,9 +51,8 @@ public class ReadingPageManagedBean implements Serializable {
     @ManagedProperty(value="#{currentUserManagedBean}")
     private CurrentUserManagedBean userManagedBean;
     
-//    private Volume selectedVolume;
-//    private List<Volume> selectedVolumes;
-    private Issue selectedIssue;
+    private Volume selectedVolume;
+    private List<Volume> selectedVolumes;
     private List<Issue> selectedIssues;
     private List<Issue> prevSelectedIssues;
 
@@ -86,17 +87,17 @@ public class ReadingPageManagedBean implements Serializable {
     }
     
         /**
-     * @return the selectedIssue
+     * @return the selectedVolume
      */
-    public Issue getSelectedIssue() {
-        return selectedIssue;
+    public Volume getSelectedVolume() {
+        return selectedVolume;
     }
 
     /**
-     * @param selectedIssue the selectedIssue to set
+     * @param selectedVolume the selectedIssue to set
      */
-    public void setSelectedIssue(Issue selectedIssue) {
-        this.selectedIssue = selectedIssue;
+    public void setSelectedVolume(Volume selectedVolume) {
+        this.selectedVolume = selectedVolume;
     }
     
     public List<Issue> getSelectedIssues() {
@@ -121,8 +122,8 @@ public class ReadingPageManagedBean implements Serializable {
             Integer comicsId = comicsController.getComics().getId();
             Integer userId = userManagedBean.getCurrentUser().getUserId();
             List<Issue> prevIssues = readingFacade.getIssueFacade().findMarkedByUserAndComics(comicsId, userId);
-            if (!prevIssues.isEmpty())
-                selectedIssues = prevIssues;
+            selectedIssues = prevIssues;
+            prevSelectedIssues = prevIssues;
         }
         catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -132,8 +133,21 @@ public class ReadingPageManagedBean implements Serializable {
     public void onHeaderCheckboxClick(ToggleSelectEvent event) {
         if (!selectedIssues.isEmpty()) {
             try {
+                List<Issue> temp = selectedIssues;
+                temp.removeAll(prevSelectedIssues);
                 Users currentUser = userManagedBean.getCurrentUser();
-                readingFacade.markAsRead(currentUser, selectedIssues);
+                for (Issue issue: temp)
+                    readingFacade.markAsRead(currentUser, issue);
+            }
+            catch (CloneNotSupportedException ex) {
+                ex.printStackTrace();
+            }
+        }
+        else {
+            try {
+                Users currentUser = userManagedBean.getCurrentUser();
+                for (Issue issue: (List<Issue>)((DataTable) event.getSource()).getValue())
+                    readingFacade.unMark(currentUser, issue);
             }
             catch (CloneNotSupportedException ex) {
                 ex.printStackTrace();
@@ -142,10 +156,15 @@ public class ReadingPageManagedBean implements Serializable {
     }
     
     public void selectAll() {
+        init();
         setSelectedIssues(readingFacade.getIssueFacade().findByComics(comicsController.getComics().getId()));
+        List<Issue> temp = selectedIssues;
+        if (prevSelectedIssues != null)
+            temp.removeAll(prevSelectedIssues);
         try {
             Users currentUser = userManagedBean.getCurrentUser();
-            readingFacade.markAsRead(currentUser, selectedIssues);
+            for (Issue issue: temp)
+                readingFacade.markAsRead(currentUser, issue);
         }
         catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -153,9 +172,10 @@ public class ReadingPageManagedBean implements Serializable {
     }
     
     public void onRowSelect(SelectEvent event) {
+        Issue issueToMark = (Issue)event.getObject();
         try {
             Users currentUser = userManagedBean.getCurrentUser();
-            readingFacade.markAsRead(currentUser, selectedIssues);
+            readingFacade.markAsRead(currentUser, issueToMark);
         }
         catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -163,8 +183,7 @@ public class ReadingPageManagedBean implements Serializable {
     }
     
     public void onRowUnselect(UnselectEvent event) {
-        prevSelectedIssues.removeAll(selectedIssues);
-        Issue issueToUnmark = prevSelectedIssues.get(0);
+        Issue issueToUnmark = (Issue)event.getObject();
         try {
             Users currentUser = userManagedBean.getCurrentUser();
             readingFacade.unMark(currentUser, issueToUnmark);
@@ -178,9 +197,25 @@ public class ReadingPageManagedBean implements Serializable {
     {
         if (content.getContentType() == ContentType.Issue)
             return "/resources/pages/issuePage.jsf?faces-redirect=true&id=" + content.getId();
-        else if (content.getContentType() == ContentType.Volume)
+        if (content.getContentType() == ContentType.Volume)
                 return "/resources/pages/volumePage.jsf?faces-redirect=true&id=" + content.getId();
-        else return "/resources/templates/index.jsf";
+        if (content.getContentType() == ContentType.Comics)
+                return "/resources/templates/authorized/progressPage.jsf?faces-redirect=true&id=" + content.getId();
+        return "";
+    }
+
+    /**
+     * @return the selectedVolumes
+     */
+    public List<Volume> getSelectedVolumes() {
+        return selectedVolumes;
+    }
+
+    /**
+     * @param selectedVolumes the selectedVolumes to set
+     */
+    public void setSelectedVolumes(List<Volume> selectedVolumes) {
+        this.selectedVolumes = selectedVolumes;
     }
 
 }
