@@ -5,6 +5,7 @@ import com.comicszone.dao.newsdao.FriendsNewsFacade;
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.UserFriendsNews;
 import com.comicszone.entitynetbeans.Users;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -18,7 +19,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class UserFriendsNewsManagedBean {
+public class UserFriendsNewsManagedBean implements Serializable {
     
     @EJB
     private FriendsNewsFacade friendsNewsFacade;
