@@ -79,11 +79,12 @@ ALTER TABLE friends ADD is_confirmed boolean NOT NULL DEFAULT false;
 ALTER TABLE friends DROP CONSTRAINT key19;
 ALTER TABLE friends ADD id serial PRIMARY KEY;
 ALTER TABLE friends ADD are_friends boolean NOT NULL DEFAULT true; 
+ALTER TABLE friends ADD CONSTRAINT friends_with FOREIGN KEY ( user1_id ) REFERENCES users ( user_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE friends ADD CONSTRAINT friend_of FOREIGN KEY ( user2_id ) REFERENCES users ( user_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_SENDER BOOLEAN DEFAULT TRUE;
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_RECEIVER BOOLEAN DEFAULT TRUE;
 
-ALTER TABLE users ADD COLUMN source Varchar DEFAULT 'Wikia';
 
 ---MISC Use _only_ before using marvel migration code (comics.sql, chars.sql)
 UPDATE comics SET source = 'Wikia';
@@ -92,8 +93,6 @@ UPDATE issue SET source = 'Wikia';
 UPDATE character SET source = 'Wikia';
 ---/MISC
 
-ALTER TABLE users ADD COLUMN source Varchar;
-
 ALTER TABLE ucrating ALTER COLUMN rating SET DEFAULT 0;
 ALTER TABLE uvrating ALTER COLUMN rating SET DEFAULT 0;
 ALTER TABLE uirating ALTER COLUMN rating SET DEFAULT 0;
@@ -101,3 +100,6 @@ ALTER TABLE uirating ALTER COLUMN rating SET DEFAULT 0;
 ALTER TABLE users ADD COLUMN recovery_password_time timestamp;
 ALTER TABLE users ADD COLUMN recovery_password_id Varchar;
 
+alter table users add column is_social boolean default false;
+alter table users add column real_nickname character varying;
+update users set real_nickname=nickname where is_social = false;

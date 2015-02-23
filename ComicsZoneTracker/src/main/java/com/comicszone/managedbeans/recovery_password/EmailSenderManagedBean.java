@@ -8,7 +8,7 @@ package com.comicszone.managedbeans.recovery_password;
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.dao.userdao.UserRegistrationFacade;
 import com.comicszone.dao.util.encryption.IPasswordEncryptor;
-import com.comicszone.dao.util.encryption.SHA256Encriptor;
+import com.comicszone.dao.util.encryption.SHA256Encryptor;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.util.passwordcreators.IPasswordCreator;
 import com.comicszone.managedbeans.util.passwordcreators.SimplePasswordCreator;
@@ -52,7 +52,7 @@ public class EmailSenderManagedBean implements Serializable {
             Users user=users.get(0);
             IPasswordCreator passwordCreator = new SimplePasswordCreator();
             String uid = passwordCreator.createPassword(PASSWORD_LENGTH);
-            IPasswordEncryptor encryptor = new SHA256Encriptor();
+            IPasswordEncryptor encryptor = new SHA256Encryptor();
             String encryptedUid = encryptor.getEncodedPassword(uid);
             user.setRecoveryPasswordId(encryptedUid);
             user.setRecoveryPasswordTime(new Date(System.currentTimeMillis()));
@@ -65,7 +65,7 @@ public class EmailSenderManagedBean implements Serializable {
             stringBuilder.append("But don't worry! You can use the following link to reset your password:<br/> <br/>");
             stringBuilder.append(href);
             stringBuilder.append("<br/> <br/>");
-            stringBuilder.append("If you don't use this link within 24 hours, it will expire. To get a new password reset link, visit");
+            stringBuilder.append("If you don't use this link within 24 hours, it will expire. To get a new password reset link, visit ");
             stringBuilder.append("https://www.comicszonetracker.tk/resources/templates/unauthorized/recover_password.jsf<br/> <br/>");
             stringBuilder.append("Thanks,<br/>");
             stringBuilder.append("Your friends at ComicsZoneTracker");

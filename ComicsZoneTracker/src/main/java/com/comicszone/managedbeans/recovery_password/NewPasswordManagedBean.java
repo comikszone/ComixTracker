@@ -7,7 +7,8 @@ package com.comicszone.managedbeans.recovery_password;
 
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.dao.util.encryption.IPasswordEncryptor;
-import com.comicszone.dao.util.encryption.SHA256Encriptor;
+import com.comicszone.dao.util.encryption.SHA256Encryptor;
+import com.comicszone.dao.util.encryption.SHA256SimpleSaltedEncryptor;
 import com.comicszone.entitynetbeans.Users;
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,14 +16,11 @@ import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.persistence.PostLoad;
 
 /**
  *
@@ -45,7 +43,7 @@ public class NewPasswordManagedBean implements Serializable{
         {
             redirect();
         }
-        IPasswordEncryptor encryptor = new SHA256Encriptor();
+        IPasswordEncryptor encryptor = new SHA256Encryptor();
         String encryptedUid = encryptor.getEncodedPassword(uid);
         user=userDataFacade.findUserByUid(encryptedUid);
         if (user==null)
@@ -78,8 +76,8 @@ public class NewPasswordManagedBean implements Serializable{
         {
             if (!password.equals(""))
             {
-                IPasswordEncryptor encryptor = new SHA256Encriptor();
-                String encryptedPassword = encryptor.getEncodedPassword(password);
+                SHA256SimpleSaltedEncryptor encryptor = new SHA256SimpleSaltedEncryptor();
+                String encryptedPassword = encryptor.getEncodedPassword(password, user.getNickname());
                 user.setPass(encryptedPassword);
                 user.setRecoveryPasswordId(null);
                 user.setRecoveryPasswordTime(null);

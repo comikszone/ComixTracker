@@ -88,7 +88,7 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
                 + "?access_token=" + accessToken;
         String json = getResponseString(urlUserInfo);
         String personalFacebookId = getJsonValue(json, "id");
-        String pictureUrl = "https://graph.facebook.com/" + personalFacebookId + "/picture?return_ssl_resources=true";
+        String pictureUrl = "https://graph.facebook.com/" + personalFacebookId + "/picture?type=large";
         json = addPictureUrl(json, pictureUrl);
         return json;
     }
