@@ -30,7 +30,11 @@ public abstract class SocialNetworkAuthorization implements Serializable {
 
     @EJB
     private UserRegistrationFacade userRegistrationDao;
-
+    protected String clientId;
+    protected String clientSecret;
+    protected String userUrl;
+    protected String authCode;
+    protected String redirectUri;
     private final int PASSWORD_LENGTH = 20;
     
     public abstract String fetchPersonalInfo() throws IOException, ParseException;

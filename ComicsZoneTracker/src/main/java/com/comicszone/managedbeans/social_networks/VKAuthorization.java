@@ -37,14 +37,20 @@ import org.json.simple.parser.ParseException;
  */
 @ManagedBean
 public class VKAuthorization extends SocialNetworkAuthorization implements Serializable {
-    private static final String CLIENT_ID = "4695923";
-    private static final String CLIENT_SECRET = "DN8uqaag7oUAPSfYCe2n";
-    private static final String CALLBACK_URI = "http://www.comicszonetracker.tk/resources/templates/unauthorized/vk_redirect_page.jsf";
+//    private static final String clientId = "4695923";
+//    private static final String clientSecret = "DN8uqaag7oUAPSfYCe2n";
+//    private static final String redirectUri = "http://localhost:8080/resources/templates/unauthorized/vk_redirect_page.jsf";
     private static final String VK_URL = "https://oauth.vk.com/authorize";
     private static final String ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
     private static final String PERSONAL_INFO_URL = "https://api.vk.com/method/users.get";
-    private String userUrl;
-    private String authCode;
+//    private String userUrl;
+//    private String authCode;
+
+    public VKAuthorization() {
+        clientId="4695923";
+        clientSecret="DN8uqaag7oUAPSfYCe2n";
+        redirectUri="http://localhost:8080/resources/templates/unauthorized/vk_redirect_page.jsf";
+    }
 
     public String getUserUrl() {
         return userUrl;
@@ -60,8 +66,8 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
 
     @PostConstruct
     public void buildUserUrl() {
-        String url = VK_URL + "?client_id=" + CLIENT_ID
-                + "&redirect_uri=" + CALLBACK_URI
+        String url = VK_URL + "?client_id=" + clientId
+                + "&redirect_uri=" + redirectUri
                 + "&response_type=code";
         userUrl = url;
     }
@@ -69,10 +75,10 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
     @Override
     public String fetchPersonalInfo() throws IOException, ParseException {
             String urlAccessToken = ACCESS_TOKEN_URL
-                    + "?client_id=" + CLIENT_ID
-                    + "&client_secret=" + CLIENT_SECRET
+                    + "?client_id=" + clientId
+                    + "&client_secret=" + clientSecret
                     + "&code=" + authCode
-                    + "&redirect_uri=" + CALLBACK_URI;
+                    + "&redirect_uri=" + redirectUri;
             String json = getResponseJson(urlAccessToken);
             if (getJsonValue(json,"error")!=null)
             {
