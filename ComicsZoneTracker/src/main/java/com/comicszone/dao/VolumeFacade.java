@@ -6,9 +6,11 @@
 package com.comicszone.dao;
 
 import com.comicszone.entitynetbeans.Volume;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -27,5 +29,10 @@ public class VolumeFacade extends AbstractFacade<Volume> {
     public VolumeFacade() {
         super(Volume.class);
     }
-    
+   
+    public List<Volume> findByChecking(boolean isChecked) {
+        TypedQuery<Volume> query = em.createNamedQuery("Volume.findByChecking", Volume.class);
+        query.setParameter("isChecked", isChecked);
+        return query.getResultList();
+    }
 }

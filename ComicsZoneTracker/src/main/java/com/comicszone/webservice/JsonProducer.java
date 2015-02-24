@@ -62,6 +62,7 @@ public class JsonProducer {
             Map map=new HashMap();
             map.put("id", aj.getId());
             map.put("name", aj.getName());
+            map.put("image", aj.getImage());
             array.add(map);
         }
         return array.toJSONString();
@@ -71,8 +72,9 @@ public class JsonProducer {
     @GET
 //    @Produces("application/json")
     public String getJsonComicsStartsWith(@PathParam("name") String name) {
-        TypedQuery<Comics> query =em.createNamedQuery("Comics.findByNameStartsWith", Comics.class);
+        TypedQuery<Comics> query =em.createNamedQuery("Comics.findByNameStartsWithAscId", Comics.class);
         query.setParameter("name", name.toLowerCase()+"%");
+        query.setMaxResults(100);
         List<Comics> comicsList= query.getResultList();
         return getJsonListAjaxComicsCharacter(comicsList);
     }
@@ -81,7 +83,7 @@ public class JsonProducer {
     @GET
     @Produces("application/json")
     public String getJsonAllIdNameComics() {
-        List<Comics> comicsList=comicsFacade.findAll();
+        List<Comics> comicsList=comicsFacade.findAll(100);
         return getJsonListAjaxComicsCharacter(comicsList);
     }
     
@@ -195,7 +197,7 @@ public class JsonProducer {
     @GET
 //    @Produces("application/json")
     public String getJsonAllIdNameCharacters(){
-        List<Character> characters=characterFacade.findAll();
+        List<Character> characters=characterFacade.findAll(100);
         return getJsonListAjaxComicsCharacter(characters);
     }
     
@@ -203,8 +205,9 @@ public class JsonProducer {
     @GET
 //    @Produces("application/json")
     public String getJsonCharactersStartsWith(@PathParam("name") String name) {
-        TypedQuery<Character> query =em.createNamedQuery("Character.findByNameStartsWith",Character.class);
+        TypedQuery<Character> query =em.createNamedQuery("Character.findByNameStartsWithAscId",Character.class);
         query.setParameter("name", name.toLowerCase()+"%");
+        query.setMaxResults(100);
         List<Character> comicsList= query.getResultList();
         return getJsonListAjaxComicsCharacter(comicsList);
     }

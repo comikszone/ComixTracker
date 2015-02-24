@@ -15,25 +15,20 @@ import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.Finder;
 import com.comicszone.entitynetbeans.Comics;
-import com.comicszone.managedbeans.entitycontroller.ComicsController;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-//import javax.inject.Scope;
  
  
 @ManagedBean
-@SessionScoped
-public class AutoCompleteView {
+@ViewScoped
+public class AutoCompleteView implements Serializable {
     @EJB
     private ComicsFacade comicsFacade;
     @EJB

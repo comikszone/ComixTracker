@@ -5,18 +5,15 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
-import com.comicszone.dao.userdao.UserRegistrationDao;
 import com.comicszone.entitynetbeans.Users;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -35,27 +32,31 @@ import org.json.simple.parser.ParseException;
  * @author ArsenyPC
  */
 @ManagedBean
-public class VKAuthorization extends SocialNetworkAuthorization {
-    private static final String CLIENT_ID = "4695923";
-    private static final String CLIENT_SECRET = "DN8uqaag7oUAPSfYCe2n";
-    private static final String CALLBACK_URI = "http://www.comicszonetracker.tk/resources/templates/unauthorized/vk_redirect_page.jsf";
-    private static final String VK_URL = "https://oauth.vk.com/authorize";
+public class VKAuthorization extends SocialNetworkAuthorization implements Serializable {
+//    private static final String clientId = "4695923";
+//    private static final String clientSecret = "DN8uqaag7oUAPSfYCe2n";
+//    private static final String redirectUri = "http://localhost:8080/resources/templates/unauthorized/vk_redirect_page.jsf";
+    private static final String VK_AUTHORIZATION_URL = "https://oauth.vk.com/authorize";
     private static final String ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
-    private static final String PERSONAL_INFO_URL = "https://api.vk.com/method/users.get";
-    private String userUrl;
-    private String authCode;
+//    private static final String userInfoUrl = "https://api.vk.com/method/users.get";
+//    private String userUrl;
+//    private String authCode;
 
-    @Override
+    public VKAuthorization() {
+        clientId="4695923";
+        clientSecret="DN8uqaag7oUAPSfYCe2n";
+        redirectUri="http://www.comicszonetracker.tk/resources/templates/unauthorized/vk_redirect_page.jsf";
+        userInfoUrl = "https://api.vk.com/method/users.get";
+    }
+
     public String getUserUrl() {
         return userUrl;
     }
 
-    @Override
     public String getAuthCode() {
         return authCode;
     }
 
-    @Override
     public void setAuthCode(String authCode) {
         this.authCode = authCode;
     }
@@ -63,51 +64,43 @@ public class VKAuthorization extends SocialNetworkAuthorization {
     @PostConstruct
     @Override
     public void buildUserUrl() {
-        String url = VK_URL + "?client_id=" + CLIENT_ID
-                + "&redirect_uri=" + CALLBACK_URI
+        String url = VK_AUTHORIZATION_URL + "?client_id=" + clientId
+                + "&redirect_uri=" + redirectUri
                 + "&response_type=code";
         userUrl = url;
     }
 
+//    @Override
+//    public String createUserUrl() {
+//        String url = VK_AUTHORIZATION_URL + "?client_id=" + clientId
+//        + "&redirect_uri=" + redirectUri
+//        + "&response_type=code";
+//        return url;
+//    }
+
     @Override
-    public String fetchPersonalInfo() throws IOException {
-        String urlAccessToken = ACCESS_TOKEN_URL
-                + "?client_id=" + CLIENT_ID
-                + "&client_secret=" + CLIENT_SECRET
-                + "&code=" + authCode
-                + "&redirect_uri=" + CALLBACK_URI;
-        String json = getResponseJson(urlAccessToken);
-        try {
+    public String fetchPersonalInfo() throws IOException, ParseException {
+            String urlAccessToken = ACCESS_TOKEN_URL
+                    + "?client_id=" + clientId
+                    + "&client_secret=" + clientSecret
+                    + "&code=" + authCode
+                    + "&redirect_uri=" + redirectUri;
+            String json = getResponseJson(urlAccessToken);
             if (getJsonValue(json,"error")!=null)
             {
                 ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
                 context.redirect("/");
             }
-        } catch (ParseException ex) {
-            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String accessToken = parseJson(json, "access_token");
-        String userId = parseJson(json, "user_id");
-        String urlUserInfo = PERSONAL_INFO_URL
-                + "?uids=" + userId
-                + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo"
-                + "&access_token=" + accessToken;
-        json = getResponseJson(urlUserInfo);
-        return json;
+            String accessToken = getJsonValue(json, "access_token");
+            String userId = getJsonValue(json, "user_id");
+            String urlUserInfo = userInfoUrl
+                    + "?uids=" + userId
+                    + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo_max"
+                    + "&access_token=" + accessToken;
+            json = getResponseJson(urlUserInfo);
+            return json;
     }
 
-    private String parseJson(String json, String parameter) {
-        JSONParser jsonParser = new JSONParser();
-        try {
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
-            String token = jsonObject.get(parameter).toString();
-//            String jsonComponent=array.get(index).toString();
-            return token;
-        } catch (ParseException ex) {
-            Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "";
-    }
 
     private String getResponseJson(String url) throws IOException {
         HttpClient client = new DefaultHttpClient();
@@ -136,7 +129,7 @@ public class VKAuthorization extends SocialNetworkAuthorization {
         String firstName = getJsonValue(json, "first_name");
         String lastName = getJsonValue(json, "last_name");
         String name = firstName + " " + lastName;
-        String photo = getJsonValue(json, "photo");
+        String photo = getJsonValue(json, "photo_max");
         String bDate = getJsonValue(json, "bdate");
         Users user = new Users();
         user.setNickname(nickname);

@@ -378,7 +378,7 @@
                       
                       >
                 <p:outputPanel id="userDetailPanel" style="text-align:center;">
-                    <p:panelGrid  columns="2" 
+                    <p:panelGrid  columns="1" 
                                   rendered="#{not empty userFriendsManagedBean.selectedUser}" 
                                   columnClasses="label,value">
                         <f:facet name="header">
@@ -403,7 +403,7 @@
                                 />
                             </p:outputPanel>
                         </f:facet>
-                            
+                           
                         <h:outputText value="Nickname"/>
                         <h:outputText 
                                 value="#{userFriendsManagedBean.selectedUser.nickname}" 
@@ -428,10 +428,8 @@
                                 rendered="#{userFriendsManagedBean.selectedUser.birthday != null}"
                                 class="friends-info"/>
                         
-                    </p:panelGrid>
-                </p:outputPanel>
+                    </p:panelGrid>                </p:outputPanel>
             </p:dialog>
-        
         <p:confirmDialog
             global="true"
             widgetVar="confirm">

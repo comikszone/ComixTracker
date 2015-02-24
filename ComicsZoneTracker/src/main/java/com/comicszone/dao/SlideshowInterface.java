@@ -15,5 +15,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface SlideshowInterface {
-    public List<Comics> get12Best();
+    public List<Comics> getBest(Integer quantity);
 }

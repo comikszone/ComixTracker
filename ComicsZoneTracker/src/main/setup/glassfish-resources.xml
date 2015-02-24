@@ -10,5 +10,5 @@
         <property name="URL" value="jdbc:postgresql://localhost:5432/ComicsZoneDB"/>
         <property name="driverClass" value="org.postgresql.Driver"/>
     </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="ComicsZoneDB" object-type="user" pool-name="post-gre-sql_ComicsZoneDB_ComicsZoneRolePool"/>
+    <jdbc-resource enabled="true" jndi-name="JNDI_ComicsZoneDB" object-type="user" pool-name="post-gre-sql_ComicsZoneDB_ComicsZoneRolePool"/>
 </resources>

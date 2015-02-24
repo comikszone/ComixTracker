@@ -37,6 +37,7 @@ import javax.validation.constraints.Size;
 @Table(name = "comics")
 @NamedQueries({
     @NamedQuery(name = "Comics.findAll", query = "SELECT c FROM Comics c"),
+    @NamedQuery(name = "Comics.findAllAscId", query = "SELECT c FROM Comics c ORDER BY c.Id ASC"),
     @NamedQuery(name = "Comics.findByName", query = "SELECT c FROM Comics c WHERE c.name = :name"),
     @NamedQuery(name = "Comics.findByDescription", query = "SELECT c FROM Comics c WHERE c.description = :description"),
     @NamedQuery(name = "Comics.findByImage", query = "SELECT c FROM Comics c WHERE c.image = :image"),
@@ -46,19 +47,44 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByEndDate", query = "SELECT c FROM Comics c WHERE c.endDate = :endDate"),
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
     @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
+    @NamedQuery(name = "Comics.findByNameStartsWithAscId", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name ORDER BY c.Id"),
     @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
     @NamedQuery(name = "Comics.findByChecking", query = "SELECT c FROM Comics c WHERE c.isChecked = :isChecked ORDER BY c.Id"),
-    //forComicsCatalogue
+    //for ComicsCatalogue
     @NamedQuery(name = "Comics.count", 
             query = "SELECT COUNT(c) FROM Comics c"),
     @NamedQuery(name = "Comics.countFoundByNameAndRating", 
-            query = "SELECT COUNT(c) FROM Comics c WHERE LOWER(c.name) LIKE :name "
-                    + "AND c.rating BETWEEN :rating AND :rating+1"),
+            query = "SELECT COUNT(c) FROM Comics c WHERE LOWER(c.name) LIKE :name AND c.rating BETWEEN :rating AND :rating+1.0"),
     @NamedQuery(name = "Comics.countFoundByName",
-            query = "SELECT COUNT(c) FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
+            query = "SELECT COUNT(c) FROM Comics c WHERE LOWER(c.name) LIKE :name"),
     @NamedQuery(name = "Comics.countFoundByRating",
-            query = "SELECT COUNT(c) FROM Comics c WHERE c.rating BETWEEN :rating AND :rating+1"),
-    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''")})
+            query = "SELECT COUNT(c) FROM Comics c WHERE c.rating BETWEEN :rating AND :rating+1.0"),
+
+    //for news
+    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"), 
+    @NamedQuery(name = "Comics.getComicsWithNewCommentsAfterUser", query = "SELECT DISTINCT c FROM Comics c INNER JOIN c.commentsList cl WHERE cl.commentTime > (SELECT MAX(ccl.commentTime) FROM  Comics cc INNER JOIN cc.commentsList ccl WHERE cc.Id = c.Id AND ccl.userId = :userId)"),
+    @NamedQuery(name = "Comics.getMaxCommentDateForUser", query = "SELECT MAX(cl.commentTime) FROM  Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.userId = :userId"), 
+    @NamedQuery(name = "Comics.getCountOfNewCommentsForUser", query = "SELECT COUNT(cl.commentId) FROM Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.commentTime > (SELECT MAX(ccl.commentTime) FROM  Comics cc INNER JOIN cc.commentsList ccl WHERE cc.Id = c.Id AND ccl.userId = :userId)"),
+    @NamedQuery(name = "Comics.getCommentsAfterDateToComics", query = "SELECT DISTINCT cl FROM Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.commentTime > :date ORDER BY cl.commentTime"),
+
+    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
+    @NamedQuery(name = "Comics.findByUserInProgress", 
+            query = "SELECT DISTINCT c FROM Comics c "
+                     + "JOIN c.volumeList v "
+                     + "JOIN v.issueList i "
+                     + "JOIN i.usersList p "
+                     + "WHERE p.userId = :userId"),
+    @NamedQuery(name = "Comics.getTotalIssueCount",
+            query = "SELECT COUNT(i.Id) FROM Issue i"
+                    + " JOIN i.volumeId v "
+                    + " JOIN v.comicsId c"
+                    + " WHERE c.Id = :comicsId"),
+    @NamedQuery(name = "Comics.getMarkedIssueCount",
+            query = "SELECT COUNT(i.Id) FROM Issue i"
+                    + " JOIN i.usersList u "
+                    + " JOIN i.volumeId v"
+                    + " JOIN v.comicsId c"
+                    + " WHERE c.Id = :comicsId AND u.userId = :userId")})
 
 public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
 
