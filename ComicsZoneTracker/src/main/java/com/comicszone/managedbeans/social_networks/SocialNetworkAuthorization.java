@@ -37,11 +37,14 @@ public abstract class SocialNetworkAuthorization implements Serializable {
     protected String userUrl;
     protected String authCode;
     protected String redirectUri;
+    protected String userInfoUrl;
     private final int PASSWORD_LENGTH = 20;
     
     public abstract String fetchPersonalInfo() throws IOException, ParseException;
 
     public abstract Users createUser() throws IOException, ParseException;
+//    public abstract String createUserUrl();
+    public abstract void buildUserUrl();
 
     public void doRegistration() throws IOException, ParseException, ServletException {
         IPasswordCreator passwordCreator = new SimplePasswordCreator();
