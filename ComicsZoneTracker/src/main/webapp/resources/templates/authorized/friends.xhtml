@@ -378,7 +378,7 @@
                       
                       >
                 <p:outputPanel id="userDetailPanel" style="text-align:center;">
-                    <p:panelGrid  columns="2" 
+                    <p:panelGrid  columns="1" 
                                   rendered="#{not empty userFriendsManagedBean.selectedUser}" 
                                   columnClasses="label,value">
                         <f:facet name="header">
@@ -403,35 +403,32 @@
                                 />
                             </p:outputPanel>
                         </f:facet>
-                            
-                        <h:outputText value="Nickname"/>
-                        <h:outputText 
-                                value="#{userFriendsManagedBean.selectedUser.nickname}" 
+                       
+                            <h:outputText 
+                                value="#{userFriendsManagedBean.selectedUser.nickname}"
                                 class="friends-info"/>
-                        
-                        <h:outputText value="Email"/>
-                        <h:outputText 
+                                    
+                            <h:outputText 
                                 value="#{userFriendsManagedBean.selectedUser.email}" 
                                 class="friends-info"/>
-                        
-                        <h:outputText value="Name"
-                                      rendered="#{userFriendsManagedBean.selectedUser.name != null}"/>
-                        <h:outputText 
+                                    
+                            <h:outputText 
                                 value="#{userFriendsManagedBean.selectedUser.name}"
                                 rendered="#{userFriendsManagedBean.selectedUser.name != null}"
                                 class="friends-info"/>
-                        
-                        <h:outputText value="Birthday"
-                                      rendered="#{userFriendsManagedBean.selectedUser.birthday != null}"/>
-                        <h:outputText 
+                                    
+                            <h:outputText 
                                 value="#{userFriendsManagedBean.getFormatedData(userFriendsManagedBean.selectedUser)}"
                                 rendered="#{userFriendsManagedBean.selectedUser.birthday != null}"
                                 class="friends-info"/>
-                        
-                    </p:panelGrid>
-                </p:outputPanel>
+                                    
+                            <h:outputText 
+                                value="#{userFriendsManagedBean.selectedUser.online}"
+                                rendered="#{userFriendsManagedBean.selectedUser.online != null}"
+                                class="friends-info"/>
+                                    
+                        </p:panelGrid>                </p:outputPanel>
             </p:dialog>
-        
         <p:confirmDialog
             global="true"
             widgetVar="confirm">

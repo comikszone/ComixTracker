@@ -2,6 +2,7 @@ package com.comicszone.managedbeans.block;
 
 import com.comicszone.dao.userdao.AbstractUserFacade;
 import com.comicszone.entitynetbeans.Users;
+import java.io.Serializable;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;

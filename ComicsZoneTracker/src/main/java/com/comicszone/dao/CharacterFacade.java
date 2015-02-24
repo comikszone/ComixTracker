@@ -54,5 +54,11 @@ public class CharacterFacade extends AbstractFacade<Character> implements Finder
             query.setMaxResults(5);
             return query.getResultList();
         }
+    public List<Character> findAll(int maxResult)
+    {
+        TypedQuery<Character> query=em.createNamedQuery("Character.findAllAscId",Character.class);
+        query.setMaxResults(maxResult);
+        return query.getResultList();
+    }
     
 }

@@ -23,6 +23,8 @@ import javax.ejb.EJB;
 @ViewScoped
 public class SlideshowController implements Serializable {
     
+    private final Integer COMICS_QUANTITY = 12;
+    
     private List<Comics> comicsList;
     @EJB
     private ComicsFacade comicsFacade;
@@ -32,7 +34,7 @@ public class SlideshowController implements Serializable {
         
     @PostConstruct
     public void fillComicsList() {
-       comicsList = comicsFacade.get12Best();
+       comicsList = comicsFacade.getBest(COMICS_QUANTITY);
     }
     
     public List<Comics> getComicsList() {

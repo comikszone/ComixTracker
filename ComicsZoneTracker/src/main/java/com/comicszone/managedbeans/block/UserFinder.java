@@ -5,8 +5,9 @@
  */
 package com.comicszone.managedbeans.block;
 
-import com.comicszone.dao.userdao.UserBlockDao;
+import com.comicszone.dao.userdao.UserBlockFacade;
 import com.comicszone.entitynetbeans.Users;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -17,10 +18,10 @@ import javax.faces.bean.ManagedBean;
  */
 @ManagedBean(name = "userFinder", eager = true)
 @ApplicationScoped
-public class UserFinder {
+public class UserFinder implements Serializable {
     
     @EJB
-    private UserBlockDao userBlockDao;
+    private UserBlockFacade userBlockDao;
     
     public Users find(Integer id) {
         return userBlockDao.find(id);

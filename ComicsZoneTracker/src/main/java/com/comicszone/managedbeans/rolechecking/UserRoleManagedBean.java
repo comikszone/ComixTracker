@@ -6,6 +6,7 @@
 package com.comicszone.managedbeans.rolechecking;
 
 import java.io.IOException;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
@@ -17,7 +18,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @RequestScoped
-public class UserRoleManagedBean {
+public class UserRoleManagedBean implements Serializable {
     
     public boolean isUserAuthorized() {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();

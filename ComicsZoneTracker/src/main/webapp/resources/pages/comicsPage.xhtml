@@ -15,45 +15,55 @@ and open the template in the editor.
                 template="#{startNavigationManagedBean.templateName}">          
     <ui:define name="articleContent">
         <f:metadata>
-            <f:viewParam name="id" value="#{comicsPageManagedBean.comicsId}"/>
+            <f:viewParam name="id" value="#{comicsPageManagedBean.comicsController.comicsId}"/>
         </f:metadata>
-        #{comicsPageManagedBean.init()}
-        <center>
-            <p:panelGrid style="width:75% !important; border:none !important;">
+        #{comicsPageManagedBean.comicsController.initComics()}
+        #{ratingController.setType(comicsPageManagedBean.comicsController.comics.contentType)}
+        #{ratingController.setContentId(comicsPageManagedBean.comicsController.comicsId)}
+            <p:panelGrid style="border:none !important; width:80%;">
                         <p:row>
                             <p:column colspan="1">
-                                <p:graphicImage value="#{comicsPageManagedBean.comics.image}"
+                                <p:graphicImage value="#{comicsPageManagedBean.comicsController.comics.image}"
                                                 styleClass="content-image"
                                                 height="300"
                                                 width="300"/>
                             </p:column>
                             <p:column colspan="1" styleClass="content-info">
-                                <h:outputText value="#{comicsPageManagedBean.comics.name}" 
+                                <h:outputText value="#{comicsPageManagedBean.comicsController.comics.name}" 
                                               styleClass="content-name"/>
                                 <br/>
-                                <h:outputText value="Publisher: #{comicsPageManagedBean.comics.publisherId.name}"/>
+                                <h:outputText value="Publisher: #{comicsPageManagedBean.comicsController.comics.publisherId.name}"/>
                                 <br/>
-                                <h:outputText value="Imprint: #{comicsPageManagedBean.comics.imprintId.name}"/>
+                                <h:outputText value="Imprint: #{comicsPageManagedBean.comicsController.comics.imprintId.name}"/>
                                 <br/>
-                                <h:outputText value="Description: #{comicsPageManagedBean.comics.description}"/>
+                                <h:outputText value="Description: #{comicsPageManagedBean.comicsController.comics.description}"/>
+                                <br/>
+<!--                                <p:link value="Read more" outcome=""/>-->
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="2">
                                     <c:choose>
                                         <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
-                                            <pf:rating value="#{comicsPageManagedBean.comics.rating}"
-                                                       totalStars="5"
-                                                       step="1">
-                                                
-                                            </pf:rating>
+                                            #{ratingController.init()}
+                                            <h:form>
+                                                <pf:rating  value="#{ratingController.ratingFacade.ucrating.rating}"
+                                                            totalStars="5"
+                                                            step="1">
+                                                    <f:ajax event="change" listener="#{ratingController.rate}"/>
+                                                </pf:rating>
+                                                <br/>
+                                                <p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
+                                                        value="Read!"
+                                                        styleClass="btn btn-primary"/>
+                                            </h:form>
                                         </c:when>
                                         <c:otherwise>
-                                            <p:link onclick="showPopUpWin('RegistrationWindow')"
+                                            <p:link onclick="PF('reg').show()"
                                                     href='#'
                                                     value="Join"/>
                                             or 
-                                            <p:link onclick="showPopUpWin('LoginWindow')"
+                                            <p:link onclick="PF('login').show()"
                                                     href='#'
                                                     value="Sign In"/>
                                             to rate, read comics and comment!
@@ -63,14 +73,15 @@ and open the template in the editor.
                         </p:row>
                     </p:panelGrid>    
                     <p:accordionPanel var="volume" 
-                                      value="#{comicsPageManagedBean.comics.volumeList}"
+                                      value="#{comicsPageManagedBean.comicsController.comics.volumeList}"
                                       multiple="true"
-                                      style="width:75% !important;"
-                                      id="issues">
-                        <p:tab>
+                                      id="issues"
+                                      dynamic="true"
+                                      >
+                        <p:tab >
                             <f:facet name="title">
-                                <p:link value="#{volume.name}" 
-                                        outcome="#{comicsPageManagedBean.redirect(volume)}"/>
+                                <p:commandLink value="#{volume.name}" 
+                                                action="#{comicsPageManagedBean.redirect(volume)}"/>
                             </f:facet>
                             <p:dataGrid var="issue"
                                         value="#{volume.issueList}"
@@ -93,12 +104,10 @@ and open the template in the editor.
                                                 style="height:auto; width:60%;"
                                                 outcome="#{comicsPageManagedBean.redirect(issue)}"/>
                                     </p:row>
-                                </h:panelGrid>
-                                                
+                                </h:panelGrid>                      
                             </p:dataGrid>
                         </p:tab>
                     </p:accordionPanel>
-                </center>
                 <div>
                     <ui:include src="/resources/templates/comments/comments.xhtml">
                         <ui:param name="type" value="comics"/>

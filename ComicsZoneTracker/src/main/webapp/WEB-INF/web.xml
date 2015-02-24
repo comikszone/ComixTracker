@@ -41,8 +41,8 @@
         <auth-method>FORM</auth-method>
         <realm-name>ComicsZoneRealm</realm-name>
         <form-login-config>
-            <form-login-page>/resources/templates/authorization/login_page.xhtml</form-login-page>
-            <form-error-page>/resources/templates/authorization/login_error.xhtml</form-error-page>
+            <form-login-page>/resources/templates/authorization/login_page.jsf</form-login-page>
+            <form-error-page>/resources/templates/authorization/login_error.jsf</form-error-page>
         </form-login-config>
     </login-config>
     <security-role>

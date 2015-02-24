@@ -23,8 +23,7 @@ import org.primefaces.model.SortOrder;
 @LocalBean
 //@Path("/comics")
 //@Produces({"text/xml", "application/json"})
-public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowInterface,CatalogueInterface{
-
+public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowInterface,CatalogueInterface,ProgressInterface{
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -36,7 +35,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
     public ComicsFacade() {
         super(Comics.class);
     }
-    
+        
     @Override
     public List<Comics> findByNameStartsWith(String name) {
             TypedQuery<Comics> query =em.createNamedQuery("Comics.findByNameStartsWith", Comics.class);
@@ -46,9 +45,9 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         }
 
     @Override
-    public List<Comics> get12Best() {
+    public List<Comics> getBest(Integer quantity) {
         TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
-        query.setMaxResults(12);
+        query.setMaxResults(quantity);
         List<Comics> results = query.getResultList();
         return results;
     }
@@ -58,12 +57,16 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
         Query query = em.createQuery("SELECT c FROM Comics c ORDER BY c."
-                + sortField + " " + sortOrderString);
+                + sortField + " " + sortOrderString 
+                + ",c.Id " + otherOrderString);
+        
         
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
+        
         return query.getResultList();
     }
 
@@ -72,16 +75,19 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             Double rating, String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE LOWER(c.name) LIKE :name "
-                + "AND c.rating BETWEEN :rating AND :rating+1 "
-                + "ORDER BY c." + sortField + " " + sortOrderString);
+                + "AND c.rating BETWEEN :rating AND :rating+1.0 "
+                + "ORDER BY c." + sortField + " " + sortOrderString 
+                + ",c.Id " + otherOrderString);
         
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
         query.setParameter("name", name.toLowerCase() + "%");
         query.setParameter("rating", rating);
+        
         return query.getResultList();
     }
 
@@ -90,14 +96,17 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
         Query query = em.createQuery("SELECT c FROM Comics c "
-                + "WHERE c.rating BETWEEN :rating AND :rating+1 "
-                + "ORDER BY c." + sortField + " " + sortOrderString);
+                + "WHERE c.rating BETWEEN :rating AND :rating+1.0 "
+                + "ORDER BY c." + sortField + " " + sortOrderString 
+                + ",c.Id " + otherOrderString);
         
         query.setParameter("rating", rating);
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
+        
         return query.getResultList();
     }
 
@@ -106,15 +115,19 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
             String sortField, SortOrder sortOrder) {
         
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+        String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE LOWER(c.name) LIKE :name "
-                + "ORDER BY c." + sortField + " " + sortOrderString);
+                + "ORDER BY c." + sortField + " " + sortOrderString 
+                + ",c.Id " + otherOrderString);
         
         query.setParameter("name", name.toLowerCase()+"%");
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
+        
         return query.getResultList();
+        
     }
     
     @Override
@@ -146,4 +159,38 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         return query.getResultList().get(0);
     }
     
+    public List<Comics> findAll(int maxResult)
+    {
+        TypedQuery<Comics> query=em.createNamedQuery("Comics.findAllAscId",Comics.class);
+        query.setMaxResults(maxResult);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Comics> findByUserInProgress(Integer userId) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByUserInProgress", Comics.class);
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+
+    @Override
+    public Long getTotalIssueCount(Integer comicsId) {
+        TypedQuery<Long> query = em.createNamedQuery("Comics.getTotalIssueCount", Long.class);
+        query.setParameter("comicsId", comicsId);
+        return query.getResultList().get(0);
+    }
+
+    @Override
+    public Long getMarkedIssueCount(Integer comicsId, Integer userId) {
+        TypedQuery<Long> query = em.createNamedQuery("Comics.getMarkedIssueCount", Long.class);
+        query.setParameter("comicsId", comicsId);
+        query.setParameter("userId", userId);
+        return query.getResultList().get(0);
+    }
+    
+    public List<Comics> findByChecking(boolean isChecked) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByChecking", Comics.class);
+        query.setParameter("isChecked", isChecked);
+        return query.getResultList();
+    }
 }

@@ -2,28 +2,27 @@ html {
     background-color: #FFFFFF;
 }
 
-html, body, #container {
-    font-family: 'Droid Sans';
+html, #container {
+/*    font-family: 'Droid Sans';*/
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
 }
 
-header {
-    height: 45px;
-    z-index: 4;
+.container {
+    width: 80%;
 }
 
-article {
-    height: 100%;
-    z-index: 999;
-}
-
-.wrapper {
+.custom-wrapper {
     min-height: 100%;
     margin: 0 auto -2em;
 }
+
+/*.welcome {
+    background-image: url(/resources/images/background/main-background.jpg);
+    background-color:rgba(255,0,0,0.1);
+}*/
 
 footer {
     width: 100%;
@@ -31,7 +30,7 @@ footer {
     background-color: #ECEFF1;
 }
 
-.push {
+.custom-push {
     height: 2em;
 }
 
@@ -51,7 +50,7 @@ footer {
 }
 
 .middle-blue {
-    background-color: #3F51B5;
+    background-color: #7E57C2;
 }
 
 .full-parent {
@@ -75,37 +74,6 @@ td {
     text-decoration: none;
 }
 
-.white {
-    color: white;
-}
-
-.light-grey {
-    color: #FEFEFE;
-}
-
-.dark-grey {
-    font-family: 'Lato';
-    color: #424242;
-}
-
-.ui-widget {
-    font-family: 'Droid Sans' !important;
-}
-
-.ui-widget-content { 
-    font-family:'Droid Sans', sans-serif !important;
-}
-
-.ui-widget-header {
-    font-family: 'Lato' !important;
-}
-
-.ui-widget-input, .ui-widget-select, .ui-widget-textarea, .ui-widget-button { 
-    font-family: 'Lato', Verdana, Arial,sans-serif !important; 
-    font-size: 1em;
-    font-weight: 700;
-}
-
 .homepage-link {
     margin-left: 1em;
     color: #FFFFFF;
@@ -113,16 +81,12 @@ td {
     font-size: 2em !important;
 }
 
-.dirty-hack {
-    margin-left: -2em;
-}
-
-.wrapper {
+.custom-wrapper {
     min-height: 100%;
     margin: 0 auto -2em !important;
 }
 
-.push {
+.custom-push {
     height: 2em;
 }
 
@@ -141,9 +105,20 @@ td {
 }
 
 .content-name {
-    font-family: 'Lato'; 
+/*    font-family: 'Lato'; */
     font-size: 2.5em; 
     text-transform: uppercase;
+    font-weight: 700;
+}
+
+.slideshow-image {
+    width: 25vw;
+    border: black;
+    border-style: solid;
+    border-width: 1px;
+    max-width: 100%;
+    transition: all 300ms ease;
+    margin-left: auto; margin-right: auto
 }
 
 .profile-page-column-attr-name{
@@ -161,3 +136,21 @@ td {
 .profile-page-column-button{
     width: 100%;
 }
+
+.icon-on-start-page{
+    height: 22px;
+    width: 22px;
+}
+
+.ui-selectonemenu-trigger {
+    width: 25px !important;
+}
+
+//Maybe, it'll help us sometimes'
+/*.ui-widget {
+  font-size: 95% !important;
+}
+.ui-widget .ui-widget {
+  font-size: 100% !important;
+}*/
+

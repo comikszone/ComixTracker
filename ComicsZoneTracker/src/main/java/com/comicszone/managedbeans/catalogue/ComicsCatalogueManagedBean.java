@@ -5,18 +5,15 @@
  */
 package com.comicszone.managedbeans.catalogue;
 
-import com.comicszone.dao.ComicsFacade;
+import com.comicszone.dao.CatalogueInterface;
 import com.comicszone.entitynetbeans.Comics;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 
 /**
@@ -25,7 +22,7 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name="comicsCatalogueView")
 @ViewScoped
-public class ComicsCatalogueManagedBean {
+public class ComicsCatalogueManagedBean implements Serializable {
     
     private final String columnComicsName = "Name";
     private final String columnComicsRating = "Rating";
@@ -33,24 +30,19 @@ public class ComicsCatalogueManagedBean {
     private final String columnComicsDescription = "Description";
     
     @EJB
-    private ComicsFacade comicsFacade;
+    private CatalogueInterface catalogue;
     
     private LazyDataModel<Comics> lazyModel;
      
     private Comics selectedComics;
-    
-    private Integer[] intRatings = {0,1,2,3,4};
 
-    public List<Integer> getIntRatings() {
-        return Arrays.asList(intRatings);
-    }
-    
     private List<Rating> ratings;
+    
     private Rating rating;
      
     @PostConstruct
     public void init() {
-        lazyModel = new LazyComicsDataModel(comicsFacade,
+        lazyModel = new LazyComicsDataModel(catalogue,
                 columnComicsName, columnComicsRating);
         ratings = new ArrayList();
         ratings.add(new Rating(0,"/resources/images/ratings/1.jpg"));
@@ -58,12 +50,6 @@ public class ComicsCatalogueManagedBean {
         ratings.add(new Rating(2,"/resources/images/ratings/3.jpg"));
         ratings.add(new Rating(3,"/resources/images/ratings/4.jpg"));
         ratings.add(new Rating(4,"/resources/images/ratings/5.jpg"));
-    }
-    
-    public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Comics Selected",
-                ((Comics) event.getObject()).getName());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
  
     public List<Rating> getRatings() {
@@ -105,5 +91,4 @@ public class ComicsCatalogueManagedBean {
     public void setRating(Rating rating) {
         this.rating = rating;
     }
-
 }

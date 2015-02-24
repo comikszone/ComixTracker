@@ -39,5 +39,23 @@ public class IssueFacade extends AbstractFacade<Issue> implements Finder {
         query.setMaxResults(5);
         return query.getResultList();
     }
+    
+    public List<Issue> findMarkedByUserAndComics(Integer comicsId, Integer userId) {
+        TypedQuery<Issue> query = em.createNamedQuery("Issue.findMarkedByUserAndComics", Issue.class);
+        query.setParameter("comicsId", comicsId);
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+    
+    public List<Issue> findByComics(Integer comicsId) {
+        TypedQuery<Issue> query = em.createNamedQuery("Issue.findByComics", Issue.class);
+        query.setParameter("comicsId", comicsId);
+        return query.getResultList();
+    }
 
+    public List<Issue> findByChecking(boolean isChecked) {
+        TypedQuery<Issue> query =em.createNamedQuery("Issue.findByChecking", Issue.class);
+        query.setParameter("isChecked", isChecked);
+        return query.getResultList();
+    }
 }
