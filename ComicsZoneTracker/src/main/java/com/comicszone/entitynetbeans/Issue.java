@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,24 +45,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Issue.findByVotes", query = "SELECT i FROM Issue i WHERE i.votes = :votes"),
     @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
     @NamedQuery(name = "Issue.findByChecking", query = "SELECT i FROM Issue i WHERE i.isChecked = :isChecked ORDER BY i.Id"),
-    @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
-    //for news
-    @NamedQuery(name = "Issue.getIssuesWithNewCommentsAfterUser", query = "SELECT DISTINCT i FROM Issue i INNER JOIN i.commentsList il WHERE il.commentTime > (SELECT MAX(iil.commentTime) FROM  Issue ii INNER JOIN ii.commentsList iil WHERE ii.Id = i.Id AND iil.userId = :userId)"),
-    @NamedQuery(name = "Issue.getMaxCommentDateForUser", query = "SELECT MAX(il.commentTime) FROM  Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.userId = :userId"), 
-    @NamedQuery(name = "Issue.getCountOfNewCommentsForUser", query = "SELECT COUNT(il.commentId) FROM Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.commentTime > (SELECT MAX(iil.commentTime) FROM  Issue ii INNER JOIN ii.commentsList iil WHERE ii.Id = i.Id AND iil.userId = :userId)"), 
-    @NamedQuery(name = "Issue.getCommentsAfterDateToIssue", query = "SELECT DISTINCT il FROM Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.commentTime > :date ORDER BY il.commentTime"),
-
-    @NamedQuery(name = "Issue.findMarkedByUserAndComics", 
-            query = "SELECT i FROM Issue i "
-                  + "JOIN i.usersList u "
-                  + "JOIN i.volumeId v "
-                  + "JOIN v.comicsId c "
-                  + "WHERE c.Id = :comicsId AND u.userId = :userId"),
-    @NamedQuery(name = "Issue.findByComics", 
-            query = "SELECT i FROM Issue i "
-                  + "JOIN i.volumeId v "
-                  + "JOIN v.comicsId c "
-                  + "WHERE c.Id = :comicsId")})
+    @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate")})
 public class Issue implements Serializable, CommentsContainer, Content, AjaxComicsCharacter {
 
     private static final long serialVersionUID = 1L;
@@ -90,8 +72,8 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     @Column(name = "votes")
     private Integer votes;
     @Column(name = "rel_date")
-    @Size(max = 2147483647)
-    private String relDate;
+    @Temporal(TemporalType.DATE)
+    private Date relDate;
     @Column(name = "is_checked")
     private Boolean isChecked;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
@@ -168,11 +150,11 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
         this.votes = votes;
     }
 
-    public String getRelDate() {
+    public Date getRelDate() {
         return relDate;
     }
 
-    public void setRelDate(String relDate) {
+    public void setRelDate(Date relDate) {
         this.relDate = relDate;
     }
 
@@ -219,7 +201,7 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
