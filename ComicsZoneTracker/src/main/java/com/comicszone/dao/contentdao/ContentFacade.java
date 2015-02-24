@@ -153,6 +153,37 @@ public class ContentFacade extends AbstractFacade<Content> {
         }
     }
     
+    public void setRating(Content item) {
+        Content editingItem = null;
+        ContentType type = item.getContentType();
+        Integer id = item.getId();
+        Float rating = item.getRating();
+        switch(type) {
+            case Comics:
+                editingItem = comicsFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setRating(rating);
+                return;
+                
+            case Issue:
+                editingItem = issueFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setRating(rating);
+                return;
+                
+            case Volume:
+                editingItem = volumeFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setRating(rating);
+        }
+    }
+    
     public void setDescription(Content item) {
         Content editingItem = null;
         ContentType type = item.getContentType();

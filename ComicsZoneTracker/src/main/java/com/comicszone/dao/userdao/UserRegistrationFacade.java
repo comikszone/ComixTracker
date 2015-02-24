@@ -23,8 +23,8 @@ public class UserRegistrationFacade extends AbstractUserFacade {
             throw new IllegalArgumentException("Password isn't equals confirmPassword");
         }
 
-        IPasswordEncryptor encryptor = new SHA256Encriptor();
-        password = encryptor.getEncodedPassword(password);
+        SHA256SimpleSaltedEncryptor encryptor = new SHA256SimpleSaltedEncryptor();
+        password = encryptor.getEncodedPassword(password, nickname);
         Users user = new Users(nickname, email, password);
 
         create(user);
@@ -34,20 +34,22 @@ public class UserRegistrationFacade extends AbstractUserFacade {
     }
 
     public void socialNetworkRegistration(Users user, String password) {
-        IPasswordEncryptor encryptor = new SHA256Encriptor();
-        password = encryptor.getEncodedPassword(password);
+        SHA256SimpleSaltedEncryptor encryptor = new SHA256SimpleSaltedEncryptor();
+        password = encryptor.getEncodedPassword(password, user.getNickname());
         
         Users tempUser = getUserWithNickname(user.getNickname());
         if (tempUser != null) {
             tempUser.setPass(password);
-            tempUser.setBirthday(user.getBirthday());
-            tempUser.setAvatarUrl(user.getAvatarUrl());
-            tempUser.setName(user.getName());
+//            tempUser.setBirthday(user.getBirthday());
+//            tempUser.setAvatarUrl(user.getAvatarUrl());
+//            tempUser.setName(user.getName());
             edit(tempUser);
             return;
         }
 
         user.setPass(password);
+        user.setRealNickname(user.getName());
+        user.setIsSocial(Boolean.TRUE);
         create(user);
 
         UserGroup group = new UserGroup("user", user.getNickname());

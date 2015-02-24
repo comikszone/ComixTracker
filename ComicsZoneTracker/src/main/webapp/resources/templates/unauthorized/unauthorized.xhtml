@@ -4,29 +4,26 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html">
     <ui:define name="headerContent">
-        <div class="left-align">
-            <p:link value="ComicsZone"
-                    styleClass="without-decoration homepage-link"
-                    outcome="/resources/templates/index.xhtml"/>
-        </div>
-        <div class="right-align">
-            <h:form prependId='false'>
-                <p:button value="Sign in"
-                          
-                          href="#"
-                          onclick="showPopUpWin('LoginWindow')"/>
-                <p:button href="#" value="Join ComicsZone"
-                    onclick="showPopUpWin('RegistrationWindow')" />
-                <p:button href="#{googleAuthorization.userUrl}" value="Log in via Google"/>
-                <p:button href="#{vKAuthorization.userUrl}" value="Log in via VK"/>
-                <p:button href="#{facebookAuthorization.userUrl}" value="Log in via Facebook"/>
+                <div class="navbar-nav navbar-right">
+            <ui:include src="/resources/templates/registration/registration.xhtml"/>
+            <ui:include src="/resources/templates/authorization/login_popup.xhtml"/>
+            <h:form prependId='false' role="form" styleClass="form-group-sm">
+                <a class="btn navbar-btn btn-primary" href="#" onclick="PF('reg').show()">
+                                Join ComicsZone
+                </a>
+                    <a href="#" onclick="PF('login').show()" class="btn navbar-btn btn-link">
+                        Sign in
+                    </a>
             </h:form>
-            <div id="RegistrationWindow" style="display:none">
-                    <ui:include src="/resources/templates/registration/registration.xhtml"/>
-            </div>
-            <div id="LoginWindow" style="display:none">
-                    <ui:include src="/resources/templates/authorization/login_popup.xhtml"/>
-            </div>
         </div>
+    </ui:define>
+    <ui:define name="articleContent">
+            <div class="jumbotron">
+                <h1>Welcome to ComicsZone!</h1>
+                <a class="btn btn-primary btn-lg" href="#" onclick="PF('reg').show()">
+                    Explore!
+                </a>
+        </div>
+            <ui:include src="/resources/templates/slideshow/slideshow.xhtml"/>
     </ui:define>
 </ui:composition>

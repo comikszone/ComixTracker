@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -89,8 +90,8 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     @Column(name = "votes")
     private Integer votes;
     @Column(name = "rel_date")
-    @Temporal(TemporalType.DATE)
-    private Date relDate;
+    @Size(max = 2147483647)
+    private String relDate;
     @Column(name = "is_checked")
     private Boolean isChecked;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
@@ -167,11 +168,11 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
         this.votes = votes;
     }
 
-    public Date getRelDate() {
+    public String getRelDate() {
         return relDate;
     }
 
-    public void setRelDate(Date relDate) {
+    public void setRelDate(String relDate) {
         this.relDate = relDate;
     }
 

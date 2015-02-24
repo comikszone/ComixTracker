@@ -5,10 +5,9 @@
  */
 package com.comicszone.managedbeans.progressPage;
 
-import com.comicszone.dao.ComicsFacade;
+import com.comicszone.dao.ProgressFacade;
 import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Content;
-import com.comicszone.entitynetbeans.ContentType;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import java.io.Serializable;
 import java.util.List;
@@ -27,7 +26,7 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class ProgressPageManagedBean implements Serializable {
     @EJB
-    private ComicsFacade comicsFacade;
+    private ProgressFacade progressFacade;
     @ManagedProperty(value="#{currentUserManagedBean}")
     private CurrentUserManagedBean userManagedBean;
     
@@ -35,17 +34,17 @@ public class ProgressPageManagedBean implements Serializable {
     
 
     /**
-     * @return the comicsFacade
+     * @return the progressFacade
      */
-    public ComicsFacade getComicsFacade() {
-        return comicsFacade;
+    public ProgressFacade getProgressFacade() {
+        return progressFacade;
     }
 
     /**
-     * @param comicsFacade the comicsFacade to set
+     * @param progressFacade the progressFacade to set
      */
-    public void setComicsFacade(ComicsFacade comicsFacade) {
-        this.comicsFacade = comicsFacade;
+    public void setProgressFacade(ProgressFacade progressFacade) {
+        this.progressFacade = progressFacade;
     }
 
     /**
@@ -66,7 +65,7 @@ public class ProgressPageManagedBean implements Serializable {
     public void init() {
         try {
             Integer userId = userManagedBean.getCurrentUser().getUserId();
-            setUsersComics(comicsFacade.findByUserInProgress(userId));
+            setUsersComics(progressFacade.findByUserInProgress(userId));
         }
         catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -74,8 +73,8 @@ public class ProgressPageManagedBean implements Serializable {
     }
     
     public Long getValue(Comics comics) throws CloneNotSupportedException {
-        double markedCount = comicsFacade.getMarkedIssueCount(comics.getId(), userManagedBean.getCurrentUser().getUserId());
-        double totalCount = comicsFacade.getTotalIssueCount(comics.getId());
+        double markedCount = progressFacade.getMarkedIssueCount(comics.getId(), userManagedBean.getCurrentUser().getUserId());
+        double totalCount = progressFacade.getTotalIssueCount(comics.getId());
         double res = (markedCount/totalCount)*100;
         return ((long)(res));
     }
@@ -95,7 +94,7 @@ public class ProgressPageManagedBean implements Serializable {
     }
     
     public String redirect(Content content) {
-        return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + content.getId();
+        return "/resources/templates/authorized/readingPage.jsf?faces-redirect=true&id=" + content.getId();
     }
     
 }
