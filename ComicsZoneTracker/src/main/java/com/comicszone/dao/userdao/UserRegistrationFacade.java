@@ -41,7 +41,7 @@ public class UserRegistrationFacade extends AbstractUserFacade {
         if (tempUser != null) {
             tempUser.setPass(password);
 //            tempUser.setBirthday(user.getBirthday());
-//            tempUser.setAvatarUrl(user.getAvatarUrl());
+            tempUser.setAvatarUrl(user.getAvatarUrl());
 //            tempUser.setName(user.getName());
             edit(tempUser);
             return;

@@ -47,7 +47,7 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
     public FacebookAuthorization() {
         clientId = "361365270701323";
         clientSecret = "0b2cf81509ba71c7df172ab46fa49a57";
-        redirectUri = "http://localhost:8080/resources/templates/unauthorized/facebook_redirect_page.jsf";
+        redirectUri = "http://www.comicszonetracker.tk/resources/templates/unauthorized/facebook_redirect_page.jsf";
         userInfoUrl = "https://graph.facebook.com/me";
     }
     

@@ -51,7 +51,7 @@ public class GoogleAuthorization extends SocialNetworkAuthorization implements S
     public GoogleAuthorization() {
         clientId = "232041634310-t8k3nf1cbede85kbu8ljsc16j2fdfbvf.apps.googleusercontent.com";
         clientSecret = "KYTJxAdhHkJ1ccx7uy9HIgKn";
-        redirectUri = "http://localhost:8080/resources/templates/unauthorized/redirect_page.jsf";
+        redirectUri = "http://www.comicszonetracker.tk/resources/templates/unauthorized/redirect_page.jsf";
         userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
     }
 
