@@ -4,6 +4,7 @@ import com.comicszone.dao.MessagesFacade;
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Messages;
 import com.comicszone.entitynetbeans.Users;
+import com.comicszone.managedbeans.friends.UserFriendsManagedBean;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -39,6 +40,7 @@ public class MessagesManagedBean {
     private LazyDataModel<Messages> dataModel;
     private boolean showMessageAdder=false;
     private boolean showMessages=false;
+    private int activeIndex;
     public void addMessage() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = facesContext.getViewRoot();
@@ -96,6 +98,15 @@ public class MessagesManagedBean {
                     .get("currentUserManagedBean"))
                     .getCurrentUser()
                     .clone();
+                        UserFriendsManagedBean      mmb = (UserFriendsManagedBean) FacesContext
+                    .getCurrentInstance()
+                    .getViewRoot()
+                    .getViewMap()
+                    .get("userFriendsManagedBean");
+                    if (mmb.getSelectedFriend()!=null)
+                    {
+                        setFriendIdWrap(mmb.getSelectedFriend().getUserId(), 0);
+                    }
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(MessagesManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -112,6 +123,11 @@ public class MessagesManagedBean {
 //        showMessages=true;
         dataModel=new  LazyMessagesDataModel(messagesFacade, currentUser.getUserId(), friendId, currentUser.getUserId());
         this.friendId = friendId;
+    }
+    public void setFriendIdWrap(Integer id, int index)
+    {
+        setFriendId(id);
+        activeIndex=index;
     }
 
     public Users getCurrentUser() {
@@ -165,4 +181,13 @@ public class MessagesManagedBean {
         showMessageAdder=false;
         showMessages=true;
     }
+
+    public int getActiveIndex() {
+        return activeIndex;
+    }
+
+    public void setActiveIndex(int activeIndex) {
+        this.activeIndex = activeIndex;
+    }
+    
 }

@@ -54,8 +54,15 @@ public class UserFriendsManagedBean implements Serializable {
 
     private Users selectedFollower;
     
+    private Users selectedUncomfirmedFriend;
+    
     private MessagesManagedBean mmb;
     
+    private boolean showMessages;
+    
+    private boolean showMessagesAdder;
+    
+    private int activeIndex;
     @PostConstruct
     public void init() {
        try {
@@ -73,30 +80,34 @@ public class UserFriendsManagedBean implements Serializable {
             if (!friends.isEmpty())
             {
                 setSelectedFriend(friends.get(0));
+                showMessages=true;
+                showMessagesAdder=true;
+//                    mmb.setFriendIdWrap(friends.get(0).getUserId(), 0);
             }
+//            selectedFriend=null;
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }  
     }
-    
+
+   
     public List<Users> completeUser(String query) {
         
         List<Users> users = userDataFacade.getUsersWithNicknameStartsWith(query);
         
         users.removeAll(friendsFacade.getFriends(currentUser));
-        users.removeAll(friendsFacade.getUnconfirmedFriends(currentUser));
+//        users.removeAll(friendsFacade.getUnconfirmedFriends(currentUser));
         users.remove(currentUser);
         
         return users;
     }
     
-    public void addToFriends(Users unconfirmedUser) {
+    public void addToFriends(Users unconfirmedUser, boolean showMessagesAdder, boolean showMessages) {
                     mmb = (MessagesManagedBean) FacesContext
                     .getCurrentInstance()
                     .getViewRoot()
                     .getViewMap()
                     .get("messagesManagedBean");
-                    System.err.println("mmb_______***____"+mmb);
         friendsFacade.addToFriends(currentUser, unconfirmedUser);
         //send add news to unconfirmedUser
         setFriends(friendsFacade.getFriends(currentUser));
@@ -104,13 +115,21 @@ public class UserFriendsManagedBean implements Serializable {
         setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
         setSelectedFriend(unconfirmedUser);
         mmb.setFriendId(unconfirmedUser.getUserId());
+        this.showMessages=showMessages;
+        this.showMessagesAdder=showMessagesAdder;
     }
+
     
     public void removeFromFrieds(Users friend) {
         friendsFacade.removeFromFriends(currentUser, friend);
-        
+        List<Users> friendsList=friendsFacade.getFriends(currentUser);
+        if (friendsList.isEmpty())
+        {
+            showMessages=false;
+            showMessagesAdder=false;
+        }
         //send remove news to friend.
-        setFriends(friendsFacade.getFriends(currentUser));
+        setFriends(friendsList);
         setFollowers(friendsFacade.getFolowers(currentUser));
         setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
     }
@@ -132,6 +151,11 @@ public class UserFriendsManagedBean implements Serializable {
     }
 
     public void setSelectedFriend(Users selectedFriend) {
+//        System.err.println("*****ALL RIGHT******"+selectedFriend.getUserId());
+        showMessages=true;
+        showMessagesAdder=true;
+        selectedFollower=null;
+        selectedUncomfirmedFriend=null;
         this.selectedFriend = selectedFriend;
     }
 
@@ -172,7 +196,48 @@ public class UserFriendsManagedBean implements Serializable {
     }
 
     public void setSelectedFollower(Users selectedFollower) {
+        showMessages=true;
+        showMessagesAdder=false;
+        selectedFriend=null;
+        selectedUncomfirmedFriend=null;
         this.selectedFollower = selectedFollower;
     }
+
+    public boolean isShowMessages() {
+        return showMessages;
+    }
+
+    public void setShowMessages(boolean showMessages) {
+        this.showMessages = showMessages;
+    }
+
+    public boolean isShowMessagesAdder() {
+        return showMessagesAdder;
+    }
+
+    public void setShowMessagesAdder(boolean showMessagesAdder) {
+        this.showMessagesAdder = showMessagesAdder;
+    }
+
+    public Users getSelectedUncomfirmedFriend() {
+        return selectedUncomfirmedFriend;
+    }
+
+    public void setSelectedUncomfirmedFriend(Users selectedUncomfirmedFriend) {
+        showMessages=true;
+        showMessagesAdder=false;
+        selectedFollower=null;
+        selectedFriend=null;
+        this.selectedUncomfirmedFriend = selectedUncomfirmedFriend;
+    }
+
+    public int getActiveIndex() {
+        return activeIndex;
+    }
+
+    public void setActiveIndex(int activeIndex) {
+        this.activeIndex = activeIndex;
+    }
+    
     
 }

@@ -5,7 +5,6 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
-        <f:event type="preRenderView" listener="#{messagesManagedBean.setFriendId(userFriendsManagedBean.selectedFriend.userId)}"/>
         <h:form id="form">
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >
@@ -43,8 +42,8 @@
             <table style="width:100%;">
                 <tr>
                     <td class="friends-column">
-                        <p:accordionPanel multiple="true" id="accordionPanel"
-                                          style="background-color: #EDEDED">  
+                        <p:accordionPanel multiple="false" id="accordionPanel"
+                                          style="background-color: #EDEDED" widgetVar="accordion" activeIndex="#{messagesManagedBean.activeIndex}">  
                             <p:tab title="Friends">
                     <p:dataTable
                         id="friendsTable"
@@ -65,8 +64,8 @@
 
                         <p:ajax 
                             event="rowSelect" 
-                            update=":form:messages"
-                            listener="#{messagesManagedBean.setFriendId(userFriendsManagedBean.selectedFriend.userId)}"
+                            update=":form"
+                            listener="#{messagesManagedBean.setFriendIdWrap(userFriendsManagedBean.selectedFriend.userId,0)}"
                             
                             />
 
@@ -83,8 +82,7 @@
                                         styleClass="ui-panel-titlebar-icon ui-corner-all 
                                                     ui-state-default ui-icon ui-icon-close"
                                         action="#{userFriendsManagedBean.removeFromFrieds(friend)}"
-                                        update=":form:accordionPanel:friendsTable 
-                                                :form:accordionPanel:followersTable"   
+                                        update=":form"   
                                                 >
                                         
                                         <p:confirm
@@ -132,7 +130,7 @@
                         </p:column>
                     </p:dataTable>
                     </p:tab>
-                    <p:tab title="Followers" >       
+                            <p:tab title="Followers">       
                     <p:dataTable
                         id="followersTable"
                         var="follower"
@@ -144,11 +142,17 @@
                         paginatorPosition="bottom"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                        
+                        selectionMode="single" 
+                        selection="#{userFriendsManagedBean.selectedFollower}"
                         emptyMessage="No followers found!"
                         style="margin: auto 1% 1% 1%;"
                         >
-
+                        <p:ajax 
+                            event="rowSelect" 
+                            update=":form"
+                            listener="#{messagesManagedBean.setFriendIdWrap(userFriendsManagedBean.selectedFollower.userId,1)}"
+                            
+                            />
                         <p:column 
                             width="100%" 
                             headerText="Nickname" 
@@ -159,10 +163,8 @@
                                 <f:facet name="footer">
                                     <p:commandButton 
                                         value="Confirm friendship"
-                                        update=":form:accordionPanel:friendsTable 
-                                                :form:accordionPanel:followersTable
-                                                :form:messages"
-                                        action="#{userFriendsManagedBean.addToFriends(follower)}"
+                                        update=":form"
+                                        action="#{userFriendsManagedBean.addToFriends(follower,true,true)}"
                                      />
                                 </f:facet>
                                 
@@ -219,8 +221,15 @@
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
                         emptyMessage="No unconfirmed friends found!"
                         style="margin: auto 1% 1% 1%;"
+                        selectionMode="single" 
+                        selection="#{userFriendsManagedBean.selectedUncomfirmedFriend}"
                         >
-
+                        <p:ajax 
+                            event="rowSelect" 
+                            update=":form"
+                            listener="#{messagesManagedBean.setFriendIdWrap(userFriendsManagedBean.selectedUncomfirmedFriend.userId,2)}"
+                            
+                            />
                         <p:column 
                             width="100%" 
                             headerText="Nickname" 
@@ -280,7 +289,8 @@
                     </td>
                             
                     <td class="message-column">
-                        <p:panel 
+                        <p:panel
+                            rendered="#{userFriendsManagedBean.showMessagesAdder}"
                             id="messageAdder" 
                             header="Your message" 
                             style="margin: auto 1% 0 1%">
@@ -300,8 +310,8 @@
 
                         <p:growl id="messagessMessage" showDetail="true" life="1000" />
        
-                        <p:panel style="margin: 0 1% 1% 1%">
-                            <p:dataTable 
+                        <p:panel style="margin: 0 1% 1% 1%" rendered="#{userFriendsManagedBean.showMessages}">
+                            <p:dataTable
                                 var="message"
                                 id="messages"
                                 emptyMessage="No messages"
@@ -395,10 +405,8 @@
                         <f:facet name="footer">
                             <p:outputPanel>
                                 <p:commandButton value="Add to friends!"
-                                                 update=":form:accordionPanel:unconfirmedFriendsTable 
-                                                         :form:accordionPanel:friendsTable
-                                                         :form:messages"
-                                                 action="#{userFriendsManagedBean.addToFriends(userFriendsManagedBean.selectedUser)}"
+                                                 update=":form"
+                                                 action="#{userFriendsManagedBean.addToFriends(userFriendsManagedBean.selectedUser,false,true)}"
                                                  onclick="userDetails.close()"
                                 />
                             </p:outputPanel>
@@ -406,7 +414,7 @@
                        
                             <h:outputText 
                                 value="#{userFriendsManagedBean.selectedUser.nickname}"
-                                class="friends-info"/>
+                                class="friends-info" />
                                     
                             <h:outputText 
                                 value="#{userFriendsManagedBean.selectedUser.email}" 
