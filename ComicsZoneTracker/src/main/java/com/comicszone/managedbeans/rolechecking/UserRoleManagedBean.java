@@ -28,7 +28,6 @@ public class UserRoleManagedBean implements Serializable {
     
     public boolean isUserAdmin() {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        
         return context.isUserInRole("admin");
     }
     
