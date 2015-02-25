@@ -37,6 +37,9 @@ public class MessagesManagedBean {
     private Integer friendId;
     private Users friendUser;
     private LazyDataModel<Messages> dataModel;
+    private boolean showMessageAdder;
+    private boolean showMessages;
+    private int activeIndex=-1;
     public void addMessage() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = facesContext.getViewRoot();
@@ -106,8 +109,21 @@ public class MessagesManagedBean {
 
     public void setFriendId(Integer friendId) {
         System.err.println("selected friend id="+friendId);
+//        showMessageAdder=true;
+//        showMessages=true;
         dataModel=new  LazyMessagesDataModel(messagesFacade, currentUser.getUserId(), friendId, currentUser.getUserId());
         this.friendId = friendId;
+    }
+    public void setFriendIdWithActiveIndex(Integer friendId, int activeIndex)
+    {
+        this.activeIndex=activeIndex;
+        if (activeIndex==0)
+        {
+            showMessageAdder=true;
+            System.out.println("************activeIndex===0**************");
+        }
+        showMessages=true;
+        setFriendId(friendId);
     }
 
     public Users getCurrentUser() {
@@ -133,5 +149,48 @@ public class MessagesManagedBean {
     public void setDataModel(LazyDataModel<Messages> dataModel) {
         this.dataModel = dataModel;
     }
-  
+
+    public boolean isShowMessageAdder() {
+        return showMessageAdder;
+    }
+
+    public void setShowMessageAdder(boolean showMessageAdder) {
+        this.showMessageAdder = showMessageAdder;
+    }
+
+    public boolean isShowMessages() {
+        return showMessages;
+    }
+
+    public void setShowMessages(boolean showMessages) {
+        this.showMessages = showMessages;
+    }
+    public void friendSelected(Integer id)
+    {
+        friendId=id;
+        showMessageAdder=true;
+        showMessages=true;
+    }
+    public void followerSelected(Integer id)
+    {
+        friendId=id;
+        showMessageAdder=false;
+        showMessages=true;
+    }
+
+    public int getActiveIndex() {
+        return activeIndex;
+    }
+
+    public void setActiveIndex(int activeIndex) {
+        this.activeIndex = activeIndex;
+    }
+    public void preRender(Users user)
+    {
+        if (user!=null)
+        {
+            setFriendIdWithActiveIndex(user.getUserId(), 0);
+        }
+    }
+    
 }

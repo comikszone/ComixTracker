@@ -103,7 +103,6 @@ ALTER TABLE users ADD COLUMN recovery_password_id Varchar;
 alter table users add column is_social boolean default false;
 alter table users add column real_nickname character varying;
 update users set real_nickname=nickname where is_social = false;
-
 CREATE TABLE user_comments_news (
 	news_id integer NOT NULL,
 	user_id integer NOT NULL,
