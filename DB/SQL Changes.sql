@@ -162,3 +162,10 @@ CREATE TABLE user_friends_news (
 	CONSTRAINT user_friends_news_friends_note_id FOREIGN KEY(friends_note_id) 
 		REFERENCES friends(id)
 );
+
+INSERT INTO user_friends_news (user_id, friends_note_id, viewed) 
+	(SELECT user1_id, id, TRUE FROM friends 
+	UNION
+	SELECT user2_id, id, TRUE FROM friends)
+	EXCEPT
+	SELECT user_id, friends_note_id, TRUE FROM user_friends_news;
