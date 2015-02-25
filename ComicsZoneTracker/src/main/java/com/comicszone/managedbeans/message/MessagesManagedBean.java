@@ -185,5 +185,12 @@ public class MessagesManagedBean {
     public void setActiveIndex(int activeIndex) {
         this.activeIndex = activeIndex;
     }
+    public void preRender(Users user)
+    {
+        if (user!=null)
+        {
+            setFriendIdWithActiveIndex(user.getUserId(), 0);
+        }
+    }
     
 }

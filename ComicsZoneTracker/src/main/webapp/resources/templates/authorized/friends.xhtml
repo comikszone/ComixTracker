@@ -6,6 +6,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
             
     <ui:define name="articleContent">
+        <f:event type="preRenderView" listener="#{messagesManagedBean.preRender(userFriendsManagedBean.selectedFriend)}" />
         <h:form id="form">
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >

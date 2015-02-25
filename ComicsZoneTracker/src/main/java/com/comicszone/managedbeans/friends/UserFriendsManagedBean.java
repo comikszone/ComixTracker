@@ -75,10 +75,10 @@ public class UserFriendsManagedBean implements Serializable {
             followers = friendsFacade.getFolowers(currentUser);
             unconfirmedFriends = friendsFacade.getUnconfirmedFriends(currentUser);
             followersIsEmpty = followers.isEmpty();
-//            if (!friends.isEmpty())
-//            {
-//                setSelectedFriend(friends.get(0));
-//            }
+            if (!friends.isEmpty())
+            {
+                setSelectedFriend(friends.get(0));
+            }
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }  
