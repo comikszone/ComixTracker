@@ -55,7 +55,7 @@ public class UserFriendsNewsManagedBean implements Serializable {
     }
     
     public void setViewed(UserFriendsNews friendsNews) {
-        friendsNewsFacade.setViewed(friendsNews.getNewsId(), true);
+        friendsNewsFacade.setViewed(friendsNews.getNewsId(), Boolean.TRUE);
         update();
     }
 

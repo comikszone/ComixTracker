@@ -115,14 +115,14 @@ public class FriendsFacade extends AbstractFacade<Friends> {
             friend.setStatus(FriendshipStatus.user1_subscribed);
             
             create(friend);
-            newsFacade.createNews(friend, friendUser, false);
-            newsFacade.createNews(friend, currentUser, true);
+            newsFacade.createNews(friend, friendUser, Boolean.FALSE);
+            newsFacade.createNews(friend, currentUser, Boolean.TRUE);
             return;
         }
         
         Friends friend = friends.get(0);
         boolean isCurrentUserUser1 = friend.getUser1().equals(currentUser);
-        newsFacade.setViewed(friend, currentUser, true);
+        newsFacade.setViewed(friend, currentUser, Boolean.TRUE);
         
         //if (friend.isUser1Subscribed() && friend.isUser2Subscribed()) {
         if (friend.getStatus().equals(FriendshipStatus.friends)) {
@@ -135,12 +135,12 @@ public class FriendsFacade extends AbstractFacade<Friends> {
                     friend.getStatus().equals(FriendshipStatus.user1_deleted_user2))
             {
                 friend.setStatus(FriendshipStatus.friends);
-                newsFacade.setViewed(friend, friendUser, true);
+                newsFacade.setViewed(friend, friendUser, Boolean.TRUE);
             }
             else if (friend.getStatus().equals(FriendshipStatus.nobody_subscribed))
             {
                 friend.setStatus(FriendshipStatus.user1_subscribed);
-                newsFacade.setViewed(friend, friendUser, false);
+                newsFacade.setViewed(friend, friendUser, Boolean.FALSE);
             }
         }
         else {
@@ -149,12 +149,12 @@ public class FriendsFacade extends AbstractFacade<Friends> {
                     friend.getStatus().equals(FriendshipStatus.user2_deleted_user1))
             {
                 friend.setStatus(FriendshipStatus.friends);
-                newsFacade.setViewed(friend, friendUser, true);
+                newsFacade.setViewed(friend, friendUser, Boolean.TRUE);
             }
             else if (friend.getStatus().equals(FriendshipStatus.nobody_subscribed)) 
             {
                 friend.setStatus(FriendshipStatus.user2_subscribed);
-                newsFacade.setViewed(friend, friendUser, false);
+                newsFacade.setViewed(friend, friendUser, Boolean.FALSE);
             }
         }
         edit(friend);
@@ -170,31 +170,31 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         
         Friends friend = friends.get(0);
         boolean isCurrentUserUser1 = friend.getUser1().equals(currentUser);
-        newsFacade.setViewed(friend, currentUser, true);
+        newsFacade.setViewed(friend, currentUser, Boolean.TRUE);
         
         if (isCurrentUserUser1) {
             //friend.setUser1Subscribed(false);
             if (friend.getStatus().equals(FriendshipStatus.friends)) {
                 friend.setStatus(FriendshipStatus.user1_deleted_user2);
-                newsFacade.setViewed(friend, friendUser, false);
+                newsFacade.setViewed(friend, friendUser, Boolean.FALSE);
             }
             else if (friend.getStatus().equals(FriendshipStatus.user2_deleted_user1)
                     || friend.getStatus().equals(FriendshipStatus.user1_subscribed)) 
             {
                 friend.setStatus(FriendshipStatus.nobody_subscribed);
-                newsFacade.setViewed(friend, friendUser, true);
+                newsFacade.setViewed(friend, friendUser, Boolean.TRUE);
             }
         }
         else {
             if (friend.getStatus().equals(FriendshipStatus.friends)) {
                 friend.setStatus(FriendshipStatus.user2_deleted_user1);
-                newsFacade.setViewed(friend, friendUser, false);
+                newsFacade.setViewed(friend, friendUser, Boolean.FALSE);
             }
             else if (friend.getStatus().equals(FriendshipStatus.user1_deleted_user2)
                     || friend.getStatus().equals(FriendshipStatus.user2_subscribed)) 
             {
                 friend.setStatus(FriendshipStatus.nobody_subscribed);
-                newsFacade.setViewed(friend, friendUser, true);
+                newsFacade.setViewed(friend, friendUser, Boolean.TRUE);
             }
         }
         edit(friend);

@@ -31,7 +31,8 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "UserFriendsNews.findAll", query = "SELECT u FROM UserFriendsNews u"),
     @NamedQuery(name = "UserFriendsNews.findByNewsId", query = "SELECT u FROM UserFriendsNews u WHERE u.newsId = :newsId"),
     @NamedQuery(name = "UserFriendsNews.findByViewed", query = "SELECT u FROM UserFriendsNews u WHERE u.viewed = :viewed"),
-    @NamedQuery(name = "UserFriendsNews.getByUserAndFriendNote", query = "SELECT u FROM UserFriendsNews u WHERE u.userId = :user AND u.friendsNoteId = :friendsNoteId")})
+    @NamedQuery(name = "UserFriendsNews.getByUserAndFriendNote", query = "SELECT u FROM UserFriendsNews u WHERE u.userId = :user AND u.friendsNoteId = :friendsNote"),
+    @NamedQuery(name = "UserFriendsNews.getByUserUnviewed", query = "SELECT u FROM UserFriendsNews u WHERE u.userId = :user AND u.viewed = false")})
 public class UserFriendsNews implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

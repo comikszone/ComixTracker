@@ -69,7 +69,7 @@
                 id="req">
             <p:dataScroller
                 chunkSize="10"
-                var="request"
+                var="friendsNews"
                 rowIndexVar="index"
                 value="#{userFriendsNewsManagedBean.news}">
                 <p:panel
@@ -77,20 +77,23 @@
                     header="Friend request"
                     style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
                     <h:outputText
-                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).get} 
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getNickname()} 
                         wants to add you as a friend."/>
+                    <br/>
+                    <div>
                     <p:commandButton
-                        update="req"
+                        update=":news"
                         value="Add to friends"
                         action="#{userFriendsNewsManagedBean.addToFriends(index)}"/>
                     <p:commandButton
-                        update="req"
+                        update=":news"
                         value="Decline request"
                         action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
                     <p:commandButton
-                        update="req"
+                        update=":news"
                         value="Put off decision"
-                        action="#{userFriendsNewsManagedBean.setViewed(request)}"/>
+                        action="#{userFriendsNewsManagedBean.setViewed(friendsNews)}"/>
+                    </div>
                 </p:panel>
                 
                 <p:panel
@@ -98,16 +101,19 @@
                     header="Deletion"
                     style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
                     <h:outputText
-                        value="User #{userFriendsNewsManagedBean.getOtherUser(index)} 
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getNickname()} 
                         removed you from friends."/>
+                    <br/>
+                    <div>
                     <p:commandButton
-                        update="req"
+                        update=":news"
                         value="Unfollow"
                         action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
                     <p:commandButton
-                        update="req"
+                        update=":news"
                         value="Put off decision"
-                        action="#{userFriendsNewsManagedBean.setViewed(request)}"/>
+                        action="#{userFriendsNewsManagedBean.setViewed(friendsNews)}"/>
+                    </div>
                 </p:panel>
             </p:dataScroller>
             </p:tab>

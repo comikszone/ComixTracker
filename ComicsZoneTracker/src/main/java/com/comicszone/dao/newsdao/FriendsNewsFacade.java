@@ -38,7 +38,11 @@ public class FriendsNewsFacade extends AbstractFacade<UserFriendsNews> {
             return null;
         }
         List<List<?>> result = new ArrayList<List<?>>(3);
-        List<UserFriendsNews> allNews = user.getFriendsNews();
+        TypedQuery<UserFriendsNews> allNewsQuery = em.
+                createNamedQuery("UserFriendsNews.getByUserUnviewed", 
+                        UserFriendsNews.class);
+        allNewsQuery.setParameter("user", user);
+        List<UserFriendsNews> allNews = allNewsQuery.getResultList();
         List<UserFriendsNews> news = new ArrayList<UserFriendsNews>();
         List<Users> otherUsers = new ArrayList<Users>();
         List<String> messages = new ArrayList<String>();
@@ -70,7 +74,7 @@ public class FriendsNewsFacade extends AbstractFacade<UserFriendsNews> {
         return result;
     }
     
-    public void setViewed(Integer newsId, boolean viewed) {
+    public void setViewed(Integer newsId, Boolean viewed) {
         if (newsId == null) {
             return;
         }
@@ -79,18 +83,20 @@ public class FriendsNewsFacade extends AbstractFacade<UserFriendsNews> {
             return;
         }
         news.setViewed(viewed);
+        edit(news);
     }
     
-    public void setViewed(Friends friendNote, Users user, boolean viewed) {
+    public void setViewed(Friends friendNote, Users user, Boolean viewed) {
         TypedQuery<UserFriendsNews> newsQuery = em.createNamedQuery(
                 "UserFriendsNews.getByUserAndFriendNote", UserFriendsNews.class);
         newsQuery.setParameter("user", user);
         newsQuery.setParameter("friendsNote", friendNote);
         UserFriendsNews news = newsQuery.getSingleResult();
         news.setViewed(viewed);
+        edit(news);
     }
     
-    public void createNews(Friends friendNote, Users user, boolean viewed) {
+    public void createNews(Friends friendNote, Users user, Boolean viewed) {
         UserFriendsNews news = new UserFriendsNews();
         news.setFriendsNoteId(friendNote);
         news.setUserId(user);

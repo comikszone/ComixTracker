@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.rolechecking;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.Principal;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
@@ -27,6 +28,7 @@ public class UserRoleManagedBean implements Serializable {
     
     public boolean isUserAdmin() {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        
         return context.isUserInRole("admin");
     }
     
