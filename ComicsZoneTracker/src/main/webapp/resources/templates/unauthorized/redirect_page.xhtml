@@ -17,8 +17,7 @@ and open the template in the editor.
     </head>
     <body>
         <div>
-            #{socialNetworkContext.setAuthorization(googleAuthorization)}
-            #{socialNetworkContext.doRegistration()}
+            #{googleAuthorization.doRegistration()}
         </div>
     </body>
 </html>
