@@ -37,8 +37,9 @@ public class MessagesManagedBean {
     private Integer friendId;
     private Users friendUser;
     private LazyDataModel<Messages> dataModel;
-    private boolean showMessageAdder=false;
-    private boolean showMessages=false;
+    private boolean showMessageAdder;
+    private boolean showMessages;
+    private int activeIndex=-1;
     public void addMessage() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = facesContext.getViewRoot();
@@ -113,6 +114,17 @@ public class MessagesManagedBean {
         dataModel=new  LazyMessagesDataModel(messagesFacade, currentUser.getUserId(), friendId, currentUser.getUserId());
         this.friendId = friendId;
     }
+    public void setFriendIdWithActiveIndex(Integer friendId, int activeIndex)
+    {
+        this.activeIndex=activeIndex;
+        if (activeIndex==0)
+        {
+            showMessageAdder=true;
+            System.out.println("************activeIndex===0**************");
+        }
+        showMessages=true;
+        setFriendId(friendId);
+    }
 
     public Users getCurrentUser() {
         return currentUser;
@@ -165,4 +177,13 @@ public class MessagesManagedBean {
         showMessageAdder=false;
         showMessages=true;
     }
+
+    public int getActiveIndex() {
+        return activeIndex;
+    }
+
+    public void setActiveIndex(int activeIndex) {
+        this.activeIndex = activeIndex;
+    }
+    
 }

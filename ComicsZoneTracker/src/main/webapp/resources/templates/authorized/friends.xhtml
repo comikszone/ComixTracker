@@ -4,8 +4,8 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
+            
     <ui:define name="articleContent">
-        <f:event type="preRenderView" listener="#{messagesManagedBean.setFriendId(userFriendsManagedBean.selectedFriend.userId)}"/>
         <h:form id="form">
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >
@@ -43,8 +43,9 @@
             <table style="width:100%;">
                 <tr>
                     <td class="friends-column">
-                        <p:accordionPanel multiple="true" id="accordionPanel"
-                                          style="background-color: #EDEDED">  
+                        <p:accordionPanel multiple="false" id="accordionPanel"
+                                          style="background-color: #EDEDED"
+                                          activeIndex="#{messagesManagedBean.activeIndex}">  
                             <p:tab title="Friends">
                     <p:dataTable
                         id="friendsTable"
@@ -65,8 +66,8 @@
 
                         <p:ajax 
                             event="rowSelect" 
-                            update=":form:messages"
-                            listener="#{messagesManagedBean.setFriendId(userFriendsManagedBean.selectedFriend.userId)}"
+                            update=":form"
+                            listener="#{messagesManagedBean.setFriendIdWithActiveIndex(userFriendsManagedBean.selectedFriend.userId,0)}"
                             
                             />
 
@@ -144,11 +145,17 @@
                         paginatorPosition="bottom"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                        
+                        selectionMode="single" 
+                        selection="#{userFriendsManagedBean.selectedFollower}"                        
                         emptyMessage="No followers found!"
                         style="margin: auto 1% 1% 1%;"
                         >
-
+                        <p:ajax 
+                            event="rowSelect" 
+                            update=":form"
+                            listener="#{messagesManagedBean.setFriendIdWithActiveIndex(userFriendsManagedBean.selectedFollower.userId,1)}"
+                            
+                            />
                         <p:column 
                             width="100%" 
                             headerText="Nickname" 
@@ -218,9 +225,16 @@
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
                         emptyMessage="No unconfirmed friends found!"
+                        selectionMode="single" 
+                        selection="#{userFriendsManagedBean.selectedUnconfirmedFriend}"    
                         style="margin: auto 1% 1% 1%;"
                         >
-
+                        <p:ajax 
+                            event="rowSelect" 
+                            update=":form"
+                            listener="#{messagesManagedBean.setFriendIdWithActiveIndex(userFriendsManagedBean.selectedUnconfirmedFriend.userId,2)}"
+                            
+                            />
                         <p:column 
                             width="100%" 
                             headerText="Nickname" 
@@ -283,7 +297,8 @@
                         <p:panel 
                             id="messageAdder" 
                             header="Your message" 
-                            style="margin: auto 1% 0 1%">
+                            style="margin: auto 1% 0 1%"
+                            visible="#{messagesManagedBean.activeIndex eq 0}">
                             
                         <p:inputTextarea 
                             id="messagesAdderNewMessage" 
@@ -295,12 +310,12 @@
                             value="Send"
                             action="#{messagesManagedBean.addMessage()}"
                             update=":form:messages :form:messageAdder"
-                            style="margin-right: -88%"/>
+                            style="margin-right: -88%"
+                            />
                         </p:panel>
 
                         <p:growl id="messagessMessage" showDetail="true" life="1000" />
-       
-                        <p:panel style="margin: 0 1% 1% 1%">
+                        <p:panel style="margin: 0 1% 1% 1%" visible="#{messagesManagedBean.activeIndex > -1}">
                             <p:dataTable 
                                 var="message"
                                 id="messages"
