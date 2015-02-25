@@ -37,16 +37,19 @@ public class UserFriendsManagedBean implements Serializable {
     private UserDataFacade userDataFacade;
     
     private List<Users> friends;
+    
+    private List<Users> followers;
+    
+    private boolean followersIsEmpty;
 
+    private List<Users> unconfirmedFriends;
+    
     private Users currentUser;
     
     private Users selectedUser;
     
     private Users selectedFriend;
-    
-    private Users selectedInfoFriend;
 
-    
     @PostConstruct
     public void init() {
        try {
@@ -59,6 +62,9 @@ public class UserFriendsManagedBean implements Serializable {
                     .clone();
             
             friends = friendsFacade.getFriends(currentUser);
+            followers = friendsFacade.getFollowers(currentUser);
+            unconfirmedFriends = friendsFacade.getUnconfirmedFriends(currentUser);
+            followersIsEmpty = followers.isEmpty();
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -67,22 +73,29 @@ public class UserFriendsManagedBean implements Serializable {
     public List<Users> completeUser(String query) {
         
         List<Users> users = userDataFacade.getUsersWithNicknameStartsWith(query);
-        List<Users> currentUserfriends = friendsFacade.getFriends(currentUser);
         
-        users.removeAll(currentUserfriends);
+        users.removeAll(friendsFacade.getFriends(currentUser));
+        users.removeAll(friendsFacade.getUnconfirmedFriends(currentUser));
         users.remove(currentUser);
         
         return users;
     }
     
-    public void addToFriends() {
-        friendsFacade.addToFriends(currentUser, selectedUser);
+    public void addToFriends(Users unconfirmedUser) {
+        friendsFacade.addToFriends(currentUser, unconfirmedUser);
+        //send add news to unconfirmedUser
         setFriends(friendsFacade.getFriends(currentUser));
+        setFollowers(friendsFacade.getFollowers(currentUser));
+        setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
     }
     
     public void removeFromFrieds(Users friend) {
         friendsFacade.removeFromFriends(currentUser, friend);
+        
+        //send remove news to friend.
         setFriends(friendsFacade.getFriends(currentUser));
+        setFollowers(friendsFacade.getFollowers(currentUser));
+        setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
     }
     
     public String getFormatedData(Users friend) {
@@ -113,12 +126,27 @@ public class UserFriendsManagedBean implements Serializable {
         this.friends = friends;
     }
 
-    public Users getSelectedInfoFriend() {
-        return selectedInfoFriend;
+    public List<Users> getFollowers() {
+        return followers;
     }
 
-    public void setSelectedInfoFriend(Users selectedInfoFriend) {
-        this.selectedInfoFriend = selectedInfoFriend;
+    public void setFollowers(List<Users> followers) {
+        this.followers = followers;
     }
-    
+
+    public List<Users> getUnconfirmedFriends() {
+        return unconfirmedFriends;
+    }
+
+    public void setUnconfirmedFriends(List<Users> unconfirmedFriends) {
+        this.unconfirmedFriends = unconfirmedFriends;
+    }
+
+    public boolean isFollowersIsEmpty() {
+        return followersIsEmpty;
+    }
+
+    public void setFollowersIsEmpty(boolean followersIsEmpty) {
+        this.followersIsEmpty = followersIsEmpty;
+    }
 }

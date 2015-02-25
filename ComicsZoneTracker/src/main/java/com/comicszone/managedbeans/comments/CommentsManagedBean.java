@@ -1,5 +1,6 @@
 package com.comicszone.managedbeans.comments;
 
+import com.comicszone.dao.newsdao.CommentsNewsFacade;
 import com.comicszone.dao.commentsdao.CommentsFacade;
 import com.comicszone.dao.commentsdao.CommentsFacade.CommentToType;
 import com.comicszone.entitynetbeans.Comments;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.inject.Default;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -25,8 +27,12 @@ import org.primefaces.component.inputtextarea.InputTextarea;
 @ManagedBean
 @ViewScoped
 public class CommentsManagedBean implements Serializable {
+    
     @EJB
-    CommentsFacade commentsDao;
+    private CommentsFacade commentsDao;
+    
+    @EJB
+    private CommentsNewsFacade newsFacade;
     
     private String currentUserNickname;
     private List<Comments> comments;
@@ -97,7 +103,7 @@ public class CommentsManagedBean implements Serializable {
             return;
         }
         boolean edited = commentsDao.editComment(editingComment.getCommentId(), 
-                selectedCommentText, id, commentToType);
+                selectedCommentText);
         editingComment = null;
         selectedCommentText = null;
         if (edited) {
@@ -149,6 +155,8 @@ public class CommentsManagedBean implements Serializable {
         String type = (String)faceletContext.getAttribute("type");
         setCommentToType(type);
         comments = commentsDao.getCommentsTo(id, commentToType);
+        newsFacade.setViewed(currentUserNickname, id, commentToType, Boolean.TRUE);
+        newsFacade.updateNewsDate(currentUserNickname, id, commentToType);
     }
     
     public boolean isCommentEditable(Comments comment) {
