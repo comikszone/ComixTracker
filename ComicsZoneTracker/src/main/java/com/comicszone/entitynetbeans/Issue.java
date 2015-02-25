@@ -63,7 +63,8 @@ import javax.validation.constraints.Size;
             query = "SELECT i FROM Issue i "
                   + "JOIN i.volumeId v "
                   + "JOIN v.comicsId c "
-                  + "WHERE c.Id = :comicsId")})
+                  + "WHERE c.Id = :comicsId"), 
+    @NamedQuery(name = "Issue.getCommentNewsForUserAndIssue", query = "SELECT DISTINCT n FROM Issue i INNER JOIN i.commentsNews n WHERE i = :issue AND n.userId = :user")})
 public class Issue implements Serializable, CommentsContainer, Content, AjaxComicsCharacter {
 
     private static final long serialVersionUID = 1L;
@@ -104,6 +105,8 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     @JoinColumn(name = "volume_id", referencedColumnName = "volume_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Volume volumeId;
+    @OneToMany(mappedBy = "issueId", fetch = FetchType.LAZY)
+    private List<UserCommentsNews> commentsNews;
     private final static ContentType CONTENT_TYPE = ContentType.Issue;
 
     public Issue() {
@@ -190,6 +193,16 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
 
     public void setUsersList(List<Users> usersList) {
         this.usersList = usersList;
+    }
+
+    @Override
+    public List<UserCommentsNews> getCommentsNews() {
+        return commentsNews;
+    }
+
+    @Override
+    public void setCommentsNews(List<UserCommentsNews> commentsNews) {
+        this.commentsNews = commentsNews;
     }
 
     @Override
