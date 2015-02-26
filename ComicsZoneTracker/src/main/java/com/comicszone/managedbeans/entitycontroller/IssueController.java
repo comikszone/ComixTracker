@@ -45,4 +45,6 @@ public class IssueController implements Serializable {
         issue = issueFacade.find(issueId);
     }
     
+    
+    
 }

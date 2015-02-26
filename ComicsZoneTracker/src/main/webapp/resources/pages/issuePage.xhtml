@@ -44,6 +44,16 @@ and open the template in the editor.
                        <h:outputText value="Rating: #{issueController.issue.rating}"/>
                        <br/>
                        <h:outputText value="Votes: #{issueController.issue.votes}"/>
+                       <p:accordionPanel>
+                           <p:tab>
+                                <f:facet name="title">
+                                    <h:outputText value="Featured Characters"/>
+                                </f:facet>
+                            <p:dataList type="definition" value="#{issueController.issue.characterList}" var="character">
+                                <p:link value="#{character.name}" href="#"/>
+                            </p:dataList>
+                           </p:tab>
+                       </p:accordionPanel>
                     </p:column>
                 </p:row>
                 <p:row>

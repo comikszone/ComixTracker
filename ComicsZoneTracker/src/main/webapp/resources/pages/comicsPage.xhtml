@@ -20,6 +20,11 @@ and open the template in the editor.
         #{comicsPageManagedBean.comicsController.initComics()}
         #{ratingController.setType(comicsPageManagedBean.comicsController.comics.contentType)}
         #{ratingController.setContentId(comicsPageManagedBean.comicsController.comicsId)}
+        <ol class="breadcrumb">
+            <li><a href="/resources/templates/index.jsf">Home</a></li>
+            <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
+            <li class="active">#{comicsPageManagedBean.comicsController.comics.name}</li>
+        </ol>
             <p:panelGrid style="border:none !important; width:80%;">
                         <p:row>
                             <p:column colspan="1">
