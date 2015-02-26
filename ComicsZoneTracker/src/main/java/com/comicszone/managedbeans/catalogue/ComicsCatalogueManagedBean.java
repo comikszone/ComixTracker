@@ -8,11 +8,10 @@ package com.comicszone.managedbeans.catalogue;
 import com.comicszone.dao.CatalogueInterface;
 import com.comicszone.entitynetbeans.Comics;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.model.LazyDataModel;
 
@@ -21,7 +20,7 @@ import org.primefaces.model.LazyDataModel;
  * @author Eschenko_DA
  */
 @ManagedBean(name="comicsCatalogueView")
-@ViewScoped
+@SessionScoped
 public class ComicsCatalogueManagedBean implements Serializable {
     
     private final String columnComicsName = "Name";
@@ -35,25 +34,12 @@ public class ComicsCatalogueManagedBean implements Serializable {
     private LazyDataModel<Comics> lazyModel;
      
     private Comics selectedComics;
-
-    private List<Rating> ratings;
     
     private Rating rating;
      
     @PostConstruct
     public void init() {
-        lazyModel = new LazyComicsDataModel(catalogue,
-                columnComicsName, columnComicsRating);
-        ratings = new ArrayList();
-        ratings.add(new Rating(0,"/resources/images/ratings/1.jpg"));
-        ratings.add(new Rating(1,"/resources/images/ratings/2.jpg"));
-        ratings.add(new Rating(2,"/resources/images/ratings/3.jpg"));
-        ratings.add(new Rating(3,"/resources/images/ratings/4.jpg"));
-        ratings.add(new Rating(4,"/resources/images/ratings/5.jpg"));
-    }
- 
-    public List<Rating> getRatings() {
-        return ratings;
+        lazyModel = new LazyComicsDataModel(catalogue, columnComicsName, columnComicsRating,rating);
     }
     
     public LazyDataModel<Comics> getLazyModel() {

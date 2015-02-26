@@ -27,13 +27,13 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
     private final String columnComicsRating;
     
     public LazyComicsDataModel(CatalogueInterface comicsFacade,
-            String columnComicsName, String columnComicsRating) {
-        datasource = new ArrayList<Comics>();
+            String columnComicsName, String columnComicsRating, Rating rating) {
+        datasource = new ArrayList<>();
         this.catalogue = comicsFacade;
         this.columnComicsName = columnComicsName.toLowerCase();
         this.columnComicsRating = columnComicsRating.toLowerCase();
     }
-
+    
     @Override
     public Comics getRowData(String rowKey) {
         for(Comics comics : datasource) {
@@ -52,53 +52,36 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
     @Override
     public List<Comics> load(int first, int pageSize, String sortField, 
             SortOrder sortOrder, Map<String,Object> filters) {
-        System.err.println("FIRST***** " + first + "PAGESIZE***** " + pageSize);
-        List<Comics> resultComics;
-        
-        //filtering and sorting
+
+        System.out.println("filters=" +filters);
         if (sortField == null) {
             sortField = columnComicsRating;
             sortOrder = SortOrder.DESCENDING;
         }
-        Iterator<String> itFilter = filters.keySet().iterator();
-        if(itFilter.hasNext()) {
+        
+        List<Comics> resultComics;
+        Rating rating = (Rating)filters.get(columnComicsRating);
+        Object nameObject = filters.get(columnComicsName);
+        
+        if (nameObject != null && (rating.getValue() == null || rating.getValue() == 0)) {
+            resultComics = catalogue.findByName(first,pageSize,nameObject.toString(),
+                    sortField,sortOrder);
+            this.setRowCount((int)catalogue.getComicsCountFoundByName(nameObject.toString()));
+        }
+        else if (rating != null && rating.getValue() != null) {
+            Double doubleRating = rating.getValue().doubleValue();
             
-            String nextColumn = itFilter.next();
-            String nextColumnValue = filters.get(nextColumn).toString();
-            
-            if (nextColumn.equals(columnComicsName) && !itFilter.hasNext()) {
-                resultComics = catalogue.findByName(first,pageSize,
-                        nextColumnValue,sortField,sortOrder);
-                this.setRowCount((int)catalogue.getComicsCountFoundByName(nextColumnValue));
-            }
-            else if (nextColumn.equals(columnComicsRating) && !itFilter.hasNext()) {
-                Double rating = Double.valueOf(nextColumnValue);
-                resultComics = catalogue.findByRating(first,pageSize,
-                        rating,sortField,sortOrder);
-                this.setRowCount((int)catalogue.getComicsCountFoundByRating(rating));
-            }
-            else
-            {
-                String columnName;
-                String columnRating;
-                if (nextColumn.equals(columnComicsName)) {
-                    columnName = nextColumn;
-                    columnRating = itFilter.next();
-                }
-                else {
-                    columnRating = nextColumn;
-                    columnName = itFilter.next();
-                }
-                
-                String columnNameValue = filters.get(columnName).toString();
-                Double columnRatingValue = Double.valueOf(filters.get(columnRating).toString());
-                
+            if (nameObject != null) {
                 resultComics = catalogue.findByNameAndRating(first,pageSize,
-                        columnNameValue,columnRatingValue,sortField,sortOrder);
-                long count = catalogue.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
-                this.setRowCount((int)count);
+                        nameObject.toString(),doubleRating,sortField,sortOrder);
+                this.setRowCount((int)catalogue.
+                        getComicsCountFoundByNameAndRating(nameObject.toString(), doubleRating));
             }
-            
+            else {
+                resultComics = catalogue.findByRating(first,pageSize,
+                        doubleRating,sortField,sortOrder);
+                this.setRowCount((int)catalogue.getComicsCountFoundByRating(doubleRating));
+            }
         }
         else {
             resultComics = catalogue.findAllForCatalogue(first,pageSize,sortField,sortOrder);

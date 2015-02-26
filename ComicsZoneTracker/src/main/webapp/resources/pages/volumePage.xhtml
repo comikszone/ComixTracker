@@ -19,9 +19,27 @@ and open the template in the editor.
         #{volumeController.init()}
         #{ratingController.setType(volumeController.volume.contentType)}
         #{ratingController.setContentId(volumeController.volumeId)}
+        <ol class="breadcrumb">
+            <li><a href="/resources/templates/index.jsf">Home</a></li>
+            <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
+            <li><p:link href="#" value="Comics name"/></li>
+            <li class="active">#{volumeController.volume.name}</li>
+        </ol>
     </ui:define>
     <ui:define name="image">
         <p:graphicImage value="#{volumeController.volume.image}"
+        <center>
+            <p:panelGrid style="width:80%;">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="2">
+                           #{volumeController.volume.name}
+                        </p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:graphicImage value="#{volumeController.volume.image}"
                                         styleClass="content-image"
                                         height="300"
                                         width="300"/>

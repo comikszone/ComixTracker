@@ -41,37 +41,7 @@ public class EmailSenderManagedBean implements Serializable {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map<String, String> parameterMap = externalContext.getRequestParameterMap();
         String email=parameterMap.get("recoveryPasswordForm:email");
-        List<Users> users=userDataFacade.findUserByEmail(email);
-        if (users==null || users.size()!=1)
-        {
-            message="Can't find that email, sorry";
-        }
-        else
-        {
-            message="We’ve sent you an email containing a link that will allow you to reset your password for the next 24 hours. ";
-            Users user=users.get(0);
-            IPasswordCreator passwordCreator = new SimplePasswordCreator();
-            String uid = passwordCreator.createPassword(PASSWORD_LENGTH);
-            IPasswordEncryptor encryptor = new SHA256Encryptor();
-            String encryptedUid = encryptor.getEncodedPassword(uid);
-            user.setRecoveryPasswordId(encryptedUid);
-            user.setRecoveryPasswordTime(new Date(System.currentTimeMillis()));
-            userDataFacade.edit(user);
-            SmtpMessageSender messageSender=new SmtpMessageSender();
-            String link="https://www.comicszonetracker.tk/resources/templates/unauthorized/new_password.jsf?uid=" + uid;
-            String href="<a href='"+link+"'>"+link+"</a>";
-            StringBuilder stringBuilder=new StringBuilder();
-            stringBuilder.append("We heard that you lost your ComicsZoneTracker password. Sorry about that!<br/>");
-            stringBuilder.append("But don't worry! You can use the following link to reset your password:<br/> <br/>");
-            stringBuilder.append(href);
-            stringBuilder.append("<br/> <br/>");
-            stringBuilder.append("If you don't use this link within 24 hours, it will expire. To get a new password reset link, visit ");
-            stringBuilder.append("https://www.comicszonetracker.tk/resources/templates/unauthorized/recover_password.jsf<br/> <br/>");
-            stringBuilder.append("Thanks,<br/>");
-            stringBuilder.append("Your friends at ComicsZoneTracker");
-            String text=stringBuilder.toString();
-            messageSender.sendEmail(email, text);
-        }
+        message=userDataFacade.sendEmail(email);
     }
 
     public String getMessage() {

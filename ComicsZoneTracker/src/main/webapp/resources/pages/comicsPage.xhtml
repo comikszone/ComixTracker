@@ -20,6 +20,11 @@ and open the template in the editor.
         #{comicsPageManagedBean.comicsController.initComics()}
         #{ratingController.setType(comicsPageManagedBean.comicsController.comics.contentType)}
         #{ratingController.setContentId(comicsPageManagedBean.comicsController.comicsId)}
+        <ol class="breadcrumb">
+            <li><a href="/resources/templates/index.jsf">Home</a></li>
+            <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
+            <li class="active">#{comicsPageManagedBean.comicsController.comics.name}</li>
+        </ol>
     </ui:define>
     <ui:define name="image">
         <p:graphicImage value="#{comicsPageManagedBean.comicsController.comics.image}"
@@ -36,8 +41,7 @@ and open the template in the editor.
     </ui:define>    
         
             <ui:define name="rating">  
-                    
-                                    <c:choose>
+                <c:choose>
                                         <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
                                             #{ratingController.init()}
                                             <h:form>

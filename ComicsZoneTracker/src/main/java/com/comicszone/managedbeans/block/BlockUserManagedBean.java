@@ -12,11 +12,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 
 /**
@@ -74,9 +70,23 @@ public class BlockUserManagedBean implements Serializable {
         facesContext.addMessage(null, facesMessage);
     }
     
-    public List<Users> complete(String query) {
-        List<Users> users = userBlockDao.getUsersWithNicknameStartsWith(query);
-        FacesContext.getCurrentInstance().getAttributes().put("blockUser:userToBlock", users);
+    public List<Users> completeToBlock(String query) {
+        List<Users> users = userBlockDao.getSomeUnblockedUsersWithNickname(query, 5);
+        return users;
+    }
+    
+    public List<Users> completeToUnblock(String query) {
+        List<Users> users = userBlockDao.getSomeBlockedUsersWithNickname(query, 5);
+        return users;
+    }
+    
+    public List<Users> completeToBlockRealNickname(String query) {
+        List<Users> users = userBlockDao.getSomeUnblockedUsersWithRealNickname(query, 5);
+        return users;
+    }
+    
+    public List<Users> completeToUnblockRealNickname(String query) {
+        List<Users> users = userBlockDao.getSomeBlockedUsersWithRealNickname(query, 5);
         return users;
     }
     

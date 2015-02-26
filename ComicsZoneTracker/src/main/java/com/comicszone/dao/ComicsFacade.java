@@ -79,7 +79,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE LOWER(c.name) LIKE :name "
-                + "AND c.rating BETWEEN :rating AND :rating+1.0 "
+                + "AND c.rating >= :rating "
                 + "ORDER BY c." + sortField + " " + sortOrderString 
                 + ",c.Id " + otherOrderString);
         
@@ -99,7 +99,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
         String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
         Query query = em.createQuery("SELECT c FROM Comics c "
-                + "WHERE c.rating BETWEEN :rating AND :rating+1.0 "
+                + "WHERE c.rating >= :rating "
                 + "ORDER BY c." + sortField + " " + sortOrderString 
                 + ",c.Id " + otherOrderString);
         

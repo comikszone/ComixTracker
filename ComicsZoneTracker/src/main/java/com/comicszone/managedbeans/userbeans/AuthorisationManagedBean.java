@@ -2,6 +2,7 @@ package com.comicszone.managedbeans.userbeans;
 
 import com.comicszone.managedbeans.util.passwordcreators.UserAuthentification;
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.Principal;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @ManagedBean
 @ViewScoped
-public class AuthorisationManagedBean {
+public class AuthorisationManagedBean implements Serializable {
 
     String nickname;
     String password;

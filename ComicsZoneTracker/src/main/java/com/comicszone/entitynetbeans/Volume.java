@@ -47,7 +47,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Volume.getVolumesWithNewCommentsAfterUser", query = "SELECT DISTINCT v FROM Volume v INNER JOIN v.commentsList vl WHERE vl.commentTime > (SELECT MAX(vvl.commentTime) FROM  Volume vv INNER JOIN vv.commentsList vvl WHERE vv.volumeId = v.volumeId AND vvl.userId = :userId)"),
     @NamedQuery(name = "Volume.getMaxCommentDateForUser", query = "SELECT MAX(vl.commentTime) FROM  Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.userId = :userId"), 
     @NamedQuery(name = "Volume.getCountOfNewCommentsForUser", query = "SELECT COUNT(vl.commentId) FROM Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.commentTime > (SELECT MAX(vvl.commentTime) FROM  Volume vv INNER JOIN vv.commentsList vvl WHERE vv.volumeId = v.volumeId AND vvl.userId = :userId)"),
-    @NamedQuery(name = "Volume.getCommentsAfterDateToVolume", query = "SELECT DISTINCT vl FROM Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.commentTime > :date ORDER BY vl.commentTime")})
+    @NamedQuery(name = "Volume.getCommentsAfterDateToVolume", query = "SELECT DISTINCT vl FROM Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.commentTime > :date ORDER BY vl.commentTime"), 
+    @NamedQuery(name = "Volume.getCommentNewsForUserAndVolume", query = "SELECT DISTINCT n FROM Volume v INNER JOIN v.commentsNews n WHERE v = :volume AND n.userId = :user")})
 public class Volume implements Serializable, CommentsContainer, Content {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "volume")
     private List<Uvrating> uvratingList;
@@ -84,6 +85,8 @@ public class Volume implements Serializable, CommentsContainer, Content {
     private List<Comments> commentsList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "volumeId", fetch = FetchType.LAZY)
     private List<Issue> issueList;
+    @OneToMany(mappedBy = "volumeId", fetch = FetchType.LAZY)
+    private List<UserCommentsNews> commentsNews;
     private final static ContentType CONTENT_TYPE = ContentType.Volume;
 
     public Volume() {
@@ -180,6 +183,16 @@ public class Volume implements Serializable, CommentsContainer, Content {
     @Override
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
+    }
+
+    @Override
+    public List<UserCommentsNews> getCommentsNews() {
+        return commentsNews;
+    }
+
+    @Override
+    public void setCommentsNews(List<UserCommentsNews> commentsNews) {
+        this.commentsNews = commentsNews;
     }
 
     @Override

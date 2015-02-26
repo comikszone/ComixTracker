@@ -31,6 +31,11 @@ public class CurrentUserManagedBean implements Serializable {
 
     public Object getAvatar() {
         if (currentUser.getAvatar() == null) {
+            if (currentUser.getAvatarUrl() == null || currentUser.getAvatarUrl().equals("")) {
+                System.out.println(currentUser.getAvatarUrl());
+                return "/resources/images/default_user_photo.png";
+            }
+            System.out.println(currentUser.getAvatarUrl());
             return currentUser.getAvatarUrl();
         }
         return new DefaultStreamedContent(new ByteArrayInputStream(currentUser.getAvatar()));

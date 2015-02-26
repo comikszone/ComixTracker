@@ -28,11 +28,11 @@
         <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <p:graphicImage value="#{currentUserManagedBean.avatar}"                     
+                                styleClass="icon-on-start-page"/>
                 #{currentUserManagedBean.nameToStartPage}
-            <span class="caret"></span></a>
-            <i>
-                <img src="#{currentUserManagedBean.avatar}"/>
-            </i>
+                <span class="caret"></span>
+            </a>
             <ul class="dropdown-menu">
                 <li>
                     <p:link value="My profile"
@@ -46,13 +46,7 @@
                                 outcome="/resources/templates/authorized/admin/admin.xhtml"/>
                     </c:if>
                 </li>
-                 <li>
-                    <p:graphicImage 
-                        value="#{currentUserManagedBean.avatar}"
-                        styleClass="icon-on-start-page"
-                        />
-                </li>
-                                <li>
+                <li>
                     <h:form>
                     <h:commandLink
                             value="Logout" 

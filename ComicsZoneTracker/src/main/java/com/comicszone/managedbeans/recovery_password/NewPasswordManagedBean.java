@@ -68,22 +68,10 @@ public class NewPasswordManagedBean implements Serializable{
         Map<String, String> parameterMap = externalContext.getRequestParameterMap();
         String password=parameterMap.get("newPasswordForm:password");
         String confirmPassword=parameterMap.get("newPasswordForm:confirmPassword");
-        if (password==null || !password.equals(confirmPassword))
+        message=userDataFacade.recoveryPassword(user,password, confirmPassword);
+        if (message.equals("OK"))
         {
-            message="Passwords don't match!";
-        }
-        else if (!password.equals(""))
-        {
-            if (!password.equals(""))
-            {
-                SHA256SimpleSaltedEncryptor encryptor = new SHA256SimpleSaltedEncryptor();
-                String encryptedPassword = encryptor.getEncodedPassword(password, user.getNickname());
-                user.setPass(encryptedPassword);
-                user.setRecoveryPasswordId(null);
-                user.setRecoveryPasswordTime(null);
-                userDataFacade.edit(user);
-                externalContext.redirect("/");
-            }
+            externalContext.redirect("/");
         }
     }
     public String getUid() {
