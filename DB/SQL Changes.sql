@@ -179,3 +179,8 @@ UPDATE comics SET image = '/resources/images/image_not_found.png' WHERE image = 
 UPDATE volume SET img = '/resources/images/image_not_found.png' WHERE img = '';
 UPDATE issue SET img = '/resources/images/image_not_found.png' WHERE img = '';
 UPDATE character SET image = '/resources/images/image_not_found.png' WHERE image = 'null'; --Anton, thank you very much!
+
+ALTER TABLE comics ALTER COLUMN image SET DEFAULT '/resources/images/image_not_found.png';
+ALTER TABLE volume ALTER COLUMN img SET DEFAULT '/resources/images/image_not_found.png';
+ALTER TABLE issue ALTER COLUMN img SET DEFAULT '/resources/images/image_not_found.png';
+ALTER TABLE character ALTER COLUMN image SET DEFAULT '/resources/images/image_not_found.png';
