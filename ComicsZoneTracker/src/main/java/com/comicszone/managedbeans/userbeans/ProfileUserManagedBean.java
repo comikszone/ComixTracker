@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -84,6 +86,13 @@ public class ProfileUserManagedBean implements Serializable {
         user.setEmail(email);
     }
 
+    private boolean isValidEmail(String email) {
+        Pattern p = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
     public Object getAvatar() {
         if (user.getAvatar() == null) {
             if (user.getAvatarUrl() == null || user.getAvatarUrl().equals("")) {
@@ -123,6 +132,11 @@ public class ProfileUserManagedBean implements Serializable {
 
     public void saveChanges() {
         FacesContext context = FacesContext.getCurrentInstance();
+        if (!isValidEmail(user.getEmail())) {
+            context.addMessage(null,
+                    new FacesMessage("Error:", "Email isn't correct!"));
+            return;
+        }
         try {
             userDAO.edit(user);
             updateCurrentUserManagedBean();
