@@ -81,7 +81,7 @@ and open the template in the editor.
                         <p:tab >
                             <f:facet name="title">
                                 <p:commandLink value="#{volume.name}" 
-                                                action="#{comicsPageManagedBean.redirect(volume)}"/>
+                                               action="#{comicsPageManagedBean.redirect(volume)}"/>
                             </f:facet>
                             <p:dataGrid var="issue"
                                         value="#{volume.issueList}"
@@ -104,10 +104,27 @@ and open the template in the editor.
                                                 style="height:auto; width:60%;"
                                                 outcome="#{comicsPageManagedBean.redirect(issue)}"/>
                                     </p:row>
-                                </h:panelGrid>                      
+                                </h:panelGrid>
                             </p:dataGrid>
+                            <p:button value="Add new issue" 
+                                      outcome="/resources/templates/authorized/addContent.jsf">
+                                <f:param name="type" 
+                                         value="Issue"/>
+                                <f:param name="v_id" 
+                                         value="#{volume.id}"/>
+                            </p:button>
                         </p:tab>
+                        
                     </p:accordionPanel>
+                    <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+                        <p:button value="Add new volume" 
+                                  outcome="/resources/templates/authorized/addContent.jsf">
+                            <f:param name="type" 
+                                     value="Volume"/>
+                            <f:param name="c_id" 
+                                     value="#{comicsPageManagedBean.comicsController.comicsId}"/>
+                        </p:button>
+                    </c:if>
                 <div>
                     <ui:include src="/resources/templates/comments/comments.xhtml">
                         <ui:param name="type" value="comics"/>

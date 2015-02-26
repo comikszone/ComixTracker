@@ -50,6 +50,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByNameStartsWithAscId", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name ORDER BY c.Id"),
     @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
     @NamedQuery(name = "Comics.findByChecking", query = "SELECT c FROM Comics c WHERE c.isChecked = :isChecked ORDER BY c.Id"),
+    @NamedQuery(name = "Comics.findBySource", query = "SELECT c FROM Comics c WHERE c.source = :source"),
+    
     //for ComicsCatalogue
     @NamedQuery(name = "Comics.count", 
             query = "SELECT COUNT(c) FROM Comics c"),
@@ -122,6 +124,9 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     private Date inProgress;
     @Column(name = "is_checked")
     private Boolean isChecked;
+    @Column(name = "source")
+    private String source;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comicsId", fetch = FetchType.LAZY)
     private List<Volume> volumeList;
     @OneToMany(mappedBy = "comicsId", fetch = FetchType.LAZY)
@@ -268,7 +273,17 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
     }
-
+    
+    @Override
+    public String getSource() {
+        return source;
+    }
+    
+    @Override
+    public void setSource(String source) {
+        this.source = source;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
