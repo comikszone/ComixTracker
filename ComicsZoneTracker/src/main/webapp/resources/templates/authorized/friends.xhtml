@@ -4,7 +4,9 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
+            
     <ui:define name="articleContent">
+        <f:event type="preRenderView" listener="#{messagesManagedBean.preRender(userFriendsManagedBean.selectedFriend)}" />
         <h:form id="form">
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >
@@ -42,6 +44,10 @@
             <table style="width:100%;">
                 <tr>
                     <td class="friends-column">
+                        <p:accordionPanel multiple="false" id="accordionPanel"
+                                          style="background-color: #EDEDED"
+                                          activeIndex="#{messagesManagedBean.activeIndex}">  
+                            <p:tab title="Friends">
                     <p:dataTable
                         id="friendsTable"
                         var="friend"
@@ -49,7 +55,7 @@
                         rowKey="#{friend.userId}"
                         value="#{userFriendsManagedBean.friends}" 
                         paginator="true" 
-                        rows="10"
+                        rows="3"
                         paginatorPosition="bottom"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -61,8 +67,8 @@
 
                         <p:ajax 
                             event="rowSelect" 
-                            update=":form:messages"
-                            listener="#{messagesManagedBean.setFriendId(userFriendsManagedBean.selectedFriend.userId)}"
+                            update=":form"
+                            listener="#{messagesManagedBean.setFriendIdWithActiveIndex(userFriendsManagedBean.selectedFriend.userId,0)}"
                             
                             />
 
@@ -79,7 +85,9 @@
                                         styleClass="ui-panel-titlebar-icon ui-corner-all 
                                                     ui-state-default ui-icon ui-icon-close"
                                         action="#{userFriendsManagedBean.removeFromFrieds(friend)}"
-                                        update=":form:friendsTable">
+                                        update=":form:accordionPanel:friendsTable 
+                                                :form:accordionPanel:followersTable"   
+                                                >
                                         
                                         <p:confirm
                                             message="Are you sure you want to delete this friend?"
@@ -124,14 +132,174 @@
                             </p:panelGrid>
                             </p:panel>
                         </p:column>
-                    </p:dataTable> 
+                    </p:dataTable>
+                    </p:tab>
+                    <p:tab title="Followers" >       
+                    <p:dataTable
+                        id="followersTable"
+                        var="follower"
+                        widgetVar="followersTable"
+                        rowKey="#{follower.userId}"
+                        value="#{userFriendsManagedBean.followers}" 
+                        paginator="true" 
+                        rows="3"
+                        paginatorPosition="bottom"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
+                        {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                        selectionMode="single" 
+                        selection="#{userFriendsManagedBean.selectedFollower}"                        
+                        emptyMessage="No followers found!"
+                        style="margin: auto 1% 1% 1%;"
+                        >
+                        <p:ajax 
+                            event="rowSelect" 
+                            update=":form"
+                            listener="#{messagesManagedBean.setFriendIdWithActiveIndex(userFriendsManagedBean.selectedFollower.userId,1)}"
+                            
+                            />
+                        <p:column 
+                            width="100%" 
+                            headerText="Nickname" 
+                            sortBy="#{follower.nickname}" 
+                            filterBy="#{follower.nickname}">
+
+                            <p:panel header="#{follower.nickname}" >
+                                <f:facet name="footer">
+                                    <p:commandButton 
+                                        value="Confirm friendship"
+                                        update=":form:accordionPanel:friendsTable 
+                                                :form:accordionPanel:followersTable
+                                                :form:messages"
+                                        action="#{userFriendsManagedBean.addToFriends(follower)}"
+                                     />
+                                </f:facet>
+                                
+                                <p:panelGrid 
+                                    columns="2" 
+                                    columnClasses="friends-avatatar-column-width, 
+                                                   friends-info-column-width">
+                                <p:graphicImage 
+                                        value="#{follower.avatarUrl}"
+                                        width="100%"/>
+                                
+                                <p:panelGrid columns="1">
+                                    <h:outputText 
+                                        value="#{follower.nickname}"
+                                        class="friends-info"
+                                        />
+                                    
+                                    <h:outputText 
+                                        value="#{follower.email}" 
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{follower.name}"
+                                        rendered="#{follower.name != null}"
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{userFriendsManagedBean.getFormatedData(follower)}"
+                                        rendered="#{follower.birthday != null}"
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{follower.online}"
+                                        rendered="#{follower.online != null}"
+                                        class="friends-info"/>
+                                    
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            </p:panel>
+                        </p:column>
+                    </p:dataTable>
+                    </p:tab>
+                    <p:tab title="UnconfirmedFriends">
+                    <p:dataTable
+                        id="unconfirmedFriendsTable"
+                        var="unconfirmedFriend"
+                        widgetVar="unconfirmedFriendsTable"
+                        rowKey="#{unconfirmedFriend.userId}"
+                        value="#{userFriendsManagedBean.unconfirmedFriends}" 
+                        paginator="true" 
+                        rows="3"
+                        paginatorPosition="bottom"
+                        paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
+                        {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                        emptyMessage="No unconfirmed friends found!"
+                        selectionMode="single" 
+                        selection="#{userFriendsManagedBean.selectedUnconfirmedFriend}"    
+                        style="margin: auto 1% 1% 1%;"
+                        >
+                        <p:ajax 
+                            event="rowSelect" 
+                            update=":form"
+                            listener="#{messagesManagedBean.setFriendIdWithActiveIndex(userFriendsManagedBean.selectedUnconfirmedFriend.userId,2)}"
+                            
+                            />
+                        <p:column 
+                            width="100%" 
+                            headerText="Nickname" 
+                            sortBy="#{unconfirmedFriend.nickname}" 
+                            filterBy="#{unconfirmedFriend.nickname}">
+
+                            <p:panel header="#{unconfirmedFriend.nickname}" >
+                                
+                                <f:facet name="footer">
+                                    <p:commandButton 
+                                        value="Cancel invitation!"
+                                        update=":form:accordionPanel:unconfirmedFriendsTable"
+                                        action="#{userFriendsManagedBean.removeFromFrieds(unconfirmedFriend)}"
+                                     />
+                                </f:facet>
+                                
+                                <p:panelGrid 
+                                    columns="2" 
+                                    columnClasses="friends-avatatar-column-width, 
+                                                   friends-info-column-width">
+                                <p:graphicImage 
+                                        value="#{unconfirmedFriend.avatarUrl}"
+                                        width="100%"/>
+                                
+                                <p:panelGrid columns="1">
+                                    <h:outputText 
+                                        value="#{unconfirmedFriend.nickname}"
+                                        class="friends-info"
+                                        />
+                                    
+                                    <h:outputText 
+                                        value="#{unconfirmedFriend.email}" 
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{unconfirmedFriend.name}"
+                                        rendered="#{unconfirmedFriend.name != null}"
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{userFriendsManagedBean.getFormatedData(unconfirmedFriend)}"
+                                        rendered="#{unconfirmedFriend.birthday != null}"
+                                        class="friends-info"/>
+                                    
+                                    <h:outputText 
+                                        value="#{unconfirmedFriend.online}"
+                                        rendered="#{unconfirmedFriend.online != null}"
+                                        class="friends-info"/>
+                                    
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            </p:panel>
+                        </p:column>
+                    </p:dataTable>
+                    </p:tab>
+                    </p:accordionPanel>
                     </td>
                             
                     <td class="message-column">
                         <p:panel 
                             id="messageAdder" 
                             header="Your message" 
-                            style="margin: auto 1% 0 1%">
+                            style="margin: auto 1% 0 1%"
+                            visible="#{messagesManagedBean.activeIndex eq 0}">
                             
                         <p:inputTextarea 
                             id="messagesAdderNewMessage" 
@@ -143,12 +311,12 @@
                             value="Send"
                             action="#{messagesManagedBean.addMessage()}"
                             update=":form:messages :form:messageAdder"
-                            style="margin-right: -88%"/>
+                            style="margin-right: -88%"
+                            />
                         </p:panel>
 
                         <p:growl id="messagessMessage" showDetail="true" life="1000" />
-       
-                        <p:panel style="margin: 0 1% 1% 1%">
+                        <p:panel style="margin: 0 1% 1% 1%" visible="#{messagesManagedBean.activeIndex > -1}">
                             <p:dataTable 
                                 var="message"
                                 id="messages"
@@ -214,8 +382,7 @@
                         </p:panel>
                     </td>
                  </tr>
-             </table>
-                    
+            </table>
 
             <!--Dialog user window-->
             <p:dialog header="User details" 
@@ -244,41 +411,41 @@
                         <f:facet name="footer">
                             <p:outputPanel>
                                 <p:commandButton value="Add to friends!"
-                                                 update="@all"
-                                                 action="#{userFriendsManagedBean.addToFriends}"
+                                                 update=":form:accordionPanel:unconfirmedFriendsTable 
+                                                         :form:accordionPanel:friendsTable
+                                                         :form:messages"
+                                                 action="#{userFriendsManagedBean.addToFriends(userFriendsManagedBean.selectedUser)}"
                                                  onclick="userDetails.close()"
-                                                 
-                                                 />
+                                />
                             </p:outputPanel>
                         </f:facet>
-                        
-                            <h:outputText 
-                                value="#{userFriendsManagedBean.selectedUser.nickname}"
+                        <h:outputText value="Nickname"/>
+                        <h:outputText 
+                                value="#{userFriendsManagedBean.selectedUser.nickname}" 
                                 class="friends-info"/>
-                                    
-                            <h:outputText 
+                        
+                        <h:outputText value="Email"/>
+                        <h:outputText 
                                 value="#{userFriendsManagedBean.selectedUser.email}" 
                                 class="friends-info"/>
-                                    
-                            <h:outputText 
+                        
+                        <h:outputText value="Name"
+                                      rendered="#{userFriendsManagedBean.selectedUser.name != null}"/>
+                        <h:outputText 
                                 value="#{userFriendsManagedBean.selectedUser.name}"
                                 rendered="#{userFriendsManagedBean.selectedUser.name != null}"
                                 class="friends-info"/>
-                                    
-                            <h:outputText 
+                        
+                        <h:outputText value="Birthday"
+                                      rendered="#{userFriendsManagedBean.selectedUser.birthday != null}"/>
+                        <h:outputText 
                                 value="#{userFriendsManagedBean.getFormatedData(userFriendsManagedBean.selectedUser)}"
                                 rendered="#{userFriendsManagedBean.selectedUser.birthday != null}"
                                 class="friends-info"/>
-                                    
-                            <h:outputText 
-                                value="#{userFriendsManagedBean.selectedUser.online}"
-                                rendered="#{userFriendsManagedBean.selectedUser.online != null}"
-                                class="friends-info"/>
-                                    
-                        </p:panelGrid>
-                </p:outputPanel>
+                        
+                    </p:panelGrid>                </p:outputPanel>
             </p:dialog>
-            
+
         <p:confirmDialog
             global="true"
             widgetVar="confirm">

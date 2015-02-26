@@ -20,92 +20,96 @@ and open the template in the editor.
         #{comicsPageManagedBean.comicsController.initComics()}
         #{ratingController.setType(comicsPageManagedBean.comicsController.comics.contentType)}
         #{ratingController.setContentId(comicsPageManagedBean.comicsController.comicsId)}
+        <ol class="breadcrumb">
+            <li><a href="/resources/templates/index.jsf">Home</a></li>
+            <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
+            <li class="active">#{comicsPageManagedBean.comicsController.comics.name}</li>
+        </ol>
     </ui:define>
     <ui:define name="image">
         <p:graphicImage value="#{comicsPageManagedBean.comicsController.comics.image}"
-                        styleClass="content-image"
-                        height="300"
-                        width="300"/>
+                        styleClass="content-image"/>
     </ui:define>
     <ui:define name="name">
         <h:outputText value="#{comicsPageManagedBean.comicsController.comics.name}" 
-                      styleClass="content-name"/>
+                        styleClass="content-name"/>
     </ui:define>
     <ui:define name="description">
         <h:outputText value="Description: #{comicsPageManagedBean.comicsController.comics.description}"/>
     </ui:define>    
-
-    <ui:define name="rating">  
-
-        <c:choose>
-            <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
-                #{ratingController.init()}
-                <h:form>
-                    <pf:rating  value="#{ratingController.ratingFacade.ucrating.rating}"
-                                totalStars="5"
-                                step="1">
-                        <f:ajax event="change" listener="#{ratingController.rate}"/>
-                    </pf:rating>
-                    <br/>
-                    <p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
-                            value="Read!"
-                            styleClass="btn btn-primary"/>
-                </h:form>
-            </c:when>
-            <c:otherwise>
-                <p:link onclick="PF('reg').show()"
-                        href='#'
-                        value="Join"/>
-                or 
-                <p:link onclick="PF('login').show()"
-                        href='#'
-                        value="Sign In"/>
-                to rate, read comics and comment!
-            </c:otherwise>
-        </c:choose>
-
-    </ui:define>
-    <ui:define name="content">
-        <p:accordionPanel var="volume" 
-                          value="#{comicsPageManagedBean.comicsController.comics.volumeList}"
-                          multiple="true"
-                          id="issues"
-                          dynamic="true"
-                          >
-            <p:tab >
-                <f:facet name="title">
-                    <p:commandLink value="#{volume.name}" 
-                                   action="#{comicsPageManagedBean.redirect(volume)}"/>
-                </f:facet>
-                <p:dataGrid var="issue"
-                            value="#{volume.issueList}"
-                            columns="5"
-                            layout="grid"
-                            paginator="true"
-                            rows="10"
-                            styleClass="border:none">
-                    <h:panelGrid columns="1" styleClass="border:none">
-                        <p:row>
-                            <h:form>
-                                <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
-                                    <p:graphicImage value="#{issue.image}"
-                                                    styleClass="content-image"/>
-                                </h:link>
-                            </h:form>
-                        </p:row>
-                        <p:row>
-                            <p:link value="#{issue.name}" 
-                                    style="height:auto; width:60%;"
-                                    outcome="#{comicsPageManagedBean.redirect(issue)}"/>
-                        </p:row>
-                    </h:panelGrid>                      
-                </p:dataGrid>
-            </p:tab>
-        </p:accordionPanel>
-        <div>
-            <ui:include src="/resources/templates/comments/comments.xhtml">
-                <ui:param name="type" value="comics"/>
-            </ui:include>
-        </div>
+        
+            <ui:define name="rating">  
+                <c:choose>
+                                        <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                                            #{ratingController.init()}
+                                            <h:form>
+                                                <pf:rating  value="#{ratingController.ratingFacade.ucrating.rating}"
+                                                            totalStars="5"
+                                                            step="1">
+                                                    <f:ajax event="change" listener="#{ratingController.rate}"/>
+                                                </pf:rating>
+                                                <br/>
+                                                <p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
+                                                        value="Read!"
+                                                        styleClass="btn btn-primary"/>
+                                            </h:form>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p:link onclick="PF('reg').show()"
+                                                    href='#'
+                                                    value="Join"/>
+                                            or 
+                                            <p:link onclick="PF('login').show()"
+                                                    href='#'
+                                                    value="Sign In"/>
+                                            to rate, read comics and comment!
+                                        </c:otherwise>
+                                    </c:choose>
+                
+                </ui:define>
+   <ui:define name="content">
+       <center>
+                    <p:accordionPanel var="volume" 
+                                      value="#{comicsPageManagedBean.comicsController.comics.volumeList}"
+                                      multiple="true"
+                                      id="issues"
+                                      dynamic="true"
+                                      >
+                        <p:tab >
+                            <f:facet name="title">
+                                <p:commandLink value="#{volume.name}" 
+                                                action="#{comicsPageManagedBean.redirect(volume)}"/>
+                            </f:facet>
+                            <p:dataGrid var="issue"
+                                        value="#{volume.issueList}"
+                                        columns="5"
+                                        layout="grid"
+                                        paginator="true"
+                                        rows="10"
+                                        styleClass="border:none">
+                                <h:panelGrid columns="1" styleClass="border:none">
+                                    <p:row>
+                                        <h:form>
+                                            <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
+                                                <p:graphicImage value="#{issue.image}"
+                                                                styleClass="content-image"/>
+                                            </h:link>
+                                        </h:form>
+                                    </p:row>
+                                    <p:row>
+                                        <p:link value="#{issue.name}" 
+                                                style="height:auto; width:60%;"
+                                                outcome="#{comicsPageManagedBean.redirect(issue)}"/>
+                                    </p:row>
+                                </h:panelGrid>                      
+                            </p:dataGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+            </center>
+                <div>
+                    <ui:include src="/resources/templates/comments/comments.xhtml">
+                        <ui:param name="type" value="comics"/>
+                    </ui:include>
+                </div>
     </ui:define>
 </ui:composition>

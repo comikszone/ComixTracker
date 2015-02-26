@@ -2,6 +2,7 @@ package com.comicszone.dao.commentsdao;
 
 import com.comicszone.dao.AbstractFacade;
 import com.comicszone.dao.ComicsFacade;
+import com.comicszone.dao.newsdao.CommentsNewsFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.VolumeFacade;
 import com.comicszone.dao.userdao.UserBlockFacade;
@@ -9,9 +10,9 @@ import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Comments;
 import com.comicszone.entitynetbeans.CommentsContainer;
 import com.comicszone.entitynetbeans.Issue;
+import com.comicszone.entitynetbeans.UserCommentsNews;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.entitynetbeans.Volume;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,10 +21,15 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import org.json.simple.JSONArray;
 
 /**
@@ -46,6 +52,9 @@ public class CommentsFacade extends AbstractFacade<Comments> {
     @EJB
     private VolumeFacade volumeFacade;
     
+    @EJB
+    private CommentsNewsFacade newsFacade;
+    
     public CommentsFacade() {
         super(Comments.class);
     }
@@ -56,6 +65,47 @@ public class CommentsFacade extends AbstractFacade<Comments> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    @DELETE
+    @Path("/delete/commentId/{id}")
+    public Response deleteComment(@PathParam("id") Integer id, 
+            @Context SecurityContext context) 
+    {
+        if (!context.isUserInRole("user")) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        String username = context.getUserPrincipal().getName();
+        Comments comment = find(id);
+        if (comment == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        Users user = comment.getUserId();
+        
+        if (!comment.getUserId().getNickname().equals(username) && 
+                !context.isUserInRole("admin")) 
+        {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        CommentsContainer container = null;
+        if (comment.getComicsId() != null) {
+            container = comment.getComicsId();
+        }
+        else if (comment.getIssueId() != null) {
+            container = comment.getIssueId();
+        }
+        else if (comment.getVolumeId() != null) {
+            container = comment.getVolumeId();
+        }
+        else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        remove(comment);
+        user.getCommentsList().remove(comment);
+        container.getCommentsList().remove(comment);
+        newsFacade.setViewed(container.getCommentsNews().
+                get(container.getCommentsNews().size() - 1).getId(), Boolean.TRUE);
+        return Response.status(Response.Status.OK).build();
     }
     
     public boolean deleteComment(Integer commentId, Integer commentToId, 
@@ -69,7 +119,81 @@ public class CommentsFacade extends AbstractFacade<Comments> {
         CommentsContainer commentsContainer = 
                 findCommentsContainer(commentToId, type);
         commentsContainer.getCommentsList().remove(comment);
+        comment.getUserId().getCommentsList().remove(comment);
+        newsFacade.setViewed(commentsContainer.getCommentsNews().
+                get(commentsContainer.getCommentsNews().size() - 1).getId(), Boolean.TRUE);
         return true;
+    }
+    
+    @PUT
+    @Path("/add/{commentsContainerType}/id/{id}")
+    @Consumes("application/json")
+    public Response addComment(Comments newComment, 
+            @PathParam("commentsContainerType") String containerType, 
+            @PathParam("id") Integer id,
+            @Context SecurityContext context) 
+    {
+        if (!context.isUserInRole("user")) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        String username = context.getUserPrincipal().getName();
+        Users user = userDao.getUserWithNickname(username);
+        if (user == null) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        String type = containerType.toLowerCase();
+        CommentsContainer container = null;
+        if ("comics".equals(type)) {
+            container = comicsFacade.find(id);
+            if (container == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            newComment.setComicsId((Comics)container);
+        }
+        else if ("issue".equals(type)) {
+            container = issueFacade.find(id);
+            if (container == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            newComment.setIssueId((Issue)container);
+        }
+        else if ("volume".equals(type)) {
+            container = volumeFacade.find(id);
+            if (container == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            newComment.setVolumeId((Volume)container);
+        }
+        else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        newComment.setUserId(user);
+        newComment.setCommentTime(new Date(System.currentTimeMillis()));
+        create(newComment);
+        container.getCommentsList().add(newComment);
+        user.getCommentsList().add(newComment);
+        //for news
+        List<UserCommentsNews> news = container.getCommentsNews();
+        int newsSize = news.size();
+        Boolean exists = Boolean.FALSE;
+        for (int i = 0; i < newsSize; i++) {
+            UserCommentsNews currentNews = news.get(i);
+            if (!currentNews.getUserId().equals(user)) {
+                newsFacade.setViewed(currentNews.getId(), Boolean.FALSE);
+            }
+            else {
+                exists = Boolean.TRUE;
+                newsFacade.setViewed(currentNews.getId(), Boolean.TRUE);
+                newsFacade.updateNewsDate(currentNews.getId());
+            }
+        }
+        if (!exists) {
+            UserCommentsNews newNews = newsFacade.addNews(container, 
+                    user, Boolean.TRUE);
+            news.add(newNews);
+            user.getCommentsNews().add(newNews);
+        }
+        return Response.status(Response.Status.OK).build();
     }
     
     public boolean addComment(String commentText, String userNickname, 
@@ -98,11 +222,57 @@ public class CommentsFacade extends AbstractFacade<Comments> {
         newComment.setCommentTime(new Date(System.currentTimeMillis()));
         create(newComment);
         commentsContainer.getCommentsList().add(newComment);
+        author.getCommentsList().add(newComment);
+        //news
+        List<UserCommentsNews> news = commentsContainer.getCommentsNews();
+        int newsSize = news.size();
+        Boolean exists = Boolean.FALSE;
+        for (int i = 0; i < newsSize; i++) {
+            UserCommentsNews currentNews = news.get(i);
+            if (!currentNews.getUserId().equals(author)) {
+                newsFacade.setViewed(currentNews.getId(), Boolean.FALSE);
+            }
+            else {
+                exists = Boolean.TRUE;
+                newsFacade.setViewed(currentNews.getId(), Boolean.TRUE);
+                newsFacade.updateNewsDate(currentNews.getId());
+            }
+        }
+        if (!exists) {
+            UserCommentsNews newNews = newsFacade.addNews(commentsContainer, 
+                    author, Boolean.TRUE);
+            news.add(newNews);
+            author.getCommentsNews().add(newNews);
+        }
         return true;
     }
     
-    public boolean editComment(Integer commentId, String newText,
-            Integer commentToId, CommentToType type) 
+    @PUT
+    @Path("/edit")
+    @Consumes("application/json")
+    public Response editComment(Comments commentToEdit, 
+            @Context SecurityContext context) 
+    {
+        if (!context.isUserInRole("user")) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        String username = context.getUserPrincipal().getName();
+        Comments comment = find(commentToEdit.getCommentId());
+        if (comment == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        Users user = comment.getUserId();
+        
+        if (!comment.getUserId().getNickname().equals(username) && 
+                !context.isUserInRole("admin")) 
+        {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        comment.setText(commentToEdit.getText());
+        return Response.status(Response.Status.OK).build();
+    }
+    
+    public boolean editComment(Integer commentId, String newText) 
     {
         if (newText == null || newText.isEmpty()) {
             return false;
@@ -116,13 +286,19 @@ public class CommentsFacade extends AbstractFacade<Comments> {
     }
     
     @GET
-    @Path("/{commentsContainerType}/id/{commentsContainerId}")
+    @Path("/get/{commentsContainerType}/id/{commentsContainerId}")
     public String getCommentsTo(
             @PathParam("commentsContainerType") String type,
             @PathParam("commentsContainerId") String id) 
     {
         String typeLowerCase = type.toLowerCase();
-        Integer containerId = Integer.parseInt(id);
+        Integer containerId;
+        try {
+            containerId = Integer.parseInt(id);
+        }
+        catch(NumberFormatException ex) {
+            return "";
+        }
         List<Comments> comments = null;
         if (typeLowerCase.equals("comics")) {
             comments = getCommentsTo(containerId, CommentToType.COMICS);
@@ -136,7 +312,7 @@ public class CommentsFacade extends AbstractFacade<Comments> {
         if (comments == null) {
             return "";
         }
-        String idAttribute = "id", authorAttribute = "author", 
+        String idAttribute = "commentId", authorAttribute = "author", 
                 textAttribute = "text", timeAttribute = "time";
         JSONArray json = new JSONArray();
         for (Comments comment : comments) {
@@ -197,167 +373,20 @@ public class CommentsFacade extends AbstractFacade<Comments> {
         }
     }
     
-    public List<List<?>> getCommentsContainersToUser
-        (String userNickname) 
+    private void setContainerId(UserCommentsNews news, 
+            CommentsContainer commentsContainer, CommentToType type) 
     {
-        Users user = userDao.getUserWithNickname(userNickname);
-        if (user == null) {
-            return null;
+        switch(type) {
+            case COMICS:
+                news.setComicsId((Comics)commentsContainer);
+                return;
+                
+            case ISSUE:
+                news.setIssueId((Issue)commentsContainer);
+                return;
+                
+            case VOLUME:
+                news.setVolumeId((Volume)commentsContainer);
         }
-        
-        //Comics
-        TypedQuery<Comics> newComicsQuery 
-                = em.createNamedQuery("Comics.getComicsWithNewCommentsAfterUser", Comics.class);
-        newComicsQuery.setParameter("userId", user);
-        List<Comics> newComics = newComicsQuery.getResultList();
-        TypedQuery<Date> lastComicsDates = 
-                em.createNamedQuery("Comics.getMaxCommentDateForUser", Date.class);
-        lastComicsDates.setParameter("userId", user);
-        TypedQuery<Long> newCommentsToComicsNumberQuery = 
-                em.createNamedQuery("Comics.getCountOfNewCommentsForUser", Long.class);
-        newCommentsToComicsNumberQuery.setParameter("userId", user);
-        TypedQuery<Comments> newCommentsToComicsQuery = 
-                em.createNamedQuery("Comics.getCommentsAfterDateToComics", Comments.class);
-        
-        //Issues
-        TypedQuery<Issue> newIssuesQuery 
-                = em.createNamedQuery("Issue.getIssuesWithNewCommentsAfterUser", Issue.class);
-        newIssuesQuery.setParameter("userId", user);
-        List<Issue> newIssues = newIssuesQuery.getResultList();
-        TypedQuery<Date> lastIssuesDates = 
-                em.createNamedQuery("Issue.getMaxCommentDateForUser", Date.class);
-        lastIssuesDates.setParameter("userId", user);
-        TypedQuery<Long> newCommentsToIssuesNumberQuery = 
-                em.createNamedQuery("Issue.getCountOfNewCommentsForUser", Long.class);
-        newCommentsToIssuesNumberQuery.setParameter("userId", user);
-        TypedQuery<Comments> newCommentsToIssueQuery = 
-                em.createNamedQuery("Issue.getCommentsAfterDateToIssue", Comments.class);
-        
-        //Volumes
-        TypedQuery<Volume> newVolumesQuery 
-                = em.createNamedQuery("Volume.getVolumesWithNewCommentsAfterUser", Volume.class);
-        newVolumesQuery.setParameter("userId", user);
-        List<Volume> newVolumes = newVolumesQuery.getResultList();
-        TypedQuery<Date> lastVolumesDates = 
-                em.createNamedQuery("Volume.getMaxCommentDateForUser", Date.class);
-        lastVolumesDates.setParameter("userId", user);
-        TypedQuery<Long> newCommentsToVolumesNumberQuery = 
-                em.createNamedQuery("Volume.getCountOfNewCommentsForUser", Long.class);
-        newCommentsToVolumesNumberQuery.setParameter("userId", user);
-        TypedQuery<Comments> newCommentsToVolumeQuery = 
-                em.createNamedQuery("Volume.getCommentsAfterDateToVolume", Comments.class);
-        
-        //preparing for getting results
-        List<List<?>> result = new ArrayList<List<?>>(4);
-        int capacity = newComics.size() + newIssues.size() + newVolumes.size();
-        List<CommentsContainer> containers = new ArrayList<CommentsContainer>(capacity);
-        List<Long> numberOfNewComments = new ArrayList<Long>(capacity);
-        List<Date> dateOfLastUserComment = new ArrayList<Date>(capacity);
-        List<List<Comments>> newComments = new ArrayList<List<Comments>>(capacity);
-        
-        //getting results
-        for (Comics comics : newComics) {
-            lastComicsDates.setParameter("Id", comics.getId());
-            Date lastDate = lastComicsDates.getSingleResult();
-            newCommentsToComicsNumberQuery.setParameter("Id", comics.getId());
-            newCommentsToComicsQuery.setParameter("Id", comics.getId());
-            newCommentsToComicsQuery.setParameter("date", lastDate);
-            int i = 0, lastElement = containers.size() - 1;
-            if (lastElement == -1 || lastDate.after(dateOfLastUserComment.get(0))) {
-                containers.add(0, comics);
-                numberOfNewComments.add(0, newCommentsToComicsNumberQuery.getSingleResult());
-                dateOfLastUserComment.add(0, lastDate);
-                newComments.add(0, newCommentsToComicsQuery.getResultList());
-                continue;
-            }
-            if (lastDate.before(dateOfLastUserComment.get(lastElement))) {
-                containers.add(comics);
-                numberOfNewComments.add(newCommentsToComicsNumberQuery.getSingleResult());
-                dateOfLastUserComment.add(lastDate);
-                newComments.add(newCommentsToComicsQuery.getResultList());
-                continue;
-            }
-            for ( ; i < lastElement; i++) {
-                if (lastDate.before(dateOfLastUserComment.get(i)) && 
-                        lastDate.after(dateOfLastUserComment.get(i + 1))) {
-                    containers.add(i + 1, comics);
-                    numberOfNewComments.add(i + 1, newCommentsToComicsNumberQuery.getSingleResult());
-                    dateOfLastUserComment.add(i + 1, lastDate);
-                    newComments.add(i + 1, newCommentsToComicsQuery.getResultList());
-                    break;
-                }
-            }
-        }
-        
-        for (Issue issue : newIssues) {
-            lastIssuesDates.setParameter("Id", issue.getId());
-            Date lastDate = lastIssuesDates.getSingleResult();
-            newCommentsToIssuesNumberQuery.setParameter("Id", issue.getId());
-            newCommentsToIssueQuery.setParameter("Id", issue.getId());
-            newCommentsToIssueQuery.setParameter("date", lastDate);
-            int i = 0, lastElement = containers.size() - 1;
-            if (lastElement == -1 || lastDate.after(dateOfLastUserComment.get(0))) {
-                containers.add(0, issue);
-                numberOfNewComments.add(0, newCommentsToIssuesNumberQuery.getSingleResult());
-                dateOfLastUserComment.add(0, lastDate);
-                newComments.add(0, newCommentsToIssueQuery.getResultList());
-                continue;
-            }
-            if (lastDate.before(dateOfLastUserComment.get(lastElement))) {
-                containers.add(issue);
-                numberOfNewComments.add(newCommentsToIssuesNumberQuery.getSingleResult());
-                dateOfLastUserComment.add(lastDate);
-                newComments.add(newCommentsToIssueQuery.getResultList());
-                continue;
-            }
-            for ( ; i < lastElement; i++) {
-                if (lastDate.before(dateOfLastUserComment.get(i)) && 
-                        lastDate.after(dateOfLastUserComment.get(i + 1))) {
-                    containers.add(i + 1, issue);
-                    numberOfNewComments.add(i + 1, newCommentsToIssuesNumberQuery.getSingleResult());
-                    dateOfLastUserComment.add(i + 1, lastDate);
-                    newComments.add(i + 1, newCommentsToIssueQuery.getResultList());
-                    break;
-                }
-            }
-        }
-        
-        for (Volume volume : newVolumes) {
-            lastVolumesDates.setParameter("Id", volume.getId());
-            Date lastDate = lastVolumesDates.getSingleResult();
-            newCommentsToVolumesNumberQuery.setParameter("Id", volume.getId());
-            newCommentsToVolumeQuery.setParameter("Id", volume.getId());
-            newCommentsToVolumeQuery.setParameter("date", lastDate);
-            int i = 0, lastElement = containers.size() - 1;
-            if (lastElement == -1 || lastDate.after(dateOfLastUserComment.get(0))) {
-                containers.add(0, volume);
-                numberOfNewComments.add(0, newCommentsToVolumesNumberQuery.getSingleResult());
-                dateOfLastUserComment.add(0, lastDate);
-                newComments.add(0, newCommentsToVolumeQuery.getResultList());
-                continue;
-            }
-            if (lastDate.before(dateOfLastUserComment.get(lastElement))) {
-                containers.add(volume);
-                numberOfNewComments.add(newCommentsToVolumesNumberQuery.getSingleResult());
-                dateOfLastUserComment.add(lastDate);
-                newComments.add(newCommentsToVolumeQuery.getResultList());
-                continue;
-            }
-            for ( ; i < lastElement; i++) {
-                if (lastDate.before(dateOfLastUserComment.get(i)) && 
-                        lastDate.after(dateOfLastUserComment.get(i + 1))) {
-                    containers.add(i + 1, volume);
-                    numberOfNewComments.add(i + 1, newCommentsToVolumesNumberQuery.getSingleResult());
-                    dateOfLastUserComment.add(i + 1, lastDate);
-                    newComments.add(i + 1, newCommentsToVolumeQuery.getResultList());
-                    break;
-                }
-            }
-        }
-        result.add(containers);
-        result.add(numberOfNewComments);
-        result.add(dateOfLastUserComment);
-        result.add(newComments);
-        return result;
     }
 }

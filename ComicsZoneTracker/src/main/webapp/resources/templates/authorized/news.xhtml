@@ -6,9 +6,12 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
         <h:form id="news">
+            <p:tabView>
+            <p:tab
+                title="Comments">
             <p:dataScroller
                 chunkSize="10"
-                value="#{userNewsManagedBean.newContainers}"
+                value="#{userCommentsNewsManagedBean.newContainers}"
                 rowIndexVar="index"
                 var="container">
                 <p:panel 
@@ -18,29 +21,39 @@
                         value="New comments on #{container.contentType} "/>
                     <p:link
                         value="#{container.name}"
-                        outcome="#{userNewsManagedBean.redirect(container)}"/>
-                    <h:outputText
-                        value=": #{userNewsManagedBean.getNumberOfNewComments(index)}."/>
+                        outcome="#{userCommentsNewsManagedBean.redirect(container)}"/>
                     <br/>
                     <h:outputText
-                        value="Wow! 
-                        #{userNewsManagedBean.getCommentsDifference(index)}"/>
+                        value="Comments left after your last comment: 
+                        #{userCommentsNewsManagedBean.getNumberOfNewComments(index)}"/>
+                    <br/>
+                    <h:outputText
+                        value="Comments you haven't read: 
+                        #{userCommentsNewsManagedBean.getNumberOfUnreadComments(index)}"/>
+                    <br/>
+                    <h:outputText
+                        value="You haven't commented it 
+                        #{userCommentsNewsManagedBean.getPeriodFromUser(index)}."/>
+                    <br/>
+                    <h:outputText
+                        value="Last comment to it was 
+                        #{userCommentsNewsManagedBean.getPeriodFromLastComment(index)} ago."/>
                     <br/>
                     <p:commandButton
-                        value="#{userNewsManagedBean.getValueOfViewButton(index)}"
+                        value="#{userCommentsNewsManagedBean.getValueOfViewButton(index)}"
                         update=":news"
-                        action="#{userNewsManagedBean.resetShowingComments(index)}"/>
+                        action="#{userCommentsNewsManagedBean.resetShowingComments(index)}"/>
                     <p:dataGrid
-                        rendered="#{userNewsManagedBean.areCommentsShowing(index)}"
+                        rendered="#{userCommentsNewsManagedBean.areCommentsShowing(index)}"
                         var="newComment"
-                        value="#{userNewsManagedBean.getNewComments(index)}"
+                        value="#{userCommentsNewsManagedBean.getNewComments(index)}"
                         emptyMessage="No comments"
                         columns="1"
                         rows = "5"
                         paginator="true"
                         paginatorTemplate="{CurrentPageReport} {PageLinks}">
                         <p:panel 
-                            header="#{newComment.userId.nickname}"
+                            header="#{newComment.userId.realNickname}"
                             style="text-align: left;">
                             <h:outputText
                               value="#{newComment.text}"
@@ -49,6 +62,62 @@
                     </p:dataGrid>
                 </p:panel>
             </p:dataScroller>
+            </p:tab>
+            
+            <p:tab
+                title="Friends"
+                id="req">
+            <p:dataScroller
+                chunkSize="10"
+                var="friendsNews"
+                rowIndexVar="index"
+                value="#{userFriendsNewsManagedBean.news}">
+                <p:panel
+                    rendered="#{userFriendsNewsManagedBean.isForAddAsFriend(index)}"
+                    header="Friend request"
+                    style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
+                    <h:outputText
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getRealNickname()} 
+                        wants to add you as a friend."/>
+                    <br/>
+                    <div>
+                    <p:commandButton
+                        update=":news"
+                        value="Add to friends"
+                        action="#{userFriendsNewsManagedBean.addToFriends(index)}"/>
+                    <p:commandButton
+                        update=":news"
+                        value="Decline request"
+                        action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
+                    <p:commandButton
+                        update=":news"
+                        value="Put off decision"
+                        action="#{userFriendsNewsManagedBean.setViewed(friendsNews)}"/>
+                    </div>
+                </p:panel>
+                
+                <p:panel
+                    rendered="#{userFriendsNewsManagedBean.isForDeletion(index)}"
+                    header="Deletion"
+                    style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
+                    <h:outputText
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getRealNickname()} 
+                        removed you from friends."/>
+                    <br/>
+                    <div>
+                    <p:commandButton
+                        update=":news"
+                        value="Unfollow"
+                        action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
+                    <p:commandButton
+                        update=":news"
+                        value="Put off decision"
+                        action="#{userFriendsNewsManagedBean.setViewed(friendsNews)}"/>
+                    </div>
+                </p:panel>
+            </p:dataScroller>
+            </p:tab>
+            </p:tabView>
         </h:form>
     </ui:define>
 </ui:composition>

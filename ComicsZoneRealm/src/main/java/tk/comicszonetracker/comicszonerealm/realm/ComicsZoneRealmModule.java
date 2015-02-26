@@ -1,6 +1,7 @@
 package tk.comicszonetracker.comicszonerealm.realm;
 
 import com.sun.appserv.security.AppservPasswordLoginModule;
+import java.util.List;
 import javax.security.auth.login.LoginException;
 import tk.comicszonetracker.comicszonerealm.security.*;
 
@@ -16,7 +17,8 @@ public class ComicsZoneRealmModule extends AppservPasswordLoginModule{
             throw new LoginException(ex.toString());
         }
         
-        String[] groups = {"user"};
+        List<String> userGroups = uss.getGroups(_username);
+        String[] groups = userGroups.toArray(new String[0]);
         commitUserAuthentication(groups);
     }
 }

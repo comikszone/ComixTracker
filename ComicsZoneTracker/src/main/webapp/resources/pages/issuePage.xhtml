@@ -45,8 +45,6 @@ and open the template in the editor.
         <h:outputText value="Description: #{issueController.issue.description}"/>
     </ui:define>
     <ui:define name="rating">
-        
-    
                         <c:choose>
                             <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
                                 #{ratingController.init()}
