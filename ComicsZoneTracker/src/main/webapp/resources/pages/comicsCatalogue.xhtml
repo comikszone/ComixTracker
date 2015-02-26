@@ -40,21 +40,20 @@
                 
                 <p:column width="20%" 
                           headerText="#{comicsCatalogueView.columnComicsRating}" 
-                          sortBy="#{comics.rating}" 
+                          sortBy="#{comics.rating}"
                           filterBy="#{comics.rating}" 
                           filterMatchMode="exact" >
                     <f:facet name="filter" >
                         <p:selectOneMenu 
-                            onchange="PF('comicsTable').filter()"
+                            
                             converter="ratingConverter"
                             value="#{comicsCatalogueView.rating}"
                             var="r">
-                                         
-                            <f:selectItem itemLabel="All ratings" 
-                                          itemValue="#{null}" /> 
+                            
+                            <p:ajax event="change"  oncomplete="PF('comicsTable').filter()"/>
                             <f:selectItems value="#{comicsFinderManagedBean.ratings}"
                                            var="rating"
-                                           itemLabel="#{rating.value} - #{rating.value+1}"
+                                           itemLabel=">=#{rating.value}"
                                            itemValue="#{rating}" 
                                            />   
                            <p:column>

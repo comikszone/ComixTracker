@@ -5,6 +5,8 @@
  */
 package com.comicszone.managedbeans.catalogue;
 
+import java.util.Objects;
+
 /**
  *
  * @author Eschenko_DA
@@ -55,13 +57,10 @@ public class Rating {
             return false;
         }
         final Rating other = (Rating) obj;
-        if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
+        if (!Objects.equals(this.value, other.value) && (this.value == null || !this.value.equals(other.value))) {
             return false;
         }
-        if ((this.image == null) ? (other.image != null) : !this.image.equals(other.image)) {
-            return false;
-        }
-        return true;
+        return !((this.image == null) ? (other.image != null) : !this.image.equals(other.image));
     }
 
     @Override
