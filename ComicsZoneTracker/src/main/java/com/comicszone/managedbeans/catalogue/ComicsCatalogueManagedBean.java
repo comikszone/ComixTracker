@@ -8,12 +8,9 @@ package com.comicszone.managedbeans.catalogue;
 import com.comicszone.dao.CatalogueInterface;
 import com.comicszone.entitynetbeans.Comics;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.model.LazyDataModel;
@@ -39,14 +36,10 @@ public class ComicsCatalogueManagedBean implements Serializable {
     private Comics selectedComics;
     
     private Rating rating;
-    
-    public void filter() {
-        System.err.println("METHOD FILTER RUNS");
-    }
      
     @PostConstruct
     public void init() {
-        lazyModel = new LazyComicsDataModel(catalogue, columnComicsName, columnComicsRating);
+        lazyModel = new LazyComicsDataModel(catalogue, columnComicsName, columnComicsRating,rating);
     }
     
     public LazyDataModel<Comics> getLazyModel() {

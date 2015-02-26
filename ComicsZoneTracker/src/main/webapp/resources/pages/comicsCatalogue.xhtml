@@ -40,7 +40,7 @@
                 
                 <p:column width="20%" 
                           headerText="#{comicsCatalogueView.columnComicsRating}" 
-                          sortBy="#{comics.rating}" 
+                          sortBy="#{comics.rating}"
                           filterBy="#{comics.rating}" 
                           filterMatchMode="exact" >
                     <f:facet name="filter" >
@@ -48,15 +48,15 @@
                             onchange="PF('comicsTable').filter()"
                             converter="ratingConverter"
                             value="#{comicsCatalogueView.rating}"
+                            style="width: 66% "
                             var="r">
-                                         
-                            <f:selectItem itemLabel="All ratings" 
-                                          itemValue="#{null}" /> 
-                            <f:selectItems value="#{comicsFinderManagedBean.ratings}"
-                                           var="rating"
-                                           itemLabel="#{rating.value} - #{rating.value+1}"
-                                           itemValue="#{rating}" 
-                                           />   
+
+                            <f:selectItems 
+                                value="#{comicsFinderManagedBean.ratings}"
+                                var="rating"
+                                itemLabel="> =      #{rating.value}"
+                                itemValue="#{rating}"/> 
+                            
                            <p:column>
                                 <p:graphicImage value="#{r.image}"/>
                             </p:column>

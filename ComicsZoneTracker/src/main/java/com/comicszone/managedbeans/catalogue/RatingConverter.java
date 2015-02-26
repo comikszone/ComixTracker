@@ -18,7 +18,7 @@ public class RatingConverter implements Converter {
     
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
-        if(value != null && value.trim().length() > 0 && !value.equalsIgnoreCase("All ratings")) {
+        if(value != null && value.trim().length() > 0) {
             ComicsFinderManagedBean ratingFinderManagedBean = (ComicsFinderManagedBean)
                     fc.getExternalContext().getApplicationMap().get("comicsFinderManagedBean");
             return ratingFinderManagedBean.getRating(Integer.parseInt(value));
