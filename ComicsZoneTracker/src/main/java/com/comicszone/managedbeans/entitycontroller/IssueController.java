@@ -10,6 +10,7 @@ import com.comicszone.entitynetbeans.Issue;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 /**
@@ -23,6 +24,16 @@ public class IssueController implements Serializable {
     public IssueFacade issueFacade;
     public Integer issueId;
     public Issue issue;
+    @ManagedProperty(value = "#{ctrl}")
+    public CardCtrl ctrl;
+
+    public CardCtrl getCtrl() {
+        return ctrl;
+    }
+
+    public void setCtrl(CardCtrl ctrl) {
+        this.ctrl = ctrl;
+    }
 
     public Integer getIssueId() {
         return issueId;
@@ -43,6 +54,8 @@ public class IssueController implements Serializable {
     public void initIssue()
     {
         issue = issueFacade.find(issueId);
+        ctrl.setCard(issue.getCard());
+        ctrl.init();
     }
     
 }

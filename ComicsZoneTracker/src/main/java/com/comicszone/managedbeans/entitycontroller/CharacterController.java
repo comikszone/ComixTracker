@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import com.comicszone.entitynetbeans.Character;
 import java.io.Serializable;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 /**
@@ -19,10 +20,20 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean(name="characterController")
 @ViewScoped
 public class CharacterController implements Serializable {
+
+    public CardCtrl getCtrl() {
+        return ctrl;
+    }
+
+    public void setCtrl(CardCtrl ctrl) {
+        this.ctrl = ctrl;
+    }
     @EJB
     public CharacterFacade characterFacade;
     public Integer characterId;
     public Character character;
+    @ManagedProperty(value = "#{ctrl}")
+    public CardCtrl ctrl;
 
     public Integer getCharacterId() {
         return characterId;
@@ -43,6 +54,7 @@ public class CharacterController implements Serializable {
     public void initCharacter()
     {
         character=characterFacade.find(characterId);
+        ctrl.setCard(character.getCard());
     }
    
     

@@ -22,6 +22,16 @@ and open the template in the editor.
                         height="300"
                         width="300"/>
     </ui:define>
+    <ui:define name="card">
+        <h:dataTable style="margin-left: auto; margin-right: auto;" value="#{characterController.ctrl.LHS()}" var="t">
+                            <h:column>
+                                <h:outputText value="#{t} : "/>
+                            </h:column>
+                            <h:column>
+                                <h:outputText value="#{characterController.ctrl.RHS(t)}"/>
+                            </h:column>
+                        </h:dataTable>
+    </ui:define>
     <ui:define name="name">
         <h:outputText value="#{characterController.character.name}" 
                         styleClass="content-name"/>

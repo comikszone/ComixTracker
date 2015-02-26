@@ -13,11 +13,13 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets">
     
     <ui:define name="articleContent">
-        <ui:insert name="init"/>       
-            <p:panelGrid>
+        <ui:insert name="init"/>  
+        
+        <p:panelGrid>
                 <p:row>
                     <p:column colspan="1">
-                        <ui:insert name="image"/>       
+                        <ui:insert name="image"/>  
+                        <ui:insert name="card"/>
                     </p:column>
                     <p:column colspan="1" styleClass="content-info">
                         <ui:insert name="name"/>
@@ -26,6 +28,7 @@ and open the template in the editor.
                     </p:column>
                 </p:row>
             </p:panelGrid>
+            
         <ui:insert name ="content"/>
     </ui:define>
 </ui:composition>

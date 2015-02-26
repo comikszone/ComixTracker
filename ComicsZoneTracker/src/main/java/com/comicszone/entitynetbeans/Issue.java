@@ -81,6 +81,17 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     @Size(max = 2147483647)
     @Column(name = "description")
     private String description;
+
+    public String getCard() {
+        return card;
+    }
+
+    public void setCard(String card) {
+        this.card = card;
+    }
+    @Size(max = 2147483647)
+    @Column(name = "card")
+    private String card;
     @Size(max = 2147483647)
     @Column(name = "img")
     private String image;
