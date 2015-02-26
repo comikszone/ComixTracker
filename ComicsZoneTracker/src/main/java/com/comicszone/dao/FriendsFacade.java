@@ -42,8 +42,6 @@ public class FriendsFacade extends AbstractFacade<Friends> {
     public List<Users> getFriends(Users currentUser) {
         
         TypedQuery<Friends> query =em.createNamedQuery("Friends.findFriends", Friends.class);
-        //query.setParameter(1, currentUser.getUserId());
-        //query.setParameter(2, currentUser.getUserId());
         query.setParameter("user", currentUser);
         List<Friends> friends = query.getResultList();
         
@@ -63,8 +61,6 @@ public class FriendsFacade extends AbstractFacade<Friends> {
     public List<Users> getFollowers(Users currentUser) {
         
         TypedQuery<Friends> query =em.createNamedQuery("Friends.findFollowers", Friends.class);
-        //query.setParameter(1, currentUser.getUserId());
-        //query.setParameter(2, currentUser.getUserId());
         query.setParameter("user", currentUser);
         List<Friends> followers = query.getResultList();
         
@@ -110,8 +106,6 @@ public class FriendsFacade extends AbstractFacade<Friends> {
             Friends friend = new Friends();
             friend.setUser1(currentUser);
             friend.setUser2(friendUser);
-            //friend.setUser1Subscribed(true);
-            //friend.setUser2Subscribed(false);
             friend.setStatus(FriendshipStatus.user1_subscribed);
             
             create(friend);
@@ -124,13 +118,11 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         boolean isCurrentUserUser1 = friend.getUser1().equals(currentUser);
         newsFacade.setViewed(friend, currentUser, Boolean.TRUE);
         
-        //if (friend.isUser1Subscribed() && friend.isUser2Subscribed()) {
         if (friend.getStatus().equals(FriendshipStatus.friends)) {
             return;
         }
         
         if (isCurrentUserUser1) {
-            //friend.setUser1Subscribed(true);
             if (friend.getStatus().equals(FriendshipStatus.user2_subscribed) ||
                     friend.getStatus().equals(FriendshipStatus.user1_deleted_user2))
             {
@@ -144,7 +136,6 @@ public class FriendsFacade extends AbstractFacade<Friends> {
             }
         }
         else {
-            //friend.setUser2Subscribed(true);
             if (friend.getStatus().equals(FriendshipStatus.user1_subscribed) ||
                     friend.getStatus().equals(FriendshipStatus.user2_deleted_user1))
             {
@@ -173,7 +164,6 @@ public class FriendsFacade extends AbstractFacade<Friends> {
         newsFacade.setViewed(friend, currentUser, Boolean.TRUE);
         
         if (isCurrentUserUser1) {
-            //friend.setUser1Subscribed(false);
             if (friend.getStatus().equals(FriendshipStatus.friends)) {
                 friend.setStatus(FriendshipStatus.user1_deleted_user2);
                 newsFacade.setViewed(friend, friendUser, Boolean.FALSE);

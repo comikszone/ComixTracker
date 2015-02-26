@@ -56,7 +56,7 @@ public class MessagesManagedBean {
         friendUser = userDataFacade.find(friendId);
         message.setReceiver(friendUser);
         message.setText(messageText);
-        message.setTitle("aaa");
+//        message.setTitle("aaa");
         message.setShowToSender(Boolean.TRUE);
         message.setShowToReceiver(Boolean.TRUE);
         Date date = new Date(System.currentTimeMillis());
