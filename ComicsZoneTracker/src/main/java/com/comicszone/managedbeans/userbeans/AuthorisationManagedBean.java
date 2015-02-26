@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 @ManagedBean
@@ -33,7 +34,7 @@ public class AuthorisationManagedBean implements Serializable {
         this.password = password;
     }
 
-    public void doLogin() throws IOException {
+    public void doLogin() {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -46,7 +47,7 @@ public class AuthorisationManagedBean implements Serializable {
             }
             context.getExternalContext().redirect("/");
             return;
-        } catch (Exception e) {
+        } catch (ServletException | IOException e) {
             password = null;
 
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
