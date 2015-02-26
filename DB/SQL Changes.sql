@@ -168,8 +168,13 @@ INSERT INTO user_friends_news (user_id, friends_note_id, viewed)
 	SELECT user2_id, id, TRUE FROM friends)
 	EXCEPT
 	SELECT user_id, friends_note_id, TRUE FROM user_friends_news;
-	
---Default Image--
+
+DROP INDEX comi_name;
+DROP INDEX chari_name;
+CREATE INDEX comi_name ON comics (lower(name) varchar_pattern_ops);
+CREATE INDEX chari_name ON character (lower(name) varchar_pattern_ops);
+
+--Default Image For Content--
 UPDATE comics SET image = '/resources/images/image_not_found.png' WHERE image = '';
 UPDATE volume SET image = '/resources/images/image_not_found.png' WHERE image = '';
 UPDATE issue SET image = '/resources/images/image_not_found.png' WHERE image = '';
