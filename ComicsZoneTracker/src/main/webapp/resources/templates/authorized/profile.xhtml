@@ -79,35 +79,21 @@
                 <p:row>
                     <p:column>
                         <h:outputText styleClass="profile-page-column-attr-name"  value="Avatar:"/>
+                        <p:fileUpload
+                            fileUploadListener="#{profileUserManagedBean.loadImage}"
+                            id="chooseFileDialog"
+                            mode="advanced"
+                            auto="true"
+                            sizeLimit="1000000"
+                            allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                            />
                     </p:column>
                     <p:column>
                         <p:graphicImage 
+                            id = "avatarImage"
                             value="#{profileUserManagedBean.avatar}"
                             width="150"
                             height="150"
-                            />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column>
-                        <p:commandButton
-                            value="Browse"
-                            styleClass="profile-page-column-button"
-                            onclick="document.getElementById('profileForm:chooseFileDialog').click();"
-                            />
-                        <p:fileUpload
-                            id="chooseFileDialog"
-                            mode = "simple"
-                            value = "#{profileUserManagedBean.image}"
-                            style=
-                            "width:0px;"
-                            />
-                    </p:column>
-                    <p:column>
-                        <p:commandButton
-                            value="Upload new avatar"
-                            styleClass="profile-page-column-button"
-                            ajax="false"
                             />
                     </p:column>
                 </p:row>

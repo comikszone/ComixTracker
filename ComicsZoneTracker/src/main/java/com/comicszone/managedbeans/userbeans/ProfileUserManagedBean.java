@@ -3,6 +3,8 @@ package com.comicszone.managedbeans.userbeans;
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Users;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -15,7 +17,10 @@ import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.UploadedFile;
 
@@ -23,7 +28,6 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 public class ProfileUserManagedBean implements Serializable {
 
-    private UploadedFile image;
     private Users user;
     @EJB
     UserDataFacade userDAO;
@@ -82,34 +86,39 @@ public class ProfileUserManagedBean implements Serializable {
 
     public Object getAvatar() {
         if (user.getAvatar() == null) {
+            if (user.getAvatarUrl() == null || user.getAvatarUrl().equals("")) {
+                System.out.println(user.getAvatarUrl());
+                return "/resources/images/default_user_photo.png";
+            }
             return user.getAvatarUrl();
         }
         return new DefaultStreamedContent(new ByteArrayInputStream(user.getAvatar()));
     }
 
-    public UploadedFile getImage() {
-        return image;
-    }
-
-    public void setImage(UploadedFile image) {
+    public void loadImage(FileUploadEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (image.getSize() == 0) {
-            return;
-        }
-        if (!isCurrectFileName(image.getContentType())) {
-            context.addMessage(null,
-                    new FacesMessage("Error:", "Incorrect type of file;"));
-            return;
-        }
-        user.setAvatar(image.getContents());
-        this.image = image;
 
+        UploadedFile image = event.getFile();
+        try {
+            InputStream is = image.getInputstream();
+
+            byte[] imageArray = new byte[is.available()];
+            is.read(imageArray);
+
+            user.setAvatar(imageArray);
+        } catch (IOException ex) {
+            context.addMessage(null,
+                    new FacesMessage("Error:", "Can't get input stream!;"));
+        }
+
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+        } catch (IOException ex) {
+            Logger.getLogger(ProfileUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         context.addMessage(null,
                 new FacesMessage("Success:", "File has been upload;"));
-    }
-
-    private boolean isCurrectFileName(String filename) {
-        return filename.indexOf("image") == 0;
     }
 
     public void saveChanges() {
@@ -122,7 +131,7 @@ public class ProfileUserManagedBean implements Serializable {
         } catch (EJBException ex) {
             context.addMessage(null,
                     new FacesMessage("Error:", "Can't update user profile!"));
-        } 
+        }
     }
 
     public void resetChanges() {
