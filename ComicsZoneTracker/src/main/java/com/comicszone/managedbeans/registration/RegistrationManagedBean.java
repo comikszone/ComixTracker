@@ -2,6 +2,7 @@ package com.comicszone.managedbeans.registration;
 
 import java.io.Serializable;
 import com.comicszone.dao.userdao.UserRegistrationFacade;
+import com.comicszone.managedbeans.userbeans.AuthorisationManagedBean;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,19 +26,18 @@ public class RegistrationManagedBean implements Serializable {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map<String, String> parameterMap = externalContext.getRequestParameterMap();
 
-        if (parameterMap.get("registrationForm:nickname").trim().length() == 0 ||
-                    parameterMap.get("registrationForm:email").trim().length() == 0 ||
-                    parameterMap.get("registrationForm:password").trim().length() == 0){
+        if (parameterMap.get("registrationForm:nickname").trim().length() == 0
+                || parameterMap.get("registrationForm:email").trim().length() == 0
+                || parameterMap.get("registrationForm:password").trim().length() == 0) {
             facesContext.addMessage(null, new FacesMessage("Error: ", "Some fields are empty!"));
             return;
         }
-            
-        
+
         if (!parameterMap.get("registrationForm:password").equals(parameterMap.get("registrationForm:confirmPassword"))) {
             facesContext.addMessage(null, new FacesMessage("Error: ", "Password isn't equals confirmPassword"));
             return;
         }
-        
+
         if (registrationDao.getUserWithNickname(parameterMap.get("registrationForm:nickname")) != null) {
             facesContext.addMessage(null, new FacesMessage("Error: ", "User with this nickname already exist!"));
             return;
@@ -56,12 +56,20 @@ public class RegistrationManagedBean implements Serializable {
                     parameterMap.get("registrationForm:confirmPassword"));
         } catch (EJBException ex) {
             facesContext.addMessage(null, new FacesMessage("Error: ", "Can't create user!"));
+            return;
         }
+
+        facesContext.addMessage(null, new FacesMessage("Error: ", "User has been created!"));
+
+        AuthorisationManagedBean amb = new AuthorisationManagedBean();
+        amb.setNickname(parameterMap.get("registrationForm:nickname"));
+        amb.setPassword(parameterMap.get("registrationForm:password"));
+        amb.doLogin();
     }
 
     private boolean isValidEmail(String email) {
         Pattern p = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
         Matcher m = p.matcher(email);
         return m.matches();
     }
