@@ -25,6 +25,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -45,8 +47,11 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Volume.getVolumesWithNewCommentsAfterUser", query = "SELECT DISTINCT v FROM Volume v INNER JOIN v.commentsList vl WHERE vl.commentTime > (SELECT MAX(vvl.commentTime) FROM  Volume vv INNER JOIN vv.commentsList vvl WHERE vv.volumeId = v.volumeId AND vvl.userId = :userId)"),
     @NamedQuery(name = "Volume.getMaxCommentDateForUser", query = "SELECT MAX(vl.commentTime) FROM  Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.userId = :userId"), 
     @NamedQuery(name = "Volume.getCountOfNewCommentsForUser", query = "SELECT COUNT(vl.commentId) FROM Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.commentTime > (SELECT MAX(vvl.commentTime) FROM  Volume vv INNER JOIN vv.commentsList vvl WHERE vv.volumeId = v.volumeId AND vvl.userId = :userId)"),
-    @NamedQuery(name = "Volume.getCommentsAfterDateToVolume", query = "SELECT DISTINCT vl FROM Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.commentTime > :date ORDER BY vl.commentTime")})
+    @NamedQuery(name = "Volume.getCommentsAfterDateToVolume", query = "SELECT DISTINCT vl FROM Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.commentTime > :date ORDER BY vl.commentTime"), 
+    @NamedQuery(name = "Volume.getCommentNewsForUserAndVolume", query = "SELECT DISTINCT n FROM Volume v INNER JOIN v.commentsNews n WHERE v = :volume AND n.userId = :user")})
 public class Volume implements Serializable, CommentsContainer, Content {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "volume")
+    private List<Uvrating> uvratingList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "volume_volume_id_seq")
@@ -80,6 +85,8 @@ public class Volume implements Serializable, CommentsContainer, Content {
     private List<Comments> commentsList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "volumeId", fetch = FetchType.LAZY)
     private List<Issue> issueList;
+    @OneToMany(mappedBy = "volumeId", fetch = FetchType.LAZY)
+    private List<UserCommentsNews> commentsNews;
     private final static ContentType CONTENT_TYPE = ContentType.Volume;
 
     public Volume() {
@@ -179,6 +186,16 @@ public class Volume implements Serializable, CommentsContainer, Content {
     }
 
     @Override
+    public List<UserCommentsNews> getCommentsNews() {
+        return commentsNews;
+    }
+
+    @Override
+    public void setCommentsNews(List<UserCommentsNews> commentsNews) {
+        this.commentsNews = commentsNews;
+    }
+
+    @Override
     public int hashCode() {
         int hash = 0;
         hash += (volumeId != null ? volumeId.hashCode() : 0);
@@ -211,6 +228,16 @@ public class Volume implements Serializable, CommentsContainer, Content {
     @Override
     public String getExtraInfo() {
         return "Comics: " + comicsId.getName();
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<Uvrating> getUvratingList() {
+        return uvratingList;
+    }
+
+    public void setUvratingList(List<Uvrating> uvratingList) {
+        this.uvratingList = uvratingList;
     }
     
 }

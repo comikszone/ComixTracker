@@ -7,8 +7,10 @@ package com.comicszone.managedbeans.social_networks;
 
 import com.comicszone.dao.userdao.UserRegistrationFacade;
 import com.comicszone.entitynetbeans.Users;
+import com.comicszone.managedbeans.userbeans.AuthorisationManagedBean;
 import com.comicszone.managedbeans.util.passwordcreators.IPasswordCreator;
 import com.comicszone.managedbeans.util.passwordcreators.SimplePasswordCreator;
+import com.comicszone.managedbeans.util.passwordcreators.UserAuthentification;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -30,12 +32,19 @@ public abstract class SocialNetworkAuthorization implements Serializable {
 
     @EJB
     private UserRegistrationFacade userRegistrationDao;
-
+    protected String clientId;
+    protected String clientSecret;
+    protected String userUrl;
+    protected String authCode;
+    protected String redirectUri;
+    protected String userInfoUrl;
     private final int PASSWORD_LENGTH = 20;
     
     public abstract String fetchPersonalInfo() throws IOException, ParseException;
 
     public abstract Users createUser() throws IOException, ParseException;
+//    public abstract String createUserUrl();
+    public abstract void buildUserUrl();
 
     public void doRegistration() throws IOException, ParseException, ServletException {
         IPasswordCreator passwordCreator = new SimplePasswordCreator();
@@ -43,12 +52,11 @@ public abstract class SocialNetworkAuthorization implements Serializable {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();        
         Users user = createUser();
         userRegistrationDao.socialNetworkRegistration(user, password);
+        
+        AuthorisationManagedBean mb = new AuthorisationManagedBean();
 
-
-        context.redirect("j_security_check?j_username="
-                + user.getNickname()
-                + "&j_password="
-                + password);
+        UserAuthentification.authUser(user.getNickname(), password, (HttpServletRequest)context.getRequest());
+        context.redirect("/");
     }
     public String getJsonValue(String json,String parameter) throws ParseException
     {

@@ -22,24 +22,15 @@
                 selectionMode="single" 
                 selection="#{comicsCatalogueView.selectedComics}"
                 emptyMessage="No comics found!"
-                lazy="true">
+                lazy="true"
+                styleClass="table-responsive">
                 
                 <p:ajax 
                     event="rowSelect" 
-                    
                     update=":form:comicsDetail" 
                     oncomplete="PF('comicsDialog').show()"/> 
                 
-                <p:column width="15%"
-                          headerText="#{comicsCatalogueView.columnComicsImage}"> 
-                            
-                    <p:graphicImage 
-                        value="#{comics.image}"
-                        width="100%"
-                        styleClass="content-image"/> 
-                </p:column>
-                
-                <p:column width="25%" 
+                <p:column width="30%" 
                           headerText="#{comicsCatalogueView.columnComicsName}" 
                           sortBy="#{comics.name}" 
                           filterBy="#{comics.name}" 
@@ -53,31 +44,16 @@
                           filterBy="#{comics.rating}" 
                           filterMatchMode="exact" >
                     <f:facet name="filter" >
-                        <p:selectOneMenu
-                            
-                            value="#{comicsCatalogueView.rating}"
-                            var="r"
-                            
-                            >
-                            
-                            
-                            <p:ajax event="change" oncomplete="PF('comicsTable').filter()"
-                                    />
-                            <f:converter converterId="ratingConverter"/>
-                            <f:selectItem 
-                                value="#{null}"
-                                itemValue="#{null}" /> 
-                            <f:selectItems 
-                                value="#{comicsFinderManagedBean.ratings}"
-                                var="rating"
-                                itemLabel="#{rating.value} - #{rating.value+1}"
-                                itemValue="#{rating}" 
-                                           
+                        <p:selectOneMenu 
+                            onchange="PF('comicsTable').filter()">
+                                         
+                            <f:selectItem itemLabel="All ratings" 
+                                          itemValue="#{null}" /> 
+                            <f:selectItems value="#{comicsCatalogueView.ratings}"
+                                           var="rating"
+                                           itemLabel="#{rating.value} - #{rating.value+1}"
+                                           itemValue="#{rating.value}" 
                                            />   
-                            
-                            <p:column>
-                                <p:graphicImage value="#{r.image}"/>
-                            </p:column>
                             
                         </p:selectOneMenu>
                     </f:facet>
@@ -92,13 +68,21 @@
                 </h:panelGroup>
                     
                 </p:column>
-                
+                <p:column width="15%"
+                          headerText="#{comicsCatalogueView.columnComicsImage}" > 
+                            
+                    <p:graphicImage 
+                        value="#{comics.image}"
+                        width="100%"
+                        styleClass="content-image"/> 
+                </p:column>
                 <p:column headerText="#{comicsCatalogueView.columnComicsDescription}">
                     <h:outputText value="#{comics.description}"/>
                 </p:column>
             </p:dataTable>
             
             <!--Dialog window-->
+             <!--Dialog window-->
             <p:dialog header="Comics Detail" 
                       widgetVar="comicsDialog" 
                       modal="true" 
@@ -122,13 +106,10 @@
                         </h:link>
                     </f:facet>
  
-                    <h:outputText value="Id:" />
-                    <h:outputText value="#{comicsCatalogueView.selectedComics.id}" />
- 
-                    <h:outputText value="Name" />
+                    <h:outputText value="Name" style="color: black; font-size: 12pt" />
                     <h:outputText value="#{comicsCatalogueView.selectedComics.name}" />
  
-                    <h:outputText value="Rating:" />
+                    <h:outputText value="Rating:" style="color: black; font-size: 12pt" />
                     <pf:rating value="#{comicsCatalogueView.selectedComics.rating}" 
                                disabled="true" totalStars="5"
                                step="0.1"/>

@@ -6,64 +6,68 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="headerContent">
-        <table class="full-parent">
-            <tr class="full-parent">
-                <td>
-                    <p:link value="ComicsZone"
-                            styleClass="without-decoration homepage-link dirty-hack"
-                            outcome="/resources/templates/index.xhtml"/>
-                </td>
-                <td>
+        <ul class="nav navbar-nav navbar-left">
+                <li>
                     <p:link value="My news"
                             styleClass="without-decoration light-grey"
                             outcome="/resources/templates/authorized/news.xhtml"/>
-                </td>
-                <td>
+                </li>
+                <li>
                     <p:link value="My comics"
                             outcome="/resources/templates/authorized/progressPage.jsf"
                             styleClass="without-decoration light-grey"/>
-                </td>
-                <td>
+                </li>
+                <li>
                     <p:link value="My friends"
                             styleClass="without-decoration light-grey"
                             outcome="/resources/templates/authorized/friends.jsf"/>
-                </td>
-                <td>
+                </li>
+                <li>
+                </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                #{currentUserManagedBean.nameToStartPage}
+            <span class="caret"></span></a>
+            <i>
+                <img src="#{currentUserManagedBean.avatar}"/>
+            </i>
+            <ul class="dropdown-menu">
+                <li>
                     <p:link value="My profile"
                             styleClass="without-decoration light-grey"
                             outcome="/resources/templates/authorized/profile.jsf"/>
-
-                </td>
-                <c:if test="#{userRoleManagedBean.isUserAdmin()}">
-                    <td>
+                </li>
+                <li>
+                    <c:if test="#{userRoleManagedBean.isUserAdmin()}">
                         <p:link value="Admin page"
                                 styleClass="without-decoration light-grey"
                                 outcome="/resources/templates/authorized/admin/admin.xhtml"/>
-                    </td>
-                </c:if>
-
-                <td>
-                    <p:outputLabel 
-                        styleClass="light-grey" 
-                        value="#{currentUserManagedBean.nameToStartPage}"/>
-                </td>
-
-                <td>
+                    </c:if>
+                </li>
+                 <li>
                     <p:graphicImage 
                         value="#{currentUserManagedBean.avatar}"
                         styleClass="icon-on-start-page"
                         />
-                </td>
-
-                <td>
+                </li>
+                                <li>
                     <h:form>
-                        <p:commandButton 
-                            ajax="false" 
+                    <h:commandLink
                             value="Logout" 
                             action="#{logoutManagedBean.logout()}"/>
                     </h:form>
-                </td>
-            </tr>
-        </table>
+                </li>
+                </ul>
+                </li> 
+        </ul>
+    </ui:define>
+    <ui:define name="articleContent">
+        <div class="jumbotron">
+                <h2>Where am I and what can I do?</h2>
+                <p>TODO: Write Content</p>
+        </div>
+            <ui:include src="/resources/templates/slideshow/slideshow.xhtml"/>
     </ui:define>
 </ui:composition>

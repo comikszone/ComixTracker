@@ -1,0 +1,4 @@
+start-domain 
+delete-auth-realm ComicsZoneRealm
+create-auth-realm --classname tk.comicszonetracker.comicszonerealm.realm.ComicsZoneRealm --property jaas-context=ComicsZoneRealmModule ComicsZoneRealm
+stop-domain 

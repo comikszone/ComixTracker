@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -62,7 +63,8 @@ import javax.validation.constraints.Size;
             query = "SELECT i FROM Issue i "
                   + "JOIN i.volumeId v "
                   + "JOIN v.comicsId c "
-                  + "WHERE c.Id = :comicsId")})
+                  + "WHERE c.Id = :comicsId"), 
+    @NamedQuery(name = "Issue.getCommentNewsForUserAndIssue", query = "SELECT DISTINCT n FROM Issue i INNER JOIN i.commentsNews n WHERE i = :issue AND n.userId = :user")})
 public class Issue implements Serializable, CommentsContainer, Content, AjaxComicsCharacter {
 
     private static final long serialVersionUID = 1L;
@@ -89,8 +91,8 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     @Column(name = "votes")
     private Integer votes;
     @Column(name = "rel_date")
-    @Temporal(TemporalType.DATE)
-    private Date relDate;
+    @Size(max = 2147483647)
+    private String relDate;
     @Column(name = "is_checked")
     private Boolean isChecked;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
@@ -103,6 +105,8 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     @JoinColumn(name = "volume_id", referencedColumnName = "volume_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Volume volumeId;
+    @OneToMany(mappedBy = "issueId", fetch = FetchType.LAZY)
+    private List<UserCommentsNews> commentsNews;
     private final static ContentType CONTENT_TYPE = ContentType.Issue;
 
     public Issue() {
@@ -167,11 +171,11 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
         this.votes = votes;
     }
 
-    public Date getRelDate() {
+    public String getRelDate() {
         return relDate;
     }
 
-    public void setRelDate(Date relDate) {
+    public void setRelDate(String relDate) {
         this.relDate = relDate;
     }
 
@@ -189,6 +193,16 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
 
     public void setUsersList(List<Users> usersList) {
         this.usersList = usersList;
+    }
+
+    @Override
+    public List<UserCommentsNews> getCommentsNews() {
+        return commentsNews;
+    }
+
+    @Override
+    public void setCommentsNews(List<UserCommentsNews> commentsNews) {
+        this.commentsNews = commentsNews;
     }
 
     @Override
