@@ -1,19 +1,25 @@
 package com.comicszone.managedbeans.userbeans;
 
+import com.comicszone.dao.userdao.UserDataFacade;
+import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.util.passwordcreators.UserAuthentification;
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.Principal;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 @ManagedBean
 @ViewScoped
 public class AuthorisationManagedBean implements Serializable {
-
+    @EJB
+    UserDataFacade userDAO;
+    
     String nickname;
     String password;
 
@@ -33,7 +39,7 @@ public class AuthorisationManagedBean implements Serializable {
         this.password = password;
     }
 
-    public void doLogin() throws IOException {
+    public void doLogin() {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -41,15 +47,20 @@ public class AuthorisationManagedBean implements Serializable {
         try {
             Principal principal = request.getUserPrincipal();
             
+            Users user = userDAO.getUserWithNickname(nickname);
+            if (user.getBanned()){
+                throw new IllegalStateException("User with this nickname is banned!");
+            }
+            
             if (principal == null || !principal.getName().equals(nickname)) {
                 UserAuthentification.authUser(nickname, password, request);
             }
             context.getExternalContext().redirect("/");
             return;
-        } catch (Exception e) {
+        } catch (ServletException | IOException | IllegalStateException e) {
             password = null;
 
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+            context.addMessage(null , new FacesMessage("Error", e.getMessage()));
         }
     }
 
