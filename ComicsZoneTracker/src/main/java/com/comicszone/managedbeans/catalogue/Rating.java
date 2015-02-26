@@ -11,6 +11,9 @@ package com.comicszone.managedbeans.catalogue;
  */
 public class Rating {
 
+    public Rating() {
+    }
+
     public Rating(Integer value, String image) {
         this.value = value;
         this.image = image;

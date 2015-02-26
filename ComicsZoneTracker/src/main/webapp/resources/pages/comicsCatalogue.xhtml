@@ -45,16 +45,21 @@
                           filterMatchMode="exact" >
                     <f:facet name="filter" >
                         <p:selectOneMenu 
-                            onchange="PF('comicsTable').filter()">
+                            onchange="PF('comicsTable').filter()"
+                            converter="ratingConverter"
+                            value="#{comicsCatalogueView.rating}"
+                            var="r">
                                          
                             <f:selectItem itemLabel="All ratings" 
                                           itemValue="#{null}" /> 
-                            <f:selectItems value="#{comicsCatalogueView.ratings}"
+                            <f:selectItems value="#{comicsFinderManagedBean.ratings}"
                                            var="rating"
                                            itemLabel="#{rating.value} - #{rating.value+1}"
-                                           itemValue="#{rating.value}" 
+                                           itemValue="#{rating}" 
                                            />   
-                            
+                           <p:column>
+                                <p:graphicImage value="#{r.image}"/>
+                            </p:column>
                         </p:selectOneMenu>
                     </f:facet>
                  
