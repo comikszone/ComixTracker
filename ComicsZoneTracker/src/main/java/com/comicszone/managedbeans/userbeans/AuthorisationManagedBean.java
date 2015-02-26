@@ -48,7 +48,7 @@ public class AuthorisationManagedBean implements Serializable {
             Principal principal = request.getUserPrincipal();
             
             Users user = userDAO.getUserWithNickname(nickname);
-            if (user.getBanned()){
+            if (user != null && user.getBanned()){
                 throw new IllegalStateException("User with this nickname is banned!");
             }
             
