@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -18,7 +19,7 @@ import org.json.JSONObject;
  */
 @ManagedBean(name = "ctrl")
 @ViewScoped
-public class CardCtrl {
+public class CardCtrl implements Serializable {
     private JSONObject card;
     private String name;
 

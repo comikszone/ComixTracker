@@ -28,21 +28,7 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="image">
         <p:graphicImage value="#{volumeController.volume.image}"
-        <center>
-            <p:panelGrid style="width:80%;">
-                <f:facet name="header">
-                    <p:row>
-                        <p:column colspan="2">
-                           #{volumeController.volume.name}
-                        </p:column>
-                    </p:row>
-                </f:facet>
-                <p:row>
-                    <p:column colspan="1">
-                        <p:graphicImage value="#{volumeController.volume.image}"
-                                        styleClass="content-image"
-                                        height="300"
-                                        width="300"/>
+                        styleClass="content-image"/>
     </ui:define>
     <ui:define name="name">
         <h:outputText value="#{volumeController.volume.name}" 
