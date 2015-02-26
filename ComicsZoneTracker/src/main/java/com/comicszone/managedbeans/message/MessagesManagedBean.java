@@ -5,8 +5,10 @@ import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Messages;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,6 +21,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
 
 /**
@@ -102,7 +105,20 @@ public class MessagesManagedBean {
         }
     }
     
-
+    public Object getAvatar(Users user) {
+        if (user.getAvatar() == null) {
+            if (user.getAvatarUrl() == null || user.getAvatarUrl().equals("")) {
+                System.out.println(user.getAvatarUrl());
+                return "/resources/images/default_user_photo.png";
+            }
+            return user.getAvatarUrl();
+        }
+                System.out.println("************before*********");
+        System.out.println("*****user******"+Arrays.toString(user.getAvatar()));
+        DefaultStreamedContent content=new DefaultStreamedContent(new ByteArrayInputStream(user.getAvatar()));
+        System.out.println("content_****************************************"+content);
+        return "/resources/images/default_user_photo.png";
+    }
     public Integer getFriendId() {
         return friendId;
     }

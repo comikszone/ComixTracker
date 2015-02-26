@@ -396,9 +396,9 @@
                                                  columnClasses="friend-avatar-message-column,
                                                                 friend-message-column">
                                         <p:graphicImage 
-                                            value="#{message.sender.avatarUrl}" 
+                                            value="#{messagesManagedBean.getAvatar(message.sender)}" 
                                             width="100%"
-                                            rendered="#{message.sender.avatarUrl != null}"
+                                            
                                             />
                                         
                                         <h:outputText value="#{message.text}" style="word-wrap: break-word"/>
