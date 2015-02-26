@@ -48,6 +48,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Users.findByBanned", query = "SELECT u FROM Users u WHERE u.banned = :banned"),
     @NamedQuery(name = "Users.findByNicknameStartsWith", query = "SELECT u FROM Users u WHERE LOWER(u.nickname) LIKE :nickname"),
     @NamedQuery(name = "Users.findBannedOrUnbannedByNicknameStartsWith", query = "SELECT u FROM Users u WHERE u.banned = :banned AND LOWER(u.nickname) LIKE :nickname"),
+    @NamedQuery(name = "Users.findBannedOrUnbannedByRealNicknameStartsWith", query = "SELECT u FROM Users u WHERE u.banned = :banned AND LOWER(u.realNickname) LIKE :realNickname"),
     @NamedQuery(name = "Users.findByRecoveryPasswordId", query = "SELECT u FROM Users u WHERE u.recoveryPasswordId = :uid AND u.isSocial=FALSE"),
     @NamedQuery(name = "Users.findByNicknameStartsWith", query = "SELECT u FROM Users u WHERE LOWER(u.nickname) LIKE :nickname")})
 public class Users implements Serializable {

@@ -53,7 +53,7 @@
                         paginator="true"
                         paginatorTemplate="{CurrentPageReport} {PageLinks}">
                         <p:panel 
-                            header="#{newComment.userId.nickname}"
+                            header="#{newComment.userId.realNickname}"
                             style="text-align: left;">
                             <h:outputText
                               value="#{newComment.text}"
@@ -77,7 +77,7 @@
                     header="Friend request"
                     style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
                     <h:outputText
-                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getNickname()} 
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getRealNickname()} 
                         wants to add you as a friend."/>
                     <br/>
                     <div>
@@ -101,7 +101,7 @@
                     header="Deletion"
                     style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
                     <h:outputText
-                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getNickname()} 
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getRealNickname()} 
                         removed you from friends."/>
                     <br/>
                     <div>

@@ -6,9 +6,11 @@
 package com.comicszone.dao.userdao;
 
 import com.comicszone.entitynetbeans.Users;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -50,8 +52,56 @@ public class UserBlockFacade extends AbstractUserFacade {
         user.setBanned(false);
         return Result.DONE;
     }
+
+    public List<Users> getSomeUnblockedUsersWithRealNickname(String realNickname, int quantity) {
+        if (quantity < 1) {
+            return null;
+        }
+        TypedQuery<Users> query = getEntityManager().
+                createNamedQuery("Users.findBannedOrUnbannedByRealNicknameStartsWith", Users.class);
+        query.setParameter("realNickname", realNickname.toLowerCase() + "%");
+        query.setParameter("banned", false);
+        query.setMaxResults(quantity);
+        return query.getResultList();
+    }
+
+    public List<Users> getSomeBlockedUsersWithRealNickname(String realNickname, int quantity) {
+        if (quantity < 1) {
+            return null;
+        }
+        TypedQuery<Users> query = getEntityManager().
+                createNamedQuery("Users.findBannedOrUnbannedByRealNicknameStartsWith", Users.class);
+        query.setParameter("realNickname", realNickname.toLowerCase() + "%");
+        query.setParameter("banned", true);
+        query.setMaxResults(quantity);
+        return query.getResultList();
+    }
     
     public enum Result {
         DONE, CANCELED, NOT_FOUND
+    }
+    
+    public List<Users> getSomeUnblockedUsersWithNickname(String nickname, int quantity) {
+        if (quantity < 1) {
+            return null;
+        }
+        TypedQuery<Users> query = getEntityManager().
+                createNamedQuery("Users.findBannedOrUnbannedByNicknameStartsWith", Users.class);
+        query.setParameter("nickname", nickname.toLowerCase() + "%");
+        query.setParameter("banned", false);
+        query.setMaxResults(quantity);
+        return query.getResultList();
+    }
+    
+    public List<Users> getSomeBlockedUsersWithNickname(String nickname, int quantity) {
+        if (quantity < 1) {
+            return null;
+        }
+        TypedQuery<Users> query = getEntityManager().
+                createNamedQuery("Users.findBannedOrUnbannedByNicknameStartsWith", Users.class);
+        query.setParameter("nickname", nickname.toLowerCase() + "%");
+        query.setParameter("banned", true);
+        query.setMaxResults(quantity);
+        return query.getResultList();
     }
 }
