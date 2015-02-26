@@ -176,6 +176,6 @@ CREATE INDEX chari_name ON character (lower(name) varchar_pattern_ops);
 
 --Default Image For Content--
 UPDATE comics SET image = '/resources/images/image_not_found.png' WHERE image = '';
-UPDATE volume SET image = '/resources/images/image_not_found.png' WHERE image = '';
-UPDATE issue SET image = '/resources/images/image_not_found.png' WHERE image = '';
+UPDATE volume SET img = '/resources/images/image_not_found.png' WHERE img = '';
+UPDATE issue SET img = '/resources/images/image_not_found.png' WHERE img = '';
 UPDATE character SET image = '/resources/images/image_not_found.png' WHERE image = 'null'; --Anton, thank you very much!
