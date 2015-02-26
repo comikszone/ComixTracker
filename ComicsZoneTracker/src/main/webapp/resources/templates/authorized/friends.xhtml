@@ -31,7 +31,13 @@
                             <p:graphicImage
                                 value="#{user.avatarUrl}"
                                 width="80"
-                                height="80"/>
+                                height="80"
+                                rendered="#{user.avatarUrl != null}"/>
+                            <p:graphicImage
+                                value="/resources/images/default_user_photo.png"
+                                width="80"
+                                height="80"
+                                rendered="#{user.avatarUrl == null}"/>
                         </p:column>
 
                         <p:column>
@@ -104,7 +110,13 @@
                                                    friends-info-column-width">
                                 <p:graphicImage 
                                         value="#{friend.avatarUrl}"
-                                        width="100%"/>
+                                        width="100%"
+                                        rendered="#{friend.avatarUrl != null}"/>
+                                
+                                <p:graphicImage 
+                                        value="/resources/images/default_user_photo.png"
+                                        width="100%"
+                                        rendered="#{friend.avatarUrl == null}"/>
                                 
                                 <p:panelGrid columns="1">
                                     <h:outputText 
@@ -183,7 +195,14 @@
                                                    friends-info-column-width">
                                 <p:graphicImage 
                                         value="#{follower.avatarUrl}"
-                                        width="100%"/>
+                                        width="100%"
+                                        rendered="#{follower.avatarUrl != null}"/>
+                                
+                                <p:graphicImage 
+                                        value="/resources/images/default_user_photo.png"
+                                        width="100%"
+                                        rendered="#{follower.avatarUrl == null}"/>
+                                
                                 
                                 <p:panelGrid columns="1">
                                     <h:outputText 
@@ -262,7 +281,13 @@
                                                    friends-info-column-width">
                                 <p:graphicImage 
                                         value="#{unconfirmedFriend.avatarUrl}"
-                                        width="100%"/>
+                                        width="100%"
+                                        rendered="#{unconfirmedFriend.avatarUrl != null}"/>
+                                
+                                <p:graphicImage 
+                                        value="/resources/images/default_user_photo.png"
+                                        width="100%"
+                                        rendered="#{unconfirmedFriend.avatarUrl == null}"/>
                                 
                                 <p:panelGrid columns="1">
                                     <h:outputText 
@@ -408,6 +433,13 @@
                                 value="#{userFriendsManagedBean.selectedUser.avatarUrl}"
                                 width="100%"
                                 styleClass="content-image"
+                                rendered="#{userFriendsManagedBean.selectedUser.avatarUrl != null}"
+                                />
+                            <p:graphicImage 
+                                value="/resources/images/default_user_photo.png"
+                                width="100%"
+                                styleClass="content-image"
+                                rendered="#{userFriendsManagedBean.selectedUser.avatarUrl == null}"
                                 />
                         </f:facet>
                         <f:facet name="footer">
