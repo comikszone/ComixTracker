@@ -44,8 +44,8 @@ public class AuthorisationManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         Users user = userDAO.getUserWithNickname(nickname);
         if (user != null && user.getBanned()) {
-
             context.addMessage(null, new FacesMessage("Error", "User with this nickname is banned!"));
+            return;
         }
         loginWithoutBan();
     }
