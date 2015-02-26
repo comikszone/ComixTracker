@@ -21,13 +21,15 @@ public class RatingConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if(value != null && value.trim().length() > 0) {
-            try {
-                ComicsCatalogueManagedBean comicsCatalogue = (ComicsCatalogueManagedBean) 
-                        fc.getExternalContext().getApplicationMap().get("comicsCatalogueView");
-                return comicsCatalogue.getRatings().get(Integer.parseInt(value));
-            } catch(NumberFormatException e) {
-                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
-            }
+            
+                ComicsFinderManagedBean ratingFinderManagedBean = (ComicsFinderManagedBean) 
+                        fc.getExternalContext().getApplicationMap().get("comicsFinderManagedBean");
+                System.err.println("**ratingFinderBean" + ratingFinderManagedBean);
+                System.err.println("**ratings" + ratingFinderManagedBean.getRatings());
+                System.err.println("**value" + value);
+                System.err.println("**currentRating" + ratingFinderManagedBean.getRating(Integer.parseInt(value)).getValue());
+                return ratingFinderManagedBean.getRating(Integer.parseInt(value));
+            
         }
         else {
             return null;
@@ -37,7 +39,10 @@ public class RatingConverter implements Converter {
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
         if(object != null) {
+            System.err.println("****BBBBBB**");
+            System.err.println("***stringRating + "+String.valueOf(((Rating) object).getValue()));
             return String.valueOf(((Rating) object).getValue());
+            
         }
         else {
             return null;

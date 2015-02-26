@@ -55,6 +55,8 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
         System.err.println("FIRST***** " + first + "PAGESIZE***** " + pageSize);
         List<Comics> resultComics;
         
+        System.err.println("**filters" + filters);
+        
         //filtering and sorting
         if (sortField == null) {
             sortField = columnComicsRating;
@@ -64,18 +66,22 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
         if(itFilter.hasNext()) {
             
             String nextColumn = itFilter.next();
-            String nextColumnValue = filters.get(nextColumn).toString();
+            Object nextColumnValue = filters.get(nextColumn);
             
             if (nextColumn.equals(columnComicsName) && !itFilter.hasNext()) {
                 resultComics = catalogue.findByName(first,pageSize,
-                        nextColumnValue,sortField,sortOrder);
-                this.setRowCount((int)catalogue.getComicsCountFoundByName(nextColumnValue));
+                        nextColumnValue.toString(),sortField,sortOrder);
+                this.setRowCount((int)catalogue.getComicsCountFoundByName(nextColumnValue.toString()));
             }
             else if (nextColumn.equals(columnComicsRating) && !itFilter.hasNext()) {
-                Double rating = Double.valueOf(nextColumnValue);
+                Rating rating = (Rating)nextColumnValue;
+                Double doubleRating = rating.getValue().doubleValue();
+                System.err.println("**DOUBLE RATING" + doubleRating.toString());
+                //Double rating = Double.valueOf(nextColumnValue);
+                
                 resultComics = catalogue.findByRating(first,pageSize,
-                        rating,sortField,sortOrder);
-                this.setRowCount((int)catalogue.getComicsCountFoundByRating(rating));
+                        doubleRating,sortField,sortOrder);
+                this.setRowCount((int)catalogue.getComicsCountFoundByRating(doubleRating));
             }
             else
             {
@@ -91,11 +97,12 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
                 }
                 
                 String columnNameValue = filters.get(columnName).toString();
-                Double columnRatingValue = Double.valueOf(filters.get(columnRating).toString());
+                Rating rating = (Rating)filters.get(columnRating);
+                Double doubleRating = rating.getValue().doubleValue();
                 
                 resultComics = catalogue.findByNameAndRating(first,pageSize,
-                        columnNameValue,columnRatingValue,sortField,sortOrder);
-                long count = catalogue.getComicsCountFoundByNameAndRating(columnNameValue, columnRatingValue);
+                        columnNameValue,doubleRating,sortField,sortOrder);
+                long count = catalogue.getComicsCountFoundByNameAndRating(columnNameValue, doubleRating);
                 this.setRowCount((int)count);
             }
             
@@ -106,6 +113,7 @@ public class LazyComicsDataModel extends LazyDataModel<Comics> {
         }
         
         datasource = resultComics;
+        System.err.println("JUST RETURN FROM LOAD");
         return resultComics;
     }
 }
