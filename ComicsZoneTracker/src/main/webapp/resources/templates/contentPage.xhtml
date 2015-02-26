@@ -27,8 +27,14 @@ and open the template in the editor.
                         <ui:insert name="description"/>
                     </p:column>
                 </p:row>
-            </p:panelGrid>
-            
+            <p:row>
+                <p:column colspan="2">
+                    <ui:insert name="rating"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+        <center>
         <ui:insert name ="content"/>
+        </center>
     </ui:define>
 </ui:composition>

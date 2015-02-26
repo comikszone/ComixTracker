@@ -33,12 +33,10 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="description">
         <h:outputText value="Description: #{comicsPageManagedBean.comicsController.comics.description}"/>
-    </ui:define>
-    <ui:define name="content">
-        <center>
-                    <p:panelGrid>     
-                        <p:row>
-                            <p:column colspan="2">
+    </ui:define>    
+        
+            <ui:define name="rating">  
+                    
                                     <c:choose>
                                         <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
                                             #{ratingController.init()}
@@ -65,9 +63,10 @@ and open the template in the editor.
                                             to rate, read comics and comment!
                                         </c:otherwise>
                                     </c:choose>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>    
+                
+                </ui:define>
+   <ui:define name="content">
+       <center>
                     <p:accordionPanel var="volume" 
                                       value="#{comicsPageManagedBean.comicsController.comics.volumeList}"
                                       multiple="true"

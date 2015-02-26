@@ -33,8 +33,9 @@ and open the template in the editor.
     <ui:define name="description">
         <h:outputText value="Description: #{volumeController.volume.description}"/>
     </ui:define>
-    <ui:define name="content">
-        <center>
+    <ui:define name ="rating">
+        
+        
         <p:panelGrid style="width:80%;">
             <p:row>
                     <p:column colspan="2">
@@ -63,7 +64,11 @@ and open the template in the editor.
                     </p:column>
                 </p:row>
             </p:panelGrid>
-            <div style="width:75% !important">
+    </ui:define>
+    
+    <ui:define name="content">
+        <center>
+        <div style="width:75% !important">
             <p:dataGrid var="issue"
                         value="#{volumeController.volume.issueList}"
                         columns="5"

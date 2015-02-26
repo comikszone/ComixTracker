@@ -24,6 +24,10 @@ public class CharacterController implements Serializable {
     public CardCtrl getCtrl() {
         return ctrl;
     }
+    
+    public String redirect(Character character){
+        return "/resources/pages/characterPage.jsf?faces-redirect=true&id=" + character.getId();
+    }
 
     public void setCtrl(CardCtrl ctrl) {
         this.ctrl = ctrl;
