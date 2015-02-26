@@ -168,3 +168,8 @@ INSERT INTO user_friends_news (user_id, friends_note_id, viewed)
 	SELECT user2_id, id, TRUE FROM friends)
 	EXCEPT
 	SELECT user_id, friends_note_id, TRUE FROM user_friends_news;
+	
+DROP INDEX comi_name;
+DROP INDEX chari_name;
+CREATE INDEX comi_name ON comics (lower(name) varchar_pattern_ops);
+CREATE INDEX chari_name ON character (lower(name) varchar_pattern_ops);
