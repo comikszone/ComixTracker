@@ -346,7 +346,7 @@
                                     
                                     style="text-align: left; background: #{message.sender.userId eq messagesManagedBean.currentUser.userId ? 'radial-gradient(circle,#4FC3F7, #E1F5FE)' : 'radial-gradient(circle,#9CCC65, #DCEDC8)'}">
                                     <f:facet name="header">
-                                        <h:outputText value="#{message.sender.nickname}"
+                                        <h:outputText value="#{message.sender.realNickname}"
                                                       style="font-weight: bold;"/>
                                         <br/>
                                         <h:outputText value="#{messagesManagedBean.getFormatedDataTime(message)}"/>
