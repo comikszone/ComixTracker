@@ -1,5 +1,6 @@
 package com.comicszone.managedbeans.registration;
 
+import com.comicszone.dao.userdao.UserDataFacade;
 import java.io.Serializable;
 import com.comicszone.dao.userdao.UserRegistrationFacade;
 import com.comicszone.managedbeans.userbeans.AuthorisationManagedBean;
@@ -64,7 +65,7 @@ public class RegistrationManagedBean implements Serializable {
         AuthorisationManagedBean amb = new AuthorisationManagedBean();
         amb.setNickname(parameterMap.get("registrationForm:nickname"));
         amb.setPassword(parameterMap.get("registrationForm:password"));
-        amb.doLogin();
+        amb.loginWithoutBan();
     }
 
     private boolean isValidEmail(String email) {

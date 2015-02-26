@@ -17,9 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 @ManagedBean
 @ViewScoped
 public class AuthorisationManagedBean implements Serializable {
+
     @EJB
     UserDataFacade userDAO;
-    
+
     String nickname;
     String password;
 
@@ -40,18 +41,22 @@ public class AuthorisationManagedBean implements Serializable {
     }
 
     public void doLogin() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Users user = userDAO.getUserWithNickname(nickname);
+        if (user != null && user.getBanned()) {
 
+            context.addMessage(null, new FacesMessage("Error", "User with this nickname is banned!"));
+        }
+        loginWithoutBan();
+    }
+
+    public void loginWithoutBan() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
             Principal principal = request.getUserPrincipal();
-            
-            Users user = userDAO.getUserWithNickname(nickname);
-            if (user != null && user.getBanned()){
-                throw new IllegalStateException("User with this nickname is banned!");
-            }
-            
+
             if (principal == null || !principal.getName().equals(nickname)) {
                 UserAuthentification.authUser(nickname, password, request);
             }
@@ -60,7 +65,7 @@ public class AuthorisationManagedBean implements Serializable {
         } catch (ServletException | IOException | IllegalStateException e) {
             password = null;
 
-            context.addMessage(null , new FacesMessage("Error", e.getMessage()));
+            context.addMessage(null, new FacesMessage("Error", e.getMessage()));
         }
     }
 
