@@ -98,6 +98,16 @@ and open the template in the editor.
                     </p:row>
                 </h:panelGrid>                               
             </p:dataGrid>
+            <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+                <p:button value="Add new issue" 
+                          outcome="/resources//templates/authorized/addContent.jsf" 
+                          style="float: left">
+                    <f:param name="type" 
+                             value="Issue"/>
+                    <f:param name="v_id"
+                             value="#{volumeController.volumeId}"/>
+                </p:button>
+            </c:if> 
         </center>
         <div>
             <ui:include src="/resources/templates/comments/comments.xhtml">

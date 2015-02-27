@@ -24,14 +24,14 @@ and open the template in the editor.
     <ui:define name="card">
         <br/>
         <div class="table-responsive">
-        <h:dataTable style="width:20vw; margin-left: auto; margin-right: auto; margin-top: 2%" value="#{characterController.ctrl.LHS()}" var="t" styleClass="table">
-                            <h:column>
-                                <h:outputText value="#{t} : "/>
-                            </h:column>
-                            <h:column>
-                                <h:outputText value="#{characterController.ctrl.RHS(t)}"/>
-                            </h:column>
-                        </h:dataTable>
+        <p:dataTable style="margin-left: auto; margin-right: auto; margin-top: 2%;" value="#{characterController.ctrl.LHS()}" var="t" styleClass="table">
+                            <p:column >
+                                <h:outputText value="#{t} : " style="float: left; font-weight: 700;"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{characterController.ctrl.RHS(t)}" style="float: left;"/>
+                            </p:column>
+                        </p:dataTable>
         </div>
     </ui:define>
     <ui:define name="name">

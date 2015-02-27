@@ -47,6 +47,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
     @NamedQuery(name = "Issue.findByChecking", query = "SELECT i FROM Issue i WHERE i.isChecked = :isChecked ORDER BY i.Id"),
     @NamedQuery(name = "Issue.findByRelDate", query = "SELECT i FROM Issue i WHERE i.relDate = :relDate"),
+    @NamedQuery(name = "Comics.findBySource", query = "SELECT c FROM Comics c WHERE c.source = :source"),
     //for news
     @NamedQuery(name = "Issue.getIssuesWithNewCommentsAfterUser", query = "SELECT DISTINCT i FROM Issue i INNER JOIN i.commentsList il WHERE il.commentTime > (SELECT MAX(iil.commentTime) FROM  Issue ii INNER JOIN ii.commentsList iil WHERE ii.Id = i.Id AND iil.userId = :userId)"),
     @NamedQuery(name = "Issue.getMaxCommentDateForUser", query = "SELECT MAX(il.commentTime) FROM  Issue i INNER JOIN i.commentsList il WHERE i.Id = :Id AND il.userId = :userId"), 
@@ -106,6 +107,8 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     private String relDate;
     @Column(name = "is_checked")
     private Boolean isChecked;
+    @Column(name = "source")
+    private String source;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
     private List<Character> characterList;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
@@ -249,6 +252,16 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
         int hash = 0;
         hash += (Id != null ? Id.hashCode() : 0);
         return hash;
+    }
+    
+    @Override
+    public String getSource() {
+        return source;
+    }
+    
+    @Override
+    public void setSource(String source) {
+        this.source = source;
     }
 
     @Override

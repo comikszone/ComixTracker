@@ -46,7 +46,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder,Slide
 
     @Override
     public List<Comics> getBest(Integer quantity) {
-        TypedQuery<Comics> query =em.createNamedQuery("Comics.getComicsWithImages", Comics.class);
+        TypedQuery<Comics> query =em.createNamedQuery("Comics.getBestComicsWithImages", Comics.class);
         query.setMaxResults(quantity);
         List<Comics> results = query.getResultList();
         return results;

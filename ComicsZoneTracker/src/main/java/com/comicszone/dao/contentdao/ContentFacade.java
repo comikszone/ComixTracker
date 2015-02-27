@@ -41,6 +41,20 @@ public class ContentFacade extends AbstractFacade<Content> {
         return em;
     }
     
+    public List<Content> findBySource(String source) {
+        TypedQuery<Content> comicsQuery = 
+                em.createNamedQuery("source.findBySource", Content.class);
+        comicsQuery.setParameter("isChecked", source);
+        TypedQuery<Content> volumeQuery = 
+                em.createNamedQuery("Volume.findBySource", Content.class);
+        volumeQuery.setParameter("source", source);
+        TypedQuery<Content> issueQuery = 
+                em.createNamedQuery("Issue.findBySource", Content.class);
+        issueQuery.setParameter("source", source);
+        List<Content> result = comicsQuery.getResultList();
+        return result;
+    }
+    
     public List<Content> findByChecking(Boolean checked) {
         TypedQuery<Content> comicsQuery = 
                 em.createNamedQuery("Comics.findByChecking", Content.class);
@@ -212,6 +226,37 @@ public class ContentFacade extends AbstractFacade<Content> {
                     return;
                 }
                 editingItem.setDescription(description);
+        }
+    }
+    
+    public void setSource(Content item) {
+        Content editingItem = null;
+        ContentType type = item.getContentType();
+        Integer id = item.getId();
+        String source = item.getSource();
+        switch(type) {
+            case Comics:
+                editingItem = comicsFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setSource(source);
+                return;
+                
+            case Issue:
+                editingItem = issueFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setSource(source);
+                return;
+                
+            case Volume:
+                editingItem = volumeFacade.find(id);
+                if (editingItem == null) {
+                    return;
+                }
+                editingItem.setSource(source);
         }
     }
     

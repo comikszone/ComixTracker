@@ -104,8 +104,24 @@ and open the template in the editor.
                                     </p:row>
                                 </h:panelGrid>                      
                             </p:dataGrid>
+                            <p:button value="Add new issue" 
+                                      outcome="/resources/templates/authorized/addContent.jsf">
+                                <f:param name="type" 
+                                         value="Issue"/>
+                                <f:param name="v_id" 
+                                         value="#{volume.id}"/>
+                            </p:button>
                         </p:tab>
                     </p:accordionPanel>
+                    <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+                        <p:button value="Add new volume" 
+                                  outcome="/resources/templates/authorized/addContent.jsf">
+                            <f:param name="type" 
+                                     value="Volume"/>
+                            <f:param name="c_id" 
+                                     value="#{comicsPageManagedBean.comicsController.comicsId}"/>
+                        </p:button>
+                    </c:if>
             </center>
                 <div>
                     <ui:include src="/resources/templates/comments/comments.xhtml">

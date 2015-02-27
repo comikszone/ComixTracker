@@ -27,4 +27,6 @@ public interface Content extends Serializable {
     public String getExtraInfo();
     public Boolean getIsChecked();
     public void setIsChecked(Boolean isChecked);
+    public String getSource();
+    public void setSource(String source);
 }

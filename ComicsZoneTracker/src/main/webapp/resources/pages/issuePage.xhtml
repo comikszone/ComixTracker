@@ -27,14 +27,14 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="card">
         <div class="table-responsive">
-        <h:dataTable value="#{issueController.ctrl.LHS()}" var="t" styleClass="table" style="width:20vw; margin-left: auto; margin-right: auto; margin-top: 2%">
-            <h:column>
-                <h:outputText value="#{t} : " style="float: left;font-weight: 700"/>
-            </h:column>
-            <h:column>
+        <p:dataTable value="#{issueController.ctrl.LHS()}" var="t" styleClass="table" style="margin-left: auto; margin-right: auto; margin-top: 2%;">
+            <p:column>
+                <h:outputText value="#{t} : " style="float: left;font-weight: 700;"/>
+            </p:column>
+            <p:column>
                 <h:outputText value="#{issueController.ctrl.RHS(t)}" style="float: left;"/>
-            </h:column>
-        </h:dataTable>
+            </p:column>
+        </p:dataTable>
         </div>
     </ui:define>
         
