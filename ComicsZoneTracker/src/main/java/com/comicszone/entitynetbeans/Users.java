@@ -29,6 +29,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -56,6 +58,11 @@ public class Users implements Serializable {
     @Lob
     @Column(name = "avatar")
     private byte[] avatar;
+    @Size(max = 2147483647)
+    @Column(name = "source")
+    private String source;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users", fetch = FetchType.LAZY)
+    private List<UserTrackingStatus> userTrackingStatusList;
     @JoinTable(name = "user_group", joinColumns = {
         @JoinColumn(name = "nickname", referencedColumnName = "nickname")}, inverseJoinColumns = {
         @JoinColumn(name = "nickname", referencedColumnName = "nickname")})
@@ -427,6 +434,24 @@ public class Users implements Serializable {
 
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<UserTrackingStatus> getUserTrackingStatusList() {
+        return userTrackingStatusList;
+    }
+
+    public void setUserTrackingStatusList(List<UserTrackingStatus> userTrackingStatusList) {
+        this.userTrackingStatusList = userTrackingStatusList;
     }
 
     

@@ -28,6 +28,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -89,6 +91,14 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.getCommentNewsForUserAndComics", query = "SELECT DISTINCT n FROM Comics c INNER JOIN c.commentsNews n WHERE c = :comics AND n.userId = :user")})
 
 public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "rating")
+    private float rating;
+    @Column(name = "is_read")
+    private Boolean isRead;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "comics", fetch = FetchType.LAZY)
+    private List<UserTrackingStatus> userTrackingStatusList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -108,9 +118,6 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     @Size(max = 2147483647)
     @Column(name = "image")
     private String image;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "rating")
-    private Float rating;
     @Column(name = "votes")
     private Integer votes;
     @Column(name = "start_date")
@@ -318,5 +325,23 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     public String getExtraInfo() {
         return "Publisher: " + publisherId.getName() + "\n" + 
                 "Imprint: " + imprintId.getName();
+    }
+
+    public Boolean getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<UserTrackingStatus> getUserTrackingStatusList() {
+        return userTrackingStatusList;
+    }
+
+    public void setUserTrackingStatusList(List<UserTrackingStatus> userTrackingStatusList) {
+        this.userTrackingStatusList = userTrackingStatusList;
     }
 }
