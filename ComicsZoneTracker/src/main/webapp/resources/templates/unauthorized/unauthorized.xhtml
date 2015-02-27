@@ -17,13 +17,16 @@
             </h:form>
         </div>
     </ui:define>
+    <ui:define name="landing">
+    </ui:define>
     <ui:define name="articleContent">
             <div class="jumbotron">
                 <h1>Welcome to ComicsZone!</h1>
                 <a class="btn btn-primary btn-lg" href="#" onclick="PF('reg').show()">
                     Explore!
                 </a>
-        </div>
+            </div>
             <ui:include src="/resources/templates/slideshow/slideshow.xhtml"/>
     </ui:define>
+    <h:outputStylesheet library="css" name="popup.css"/>
 </ui:composition>
