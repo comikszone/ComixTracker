@@ -19,23 +19,21 @@ public class UserSecurityService implements IUserSecurityService {
         SHA256SimpleSaltedEncryptor encryptor = new SHA256SimpleSaltedEncryptor();
         password = encryptor.getEncodedPassword(password, nickname);
         
-        final String query = String.format(
-                "SELECT * FROM users WHERE nickname LIKE '%s' AND pass LIKE '%s';", nickname, password);
-        if (!existRow(query))
+        final String query = "SELECT * FROM users WHERE nickname LIKE ? AND pass LIKE ?;";
+        if (!existRow(query, nickname, password))
             throw new Exception("User or password not valid!");
     }
 
     @Override
     public List<String> getGroups(String nickname){
         try {
-            final String query = String.format(
-                    "SELECT gname FROM user_group WHERE nickname LIKE '%s';", nickname);
+            final String query = "SELECT gname FROM user_group WHERE nickname LIKE ?;";
             
             DataSource ds = (DataSource) ConnectorRuntime.getRuntime().lookupNonTxResource(JNDIName, false);
             Connection con = ds.getConnection();
-            con.createStatement();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query);
+            PreparedStatement st = con.prepareStatement(query);
+            st.setString(1, nickname);
+            ResultSet rs = st.executeQuery();
             
             List<String> result = new LinkedList<>();
             while (rs.next()){
@@ -55,12 +53,14 @@ public class UserSecurityService implements IUserSecurityService {
         return new LinkedList<>();
     }
     
-    private boolean existRow(String query) throws NamingException,SQLException{
+    private boolean existRow(String query, String nickname, String password)
+            throws NamingException,SQLException{
         DataSource ds = (DataSource) ConnectorRuntime.getRuntime().lookupNonTxResource(JNDIName, false);
         Connection con = ds.getConnection();
-        con.createStatement();
-        Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery(query);
+        PreparedStatement st = con.prepareStatement(query);
+        st.setString(1, nickname);
+        st.setString(2, password);
+        ResultSet rs = st.executeQuery();
         boolean result = rs.next();
         rs.close();
         st.close();
