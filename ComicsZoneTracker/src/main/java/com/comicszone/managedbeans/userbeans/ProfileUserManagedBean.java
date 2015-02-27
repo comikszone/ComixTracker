@@ -42,8 +42,12 @@ public class ProfileUserManagedBean implements Serializable {
         user.setName(name);
     }
 
-    public String getNickname() {
-        return user.getNickname();
+    public String getRealNickname() {
+        return user.getRealNickname();
+    }
+
+    public boolean getIsSocial() {
+        return user.getIsSocial();
     }
 
     public int getSex() {

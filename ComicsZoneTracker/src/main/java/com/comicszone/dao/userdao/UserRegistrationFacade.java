@@ -22,7 +22,9 @@ public class UserRegistrationFacade extends AbstractUserFacade {
         SHA256SimpleSaltedEncryptor encryptor = new SHA256SimpleSaltedEncryptor();
         password = encryptor.getEncodedPassword(password, nickname);
         Users user = new Users(nickname, email, password);
-
+        user.setRealNickname(nickname);
+        user.setIsSocial(Boolean.FALSE);
+        
         create(user);
 
         UserGroup group = new UserGroup("user", nickname);

@@ -21,6 +21,10 @@ public class CurrentUserManagedBean implements Serializable {
     @EJB
     UserDataFacade userDAO;
 
+    public String getRealNickname(){
+        return currentUser.getRealNickname();
+    }
+       
     public String getName() {
         return currentUser.getName();
     }
@@ -54,10 +58,11 @@ public class CurrentUserManagedBean implements Serializable {
     }
     
     public String getNameToStartPage(){
-        if (getName() != null && !getName().trim().equals("")){
-            return getName();
-        }
-        return getNickname();
+//        if (getName() != null && !getName().trim().equals("")){
+//            return getName();
+//        }
+//        return ();
+        return getRealNickname();
     }
 
     public Users getCurrentUser() throws CloneNotSupportedException {
