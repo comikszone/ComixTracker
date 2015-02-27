@@ -8,6 +8,7 @@ package com.comicszone.managedbeans.social_networks;
 import com.comicszone.dao.userdao.UserRegistrationFacade;
 import com.comicszone.entitynetbeans.Users;
 import com.comicszone.managedbeans.userbeans.AuthorisationManagedBean;
+import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import com.comicszone.managedbeans.util.passwordcreators.IPasswordCreator;
 import com.comicszone.managedbeans.util.passwordcreators.SimplePasswordCreator;
 import com.comicszone.managedbeans.util.passwordcreators.UserAuthentification;
@@ -46,17 +47,23 @@ public abstract class SocialNetworkAuthorization implements Serializable {
 //    public abstract String createUserUrl();
     public abstract void buildUserUrl();
 
-    public void doRegistration() throws IOException, ParseException, ServletException {
+    public void doRegistration(AuthorisationManagedBean mb) throws IOException, ParseException, ServletException {
         IPasswordCreator passwordCreator = new SimplePasswordCreator();
         String password = passwordCreator.createPassword(PASSWORD_LENGTH);
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();        
         Users user = createUser();
         userRegistrationDao.socialNetworkRegistration(user, password);
         
-        AuthorisationManagedBean mb = new AuthorisationManagedBean();
-
-        UserAuthentification.authUser(user.getNickname(), password, (HttpServletRequest)context.getRequest());
-        context.redirect("/");
+//        AuthorisationManagedBean mb = ((AuthorisationManagedBean) FacesContext
+//                .getCurrentInstance()
+//                .getViewRoot()
+//                .getViewMap()
+////                .getExternalContext()
+////                .getSessionMap()
+//                .get("authorisationManagedBean"));
+        mb.setNickname(user.getNickname());
+        mb.setPassword(password);
+        mb.loginWithoutBan();
     }
     public String getJsonValue(String json,String parameter) throws ParseException
     {
