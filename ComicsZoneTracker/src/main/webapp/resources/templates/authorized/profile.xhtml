@@ -21,7 +21,7 @@
                     <p:column>
                         <h:outputText id="nickname"
                                       styleClass="profile-page-column-attr-name"
-                                      value="#{profileUserManagedBean.nickname}"/>
+                                      value="#{profileUserManagedBean.realNickname}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -32,6 +32,7 @@
                     <p:column>
                         <p:inputText id="name"
                                      styleClass="profile-page-column-value-text"
+                                     readonly="#{profileUserManagedBean.isSocial}"
                                      value="#{profileUserManagedBean.name}"/>
                     </p:column>
                 </p:row>
