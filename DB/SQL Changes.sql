@@ -167,7 +167,15 @@ INSERT INTO user_friends_news (user_id, friends_note_id, viewed)
 	UNION
 	SELECT user2_id, id, TRUE FROM friends)
 	EXCEPT
-	SELECT user_id, friends_note_id, TRUE FROM user_friends_news;
+
+
+UPDATE users
+set real_nickname=nickname
+where is_social is null or is_social=false;
+
+
+ALTER TABLE messages
+   ALTER COLUMN title DROP NOT NULL;
 
 DROP INDEX comi_name;
 DROP INDEX chari_name;

@@ -41,8 +41,6 @@ public class UserFriendsManagedBean implements Serializable {
     private List<Users> friends;
     
     private List<Users> followers;
-    
-    private boolean followersIsEmpty;
 
     private List<Users> unconfirmedFriends;
     
@@ -61,6 +59,7 @@ public class UserFriendsManagedBean implements Serializable {
     private boolean showMessages;
     
     private boolean showMessagesAdder;
+    
     @PostConstruct
     public void init() {
        try {
@@ -74,7 +73,7 @@ public class UserFriendsManagedBean implements Serializable {
             friends = friendsFacade.getFriends(currentUser);
             followers = friendsFacade.getFollowers(currentUser);
             unconfirmedFriends = friendsFacade.getUnconfirmedFriends(currentUser);
-            followersIsEmpty = followers.isEmpty();
+            
             if (!friends.isEmpty())
             {
                 setSelectedFriend(friends.get(0));
@@ -86,7 +85,7 @@ public class UserFriendsManagedBean implements Serializable {
     
     public List<Users> completeUser(String query) {
         
-        List<Users> users = userDataFacade.getUsersWithNicknameStartsWith(query);
+        List<Users> users = userDataFacade.getUsersWithRealNicknameStartsWith(query);
         
         users.removeAll(friendsFacade.getFriends(currentUser));
         users.removeAll(friendsFacade.getUnconfirmedFriends(currentUser));
@@ -96,15 +95,14 @@ public class UserFriendsManagedBean implements Serializable {
     }
     
     public void addToFriends(Users unconfirmedUser) {
-                    mmb = (MessagesManagedBean) FacesContext
-                    .getCurrentInstance()
-                    .getViewRoot()
-                    .getViewMap()
-                    .get("messagesManagedBean");
-                    System.err.println("mmb_______***____"+mmb);
-                    mmb.setActiveIndex(2);
+        mmb = (MessagesManagedBean) FacesContext
+                .getCurrentInstance()
+                .getViewRoot()
+                .getViewMap()
+                .get("messagesManagedBean");
+        
+        mmb.setActiveIndex(2);
         friendsFacade.addToFriends(currentUser, unconfirmedUser);
-        //send add news to unconfirmedUser
         setFriends(friendsFacade.getFriends(currentUser));
         setFollowers(friendsFacade.getFollowers(currentUser));
         setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
@@ -114,9 +112,8 @@ public class UserFriendsManagedBean implements Serializable {
     }
     
     public void removeFromFrieds(Users friend) {
-        friendsFacade.removeFromFriends(currentUser, friend);
         
-        //send remove news to friend.
+        friendsFacade.removeFromFriends(currentUser, friend);
         setFriends(friendsFacade.getFriends(currentUser));
         setFollowers(friendsFacade.getFollowers(currentUser));
         setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
@@ -168,22 +165,14 @@ public class UserFriendsManagedBean implements Serializable {
         this.unconfirmedFriends = unconfirmedFriends;
     }
 
-    public boolean isFollowersIsEmpty() {
-        return followersIsEmpty;
-    }
-
-    public void setFollowersIsEmpty(boolean followersIsEmpty) {
-        this.followersIsEmpty = followersIsEmpty;
-    }
-
     public Users getSelectedFollower() {
         return selectedFollower;
     }
 
     public void setSelectedFollower(Users selectedFollower) {
         this.selectedFollower = selectedFollower;
-        selectedFriend=null;
-        selectedUnconfirmedFriend=null;
+        selectedFriend = null;
+        selectedUnconfirmedFriend = null;
     }
 
     public boolean isShowMessages() {
@@ -208,9 +197,7 @@ public class UserFriendsManagedBean implements Serializable {
 
     public void setSelectedUnconfirmedFriend(Users selectedUnconfirmedFriend) {
         this.selectedUnconfirmedFriend = selectedUnconfirmedFriend;
-        selectedFriend=null;
-        selectedFollower=null;
+        selectedFriend = null;
+        selectedFollower = null;
     }
-    
-    
 }

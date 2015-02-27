@@ -17,7 +17,7 @@
                         var="user"
                         value="#{userFriendsManagedBean.selectedUser}"
                         itemValue="#{user}"
-                        itemLabel="#{user.nickname}"
+                        itemLabel="#{user.realNickname}"
                         converter="userConverter"
                         forceSelection="true"
                         dropdown="false">
@@ -31,11 +31,17 @@
                             <p:graphicImage
                                 value="#{user.avatarUrl}"
                                 width="80"
-                                height="80"/>
+                                height="80"
+                                rendered="#{user.avatarUrl != null}"/>
+                            <p:graphicImage
+                                value="/resources/images/default_user_photo.png"
+                                width="80"
+                                height="80"
+                                rendered="#{user.avatarUrl == null}"/>
                         </p:column>
 
                         <p:column>
-                            #{user.nickname}
+                            #{user.realNickname}
                         </p:column>
                     </p:autoComplete>
                 </p:panelGrid>
@@ -44,9 +50,12 @@
             <table style="width:100%;">
                 <tr>
                     <td class="friends-column">
-                        <p:accordionPanel multiple="false" id="accordionPanel"
-                                          style="background-color: #EDEDED"
-                                          activeIndex="#{messagesManagedBean.activeIndex}">  
+                        <p:accordionPanel
+                            id="accordionPanel"
+                            multiple="false" 
+                            style="background-color: #EDEDED"
+                            activeIndex="#{messagesManagedBean.activeIndex}"> 
+                            
                             <p:tab title="Friends">
                     <p:dataTable
                         id="friendsTable"
@@ -75,10 +84,10 @@
                         <p:column 
                             width="100%" 
                             headerText="Nickname" 
-                            sortBy="#{friend.nickname}" 
-                            filterBy="#{friend.nickname}">
+                            sortBy="#{friend.realNickname}" 
+                            filterBy="#{friend.realNickname}">
 
-                            <p:panel header="#{friend.nickname}" >
+                            <p:panel header="#{friend.realNickname}" >
                                 
                                 <f:facet name="actions">
                                     <p:commandLink
@@ -101,11 +110,17 @@
                                                    friends-info-column-width">
                                 <p:graphicImage 
                                         value="#{friend.avatarUrl}"
-                                        width="100%"/>
+                                        width="100%"
+                                        rendered="#{friend.avatarUrl != null}"/>
+                                
+                                <p:graphicImage 
+                                        value="/resources/images/default_user_photo.png"
+                                        width="100%"
+                                        rendered="#{friend.avatarUrl == null}"/>
                                 
                                 <p:panelGrid columns="1">
                                     <h:outputText 
-                                        value="#{friend.nickname}"
+                                        value="#{friend.realNickname}"
                                         class="friends-info"
                                         />
                                     
@@ -160,10 +175,10 @@
                         <p:column 
                             width="100%" 
                             headerText="Nickname" 
-                            sortBy="#{follower.nickname}" 
-                            filterBy="#{follower.nickname}">
+                            sortBy="#{follower.realNickname}" 
+                            filterBy="#{follower.realNickname}">
 
-                            <p:panel header="#{follower.nickname}" >
+                            <p:panel header="#{follower.realNickname}" >
                                 <f:facet name="footer">
                                     <p:commandButton 
                                         value="Confirm friendship"
@@ -180,11 +195,18 @@
                                                    friends-info-column-width">
                                 <p:graphicImage 
                                         value="#{follower.avatarUrl}"
-                                        width="100%"/>
+                                        width="100%"
+                                        rendered="#{follower.avatarUrl != null}"/>
+                                
+                                <p:graphicImage 
+                                        value="/resources/images/default_user_photo.png"
+                                        width="100%"
+                                        rendered="#{follower.avatarUrl == null}"/>
+                                
                                 
                                 <p:panelGrid columns="1">
                                     <h:outputText 
-                                        value="#{follower.nickname}"
+                                        value="#{follower.realNickname}"
                                         class="friends-info"
                                         />
                                     
@@ -230,6 +252,7 @@
                         selection="#{userFriendsManagedBean.selectedUnconfirmedFriend}"    
                         style="margin: auto 1% 1% 1%;"
                         >
+                        
                         <p:ajax 
                             event="rowSelect" 
                             update=":form"
@@ -239,10 +262,10 @@
                         <p:column 
                             width="100%" 
                             headerText="Nickname" 
-                            sortBy="#{unconfirmedFriend.nickname}" 
-                            filterBy="#{unconfirmedFriend.nickname}">
+                            sortBy="#{unconfirmedFriend.realNickname}" 
+                            filterBy="#{unconfirmedFriend.realNickname}">
 
-                            <p:panel header="#{unconfirmedFriend.nickname}" >
+                            <p:panel header="#{unconfirmedFriend.realNickname}" >
                                 
                                 <f:facet name="footer">
                                     <p:commandButton 
@@ -258,11 +281,17 @@
                                                    friends-info-column-width">
                                 <p:graphicImage 
                                         value="#{unconfirmedFriend.avatarUrl}"
-                                        width="100%"/>
+                                        width="100%"
+                                        rendered="#{unconfirmedFriend.avatarUrl != null}"/>
+                                
+                                <p:graphicImage 
+                                        value="/resources/images/default_user_photo.png"
+                                        width="100%"
+                                        rendered="#{unconfirmedFriend.avatarUrl == null}"/>
                                 
                                 <p:panelGrid columns="1">
                                     <h:outputText 
-                                        value="#{unconfirmedFriend.nickname}"
+                                        value="#{unconfirmedFriend.realNickname}"
                                         class="friends-info"
                                         />
                                     
@@ -346,7 +375,7 @@
                                     
                                     style="text-align: left; background: #{message.sender.userId eq messagesManagedBean.currentUser.userId ? 'radial-gradient(circle,#4FC3F7, #E1F5FE)' : 'radial-gradient(circle,#9CCC65, #DCEDC8)'}">
                                     <f:facet name="header">
-                                        <h:outputText value="#{message.sender.nickname}"
+                                        <h:outputText value="#{message.sender.realNickname}"
                                                       style="font-weight: bold;"/>
                                         <br/>
                                         <h:outputText value="#{messagesManagedBean.getFormatedDataTime(message)}"/>
@@ -367,9 +396,9 @@
                                                  columnClasses="friend-avatar-message-column,
                                                                 friend-message-column">
                                         <p:graphicImage 
-                                            value="#{message.sender.avatarUrl}" 
+                                            value="#{messagesManagedBean.getAvatar(message.sender)}" 
                                             width="100%"
-                                            rendered="#{message.sender.avatarUrl != null}"
+                                            
                                             />
                                         
                                         <h:outputText value="#{message.text}" style="word-wrap: break-word"/>
@@ -394,56 +423,57 @@
                       
                       >
                 <p:outputPanel id="userDetailPanel" style="text-align:center;">
-                    <p:panelGrid  columns="1" 
-                                  rendered="#{not empty userFriendsManagedBean.selectedUser}" 
-                                  columnClasses="label,value">
+                    <p:panelGrid  
+                        columns="1" 
+                        rendered="#{not empty userFriendsManagedBean.selectedUser}" 
+                        columnClasses="label,value">
+                        
                         <f:facet name="header">
                             <p:graphicImage 
                                 value="#{userFriendsManagedBean.selectedUser.avatarUrl}"
                                 width="100%"
+                                styleClass="content-image"
                                 rendered="#{userFriendsManagedBean.selectedUser.avatarUrl != null}"
                                 />
-                            <p:graphicImage
-                                alt="NO PHOTO"
+                            <p:graphicImage 
+                                value="/resources/images/default_user_photo.png"
+                                width="100%"
+                                styleClass="content-image"
                                 rendered="#{userFriendsManagedBean.selectedUser.avatarUrl == null}"
-                                /> 
+                                />
                         </f:facet>
                         <f:facet name="footer">
                             <p:outputPanel>
-                                <p:commandButton value="Add to friends!"
-                                                 update=":form:accordionPanel:unconfirmedFriendsTable 
+                                <p:commandButton 
+                                    value="Add to friends!"
+                                    update=":form:accordionPanel:unconfirmedFriendsTable 
                                                          :form:accordionPanel:friendsTable
                                                          :form:messages"
-                                                 action="#{userFriendsManagedBean.addToFriends(userFriendsManagedBean.selectedUser)}"
-                                                 onclick="userDetails.close()"
+                                    action="#{userFriendsManagedBean.addToFriends(userFriendsManagedBean.selectedUser)}"
+                                    onclick="userDetails.close()"
                                 />
                             </p:outputPanel>
                         </f:facet>
-                        <h:outputText value="Nickname"/>
+
                         <h:outputText 
-                                value="#{userFriendsManagedBean.selectedUser.nickname}" 
-                                class="friends-info"/>
+                            value="#{userFriendsManagedBean.selectedUser.realNickname}" 
+                            class="friends-info"/>
                         
-                        <h:outputText value="Email"/>
                         <h:outputText 
-                                value="#{userFriendsManagedBean.selectedUser.email}" 
-                                class="friends-info"/>
+                            value="#{userFriendsManagedBean.selectedUser.email}" 
+                            class="friends-info"/>
                         
-                        <h:outputText value="Name"
-                                      rendered="#{userFriendsManagedBean.selectedUser.name != null}"/>
                         <h:outputText 
-                                value="#{userFriendsManagedBean.selectedUser.name}"
-                                rendered="#{userFriendsManagedBean.selectedUser.name != null}"
-                                class="friends-info"/>
+                            value="#{userFriendsManagedBean.selectedUser.name}"
+                            rendered="#{userFriendsManagedBean.selectedUser.name != null}"
+                            class="friends-info"/>
                         
-                        <h:outputText value="Birthday"
-                                      rendered="#{userFriendsManagedBean.selectedUser.birthday != null}"/>
                         <h:outputText 
-                                value="#{userFriendsManagedBean.getFormatedData(userFriendsManagedBean.selectedUser)}"
-                                rendered="#{userFriendsManagedBean.selectedUser.birthday != null}"
-                                class="friends-info"/>
-                        
-                    </p:panelGrid>                </p:outputPanel>
+                            value="#{userFriendsManagedBean.getFormatedData(userFriendsManagedBean.selectedUser)}"
+                            rendered="#{userFriendsManagedBean.selectedUser.birthday != null}"
+                            class="friends-info"/>
+                    </p:panelGrid>               
+                </p:outputPanel>
             </p:dialog>
 
         <p:confirmDialog

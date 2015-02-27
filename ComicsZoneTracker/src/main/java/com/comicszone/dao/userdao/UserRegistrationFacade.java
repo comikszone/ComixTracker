@@ -19,10 +19,6 @@ public class UserRegistrationFacade extends AbstractUserFacade {
     private EntityManager em;
 
     public void registration(String nickname, String email, String password, String confirmPassword) {
-        if (!password.equals(confirmPassword)) {
-            throw new IllegalArgumentException("Password isn't equals confirmPassword");
-        }
-
         SHA256SimpleSaltedEncryptor encryptor = new SHA256SimpleSaltedEncryptor();
         password = encryptor.getEncodedPassword(password, nickname);
         Users user = new Users(nickname, email, password);

@@ -47,8 +47,8 @@ public class Messages implements Serializable {
     @Basic(optional = false)
     @Column(name = "msg_id")
     private Integer msgId;
-    @Basic(optional = false)
-    @NotNull
+//    @Basic(optional = false)
+//    @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "title")
     private String title;
