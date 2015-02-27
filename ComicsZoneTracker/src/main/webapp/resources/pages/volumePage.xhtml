@@ -1,0 +1,118 @@
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      template="/resources/templates/contentPage.xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:pf="http://jsf.playerfinder.net/components">
+    <ui:define name="init">
+        <f:metadata>
+            <f:viewParam name="id" value="#{volumeController.volumeId}"/>
+        </f:metadata>
+        #{volumeController.init()}
+        #{comicsPageManagedBean.setComicsId(volumeController.volume.comicsId.id)}
+        #{comicsPageManagedBean.init()}
+        #{ratingController.setType(volumeController.volume.contentType)}
+        #{ratingController.setContentId(volumeController.volumeId)}
+        <ol class="breadcrumb">
+            <li><a href="/resources/templates/index.jsf">Home</a></li>
+            <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
+            <li><p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
+                        value="#{comicsPageManagedBean.comicsController.comics.name}"/></li>
+            <li class="active">#{volumeController.volume.name}</li>
+        </ol>
+    </ui:define>
+    <ui:define name="image">
+        <p:graphicImage value="#{volumeController.volume.image}"
+                        styleClass="content-image"
+                        style="width:20vw;"/>
+    </ui:define>
+    <ui:define name="name">
+        <h:outputText value="#{volumeController.volume.name}" 
+                                      styleClass="content-name"/>
+    </ui:define>  
+    <ui:define name="description">
+        <h:outputText value="Description: #{volumeController.volume.description}"/>
+    </ui:define>
+    <ui:define name ="rating">
+        
+        
+        <p:panelGrid>
+            <p:row>
+                    <p:column colspan="2">
+                        <c:choose>
+                            <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                                #{ratingController.init()}
+                                <h:form>
+                                    <pf:rating  value="#{ratingController.ratingFacade.uvrating.rating}"
+                                                totalStars="5"
+                                                step="1">
+                                        <f:ajax event="change" listener="#{ratingController.rate}"/>
+                                    </pf:rating>
+                                    </h:form>
+                            </c:when>
+                            <c:otherwise>
+                                <p:link onclick="PF('reg').show()"
+                                        href='#'
+                                        value="Join"/>
+                                    or 
+                                    <p:link onclick="PF('login').show()"
+                                            href='#'
+                                            value="Sign In"/>
+                                    to rate and comment!
+                            </c:otherwise>
+                        </c:choose>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+    </ui:define>
+    
+    <ui:define name="content">
+        <center>
+            <p:dataGrid var="issue"
+                        value="#{volumeController.volume.issueList}"
+                        columns="5"
+                        layout="grid"
+                        paginator="true"
+                        rows="10">
+                <h:panelGrid columns="1" styleClass="border:none">
+                    <p:row>
+                        <h:form>
+                            <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
+                                <p:graphicImage value="#{issue.image}"
+                                                styleClass="content-image"/>
+                            </h:link>
+                        </h:form>
+                    </p:row>
+                    <p:row>
+                        <p:link value="#{issue.name}" 
+                                style="height:auto; width:60%;"
+                                outcome="#{comicsPageManagedBean.redirect(issue)}"/>
+                    </p:row>
+                </h:panelGrid>                               
+            </p:dataGrid>
+            <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+                <p:button value="Add new issue" 
+                          outcome="/resources//templates/authorized/addContent.jsf" 
+                          style="float: left">
+                    <f:param name="type" 
+                             value="Issue"/>
+                    <f:param name="v_id"
+                             value="#{volumeController.volumeId}"/>
+                </p:button>
+            </c:if> 
+        </center>
+        <div>
+            <ui:include src="/resources/templates/comments/comments.xhtml">
+                <ui:param name="type" value="volume"/>
+            </ui:include>
+        </div>
+    </ui:define>
+</ui:composition>

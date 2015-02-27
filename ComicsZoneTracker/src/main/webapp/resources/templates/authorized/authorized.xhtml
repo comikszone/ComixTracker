@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/basic.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="headerContent">
+        <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <p:link value="My news"
+                            styleClass="without-decoration light-grey"
+                            outcome="/resources/templates/authorized/news.xhtml"/>
+                </li>
+                <li>
+                    <p:link value="My comics"
+                            outcome="/resources/templates/authorized/progressPage.jsf"
+                            styleClass="without-decoration light-grey"/>
+                </li>
+                <li>
+                    <p:link value="My friends"
+                            styleClass="without-decoration light-grey"
+                            outcome="/resources/templates/authorized/friends.jsf"/>
+                </li>
+                <li>
+                    <p:link value="Add a comics"
+                            styleClass="without-decoration light-grey"
+                            outcome="/resources/templates/authorized/addContent.jsf">
+                        <f:param name="type" value="Comics"/>
+                    </p:link>
+                </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <p:graphicImage value="#{currentUserManagedBean.avatar}"                     
+                                styleClass="icon-on-start-page"/>
+                #{currentUserManagedBean.nameToStartPage}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <p:link value="My profile"
+                            styleClass="without-decoration light-grey"
+                            outcome="/resources/templates/authorized/profile.jsf"/>
+                </li>
+                <li>
+                    <c:if test="#{userRoleManagedBean.isUserAdmin()}">
+                        <p:link value="Admin page"
+                                styleClass="without-decoration light-grey"
+                                outcome="/resources/templates/authorized/admin/admin.xhtml"/>
+                    </c:if>
+                </li>
+                <li>
+                    <h:form>
+                    <h:commandLink
+                            value="Logout" 
+                            action="#{logoutManagedBean.logout()}"/>
+                    </h:form>
+                </li>
+                </ul>
+                </li> 
+        </ul>
+    </ui:define>
+    <ui:define name="articleContent">
+        <div class="jumbotron">
+                <h2>Where am I and what can I do?</h2>
+                <p>TODO: Write Content</p>
+        </div>
+            <ui:include src="/resources/templates/slideshow/slideshow.xhtml"/>
+    </ui:define>
+</ui:composition>

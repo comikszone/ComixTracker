@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/authorized/authorized.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="articleContent">
+        <h:form id="news">
+            <p:tabView>
+            <p:tab
+                title="Comments">
+            <p:dataScroller
+                chunkSize="10"
+                value="#{userCommentsNewsManagedBean.newContainers}"
+                rowIndexVar="index"
+                var="container">
+                <p:panel 
+                    header="New comments"
+                    style=" width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
+                    <h:outputText
+                        value="New comments on #{container.contentType} "/>
+                    <p:link
+                        value="#{container.name}"
+                        outcome="#{userCommentsNewsManagedBean.redirect(container)}"/>
+                    <br/>
+                    <h:outputText
+                        value="Comments left after your last comment: 
+                        #{userCommentsNewsManagedBean.getNumberOfNewComments(index)}"/>
+                    <br/>
+                    <h:outputText
+                        value="Comments you haven't read: 
+                        #{userCommentsNewsManagedBean.getNumberOfUnreadComments(index)}"/>
+                    <br/>
+                    <h:outputText
+                        value="You haven't commented it 
+                        #{userCommentsNewsManagedBean.getPeriodFromUser(index)}."/>
+                    <br/>
+                    <h:outputText
+                        value="Last comment to it was 
+                        #{userCommentsNewsManagedBean.getPeriodFromLastComment(index)} ago."/>
+                    <br/>
+                    <p:commandButton
+                        value="#{userCommentsNewsManagedBean.getValueOfViewButton(index)}"
+                        update=":news"
+                        action="#{userCommentsNewsManagedBean.resetShowingComments(index)}"/>
+                    <p:dataGrid
+                        rendered="#{userCommentsNewsManagedBean.areCommentsShowing(index)}"
+                        var="newComment"
+                        value="#{userCommentsNewsManagedBean.getNewComments(index)}"
+                        emptyMessage="No comments"
+                        columns="1"
+                        rows = "5"
+                        paginator="true"
+                        paginatorTemplate="{CurrentPageReport} {PageLinks}">
+                        <p:panel 
+                            header="#{newComment.userId.realNickname}"
+                            style="text-align: left;">
+                            <h:outputText
+                              value="#{newComment.text}"
+                              style=" white-space: pre-wrap; "/>
+                        </p:panel>
+                    </p:dataGrid>
+                </p:panel>
+            </p:dataScroller>
+            </p:tab>
+            
+            <p:tab
+                title="Friends"
+                id="req">
+            <p:dataScroller
+                chunkSize="10"
+                var="friendsNews"
+                rowIndexVar="index"
+                value="#{userFriendsNewsManagedBean.news}">
+                <p:panel
+                    rendered="#{userFriendsNewsManagedBean.isForAddAsFriend(index)}"
+                    header="Friend request"
+                    style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
+                    <h:outputText
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getRealNickname()} 
+                        wants to add you as a friend."/>
+                    <br/>
+                    <div>
+                    <p:commandButton
+                        update=":news"
+                        value="Add to friends"
+                        action="#{userFriendsNewsManagedBean.addToFriends(index)}"/>
+                    <p:commandButton
+                        update=":news"
+                        value="Decline request"
+                        action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
+                    <p:commandButton
+                        update=":news"
+                        value="Put off decision"
+                        action="#{userFriendsNewsManagedBean.setViewed(friendsNews)}"/>
+                    </div>
+                </p:panel>
+                
+                <p:panel
+                    rendered="#{userFriendsNewsManagedBean.isForDeletion(index)}"
+                    header="Deletion"
+                    style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
+                    <h:outputText
+                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getRealNickname()} 
+                        removed you from friends."/>
+                    <br/>
+                    <div>
+                    <p:commandButton
+                        update=":news"
+                        value="Unfollow"
+                        action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
+                    <p:commandButton
+                        update=":news"
+                        value="Put off decision"
+                        action="#{userFriendsNewsManagedBean.setViewed(friendsNews)}"/>
+                    </div>
+                </p:panel>
+            </p:dataScroller>
+            </p:tab>
+            </p:tabView>
+        </h:form>
+    </ui:define>
+</ui:composition>

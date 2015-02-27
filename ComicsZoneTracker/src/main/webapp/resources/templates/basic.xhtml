@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>ComicsZone</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta charset="utf-8"/>
+        <h:outputStylesheet library="css" name="fonts.css" />
+        <h:outputStylesheet library="css" name="popup.css"/>
+        <h:outputStylesheet library="css" name="comments-styles.css"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="basic-styles.css" />
+        <h:outputStylesheet library="css" name="friends-styles.css"/>
+        <h:outputScript library="scripts" name="PopUpWindowScript.js"/>
+        <h:outputScript library="scripts" name="bootstrap.min.js"/>
+    </h:head>
+    <h:body id="container">
+        <div class="custom-wrapper">
+        <div class="container">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <a class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="glyphicon glyphicon-menu-hamburger"></span>
+                        </a>
+                         <p:link value="ComicsZone"
+                                 styleClass="navbar-brand homepage-link"
+                                 outcome="/resources/templates/index.xhtml"/>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li>
+                            <p:link value="Catalogue"
+                                    href="/resources/pages/comicsCatalogue.jsf"/>
+                            </li>
+                        </ul>
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group">
+                                <div>
+                                    <ui:include src="mainSearch/search.xhtml"/>
+                                </div>
+                            </div>
+                        </form>
+                            <ui:insert name="headerContent">
+                                Default Header Content
+                            </ui:insert>
+                    </div>
+                </div>
+            </nav>
+        </div>
+            
+        <div class="container">
+            <ui:insert name="articleContent">
+        
+            </ui:insert>
+        </div>
+        </div>
+        
+        <div class="custom-push"></div>
+
+        <footer class="grey">
+            <table class="full-parent">
+                <tr class="full-parent">
+                    <td class="parent-third">
+                        <p:link value="About"
+                                styleClass="without-decoration dark-grey"/>
+                    </td>
+                    <td class="parent-third">
+                        <p:link value="Privacy"
+                                styleClass="without-decoration dark-grey"/>
+                    </td>
+                    <td class="parent-third">
+                        <p:link value="Help"
+                                styleClass="without-decoration dark-grey"/>
+                    </td>
+                </tr>
+            </table>
+        </footer>
+    </h:body>
+</html>

@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/templates/authorized/authorized.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="articleContent">
+        <h:form id = "profileForm" 
+                enctype="multipart/form-data">
+            <p:growl
+                autoUpdate="true"
+                life="5000"
+                showDetail="true"
+                />
+            <p:panelGrid id="profilePanel" style="margin-left: auto; margin-right: auto;">
+                <p:row>
+                    <p:column >
+                        <h:outputText styleClass="profile-page-column-attr-name" 
+                                      value="Nickname:"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="nickname"
+                                      styleClass="profile-page-column-attr-name"
+                                      value="#{profileUserManagedBean.nickname}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText styleClass="profile-page-column-attr-name" 
+                                      value="Name:"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="name"
+                                     styleClass="profile-page-column-value-text"
+                                     value="#{profileUserManagedBean.name}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText styleClass="profile-page-column-attr-name" 
+                                      value="Email:"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="email"
+                                     styleClass="profile-page-column-value-text"
+                                     value="#{profileUserManagedBean.email}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText styleClass="profile-page-column-attr-name"
+                                      value="Birthday:"/>
+                    </p:column>
+                    <p:column>        
+                        <p:inputMask id="birthday"
+                                     styleClass="profile-page-column-value-text" 
+                                     value="#{profileUserManagedBean.birthday}" 
+                                     placeholder="day/month/year"
+                                     mask="99/99/9999"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText styleClass="profile-page-column-attr-name"
+                                      value="Sex:"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu
+                            id = "sex"
+                            style="width:100%"
+                            styleClass="profile-page-column-value-list"
+                            value="#{profileUserManagedBean.sex}">
+                            <f:selectItem itemValue="0" itemLabel=""/>
+                            <f:selectItem itemValue="1" itemLabel="Male"/>
+                            <f:selectItem itemValue="2" itemLabel="Female"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText styleClass="profile-page-column-attr-name"  value="Avatar:"/>
+                        <p:fileUpload
+                            fileUploadListener="#{profileUserManagedBean.loadImage}"
+                            id="chooseFileDialog"
+                            mode="advanced"
+                            auto="true"
+                            sizeLimit="1000000"
+                            allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                            />
+                    </p:column>
+                    <p:column>
+                        <p:graphicImage 
+                            id = "avatarImage"
+                            value="#{profileUserManagedBean.avatar}"
+                            width="150"
+                            height="150"
+                            />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <p:commandButton 
+                            styleClass="profile-page-column-button"
+                            action="#{profileUserManagedBean.saveChanges()}"
+                            ajax="false"
+                            value="Save changes"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <p:commandButton
+                            styleClass="profile-page-column-button"
+                            action="#{profileUserManagedBean.resetChanges()}"
+                            ajax="false"
+                            value="Reset changes"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:pf="http://jsf.playerfinder.net/components"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/resources/templates/authorized/authorized.xhtml">          
+    <ui:define name="articleContent">
+        <f:metadata>
+            <f:viewParam name="id" value="#{readingPageManagedBean.comicsController.comicsId}"/>
+        </f:metadata>
+        #{readingPageManagedBean.comicsController.initComics()}
+        #{readingPageManagedBean.init()}
+        <center>
+            <table class="table">
+                <tbody>
+            <tr>
+                <td class="col-lg-6">
+                    <p:graphicImage value="#{readingPageManagedBean.comicsController.comics.image}"
+                                    styleClass="content-image"/>
+                    </td>
+                    <td>
+                        <h1  class="content-info">#{readingPageManagedBean.comicsController.comics.name} 
+                                      </h1>
+                    </td>
+            </tr>
+                </tbody>
+            </table>
+            <h:form id="mainTable">
+                <p:commandLink actionListener="#{readingPageManagedBean.selectAll}" 
+                               value="I've read it all!"
+                               update=":mainTable:tables"
+                               styleClass="btn btn-large btn-primary"
+                               action="#{readingPageManagedBean.redirect(comicsController.comics)}"/>
+            <ui:repeat  id="tables"
+                        var="volume" 
+                        value="#{readingPageManagedBean.comicsController.comics.volumeList}">
+                            <p:dataTable  var="issue" 
+                                              value="#{volume.issueList}"
+                                              selection="#{readingPageManagedBean.selectedIssues}"
+                                              rowKey="#{issue.id}"
+                                              style="text-align: right;"
+                                              rowSelectMode="add">
+                                <p:ajax event="toggleSelect"
+                                        listener="#{readingPageManagedBean.onHeaderCheckboxClick}"
+                                        update=":mainTable:tables">
+                                    <f:setPropertyActionListener target="#{readingPageManagedBean.selectedVolume}"
+                                                                 value="#{volume}"/>
+                                </p:ajax>
+                                <p:ajax event="rowSelectCheckbox" 
+                                        listener="#{readingPageManagedBean.onRowSelect}"
+                                        update=":mainTable:tables"/>
+                                <p:ajax event="rowUnselectCheckbox" 
+                                        listener="#{readingPageManagedBean.onRowUnselect}"
+                                        update=":mainTable:tables"/>
+                                <p:column selectionMode="multiple" style="width:5%">
+                                </p:column>
+                                <p:column>                                        
+                                    <f:facet name="header">
+                                        <h:outputText value="#{volume.name}"/>
+                                    </f:facet>
+                                            <h:outputText value="#{issue.name}"/>
+                                    </p:column>
+                                </p:dataTable>
+            </ui:repeat>
+            </h:form>      
+                </center>
+            </ui:define>
+        </ui:composition>
