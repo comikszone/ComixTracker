@@ -15,7 +15,6 @@ and open the template in the editor.
     <ui:define name="articleContent">
         <ui:insert name="init"/>  
         
-        <div class="container-fluid">
         <p:panelGrid>
                 <p:row>
                     <p:column colspan="1">
@@ -35,8 +34,7 @@ and open the template in the editor.
             </p:row>
         </p:panelGrid>
         <center>
-            <ui:insert name ="content"/>
+        <ui:insert name ="content"/>
         </center>
-        </div>
     </ui:define>
 </ui:composition>

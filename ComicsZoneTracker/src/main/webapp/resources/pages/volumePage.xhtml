@@ -17,18 +17,22 @@ and open the template in the editor.
             <f:viewParam name="id" value="#{volumeController.volumeId}"/>
         </f:metadata>
         #{volumeController.init()}
+        #{comicsPageManagedBean.setComicsId(volumeController.volume.comicsId.id)}
+        #{comicsPageManagedBean.init()}
         #{ratingController.setType(volumeController.volume.contentType)}
         #{ratingController.setContentId(volumeController.volumeId)}
         <ol class="breadcrumb">
             <li><a href="/resources/templates/index.jsf">Home</a></li>
             <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
-            <li><p:link href="#" value="Comics name"/></li>
+            <li><p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
+                        value="#{comicsPageManagedBean.comicsController.comics.name}"/></li>
             <li class="active">#{volumeController.volume.name}</li>
         </ol>
     </ui:define>
     <ui:define name="image">
         <p:graphicImage value="#{volumeController.volume.image}"
-                        styleClass="content-image"/>
+                        styleClass="content-image"
+                        style="width:20vw;"/>
     </ui:define>
     <ui:define name="name">
         <h:outputText value="#{volumeController.volume.name}" 
@@ -40,7 +44,7 @@ and open the template in the editor.
     <ui:define name ="rating">
         
         
-        <p:panelGrid style="width:80%;">
+        <p:panelGrid>
             <p:row>
                     <p:column colspan="2">
                         <c:choose>
@@ -72,7 +76,6 @@ and open the template in the editor.
     
     <ui:define name="content">
         <center>
-        <div style="width:75% !important">
             <p:dataGrid var="issue"
                         value="#{volumeController.volume.issueList}"
                         columns="5"
@@ -95,7 +98,6 @@ and open the template in the editor.
                     </p:row>
                 </h:panelGrid>                               
             </p:dataGrid>
-            </div>
         </center>
         <div>
             <ui:include src="/resources/templates/comments/comments.xhtml">

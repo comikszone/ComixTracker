@@ -21,6 +21,13 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class CharacterController implements Serializable {
 
+    @EJB
+    private CharacterFacade characterFacade;
+    private Integer characterId;
+    private Character character;
+    @ManagedProperty(value = "#{ctrl}")
+    private CardCtrl ctrl;
+    
     public CardCtrl getCtrl() {
         return ctrl;
     }
@@ -32,12 +39,6 @@ public class CharacterController implements Serializable {
     public void setCtrl(CardCtrl ctrl) {
         this.ctrl = ctrl;
     }
-    @EJB
-    public CharacterFacade characterFacade;
-    public Integer characterId;
-    public Character character;
-    @ManagedProperty(value = "#{ctrl}")
-    public CardCtrl ctrl;
 
     public Integer getCharacterId() {
         return characterId;

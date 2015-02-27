@@ -27,7 +27,8 @@
                     </p:column>
                 </p:autoComplete>
                 <p:selectOneMenu id="console" value="#{autoCompleteView.category}"
-                                 styleClass="nav navbar-nav">
+                                 styleClass="nav navbar-nav"
+                                 style="width:120px">
                     <p:ajax listener="#{autoCompleteView.onCategoryChange}"/>
                     <f:selectItem itemLabel="Comics" itemValue="Comics" />
                     <f:selectItem itemLabel="Characters" itemValue="Characters" />

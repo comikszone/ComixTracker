@@ -22,19 +22,20 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="image">
         <p:graphicImage value="#{issueController.issue.image}"
-                                        styleClass="content-image"
-                                        height="300"
-                                        width="300"/>
+                        styleClass="content-image"
+                        style="width:20vw;"/>
     </ui:define>
     <ui:define name="card">
-        <h:dataTable style="margin-left: auto; margin-right: auto;" value="#{issueController.ctrl.LHS()}" var="t">
+        <div class="table-responsive">
+        <h:dataTable value="#{issueController.ctrl.LHS()}" var="t" styleClass="table" style="width:20vw; margin-left: auto; margin-right: auto; margin-top: 2%">
             <h:column>
-                <h:outputText value="#{t} : "/>
+                <h:outputText value="#{t} : " style="float: left;font-weight: 700"/>
             </h:column>
             <h:column>
-                <h:outputText value="#{issueController.ctrl.RHS(t)}"/>
+                <h:outputText value="#{issueController.ctrl.RHS(t)}" style="float: left;"/>
             </h:column>
         </h:dataTable>
+        </div>
     </ui:define>
         
     <ui:define name="name">
@@ -69,42 +70,35 @@ and open the template in the editor.
                         </c:choose>
     </ui:define>
     <ui:define name="content">
-        <div style="width:75% !important">
-            <p:accordionPanel  
-                                      multiple="true"
-                                      id="issues"
-                                      dynamic="true"
-                                      >
-                <p:tab>
-                    <f:facet name="title">
-                        <h:outputText value="Characters"/>
-                            </f:facet>
-            <p:dataGrid var="char"
-                        value="#{issueController.issue.characterList}"
-                        columns="5"
-                        layout="grid"
-                        paginator="true"
-                        rows="10">
-                <h:panelGrid columns="1" styleClass="border:none">
-                    <p:row>
-                        <h:form>
-                            <h:link outcome="#{characterController.redirect(char)}">
-                                <p:graphicImage value="#{char.image}"
-                                                styleClass="content-image"/>
-                            </h:link>
-                        </h:form>
-                    </p:row>
-                    <p:row>
-                        <p:link value="#{char.name}" 
-                                style="height:auto; width:60%;"
-                                outcome="#{characterController.redirect(char)}"/>
-                    </p:row>
-                </h:panelGrid>
-                
-            </p:dataGrid>
-                    </p:tab>
-                </p:accordionPanel>
-            </div>
+        <p:accordionPanel multiple="true" id="issues" dynamic="true">
+            <p:tab>
+                <f:facet name="title">
+                    <h:outputText value="Characters"/>
+                </f:facet>
+                <p:dataGrid var="char"
+                            value="#{issueController.issue.characterList}"
+                            columns="5"
+                            layout="grid"
+                            paginator="true"
+                            rows="10">
+                    <h:panelGrid columns="1" style="border:none">
+                        <p:row>
+                            <h:form>
+                                <h:link outcome="#{characterController.redirect(char)}">
+                                    <p:graphicImage value="#{char.image}"
+                                                    styleClass="content-image"/>
+                                </h:link>
+                            </h:form>
+                        </p:row>
+                        <p:row>
+                            <p:link value="#{char.name}" 
+                                    style="height:auto; width:60%;"
+                                    outcome="#{characterController.redirect(char)}"/>
+                        </p:row>
+                    </h:panelGrid>               
+                </p:dataGrid>
+            </p:tab>
+        </p:accordionPanel>
         <div>
             <ui:include src="/resources/templates/comments/comments.xhtml">
                 <ui:param name="type" value="issue"/>

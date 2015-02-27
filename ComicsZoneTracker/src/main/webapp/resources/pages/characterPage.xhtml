@@ -19,11 +19,12 @@ and open the template in the editor.
     <ui:define name="image">
         <p:graphicImage value="#{characterController.character.image}"
                         styleClass="content-image"
-                        height="300"
-                        width="300"/>
+                        style="width:20vw;"/>
     </ui:define>
     <ui:define name="card">
-        <h:dataTable style="margin-left: auto; margin-right: auto;" value="#{characterController.ctrl.LHS()}" var="t">
+        <br/>
+        <div class="table-responsive">
+        <h:dataTable style="width:20vw; margin-left: auto; margin-right: auto; margin-top: 2%" value="#{characterController.ctrl.LHS()}" var="t" styleClass="table">
                             <h:column>
                                 <h:outputText value="#{t} : "/>
                             </h:column>
@@ -31,6 +32,7 @@ and open the template in the editor.
                                 <h:outputText value="#{characterController.ctrl.RHS(t)}"/>
                             </h:column>
                         </h:dataTable>
+        </div>
     </ui:define>
     <ui:define name="name">
         <h:outputText value="#{characterController.character.name}" 
