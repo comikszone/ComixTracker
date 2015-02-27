@@ -43,6 +43,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Volume.findByRating", query = "SELECT v FROM Volume v WHERE v.rating = :rating"),
     @NamedQuery(name = "Volume.findByVotes", query = "SELECT v FROM Volume v WHERE v.votes = :votes"),
     @NamedQuery(name = "Volume.findByChecking", query = "SELECT v FROM Volume v WHERE v.isChecked = :isChecked ORDER BY v.volumeId"),
+    @NamedQuery(name = "Comics.findBySource", query = "SELECT c FROM Comics c WHERE c.source = :source"),
     //for news
     @NamedQuery(name = "Volume.getVolumesWithNewCommentsAfterUser", query = "SELECT DISTINCT v FROM Volume v INNER JOIN v.commentsList vl WHERE vl.commentTime > (SELECT MAX(vvl.commentTime) FROM  Volume vv INNER JOIN vv.commentsList vvl WHERE vv.volumeId = v.volumeId AND vvl.userId = :userId)"),
     @NamedQuery(name = "Volume.getMaxCommentDateForUser", query = "SELECT MAX(vl.commentTime) FROM  Volume v INNER JOIN v.commentsList vl WHERE v.volumeId = :Id AND vl.userId = :userId"), 
@@ -77,6 +78,8 @@ public class Volume implements Serializable, CommentsContainer, Content {
     private Integer votes;
     @Column(name = "is_checked")
     private Boolean isChecked;
+    @Column(name = "source")
+    private String source;
     @JoinColumn(name = "comics_id", referencedColumnName = "comics_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Comics comicsId;
@@ -183,6 +186,16 @@ public class Volume implements Serializable, CommentsContainer, Content {
     @Override
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
+    }
+    
+    @Override
+    public String getSource() {
+        return source;
+    }
+    
+    @Override
+    public void setSource(String source) {
+        this.source = source;
     }
 
     @Override

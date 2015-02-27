@@ -96,6 +96,7 @@ td {
     border-width: 1px;
     box-shadow: 0.4em 0.4em 0px 0px rgba(0,0,0,0.25);
     max-width: 100%;
+    margin: 0 auto 0 auto;
 }
 
 .content-info {
@@ -150,6 +151,18 @@ td {
     width: 25px !important;
 }
 
+.add-content-page-inputs, .add-content-page-labels {
+    float: left;
+}
+
+.add-content-panel {
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+.add-content-panel tr, .add-content-panel tr {
+    border: white;
+}
 //Maybe, it'll help us sometimes'
 /*.ui-widget {
   font-size: 95% !important;

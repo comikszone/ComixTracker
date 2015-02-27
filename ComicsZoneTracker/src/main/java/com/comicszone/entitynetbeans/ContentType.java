@@ -10,5 +10,5 @@ package com.comicszone.entitynetbeans;
  * @author alexander
  */
 public enum ContentType {
-    Comics, Issue, Volume
+    Comics, Issue, Volume, Character
 }

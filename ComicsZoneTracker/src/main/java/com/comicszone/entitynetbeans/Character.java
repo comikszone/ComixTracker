@@ -57,6 +57,17 @@ public class Character implements Serializable,AjaxComicsCharacter {
     @Column(name = "real_name")
     private String realName;
     @Size(max = 2147483647)
+    @Column(name = "card")
+    private String card;
+
+    public String getCard() {
+        return card;
+    }
+
+    public void setCard(String card) {
+        this.card = card;
+    }
+    @Size(max = 2147483647)
     @Column(name = "description")
     private String description;
     @Size(max = 2147483647)

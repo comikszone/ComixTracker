@@ -28,6 +28,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -48,8 +50,11 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
     @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
     @NamedQuery(name = "Comics.findByNameStartsWithAscId", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name ORDER BY c.Id"),
-    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
+    @NamedQuery(name = "Comics.getBestComicsWithImages", 
+            query = "SELECT c FROM Comics c WHERE c.image !='/resources/images/image_not_found.png' ORDER BY c.rating DESC"),
     @NamedQuery(name = "Comics.findByChecking", query = "SELECT c FROM Comics c WHERE c.isChecked = :isChecked ORDER BY c.Id"),
+    @NamedQuery(name = "Comics.findBySource", query = "SELECT c FROM Comics c WHERE c.source = :source"),
+    
     //for ComicsCatalogue
     @NamedQuery(name = "Comics.count", 
             query = "SELECT COUNT(c) FROM Comics c"),
@@ -62,13 +67,11 @@ import javax.validation.constraints.Size;
             query = "SELECT COUNT(c) FROM Comics c WHERE c.rating >= :rating"),
 
     //for news
-    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"), 
+    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !='/resources/images/image_not_found.png'"), 
     @NamedQuery(name = "Comics.getComicsWithNewCommentsAfterUser", query = "SELECT DISTINCT c FROM Comics c INNER JOIN c.commentsList cl WHERE cl.commentTime > (SELECT MAX(ccl.commentTime) FROM  Comics cc INNER JOIN cc.commentsList ccl WHERE cc.Id = c.Id AND ccl.userId = :userId)"),
     @NamedQuery(name = "Comics.getMaxCommentDateForUser", query = "SELECT MAX(cl.commentTime) FROM  Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.userId = :userId"), 
     @NamedQuery(name = "Comics.getCountOfNewCommentsForUser", query = "SELECT COUNT(cl.commentId) FROM Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.commentTime > (SELECT MAX(ccl.commentTime) FROM  Comics cc INNER JOIN cc.commentsList ccl WHERE cc.Id = c.Id AND ccl.userId = :userId)"),
     @NamedQuery(name = "Comics.getCommentsAfterDateToComics", query = "SELECT DISTINCT cl FROM Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.commentTime > :date ORDER BY cl.commentTime"),
-
-    @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !=''"),
     @NamedQuery(name = "Comics.findByUserInProgress", 
             query = "SELECT DISTINCT c FROM Comics c "
                      + "JOIN c.volumeList v "
@@ -89,6 +92,14 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Comics.getCommentNewsForUserAndComics", query = "SELECT DISTINCT n FROM Comics c INNER JOIN c.commentsNews n WHERE c = :comics AND n.userId = :user")})
 
 public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "rating")
+    private float rating;
+    @Column(name = "is_read")
+    private Boolean isRead;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "comics", fetch = FetchType.LAZY)
+    private List<UserTrackingStatus> userTrackingStatusList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -108,9 +119,6 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     @Size(max = 2147483647)
     @Column(name = "image")
     private String image;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "rating")
-    private Float rating;
     @Column(name = "votes")
     private Integer votes;
     @Column(name = "start_date")
@@ -124,6 +132,9 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     private Date inProgress;
     @Column(name = "is_checked")
     private Boolean isChecked;
+    @Column(name = "source")
+    private String source;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comicsId", fetch = FetchType.LAZY)
     private List<Volume> volumeList;
     @OneToMany(mappedBy = "comicsId", fetch = FetchType.LAZY)
@@ -282,7 +293,17 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
     }
-
+    
+    @Override
+    public String getSource() {
+        return source;
+    }
+    
+    @Override
+    public void setSource(String source) {
+        this.source = source;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -318,5 +339,23 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     public String getExtraInfo() {
         return "Publisher: " + publisherId.getName() + "\n" + 
                 "Imprint: " + imprintId.getName();
+    }
+
+    public Boolean getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<UserTrackingStatus> getUserTrackingStatusList() {
+        return userTrackingStatusList;
+    }
+
+    public void setUserTrackingStatusList(List<UserTrackingStatus> userTrackingStatusList) {
+        this.userTrackingStatusList = userTrackingStatusList;
     }
 }
