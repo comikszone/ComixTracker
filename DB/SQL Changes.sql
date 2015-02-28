@@ -26,9 +26,6 @@ ALTER TABLE character
 ALTER TABLE character
   ADD CONSTRAINT created_by FOREIGN KEY ( publisher_id ) REFERENCES publisher (publisher_id) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-alter table comics add column is_checked boolean;
-alter table comics add column is_read boolean;
-alter table comics add column source varchar(20);
 
 ALTER TABLE comics
   ADD COLUMN is_checked boolean DEFAULT FALSE;
