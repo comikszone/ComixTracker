@@ -28,7 +28,8 @@ public class CardCtrl implements Serializable {
     }
     
     public void init(){
-        if (card.has("name")) {
+        if (card.has("name") && card.getString(name) != "Writers") {
+            card.put("Name", name);
             name = card.getString("name");
             card.remove("name");
         }
