@@ -5,8 +5,8 @@
  */
 package com.comicszone.managedbeans.block;
 
-import com.comicszone.dao.userdao.UserBlockFacade;
-import com.comicszone.entitynetbeans.Users;
+import com.comicszone.dao.user.UserBlockFacade;
+import com.comicszone.entity.Users;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;

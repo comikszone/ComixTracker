@@ -15,51 +15,51 @@ and open the template in the editor.
                 template="/resources/templates/authorized/authorized.xhtml">          
     <ui:define name="articleContent">
         <f:metadata>
-            <f:viewParam name="id" value="#{readingPageManagedBean.comicsController.comicsId}"/>
+            <f:viewParam name="id" value="#{trackingController.comicsController.comicsId}"/>
         </f:metadata>
-        #{readingPageManagedBean.comicsController.initComics()}
-        #{readingPageManagedBean.init()}
+        #{trackingController.comicsController.initComics()}
+        #{trackingController.init()}
         <center>
             <table class="table">
                 <tbody>
             <tr>
                 <td class="col-lg-6">
-                    <p:graphicImage value="#{readingPageManagedBean.comicsController.comics.image}"
+                    <p:graphicImage value="#{trackingController.comicsController.comics.image}"
                                     styleClass="content-image"/>
                     </td>
                     <td>
-                        <h1  class="content-info">#{readingPageManagedBean.comicsController.comics.name} 
+                        <h1  class="content-info">#{trackingController.comicsController.comics.name} 
                                       </h1>
                     </td>
             </tr>
                 </tbody>
             </table>
             <h:form id="mainTable">
-                <p:commandLink actionListener="#{readingPageManagedBean.selectAll}" 
+                <p:commandLink actionListener="#{trackingController.selectAll}" 
                                value="I've read it all!"
                                update=":mainTable:tables"
                                styleClass="btn btn-large btn-primary"
-                               action="#{readingPageManagedBean.redirect(comicsController.comics)}"/>
+                               action="#{trackingController.redirect(comicsController.comics)}"/>
             <ui:repeat  id="tables"
                         var="volume" 
-                        value="#{readingPageManagedBean.comicsController.comics.volumeList}">
+                        value="#{trackingController.comicsController.comics.volumeList}">
                             <p:dataTable  var="issue" 
                                               value="#{volume.issueList}"
-                                              selection="#{readingPageManagedBean.selectedIssues}"
+                                              selection="#{trackingController.selectedIssues}"
                                               rowKey="#{issue.id}"
                                               style="text-align: right;"
                                               rowSelectMode="add">
                                 <p:ajax event="toggleSelect"
-                                        listener="#{readingPageManagedBean.onHeaderCheckboxClick}"
+                                        listener="#{trackingController.onHeaderCheckboxClick}"
                                         update=":mainTable:tables">
-                                    <f:setPropertyActionListener target="#{readingPageManagedBean.selectedVolume}"
+                                    <f:setPropertyActionListener target="#{trackingController.selectedVolume}"
                                                                  value="#{volume}"/>
                                 </p:ajax>
                                 <p:ajax event="rowSelectCheckbox" 
-                                        listener="#{readingPageManagedBean.onRowSelect}"
+                                        listener="#{trackingController.onRowSelect}"
                                         update=":mainTable:tables"/>
                                 <p:ajax event="rowUnselectCheckbox" 
-                                        listener="#{readingPageManagedBean.onRowUnselect}"
+                                        listener="#{trackingController.onRowUnselect}"
                                         update=":mainTable:tables"/>
                                 <p:column selectionMode="multiple" style="width:5%">
                                 </p:column>

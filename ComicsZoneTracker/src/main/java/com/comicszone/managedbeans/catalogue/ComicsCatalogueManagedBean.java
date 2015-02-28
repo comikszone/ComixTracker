@@ -6,7 +6,7 @@
 package com.comicszone.managedbeans.catalogue;
 
 import com.comicszone.dao.CatalogueInterface;
-import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.entity.Comics;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;

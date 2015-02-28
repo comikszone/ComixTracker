@@ -1,9 +1,9 @@
 package com.comicszone.managedbeans.comments;
 
-import com.comicszone.dao.newsdao.CommentsNewsFacade;
-import com.comicszone.dao.commentsdao.CommentsFacade;
-import com.comicszone.dao.commentsdao.CommentsFacade.CommentToType;
-import com.comicszone.entitynetbeans.Comments;
+import com.comicszone.dao.news.CommentsNewsFacade;
+import com.comicszone.dao.comments.CommentsFacade;
+import com.comicszone.dao.comments.CommentsFacade.CommentToType;
+import com.comicszone.entity.Comments;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;

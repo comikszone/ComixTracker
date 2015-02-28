@@ -6,7 +6,7 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
-        <c:if test="#{userRoleManagedBean.redirectIfNotAdmin()}"/>
+        <c:if test="#{userRoleController.redirectIfNotAdmin()}"/>
         <p:panel header="Blocking / Unblocking users (search by nicknames)">
             <h:form id="blockUser">
                 <p:growl id="blockMessage" showDetail="true" life="1000"/>

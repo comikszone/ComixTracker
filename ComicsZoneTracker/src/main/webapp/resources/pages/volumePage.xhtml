@@ -48,7 +48,7 @@ and open the template in the editor.
             <p:row>
                     <p:column colspan="2">
                         <c:choose>
-                            <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                            <c:when test="#{userRoleController.isUserAuthorized()}">
                                 #{ratingController.init()}
                                 <h:form>
                                     <pf:rating  value="#{ratingController.ratingFacade.uvrating.rating}"
@@ -98,7 +98,7 @@ and open the template in the editor.
                     </p:row>
                 </h:panelGrid>                               
             </p:dataGrid>
-            <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+            <c:if test="#{userRoleController.isUserAuthorized()}">
                 <p:button value="Add new issue" 
                           outcome="/resources//templates/authorized/addContent.jsf" 
                           style="float: left">

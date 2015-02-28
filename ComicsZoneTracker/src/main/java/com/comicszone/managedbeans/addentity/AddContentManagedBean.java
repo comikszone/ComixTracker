@@ -5,8 +5,8 @@
  */
 package com.comicszone.managedbeans.addentity;
 
-import com.comicszone.dao.contentdao.ContentFacade;
-import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.dao.content.ContentFacade;
+import com.comicszone.entity.Comics;
 import java.io.Serializable;
 import java.util.Map;
 import javax.ejb.EJB;

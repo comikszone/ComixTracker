@@ -5,7 +5,8 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.dao.progress.ProgressInterface;
+import com.comicszone.entity.Comics;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -23,7 +24,7 @@ import org.primefaces.model.SortOrder;
 @LocalBean
 //@Path("/comics")
 //@Produces({"text/xml", "application/json"})
-public class ComicsFacade extends AbstractFacade<Comics> implements Finder,SlideshowInterface,CatalogueInterface,ProgressInterface{
+public class ComicsFacade extends AbstractFacade<Comics> implements Finder, SlideshowInterface, CatalogueInterface, ProgressInterface{
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 

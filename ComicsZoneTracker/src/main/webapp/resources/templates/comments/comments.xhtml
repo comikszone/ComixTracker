@@ -84,7 +84,7 @@
             type="button"/>
      </p:confirmDialog>
     
-    <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+    <c:if test="#{userRoleController.isUserAuthorized()}">
         <p:panel 
             id="commentAdder" 
             header="Your comment..." 

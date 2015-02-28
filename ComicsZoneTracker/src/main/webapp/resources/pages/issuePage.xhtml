@@ -47,7 +47,7 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="rating">
                         <c:choose>
-                            <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                            <c:when test="#{userRoleController.isUserAuthorized()}">
                                 #{ratingController.init()}
                                 <h:form>
                                     <pf:rating  value="#{ratingController.ratingFacade.uirating.rating}"

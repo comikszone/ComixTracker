@@ -5,7 +5,7 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.entitynetbeans.Volume;
+import com.comicszone.entity.Volume;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

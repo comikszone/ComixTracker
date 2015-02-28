@@ -6,8 +6,8 @@
 package com.comicszone.dao;
 
 //import com.netcracker.entity.Comics;
-import com.comicszone.entitynetbeans.AjaxComicsCharacter;
-import com.comicszone.entitynetbeans.Comics;
+import com.comicszone.entity.AjaxComicsCharacter;
+import com.comicszone.entity.Comics;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Local;

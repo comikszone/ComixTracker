@@ -21,7 +21,7 @@
                             </span>
                         </p:column>
                         <p:column>
-                            <p:inputText value="#{authorisationManagedBean.nickname}" class="input-sm" placeholder="Username"/>
+                            <p:inputText value="#{authorisationController.nickname}" class="input-sm" placeholder="Username"/>
                         </p:column> 
                     </div>
                 </p:row>
@@ -33,14 +33,14 @@
                             </span>
                         </p:column>
                         <p:column>
-                            <p:inputText type="password" value="#{authorisationManagedBean.password}" class="input-sm" placeholder="Password"/>
+                            <p:inputText type="password" value="#{authorisationController.password}" class="input-sm" placeholder="Password"/>
                         </p:column>
                     </div>
                 </p:row>
                 <p:row>
                     <p:column>
                         <p:commandButton
-                            action="#{authorisationManagedBean.doLogin()}" 
+                            action="#{authorisationController.doLogin()}" 
                             ajax="false" 
                             value="Login" 
                             class="btn btn-primary"/>

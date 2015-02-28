@@ -5,10 +5,10 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
-import com.comicszone.dao.userdao.UserRegistrationFacade;
-import com.comicszone.entitynetbeans.Users;
-import com.comicszone.managedbeans.userbeans.AuthorisationManagedBean;
-import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
+import com.comicszone.dao.user.UserRegistrationFacade;
+import com.comicszone.entity.Users;
+import com.comicszone.managedbeans.userbeans.AuthorisationController;
+import com.comicszone.managedbeans.userbeans.CurrentUserController;
 import com.comicszone.managedbeans.util.passwordcreators.IPasswordCreator;
 import com.comicszone.managedbeans.util.passwordcreators.SimplePasswordCreator;
 import com.comicszone.managedbeans.util.passwordcreators.UserAuthentification;
@@ -47,14 +47,14 @@ public abstract class SocialNetworkAuthorization implements Serializable {
 //    public abstract String createUserUrl();
     public abstract void buildUserUrl();
 
-    public void doRegistration(AuthorisationManagedBean mb) throws IOException, ParseException, ServletException {
+    public void doRegistration(AuthorisationController mb) throws IOException, ParseException, ServletException {
         IPasswordCreator passwordCreator = new SimplePasswordCreator();
         String password = passwordCreator.createPassword(PASSWORD_LENGTH);
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();        
         Users user = createUser();
         userRegistrationDao.socialNetworkRegistration(user, password);
         
-//        AuthorisationManagedBean mb = ((AuthorisationManagedBean) FacesContext
+//        AuthorisationController mb = ((AuthorisationController) FacesContext
 //                .getCurrentInstance()
 //                .getViewRoot()
 //                .getViewMap()

@@ -5,7 +5,7 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.entitynetbeans.Imprint;
+import com.comicszone.entity.Imprint;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

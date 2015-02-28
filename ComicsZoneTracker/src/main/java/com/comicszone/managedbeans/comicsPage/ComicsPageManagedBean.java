@@ -6,8 +6,8 @@
 package com.comicszone.managedbeans.comicsPage;
 
 import com.comicszone.dao.ComicsFacade;
-import com.comicszone.entitynetbeans.Content;
-import com.comicszone.entitynetbeans.ContentType;
+import com.comicszone.entity.Content;
+import com.comicszone.entity.ContentType;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
 import java.io.Serializable;
 import javax.ejb.EJB;

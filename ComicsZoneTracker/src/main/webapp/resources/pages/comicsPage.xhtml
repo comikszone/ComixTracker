@@ -41,7 +41,7 @@ and open the template in the editor.
             <ui:define name="rating"> 
                 <br/>
                 <c:choose>
-                                        <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                                        <c:when test="#{userRoleController.isUserAuthorized()}">
                                             #{ratingController.init()}
                                             <h:form>
                                                 <pf:rating  value="#{ratingController.ratingFacade.ucrating.rating}"
@@ -113,7 +113,7 @@ and open the template in the editor.
                             </p:button>
                         </p:tab>
                     </p:accordionPanel>
-                    <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+                    <c:if test="#{userRoleController.isUserAuthorized()}">
                         <p:button value="Add new volume" 
                                   outcome="/resources/templates/authorized/addContent.jsf">
                             <f:param name="type" 
