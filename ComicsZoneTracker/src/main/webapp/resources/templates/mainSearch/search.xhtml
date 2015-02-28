@@ -7,7 +7,7 @@
         <h:form role="form" styleClass="nav navbar-nav form-group">
             <h:panelGrid columns="2">
                 <p:autoComplete id="comicsPojo" 
-                                value="#{autoCompleteController.ajaxComicsCharacter}" 
+                                value="#{autoCompleteController.content}" 
                                 completeMethod="#{autoCompleteController.completeComics}"
                                 var="aj" 
                                 itemLabel="#{aj.name}"

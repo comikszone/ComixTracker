@@ -116,7 +116,7 @@ public class Uirating implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Uirating[ uiratingPK=" + uiratingPK + " ]";
+        return "com.comicszone.entity.Uirating[ uiratingPK=" + uiratingPK + " ]";
     }
     
 }

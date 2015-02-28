@@ -117,7 +117,7 @@ public class Publisher implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Publisher[ publisherId=" + publisherId + " ]";
+        return "com.comicszone.entity.Publisher[ publisherId=" + publisherId + " ]";
     }
     
 }

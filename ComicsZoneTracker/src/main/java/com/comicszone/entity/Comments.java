@@ -156,7 +156,7 @@ public class Comments implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Comments[ commentId=" + commentId + " ]";
+        return "com.comicszone.entity.Comments[ commentId=" + commentId + " ]";
     }
     
 }

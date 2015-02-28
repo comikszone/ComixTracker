@@ -6,13 +6,9 @@
 package com.comicszone.dao;
 
 //import com.netcracker.entity.Comics;
-import com.comicszone.entity.AjaxComicsCharacter;
-import com.comicszone.entity.Comics;
+import com.comicszone.entity.Content;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
 
 /**
  *
@@ -23,6 +19,6 @@ import javax.ejb.Stateless;
 //@Remote
 //@PostConstruct
 public interface Finder {
-    public List<? extends AjaxComicsCharacter> findByNameStartsWith(String name);
-    public AjaxComicsCharacter find (Object id);
+    public List<? extends Content> findByNameStartsWith(String name);
+    public Content find (Object id);
 }

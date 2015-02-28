@@ -79,7 +79,7 @@ public class UserGroupPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.UserGroupPK[ gname=" + gname + ", nickname=" + nickname + " ]";
+        return "com.comicszone.entity.UserGroupPK[ gname=" + gname + ", nickname=" + nickname + " ]";
     }
     
 }

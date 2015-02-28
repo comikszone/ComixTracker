@@ -149,7 +149,7 @@ public class UserCommentsNews implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.UserCommentsNews[ id=" + id + " ]";
+        return "com.comicszone.entity.UserCommentsNews[ id=" + id + " ]";
     }
     
 }

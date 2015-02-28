@@ -5,9 +5,6 @@
  */
 package com.comicszone.managedbeans.rating;
 
-import com.comicszone.dao.ComicsFacade;
-import com.comicszone.dao.IssueFacade;
-import com.comicszone.dao.VolumeFacade;
 import com.comicszone.dao.content.ContentFacade;
 import com.comicszone.dao.rating.RatingInterface;
 import com.comicszone.dao.user.UserDataFacade;
@@ -16,7 +13,6 @@ import com.comicszone.entity.ContentType;
 import com.comicszone.entity.Users;
 import java.io.Serializable;
 import java.security.Principal;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -44,7 +40,6 @@ public class RatingController implements Serializable {
     private Users currentUser;
     private Integer contentId;
     
-    @PostConstruct
     public void init() {
         Principal prin = FacesContext.getCurrentInstance()
                 .getExternalContext().getUserPrincipal();

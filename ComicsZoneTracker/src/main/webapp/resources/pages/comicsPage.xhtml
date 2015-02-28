@@ -44,7 +44,7 @@ and open the template in the editor.
                                         <c:when test="#{userRoleController.isUserAuthorized()}">
                                             #{ratingController.init()}
                                             <h:form>
-                                                <pf:rating  value="#{ratingController.ratingFacade.ucrating.rating}"
+                                                <pf:rating  value="#{ratingController.ratingFacade.contentRating}"
                                                             totalStars="5"
                                                             step="1">
                                                     <f:ajax event="change" listener="#{ratingController.rate}"/>

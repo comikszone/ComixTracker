@@ -40,7 +40,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Character.findByImage", query = "SELECT c FROM Character c WHERE c.image = :image"),
     @NamedQuery(name = "Character.findByNameStartsWith", query = "SELECT c FROM Character c WHERE  LOWER(c.name) LIKE :name"),
     @NamedQuery(name = "Character.findByNameStartsWithAscId", query = "SELECT c FROM Character c WHERE  LOWER(c.name) LIKE :name ORDER BY c.Id")})
-public class Character implements Serializable,AjaxComicsCharacter {
+public class Character implements Serializable, Content {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "character_char_id_seq")
@@ -92,6 +92,8 @@ public class Character implements Serializable,AjaxComicsCharacter {
     @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Publisher publisherId;
+    
+    private static final ContentType CONTENT_TYPE = ContentType.Character;
 
 
     public Character() {
@@ -207,13 +209,50 @@ public class Character implements Serializable,AjaxComicsCharacter {
         }
         return true;
     }
-    
-
-   
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Character[ charId=" + Id + " ]";
+        return "com.comicszone.entity.Character[ charId=" + Id + " ]";
+    }
+
+    @Override
+    public ContentType getContentType() {
+        return CONTENT_TYPE;
+    }
+
+    @Override
+    public Float getRating() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setRating(Float rating) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getExtraInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Boolean getIsChecked() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setIsChecked(Boolean isChecked) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSource() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSource(String source) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

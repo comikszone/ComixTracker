@@ -10,11 +10,11 @@ package com.comicszone.managedbeans.mainsearch.autocomplete;
  * @author ArsenyPC
  */
 
-import com.comicszone.entity.AjaxComicsCharacter;
 import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.Finder;
-import com.comicszone.entity.Comics;
+import com.comicszone.entity.Content;
+import com.comicszone.entity.ContentType;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -33,7 +33,7 @@ public class AutoCompleteController implements Serializable {
     private ComicsFacade comicsFacade;
     @EJB
     private CharacterFacade characterFacade;
-    private AjaxComicsCharacter ajaxComicsCharacter;
+    private Content content;
     private String category;
     private Finder finder;
 
@@ -42,12 +42,12 @@ public class AutoCompleteController implements Serializable {
         finder=comicsFacade;
     }
     
-    public AjaxComicsCharacter getAjaxComicsCharacter() {
-        return ajaxComicsCharacter;
+    public Content getContent() {
+        return content;
     }
 
-    public void setAjaxComicsCharacter(AjaxComicsCharacter ajaxComicsCharacter) {
-        this.ajaxComicsCharacter = ajaxComicsCharacter;
+    public void setContent(Content content) {
+        this.content = content;
     }
    
     public void onCategoryChange()
@@ -71,16 +71,16 @@ public class AutoCompleteController implements Serializable {
         context.redirect(url);
     }
      
-    public List<AjaxComicsCharacter> completeComics(String query) {
-        List<AjaxComicsCharacter> ajaxComicsCharacters=(List<AjaxComicsCharacter>) finder.findByNameStartsWith(query.toLowerCase());
+    public List<Content> completeComics(String query) {
+        List<Content> contents=(List<Content>) finder.findByNameStartsWith(query.toLowerCase());
         FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put("finder", finder);
-        return ajaxComicsCharacters;
+        return contents;
     }
     public String redirect()
     {
-        if (ajaxComicsCharacter instanceof Comics)
-            return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
+        if (content.getContentType().equals(ContentType.Comics))
+            return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + content.getId();
         else
-            return "/resources/pages/characterPage.jsf?faces-redirect=true&id=" + ajaxComicsCharacter.getId();
+            return "/resources/pages/characterPage.jsf?faces-redirect=true&id=" + content.getId();
     }
 }

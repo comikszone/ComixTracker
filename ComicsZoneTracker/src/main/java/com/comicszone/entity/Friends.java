@@ -40,23 +40,23 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Friends.findFriends",
             query = "SELECT f FROM Friends f "
                     + "WHERE (f.user1 = :user OR f.user2 = :user) "
-                    + "AND f.status = com.comicszone.entitynetbeans.FriendshipStatus.friends"),
+                    + "AND f.status = com.comicszone.entity.FriendshipStatus.friends"),
     @NamedQuery(name = "Friends.findFollowers",
             query = "SELECT f FROM Friends f "
                     + "WHERE f.user1 = :user "
-                    + "AND (f.status = com.comicszone.entitynetbeans.FriendshipStatus.user2_subscribed "
-                    + "OR f.status = com.comicszone.entitynetbeans.FriendshipStatus.user1_deleted_user2)"
+                    + "AND (f.status = com.comicszone.entity.FriendshipStatus.user2_subscribed "
+                    + "OR f.status = com.comicszone.entity.FriendshipStatus.user1_deleted_user2)"
                     + "OR f.user2 = :user "
-                    + "AND (f.status = com.comicszone.entitynetbeans.FriendshipStatus.user1_subscribed "
-                    + "OR f.status = com.comicszone.entitynetbeans.FriendshipStatus.user2_deleted_user1)"),
+                    + "AND (f.status = com.comicszone.entity.FriendshipStatus.user1_subscribed "
+                    + "OR f.status = com.comicszone.entity.FriendshipStatus.user2_deleted_user1)"),
     @NamedQuery(name = "Friends.findUnconfirmedFriends", 
             query = "SELECT f FROM Friends f WHERE "
                     + "f.user1 = :user "
-                    + "AND (f.status = com.comicszone.entitynetbeans.FriendshipStatus.user1_subscribed "
-                    + "OR f.status = com.comicszone.entitynetbeans.FriendshipStatus.user2_deleted_user1)"
+                    + "AND (f.status = com.comicszone.entity.FriendshipStatus.user1_subscribed "
+                    + "OR f.status = com.comicszone.entity.FriendshipStatus.user2_deleted_user1)"
                     + "OR f.user2 = :user "
-                    + "AND (f.status = com.comicszone.entitynetbeans.FriendshipStatus.user2_subscribed "
-                    + "OR f.status = com.comicszone.entitynetbeans.FriendshipStatus.user1_deleted_user2)"),
+                    + "AND (f.status = com.comicszone.entity.FriendshipStatus.user2_subscribed "
+                    + "OR f.status = com.comicszone.entity.FriendshipStatus.user1_deleted_user2)"),
 })
 /*@NamedNativeQueries({
     @NamedNativeQuery(name = "Friends.findFriends1", 

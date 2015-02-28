@@ -326,7 +326,7 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Comics[ comicsId=" + Id + " ]";
+        return "com.comicszone.entity.Comics[ comicsId=" + Id + " ]";
     }
 
     @Override

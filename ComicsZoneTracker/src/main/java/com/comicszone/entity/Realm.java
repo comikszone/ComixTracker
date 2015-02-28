@@ -112,7 +112,7 @@ public class Realm implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Realm[ realmId=" + realmId + " ]";
+        return "com.comicszone.entity.Realm[ realmId=" + realmId + " ]";
     }
     
 }

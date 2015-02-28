@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.comicszone.managedbeans.recovery_password;
+package com.comicszone.managedbeans.password_recovery;
 
 import com.comicszone.dao.user.UserDataFacade;
 import com.comicszone.dao.util.encryption.IPasswordEncryptor;

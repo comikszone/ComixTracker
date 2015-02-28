@@ -76,7 +76,7 @@ public class UcratingPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.UcratingPK[ userId=" + userId + ", comicsId=" + comicsId + " ]";
+        return "com.comicszone.entity.UcratingPK[ userId=" + userId + ", comicsId=" + comicsId + " ]";
     }
     
 }

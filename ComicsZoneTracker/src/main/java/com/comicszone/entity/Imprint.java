@@ -106,7 +106,7 @@ public class Imprint implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Imprint[ imprintId=" + imprintId + " ]";
+        return "com.comicszone.entity.Imprint[ imprintId=" + imprintId + " ]";
     }
     
 }

@@ -76,7 +76,7 @@ public class UserTrackingStatusPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.UserTrackingStatusPK[ userId=" + userId + ", comicsId=" + comicsId + " ]";
+        return "com.comicszone.entity.UserTrackingStatusPK[ userId=" + userId + ", comicsId=" + comicsId + " ]";
     }
     
 }

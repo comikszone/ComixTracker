@@ -103,7 +103,7 @@ public class UserFriendsNews implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.UserFriendsNews[ newsId=" + newsId + " ]";
+        return "com.comicszone.entity.UserFriendsNews[ newsId=" + newsId + " ]";
     }
 
     public Users getUserId() {

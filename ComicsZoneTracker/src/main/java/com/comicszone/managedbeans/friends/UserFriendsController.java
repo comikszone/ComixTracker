@@ -67,7 +67,7 @@ public class UserFriendsController implements Serializable {
                     .getCurrentInstance()
                     .getExternalContext()
                     .getSessionMap()
-                    .get("currentUserManagedBean"))
+                    .get("currentUserController"))
                     .getCurrentUser()
                     .clone();
             friends = friendsFacade.getFriends(currentUser);

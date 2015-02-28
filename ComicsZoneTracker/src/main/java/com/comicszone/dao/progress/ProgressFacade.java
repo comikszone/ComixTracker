@@ -29,13 +29,10 @@ import org.json.simple.JSONArray;
  * @author ajpyatakov
  */
 
-@Stateless
+@Stateless(name="progressFacade")
 @LocalBean
 @Path("/progress")
 public class ProgressFacade extends AbstractFacade<Users> implements ProgressInterface {
-    
-    @EJB
-    private UserDataFacade usersFacade;
     
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;

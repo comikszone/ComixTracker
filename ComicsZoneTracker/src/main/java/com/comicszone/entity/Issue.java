@@ -279,7 +279,7 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Issue[ issueId=" + Id + " ]";
+        return "com.comicszone.entity.Issue[ issueId=" + Id + " ]";
     }
 
     @Override

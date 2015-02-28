@@ -4,7 +4,7 @@ import com.comicszone.dao.util.encryption.IPasswordEncryptor;
 import com.comicszone.dao.util.encryption.SHA256Encryptor;
 import com.comicszone.dao.util.encryption.SHA256SimpleSaltedEncryptor;
 import com.comicszone.entity.Users;
-import com.comicszone.managedbeans.recovery_password.SmtpMessageSender;
+import com.comicszone.managedbeans.password_recovery.SmtpMessageSender;
 import com.comicszone.managedbeans.util.passwordcreators.IPasswordCreator;
 import com.comicszone.managedbeans.util.passwordcreators.SimplePasswordCreator;
 import java.io.IOException;

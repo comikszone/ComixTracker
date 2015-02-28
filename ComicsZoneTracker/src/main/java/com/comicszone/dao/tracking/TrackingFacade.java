@@ -29,7 +29,7 @@ import javax.ws.rs.core.SecurityContext;
  */
 @Stateless
 @Path("/reading")
-public class TrackingFacade {
+public class TrackingFacade implements TrackingInterface {
     @EJB
     private UserDataFacade userFacade;
     @EJB
@@ -54,6 +54,7 @@ public class TrackingFacade {
     /**
      * @return the issueFacade
      */
+    @Override
     public IssueFacade getIssueFacade() {
         return issueFacade;
     }
@@ -65,6 +66,7 @@ public class TrackingFacade {
         this.issueFacade = issueFacade;
     }
         
+    @Override
     public void markAsRead(Users user, Issue issueToMark) {
         user.getIssueList().add(issueToMark);
         getUserFacade().edit(user);
@@ -72,6 +74,7 @@ public class TrackingFacade {
         getIssueFacade().edit(issueToMark);
     }
     
+    @Override
     public void unMark(Users user, Issue issueToUnmark) {
         user.getIssueList().remove(issueToUnmark);
         issueToUnmark.getUsersList().remove(user);

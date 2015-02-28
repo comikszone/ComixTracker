@@ -230,7 +230,7 @@ public class Volume implements Serializable, CommentsContainer, Content {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Volume[ volumeId=" + volumeId + " ]";
+        return "com.comicszone.entity.Volume[ volumeId=" + volumeId + " ]";
     }
 
     @Override

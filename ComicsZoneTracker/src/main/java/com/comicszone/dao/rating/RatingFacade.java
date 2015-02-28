@@ -34,6 +34,9 @@ public class RatingFacade implements RatingInterface {
     @EJB
     private ContentFacade contentFacade;
     
+    private Float contentRating;
+    
+    @Override
     public void init(Integer userId, Integer contentId, ContentType type) {
         switch(type) {
             case Comics:
@@ -43,6 +46,7 @@ public class RatingFacade implements RatingInterface {
                     ucrating.setRating(0f);
                     ucratingFacade.create(ucrating);
                 }
+                contentRating = ucrating.getRating();
                 break;
             case Volume:
                 uvrating = uvratingFacade.findByUserAndVolume(userId, contentId);
@@ -51,6 +55,7 @@ public class RatingFacade implements RatingInterface {
                     uvrating.setRating(0f);
                     uvratingFacade.create(uvrating);
                 }
+                contentRating = uvrating.getRating();
                 break;
             case Issue:
                 uirating = uiratingFacade.findByUserAndIssue(userId, contentId);
@@ -59,6 +64,7 @@ public class RatingFacade implements RatingInterface {
                     uirating.setRating(0f);
                     uiratingFacade.create(uirating);
                 }
+                contentRating = uirating.getRating();
                 break;
         }
     }
@@ -95,6 +101,16 @@ public class RatingFacade implements RatingInterface {
                 return uiratingFacade.getAverageRating(content.getId());
         }
         return 0d;
+    }
+    
+    @Override
+    public Float getContentRating() {
+        return contentRating;
+    }
+    
+    @Override
+    public void setContentRating(Float rating) {
+        this.contentRating = rating;
     }
      
     /**

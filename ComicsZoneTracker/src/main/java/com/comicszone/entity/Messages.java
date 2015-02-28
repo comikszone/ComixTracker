@@ -155,7 +155,7 @@ public class Messages implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Messages[ msgId=" + msgId + " ]";
+        return "com.comicszone.entity.Messages[ msgId=" + msgId + " ]";
     }
 
     public Boolean getShowToSender() {

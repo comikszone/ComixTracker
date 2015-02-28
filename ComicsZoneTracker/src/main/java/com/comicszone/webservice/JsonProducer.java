@@ -9,9 +9,9 @@ import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.VolumeFacade;
-import com.comicszone.entity.AjaxComicsCharacter;
 import com.comicszone.entity.Comics;
 import com.comicszone.entity.Character;
+import com.comicszone.entity.Content;
 import com.comicszone.entity.Imprint;
 import com.comicszone.entity.Issue;
 import com.comicszone.entity.Publisher;
@@ -54,10 +54,10 @@ public class JsonProducer {
     private CharacterFacade characterFacade;
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
-    private String getJsonListAjaxComicsCharacter(List<? extends AjaxComicsCharacter> listAj)
+    private String getJsonListAjaxComicsCharacter(List<? extends Content> listAj)
     {
         JSONArray array=new JSONArray();
-        for (AjaxComicsCharacter aj: listAj)
+        for (Content aj: listAj)
         {
             Map map=new HashMap();
             map.put("id", aj.getId());

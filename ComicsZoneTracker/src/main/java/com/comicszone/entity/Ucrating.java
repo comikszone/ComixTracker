@@ -118,7 +118,7 @@ public class Ucrating implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.Ucrating[ ucratingPK=" + ucratingPK + " ]";
+        return "com.comicszone.entity.Ucrating[ ucratingPK=" + ucratingPK + " ]";
     }
     
 }

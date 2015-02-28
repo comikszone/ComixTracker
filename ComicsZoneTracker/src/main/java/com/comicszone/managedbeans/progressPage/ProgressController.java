@@ -5,14 +5,12 @@
  */
 package com.comicszone.managedbeans.progressPage;
 
-import com.comicszone.dao.progress.ProgressFacade;
 import com.comicszone.dao.progress.ProgressInterface;
 import com.comicszone.entity.Comics;
 import com.comicszone.entity.Content;
 import com.comicszone.managedbeans.userbeans.CurrentUserController;
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -26,7 +24,7 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class ProgressController implements Serializable {
-    @EJB
+    @EJB(beanName="progressFacade")
     private ProgressInterface progressFacade;
     @ManagedProperty(value="#{currentUserManagedBean}")
     private CurrentUserController userManagedBean;
@@ -62,7 +60,6 @@ public class ProgressController implements Serializable {
         this.userManagedBean = userManagedBean;
     }
     
-    @PostConstruct
     public void init() {
         try {
             Integer userId = userManagedBean.getCurrentUser().getUserId();

@@ -97,7 +97,7 @@ public class MessagesController {
                     .getCurrentInstance()
                     .getExternalContext()
                     .getSessionMap()
-                    .get("currentUserManagedBean"))
+                    .get("currentUserController"))
                     .getCurrentUser()
                     .clone();
         } catch (CloneNotSupportedException ex) {

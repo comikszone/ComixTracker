@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.comicszone.managedbeans.recovery_password;
+package com.comicszone.managedbeans.password_recovery;
 
 import java.io.File;
 import java.io.IOException;

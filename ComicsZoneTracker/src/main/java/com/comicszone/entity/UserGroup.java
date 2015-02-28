@@ -82,7 +82,7 @@ public class UserGroup implements Serializable {
 
     @Override
     public String toString() {
-        return "com.comicszone.entitynetbeans.UserGroup[ userGroupPK=" + userGroupPK + " ]";
+        return "com.comicszone.entity.UserGroup[ userGroupPK=" + userGroupPK + " ]";
     }
     
 }
