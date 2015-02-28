@@ -28,11 +28,12 @@ public class CardCtrl implements Serializable {
     }
     
     public void init(){
-        if (card.has("name") && card.getString(name) != "Writers") {
+        if (card.has("name") && !card.getString("name").equals("Writers")) {
             card.put("Name", name);
             name = card.getString("name");
             card.remove("name");
-        }
+        } else if(card.has("name")) 
+            card.remove("name");
     }
 
     public void setName(String name) {
