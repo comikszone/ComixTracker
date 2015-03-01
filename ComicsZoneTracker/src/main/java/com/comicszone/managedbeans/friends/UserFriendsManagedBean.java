@@ -8,13 +8,11 @@ package com.comicszone.managedbeans.friends;
 import com.comicszone.dao.FriendsFacade;
 import com.comicszone.dao.userdao.UserDataFacade;
 import com.comicszone.entitynetbeans.Users;
-import com.comicszone.managedbeans.message.MessagesManagedBean;
 import com.comicszone.managedbeans.userbeans.CurrentUserManagedBean;
 import com.comicszone.managedbeans.userbeans.ProfileUserManagedBean;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -53,8 +51,6 @@ public class UserFriendsManagedBean implements Serializable {
     private Users selectedFollower;
     
     private Users selectedUnconfirmedFriend;
-    
-    private MessagesManagedBean mmb;
     
     private boolean showMessages;
     
@@ -95,20 +91,14 @@ public class UserFriendsManagedBean implements Serializable {
     }
     
     public void addToFriends(Users unconfirmedUser) {
-        mmb = (MessagesManagedBean) FacesContext
-                .getCurrentInstance()
-                .getViewRoot()
-                .getViewMap()
-                .get("messagesManagedBean");
         
-        mmb.setActiveIndex(2);
         friendsFacade.addToFriends(currentUser, unconfirmedUser);
+        
         setFriends(friendsFacade.getFriends(currentUser));
         setFollowers(friendsFacade.getFollowers(currentUser));
         setUnconfirmedFriends(friendsFacade.getUnconfirmedFriends(currentUser));
         setSelectedFriend(unconfirmedUser);
         setSelectedUnconfirmedFriend(unconfirmedUser);
-        mmb.setFriendId(unconfirmedUser.getUserId());
     }
     
     public void removeFromFrieds(Users friend) {
@@ -137,8 +127,8 @@ public class UserFriendsManagedBean implements Serializable {
 
     public void setSelectedFriend(Users selectedFriend) {
         this.selectedFriend = selectedFriend;
-        selectedFollower=null;
-        selectedUnconfirmedFriend=null;
+        selectedFollower = null;
+        selectedUnconfirmedFriend = null;
     }
 
     public List<Users> getFriends() {
