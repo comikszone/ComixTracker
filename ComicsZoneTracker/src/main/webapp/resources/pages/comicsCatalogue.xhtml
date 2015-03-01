@@ -58,7 +58,7 @@
                                 itemValue="#{rating}"/> 
                             
                            <p:column>
-                                <p:graphicImage value="#{r.image}"/>
+                                <h:graphicImage value="#{r.image}"/>
                             </p:column>
                         </p:selectOneMenu>
                     </f:facet>
@@ -99,7 +99,7 @@
                                   rendered="#{not empty comicsCatalogueView.selectedComics}" 
                                   columnClasses="label,value">
                     <f:facet name="header">
-                        <p:graphicImage 
+                        <h:graphicImage 
                             value="#{comicsCatalogueView.selectedComics.image}"
                             width="200px"
                             styleClass="content-image"/> 
