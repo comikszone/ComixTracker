@@ -6,6 +6,7 @@
 -- DROP SEQUENCE realm_realm_id_seq;
 
 alter table issue add column reldate text;
+alter table comics add column is_read  boolean;
 
 CREATE SEQUENCE realm_realm_id_seq
   INCREMENT 1
