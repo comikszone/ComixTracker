@@ -57,8 +57,13 @@ public class AuthorisationManagedBean implements Serializable {
         try {
             Principal principal = request.getUserPrincipal();
 
-            if (principal == null || !principal.getName().equals(nickname)) {
+            if (principal == null) {
                 UserAuthentification.authUser(nickname, password, request);
+            } else {
+                if (!principal.getName().equals(nickname)) {
+                    UserAuthentification.logoutUser(context);
+                    UserAuthentification.authUser(nickname, password, request);
+                }
             }
             context.getExternalContext().redirect("/");
             return;
