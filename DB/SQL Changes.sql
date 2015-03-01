@@ -5,6 +5,8 @@
 
 -- DROP SEQUENCE realm_realm_id_seq;
 
+alter table issue add column reldate text;
+
 CREATE SEQUENCE realm_realm_id_seq
   INCREMENT 1
   MINVALUE 1
