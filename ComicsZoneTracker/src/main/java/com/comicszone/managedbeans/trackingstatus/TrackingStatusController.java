@@ -26,7 +26,7 @@ public class TrackingStatusController {
     @EJB
     private TrackingStatusFacade statusFacade;
     
-    private Integer selectedStatus;
+    private String selectedStatus;
     
     private Integer comicsId;
     
@@ -39,14 +39,13 @@ public class TrackingStatusController {
         
     }
     
-    @PostConstruct
     public void init() {
         Principal prin = FacesContext.getCurrentInstance()
                 .getExternalContext().getUserPrincipal();
         if (prin != null)
             setCurrentUser(getUserFacade().getUserWithNickname(prin.getName()));
         statusFacade.init(currentUser.getUserId(), comicsId);
-        selectedStatus = statusFacade.getStatus();
+        selectedStatus = statusFacade.getStatus().toString();
     }
 
     /**
@@ -66,15 +65,16 @@ public class TrackingStatusController {
     /**
      * @return the selectedStatus
      */
-    public Integer getSelectedStatus() {
+    public String getSelectedStatus() {
         return selectedStatus;
     }
 
     /**
      * @param selectedStatus the selectedStatus to set
      */
-    public void setSelectedStatus(Integer selectedStatus) {
+    public void setSelectedStatus(String selectedStatus) {
         this.selectedStatus = selectedStatus;
+        statusFacade.updateStatus(Integer.parseInt(selectedStatus));
     }
 
     /**

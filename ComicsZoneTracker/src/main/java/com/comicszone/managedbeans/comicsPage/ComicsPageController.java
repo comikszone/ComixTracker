@@ -19,7 +19,7 @@ import javax.faces.bean.ViewScoped;
  *
  * @author aypyatakov
  */
-@ManagedBean(name="comicsPageManagedBean")
+@ManagedBean(name="comicsPageController")
 @ViewScoped
 public class ComicsPageController implements Serializable {
     

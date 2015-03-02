@@ -35,7 +35,7 @@ public class TrackingStatusFacade extends AbstractFacade<UserTrackingStatus> {
         return em;
     }
     
-    public void updateStatus(UserTrackingStatus record, Integer status) {
+    public void updateStatus(Integer status) {
         record.setStatus(status);
         edit(record);
     }

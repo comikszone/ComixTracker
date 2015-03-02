@@ -14,43 +14,43 @@ and open the template in the editor.
                 template="/resources/templates/content.xhtml">          
     <ui:define name="init">
         <f:metadata>
-            <f:viewParam name="id" value="#{comicsPageManagedBean.comicsController.comicsId}"/>
-            <f:viewParam name="id" value="#{trackingStatusController.comicsId}"/>
+            <f:viewParam name="id" value="#{comicsPageController.comicsController.comicsId}"/>
         </f:metadata>
-        #{comicsPageManagedBean.comicsController.initComics()}
-        #{trackingStatusController.setComicsId(comicsPageManagedBean.comicsController.comicsId)}
-        #{ratingController.setType(comicsPageManagedBean.comicsController.comics.contentType)}
-        #{ratingController.setContentId(comicsPageManagedBean.comicsController.comicsId)}
+        #{comicsPageController.comicsController.initComics()}
+        #{trackingStatusController.setComicsId(comicsPageController.comicsController.comicsId)}
+        #{ratingController.setType(comicsPageController.comicsController.comics.contentType)}
+        #{ratingController.setContentId(comicsPageController.comicsController.comicsId)}
         <ol class="breadcrumb">
             <li><a href="/resources/templates/index.jsf">Home</a></li>
             <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
-            <li class="active">#{comicsPageManagedBean.comicsController.comics.name}</li>
+            <li class="active">#{comicsPageController.comicsController.comics.name}</li>
         </ol>
     </ui:define>
     <ui:define name="image">
-        <h:graphicImage value="#{comicsPageManagedBean.comicsController.comics.image}"
+        <h:graphicImage value="#{comicsPageController.comicsController.comics.image}"
                         styleClass="content-image"
                         style="width:20vw !important;"/>
         <c:choose>
              <c:when test="#{userRoleController.isUserAuthorized()}">
                      #{trackingStatusController.init()}
-                 <h:form>
-                     <p:selectManyButton value="#{trackingStatusController.selectedStatus}">
+                 <h:form id="form">
+                     <p:selectOneButton value="#{trackingStatusController.selectedStatus}" immediate="true">
+                         <p:ajax event="change" update="@form" /> 
                         <f:selectItem itemLabel="Reading" itemValue="1" />
                         <f:selectItem itemLabel="Will read" itemValue="2" />
                         <f:selectItem itemLabel="Dropped" itemValue="3" />
                         <f:selectItem itemLabel="Not reading" itemValue="0" />
-                    </p:selectManyButton>
+                    </p:selectOneButton>
                  </h:form>
              </c:when>
         </c:choose>
     </ui:define>
     <ui:define name="name">
-        <h:outputText value="#{comicsPageManagedBean.comicsController.comics.name}" 
+        <h:outputText value="#{comicsPageController.comicsController.comics.name}" 
                         styleClass="content-name"/>
     </ui:define>
     <ui:define name="description">
-        <h:outputText value="Description: #{comicsPageManagedBean.comicsController.comics.description}"/>
+        <h:outputText value="Description: #{comicsPageController.comicsController.comics.description}"/>
     </ui:define>    
         
             <ui:define name="rating"> 
@@ -58,7 +58,6 @@ and open the template in the editor.
                 <c:choose>
                                         <c:when test="#{userRoleController.isUserAuthorized()}">
                                             #{ratingController.init()}
-                                            #{trackingStatusController.init()}
                                             <h:form>
                                                 <pf:rating  value="#{ratingController.ratingFacade.contentRating}"
                                                             totalStars="5"
@@ -66,7 +65,7 @@ and open the template in the editor.
                                                     <f:ajax event="change" listener="#{ratingController.rate}"/>
                                                 </pf:rating>
                                                 <br/>
-                                                <p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
+                                                <p:link outcome="#{comicsPageController.redirect(comicsPageController.comicsController.comics)}" 
                                                         value="Read!"
                                                         styleClass="btn btn-primary"/>
                                             </h:form>
@@ -87,7 +86,7 @@ and open the template in the editor.
    <ui:define name="content">
        <center>
                     <p:accordionPanel var="volume" 
-                                      value="#{comicsPageManagedBean.comicsController.comics.volumeList}"
+                                      value="#{comicsPageController.comicsController.comics.volumeList}"
                                       multiple="true"
                                       id="issues"
                                       dynamic="true"
@@ -95,7 +94,7 @@ and open the template in the editor.
                         <p:tab >
                             <f:facet name="title">
                                 <p:commandLink value="#{volume.name}" 
-                                                action="#{comicsPageManagedBean.redirect(volume)}"/>
+                                                action="#{comicsPageController.redirect(volume)}"/>
                             </f:facet>
                             <p:dataGrid var="issue"
                                         value="#{volume.issueList}"
@@ -107,7 +106,7 @@ and open the template in the editor.
                                 <h:panelGrid columns="1" styleClass="border:none">
                                     <p:row>
                                         <h:form>
-                                            <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
+                                            <h:link outcome="#{comicsPageController.redirect(issue)}">
                                                 <h:graphicImage value="#{issue.image}"
                                                                 styleClass="content-image"/>
                                             </h:link>
@@ -116,7 +115,7 @@ and open the template in the editor.
                                     <p:row>
                                         <p:link value="#{issue.name}" 
                                                 style="height:auto; width:60%;"
-                                                outcome="#{comicsPageManagedBean.redirect(issue)}"/>
+                                                outcome="#{comicsPageController.redirect(issue)}"/>
                                     </p:row>
                                 </h:panelGrid>                      
                             </p:dataGrid>
@@ -135,7 +134,7 @@ and open the template in the editor.
                             <f:param name="type" 
                                      value="Volume"/>
                             <f:param name="c_id" 
-                                     value="#{comicsPageManagedBean.comicsController.comicsId}"/>
+                                     value="#{comicsPageController.comicsController.comicsId}"/>
                         </p:button>
                     </c:if>
             </center>
