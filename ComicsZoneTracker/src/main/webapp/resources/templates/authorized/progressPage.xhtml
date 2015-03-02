@@ -13,7 +13,7 @@ and open the template in the editor.
                 xmlns:pf="http://jsf.playerfinder.net/components"
                 template="/resources/templates/authorized/authorized.xhtml">          
     <ui:define name="articleContent">
-        Welcome, #{currentUserController.name}!
+        <h1>Welcome, #{currentUserManagedBean.name}!</h1>
         <center>
             <p:dataList var="comics" 
                         value="#{progressController.usersComics}"

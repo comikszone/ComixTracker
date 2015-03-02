@@ -35,11 +35,13 @@ and open the template in the editor.
                 </tbody>
             </table>
             <h:form id="mainTable">
-                <p:commandLink actionListener="#{trackingController.selectAll}" 
-                               value="I've read it all!"
+                <p:commandLink actionListener="#{readingPageManagedBean.selectAll}" 
+                               value="I've read everything!"
                                update=":mainTable:tables"
                                styleClass="btn btn-large btn-primary"
                                action="#{trackingController.redirect(comicsController.comics)}"/>
+                <br/>
+                <br/>
             <ui:repeat  id="tables"
                         var="volume" 
                         value="#{trackingController.comicsController.comics.volumeList}">

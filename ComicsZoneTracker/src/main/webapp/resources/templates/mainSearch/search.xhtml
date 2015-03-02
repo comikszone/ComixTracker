@@ -17,7 +17,8 @@
                                 forceSelection="true"
                                 dropdown="false"
                                 styleClass="nav navbar-nav"
-                                placeholder="Search">
+                                placeholder="Search"
+                                style="z-index: 1000 !important;">
                     <p:ajax event="itemSelect" listener="#{autoCompleteController.handleSelect}" />  
                     <p:column>
                         #{aj.name}
@@ -28,7 +29,7 @@
                 </p:autoComplete>
                 <p:selectOneMenu id="console" value="#{autoCompleteController.category}"
                                  styleClass="nav navbar-nav"
-                                 style="width:120px">
+                                 style="width:120px; z-index: 1000 !important;">
                     <p:ajax listener="#{autoCompleteController.onCategoryChange}"/>
                     <f:selectItem itemLabel="Comics" itemValue="Comics" />
                     <f:selectItem itemLabel="Characters" itemValue="Characters" />
