@@ -21,7 +21,7 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name="comicsCatalogueView")
 @SessionScoped
-public class ComicsCatalogueManagedBean implements Serializable {
+public class ComicsCatalogueController implements Serializable {
     
     private final String columnComicsName = "Name";
     private final String columnComicsRating = "Rating";

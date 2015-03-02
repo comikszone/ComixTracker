@@ -21,7 +21,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean(name="comicsPageManagedBean")
 @ViewScoped
-public class ComicsPageManagedBean implements Serializable {
+public class ComicsPageController implements Serializable {
     
     @EJB
     private ComicsFacade comicsFacade; 

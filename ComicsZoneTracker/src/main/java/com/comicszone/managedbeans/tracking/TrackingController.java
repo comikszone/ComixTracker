@@ -39,7 +39,7 @@ public class TrackingController implements Serializable {
     @EJB
     private TrackingInterface trackingFacade;
     
-    @ManagedProperty(value="#{currentUserManagedBean}")
+    @ManagedProperty(value="#{currentUserController}")
     private CurrentUserController userManagedBean;
     
     private Volume selectedVolume;
@@ -99,7 +99,6 @@ public class TrackingController implements Serializable {
         this.trackingFacade = trackingFacade;
     }
     
-    @PostConstruct
     public void init() {
         try {
             Integer comicsId = comicsController.getComics().getId();

@@ -10,7 +10,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @RequestScoped
-public class StartNavigationManagedBean implements Serializable {
+public class NavigationController implements Serializable {
     private String templateName;
     
     public void returnStartPage() throws IOException{

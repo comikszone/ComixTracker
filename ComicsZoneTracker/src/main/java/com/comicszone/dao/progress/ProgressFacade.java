@@ -6,6 +6,7 @@
 package com.comicszone.dao.progress;
 
 import com.comicszone.dao.AbstractFacade;
+import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.progress.ProgressInterface;
 import com.comicszone.dao.user.UserDataFacade;
 import com.comicszone.entity.Comics;
@@ -29,7 +30,7 @@ import org.json.simple.JSONArray;
  * @author ajpyatakov
  */
 
-@Stateless(name="progressFacade")
+@Stateless
 @LocalBean
 @Path("/progress")
 public class ProgressFacade extends AbstractFacade<Users> implements ProgressInterface {
@@ -48,6 +49,7 @@ public class ProgressFacade extends AbstractFacade<Users> implements ProgressInt
 
     @GET
     @Path("/{userId}/")
+    @Override
     public String getReadComics(@PathParam("userId") String Id) {
         Integer userId = Integer.parseInt(Id);
         List<Comics> readComics = findByUserInProgress(userId);

@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @SessionScoped
-public class ContentFilterManagedBean implements Serializable {
+public class ContentFilterController implements Serializable {
     
     @EJB
     private ContentFacade contentDao;

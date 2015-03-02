@@ -18,7 +18,7 @@ import javax.faces.bean.ManagedBean;
  */
 @ManagedBean(name = "comicsFinderManagedBean", eager = true)
 @ApplicationScoped
-public class ComicsFinderManagedBean implements Serializable {
+public class ComicsFinderController implements Serializable {
     
     private List<Rating> ratings;
     

@@ -143,7 +143,7 @@ public class ProfileUserController implements Serializable {
         }
         try {
             userDAO.edit(user);
-            updateCurrentUserManagedBean();
+            updateCurrentUserController();
             context.addMessage(null,
                     new FacesMessage("Success:", "Changes has been saved!"));
         } catch (EJBException ex) {
@@ -156,12 +156,12 @@ public class ProfileUserController implements Serializable {
         loadCurrentUserInfo();
     }
 
-    private void updateCurrentUserManagedBean() {
+    private void updateCurrentUserController() {
         CurrentUserController manBean = ((CurrentUserController) FacesContext
                 .getCurrentInstance()
                 .getExternalContext()
                 .getSessionMap()
-                .get("currentUserManagedBean"));
+                .get("currentUserController"));
         manBean.setCurrentUser();
     }
 
@@ -172,7 +172,7 @@ public class ProfileUserController implements Serializable {
                     .getCurrentInstance()
                     .getExternalContext()
                     .getSessionMap()
-                    .get("currentUserManagedBean"))
+                    .get("currentUserController"))
                     .getCurrentUser()
                     .clone();
         } catch (CloneNotSupportedException ex) {

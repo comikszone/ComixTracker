@@ -24,7 +24,7 @@ import org.primefaces.model.SortOrder;
 @LocalBean
 //@Path("/comics")
 //@Produces({"text/xml", "application/json"})
-public class ComicsFacade extends AbstractFacade<Comics> implements Finder, SlideshowInterface, CatalogueInterface, ProgressInterface{
+public class ComicsFacade extends AbstractFacade<Comics> implements Finder, SlideshowInterface, CatalogueInterface {
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -165,28 +165,6 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder, Slid
         TypedQuery<Comics> query=em.createNamedQuery("Comics.findAllAscId",Comics.class);
         query.setMaxResults(maxResult);
         return query.getResultList();
-    }
-
-    @Override
-    public List<Comics> findByUserInProgress(Integer userId) {
-        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByUserInProgress", Comics.class);
-        query.setParameter("userId", userId);
-        return query.getResultList();
-    }
-
-    @Override
-    public Long getTotalIssueCount(Integer comicsId) {
-        TypedQuery<Long> query = em.createNamedQuery("Comics.getTotalIssueCount", Long.class);
-        query.setParameter("comicsId", comicsId);
-        return query.getResultList().get(0);
-    }
-
-    @Override
-    public Long getMarkedIssueCount(Integer comicsId, Integer userId) {
-        TypedQuery<Long> query = em.createNamedQuery("Comics.getMarkedIssueCount", Long.class);
-        query.setParameter("comicsId", comicsId);
-        query.setParameter("userId", userId);
-        return query.getResultList().get(0);
     }
     
     public List<Comics> findByChecking(boolean isChecked) {

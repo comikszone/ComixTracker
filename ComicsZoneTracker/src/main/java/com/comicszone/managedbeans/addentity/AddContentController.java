@@ -22,7 +22,7 @@ import org.primefaces.model.UploadedFile;
  */
 
 @ManagedBean
-public class AddContentManagedBean implements Serializable {
+public class AddContentController implements Serializable {
     
     @EJB
     ContentFacade contentFacade;

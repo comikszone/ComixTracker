@@ -26,7 +26,7 @@ import org.primefaces.component.inputtextarea.InputTextarea;
  */
 @ManagedBean
 @ViewScoped
-public class CommentsManagedBean implements Serializable {
+public class CommentsController implements Serializable {
     
     @EJB
     private CommentsFacade commentsDao;

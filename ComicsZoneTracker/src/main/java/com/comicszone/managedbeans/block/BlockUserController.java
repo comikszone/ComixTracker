@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class BlockUserManagedBean implements Serializable {
+public class BlockUserController implements Serializable {
     
     @EJB
     UserBlockFacade userBlockDao;
