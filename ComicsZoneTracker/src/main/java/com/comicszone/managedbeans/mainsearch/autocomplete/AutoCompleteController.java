@@ -15,6 +15,7 @@ import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.Finder;
 import com.comicszone.entity.Content;
 import com.comicszone.entity.ContentType;
+import com.comicszone.entity.NamedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -33,7 +34,7 @@ public class AutoCompleteController implements Serializable {
     private ComicsFacade comicsFacade;
     @EJB
     private CharacterFacade characterFacade;
-    private Content content;
+    private NamedImage content;
     private String category;
     private Finder finder;
 
@@ -42,11 +43,11 @@ public class AutoCompleteController implements Serializable {
         finder=comicsFacade;
     }
     
-    public Content getContent() {
+    public NamedImage getContent() {
         return content;
     }
 
-    public void setContent(Content content) {
+    public void setContent(NamedImage content) {
         this.content = content;
     }
    

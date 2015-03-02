@@ -11,15 +11,8 @@ import java.io.Serializable;
  *
  * @author alexander
  */
-public interface Content extends Serializable {
+public interface Content extends Serializable, NamedImage {
 
-    public Integer getId();
-    public void setId(Integer id);
-    public ContentType getContentType();
-    public String getName();
-    public void setName(String name);
-    public String getImage();
-    public void setImage(String image);
     public String getDescription();
     public void setDescription(String description);
     public Float getRating();

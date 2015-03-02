@@ -167,7 +167,7 @@
             <h:form id="contentFilter">
                 <p:growl id="contentMessage" showDetail="true" life="1000" />
                 <p:commandButton
-                    action="#{contentFilterController.updateContent()}"
+                    action="#{contentFilterManagedBean.updateContent()}"
                     value="Update content to filter"
                     update=":contentFilter"/>
                 <p:tabView>
@@ -183,11 +183,11 @@
                     paginatorPosition="bottom"
                     rows="10"
                     var="content"
-                    value="#{contentFilterController.comicsContent}">
+                    value="#{contentFilterManagedBean.comicsContent}">
                     
                     <p:ajax 
                         event="cellEdit"
-                        listener="#{contentFilterController.onCellEdit(content)}"/>
+                        listener="#{contentFilterManagedBean.onCellEdit(content)}"/>
                     
                     <p:column headerText="Name">
                         <p:cellEditor>
@@ -243,7 +243,7 @@
                     <p:column headerText="Your choice">
                         <p:commandButton
                             value="Approve"
-                            action="#{contentFilterController.approve(content)}"
+                            action="#{contentFilterManagedBean.approve(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -251,7 +251,7 @@
                         </p:commandButton>
                         <p:commandButton
                             value="Delete"
-                            action="#{contentFilterController.delete(content)}"
+                            action="#{contentFilterManagedBean.delete(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -272,11 +272,11 @@
                     paginatorPosition="bottom"
                     rows="10"
                     var="content"
-                    value="#{contentFilterController.volumeContent}">
+                    value="#{contentFilterManagedBean.volumeContent}">
                     
                     <p:ajax 
                         event="cellEdit"
-                        listener="#{contentFilterController.onCellEdit(content)}"/>
+                        listener="#{contentFilterManagedBean.onCellEdit(content)}"/>
                     
                     <p:column headerText="Name">
                         <p:cellEditor>
@@ -332,7 +332,7 @@
                     <p:column headerText="Your choice">
                         <p:commandButton
                             value="Approve"
-                            action="#{contentFilterController.approve(content)}"
+                            action="#{contentFilterManagedBean.approve(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -340,7 +340,7 @@
                         </p:commandButton>
                         <p:commandButton
                             value="Delete"
-                            action="#{contentFilterController.delete(content)}"
+                            action="#{contentFilterManagedBean.delete(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -361,11 +361,11 @@
                     paginatorPosition="bottom"
                     rows="10"
                     var="content"
-                    value="#{contentFilterController.issueContent}">
+                    value="#{contentFilterManagedBean.issueContent}">
                     
                     <p:ajax 
                         event="cellEdit"
-                        listener="#{contentFilterController.onCellEdit(content)}"/>
+                        listener="#{contentFilterManagedBean.onCellEdit(content)}"/>
 
                     <p:column headerText="Name">
                         <p:cellEditor>
@@ -421,7 +421,7 @@
                     <p:column headerText="Your choice">
                         <p:commandButton
                             value="Approve"
-                            action="#{contentFilterController.approve(content)}"
+                            action="#{contentFilterManagedBean.approve(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -429,7 +429,7 @@
                         </p:commandButton>
                         <p:commandButton
                             value="Delete"
-                            action="#{contentFilterController.delete(content)}"
+                            action="#{contentFilterManagedBean.delete(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -448,7 +448,7 @@
                     paginatorPosition="bottom"
                     rows="10"
                     var="content"
-                    value="#{contentFilterController.approvedContent}">
+                    value="#{contentFilterManagedBean.approvedContent}">
                     
                     <p:column headerText="Type">
                         <h:outputText value="#{content.contentType}"/>

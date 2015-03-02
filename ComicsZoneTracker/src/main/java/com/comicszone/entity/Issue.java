@@ -66,7 +66,7 @@ import javax.validation.constraints.Size;
                   + "JOIN v.comicsId c "
                   + "WHERE c.Id = :comicsId"), 
     @NamedQuery(name = "Issue.getCommentNewsForUserAndIssue", query = "SELECT DISTINCT n FROM Issue i INNER JOIN i.commentsNews n WHERE i = :issue AND n.userId = :user")})
-public class Issue implements Serializable, CommentsContainer, Content, AjaxComicsCharacter {
+public class Issue implements Serializable, CommentsContainer, Content {
 
     private static final long serialVersionUID = 1L;
     @Id

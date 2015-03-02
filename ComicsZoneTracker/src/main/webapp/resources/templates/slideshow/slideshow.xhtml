@@ -11,25 +11,20 @@
     <h:body>
         <div class="slideshow">
             <ui:repeat var="comics" value="#{slideshowController.comicsList}">
-                <table>
-                    <tr>
-                        <td>
+                <h:panelGrid columns="1">
+                    <h:column>
                             <h:form>
                                 <h:link outcome="#{slideshowController.redirect(comics.id)}">
                                     <h:graphicImage value="#{comics.image}"
+                                                    width="100%"
                                                     styleClass="content-image slideshow-image"/>
                                 </h:link>
                             </h:form>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             <p:link value="#{comics.name}" 
                                     outcome="#{slideshowController.redirect(comics.id)}" 
                                     style="font-weight: 900; margin-left: auto; margin-right: auto;"/>
-                        </td>
-                    </tr>
-                </table>
+                    </h:column>
+                </h:panelGrid>
             </ui:repeat>
         </div>
     </h:body>

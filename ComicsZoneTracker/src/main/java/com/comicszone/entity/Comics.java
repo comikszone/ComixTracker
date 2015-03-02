@@ -91,7 +91,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
                     + " WHERE c.Id = :comicsId AND u.userId = :userId"),
     @NamedQuery(name = "Comics.getCommentNewsForUserAndComics", query = "SELECT DISTINCT n FROM Comics c INNER JOIN c.commentsNews n WHERE c = :comics AND n.userId = :user")})
 
-public class Comics implements Serializable, AjaxComicsCharacter, CommentsContainer, Content {
+public class Comics implements Serializable, CommentsContainer, Content {
     @Basic(optional = false)
     @NotNull
     @Column(name = "rating")

@@ -5,19 +5,21 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui" >
+      xmlns:p="http://primefaces.org/ui" 
+      template="#{navigationController.templateName}"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>
             About us
         </title>
     </h:head>
-    <h:body>
+    <ui:define name="articleContent">
         Text is available under the 
         <a title="read more" href="https://creativecommons.org/licenses/by-sa/3.0/">
             Creative Commons Attribution-ShareAlike License
         </a>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>

@@ -6,7 +6,7 @@
 package com.comicszone.dao;
 
 //import com.netcracker.entity.Comics;
-import com.comicszone.entity.Content;
+import com.comicszone.entity.NamedImage;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,11 +14,8 @@ import javax.ejb.Local;
  *
  * @author ArsenyPC
  */
-//@Stateless
 @Local
-//@Remote
-//@PostConstruct
 public interface Finder {
-    public List<? extends Content> findByNameStartsWith(String name);
-    public Content find (Object id);
+    public List<? extends NamedImage> findByNameStartsWith(String name);
+    public NamedImage find (Object id);
 }

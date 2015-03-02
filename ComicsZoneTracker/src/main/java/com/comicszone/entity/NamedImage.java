@@ -9,11 +9,12 @@ package com.comicszone.entity;
  *
  * @author ArsenyPC
  */
-public interface AjaxComicsCharacter {
+public interface NamedImage {
     public Integer getId();
     public void setId(Integer id);
     public String getName();
     public void setName(String name);
     public String getImage();
     public void setImage(String image);
+    public ContentType getContentType();
 }
