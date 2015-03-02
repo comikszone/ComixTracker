@@ -26,7 +26,7 @@ and open the template in the editor.
         </ol>
     </ui:define>
     <ui:define name="image">
-        <p:graphicImage value="#{comicsPageManagedBean.comicsController.comics.image}"
+        <h:graphicImage value="#{comicsPageManagedBean.comicsController.comics.image}"
                         styleClass="content-image"
                         style="width:20vw !important;"/>
     </ui:define>
@@ -92,7 +92,7 @@ and open the template in the editor.
                                     <p:row>
                                         <h:form>
                                             <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
-                                                <p:graphicImage value="#{issue.image}"
+                                                <h:graphicImage value="#{issue.image}"
                                                                 styleClass="content-image"/>
                                             </h:link>
                                         </h:form>

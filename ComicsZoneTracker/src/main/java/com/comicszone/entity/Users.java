@@ -5,6 +5,7 @@
  */
 package com.comicszone.entity;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.primefaces.model.DefaultStreamedContent;
 
 /**
  *
@@ -454,6 +456,9 @@ public class Users implements Serializable {
         this.userTrackingStatusList = userTrackingStatusList;
     }
 
-    
-
+    public String getAvatarUrlOrDefaultAvatar() {
+        return (avatarUrl == null || avatarUrl.equals("")) ? 
+                "/resources/images/default_user_photo.png" :
+                avatarUrl;
+    }
 }

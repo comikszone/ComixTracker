@@ -21,32 +21,32 @@
                         value="New comments on #{container.contentType} "/>
                     <p:link
                         value="#{container.name}"
-                        outcome="#{uuserCommentsNewsControllerredirect(container)}"/>
+                        outcome="#{userCommentsNewsController.redirect(container)}"/>
                     <br/>
                     <h:outputText
                         value="Comments left after your last comment: 
-                        #{ususerCommentsNewsControlleretNumberOfNewComments(index)}"/>
+                        #{userCommentsNewsController.getNumberOfNewComments(index)}"/>
                     <br/>
                     <h:outputText
                         value="Comments you haven't read: 
-                        #{useuserCommentsNewsControllertNumberOfUnreadComments(index)}"/>
+                        #{userCommentsNewsController.getNumberOfUnreadComments(index)}"/>
                     <br/>
                     <h:outputText
                         value="You haven't commented it 
-                        #{useruserCommentsNewsControllerPeriodFromUser(index)}."/>
+                        #{userCommentsNewsController.getPeriodFromUser(index)}."/>
                     <br/>
                     <h:outputText
                         value="Last comment to it was 
-                        #{userCuserCommentsNewsControllereriodFromLastComment(index)} ago."/>
+                        #{userCommentsNewsController.getPeriodFromLastComment(index)} ago."/>
                     <br/>
                     <p:commandButton
-                        value="#{userCouserCommentsNewsControllerlueOfViewButton(index)}"
+                        value="#{userCommentsNewsController.getValueOfViewButton(index)}"
                         update=":news"
-                        action="#{userComuserCommentsNewsControllerhowingComments(index)}"/>
+                        action="#{userCommentsNewsController.resetShowingComments(index)}"/>
                     <p:dataGrid
-                        rendered="#{userCommuserCommentsNewsControllerentsShowing(index)}"
+                        rendered="#{userCommentsNewsController.areCommentsShowing(index)}"
                         var="newComment"
-                        value="#{userCommeuserCommentsNewsControllermments(index)}"
+                        value="#{userCommentsNewsController.getNewComments(index)}"
                         emptyMessage="No comments"
                         columns="1"
                         rows = "5"

@@ -21,7 +21,7 @@ and open the template in the editor.
         #{ratingController.setContentId(issueController.issueId)}
     </ui:define>
     <ui:define name="image">
-        <p:graphicImage value="#{issueController.issue.image}"
+        <h:graphicImage value="#{issueController.issue.image}"
                         styleClass="content-image"
                         style="width:20vw;"/>
     </ui:define>
@@ -85,7 +85,7 @@ and open the template in the editor.
                         <p:row>
                             <h:form>
                                 <h:link outcome="#{characterController.redirect(char)}">
-                                    <p:graphicImage value="#{char.image}"
+                                    <h:graphicImage value="#{char.image}"
                                                     styleClass="content-image"/>
                                 </h:link>
                             </h:form>

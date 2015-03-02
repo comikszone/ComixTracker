@@ -29,15 +29,22 @@
 
                         <p:column>
                             <p:graphicImage
-                                value="#{user.avatarUrl}"
+                                value="#{userAvatarsController.avatar}"
                                 width="80"
                                 height="80"
-                                rendered="#{user.avatarUrl != null}"/>
+                                rendered="#{user.avatar != null}">
+                                
+                                <f:param name="userId" value="#{user.userId}"/>
+                                
+                            </p:graphicImage>
+                                
                             <p:graphicImage
-                                value="/resources/images/default_user_photo.png"
+                                value="#{user.avatarUrlOrDefaultAvatar}"
                                 width="80"
                                 height="80"
-                                rendered="#{user.avatarUrl == null}"/>
+                                rendered="#{user.avatar == null}">
+                            </p:graphicImage>  
+
                         </p:column>
 
                         <p:column>
@@ -108,15 +115,18 @@
                                     columns="2" 
                                     columnClasses="friends-avatatar-column-width, 
                                                    friends-info-column-width">
-                                <p:graphicImage 
-                                        value="#{friend.avatarUrl}"
-                                        width="100%"
-                                        rendered="#{friend.avatarUrl != null}"/>
+                                <p:graphicImage
+                                    value="#{userAvatarsController.avatar}"
+                                    width="100%"
+                                    rendered="#{friend.avatar != null}">
+                                    <f:param name="userId" value="#{friend.userId}"/>
+                                </p:graphicImage>
                                 
-                                <p:graphicImage 
-                                        value="/resources/images/default_user_photo.png"
-                                        width="100%"
-                                        rendered="#{friend.avatarUrl == null}"/>
+                                <p:graphicImage
+                                    value="#{friend.avatarUrlOrDefaultAvatar}"
+                                    width="100%"
+                                    rendered="#{friend.avatar == null}">
+                                </p:graphicImage>    
                                 
                                 <p:panelGrid columns="1">
                                     <h:outputText 
@@ -193,15 +203,19 @@
                                     columns="2" 
                                     columnClasses="friends-avatatar-column-width, 
                                                    friends-info-column-width">
-                                <p:graphicImage 
-                                        value="#{follower.avatarUrl}"
-                                        width="100%"
-                                        rendered="#{follower.avatarUrl != null}"/>
+                                    
+                                <p:graphicImage
+                                    value="#{userAvatarsController.avatar}"
+                                    width="100%"
+                                    rendered="#{follower.avatar != null}">
+                                    <f:param name="userId" value="#{follower.userId}"/>
+                                </p:graphicImage>
                                 
-                                <p:graphicImage 
-                                        value="/resources/images/default_user_photo.png"
-                                        width="100%"
-                                        rendered="#{follower.avatarUrl == null}"/>
+                                <p:graphicImage
+                                    value="#{follower.avatarUrlOrDefaultAvatar}"
+                                    width="100%"
+                                    rendered="#{follower.avatar == null}">
+                                </p:graphicImage>   
                                 
                                 
                                 <p:panelGrid columns="1">
@@ -279,15 +293,19 @@
                                     columns="2" 
                                     columnClasses="friends-avatatar-column-width, 
                                                    friends-info-column-width">
-                                <p:graphicImage 
-                                        value="#{unconfirmedFriend.avatarUrl}"
-                                        width="100%"
-                                        rendered="#{unconfirmedFriend.avatarUrl != null}"/>
+                                    
+                                <p:graphicImage
+                                    value="#{userAvatarsController.avatar}"
+                                    width="100%"
+                                    rendered="#{unconfirmedFriend.avatar != null}">
+                                    <f:param name="userId" value="#{unconfirmedFriend.userId}"/>
+                                </p:graphicImage>
                                 
-                                <p:graphicImage 
-                                        value="/resources/images/default_user_photo.png"
-                                        width="100%"
-                                        rendered="#{unconfirmedFriend.avatarUrl == null}"/>
+                                <p:graphicImage
+                                    value="#{unconfirmedFriend.avatarUrlOrDefaultAvatar}"
+                                    width="100%"
+                                    rendered="#{unconfirmedFriend.avatar == null}">
+                                </p:graphicImage>  
                                 
                                 <p:panelGrid columns="1">
                                     <h:outputText 
@@ -395,11 +413,18 @@
                                     <p:panelGrid columns="2"
                                                  columnClasses="friend-avatar-message-column,
                                                                 friend-message-column">
-                                        <p:graphicImage 
-                                            value="#{messagesController.getAvatar(message.sender)}" 
+                                        <p:graphicImage
+                                            value="#{userAvatarsController.avatar}"
                                             width="100%"
-                                            
-                                            />
+                                            rendered="#{message.sender.avatar != null}">
+                                            <f:param name="userId" value="#{message.sender.userId}"/>
+                                        </p:graphicImage>
+                                
+                                        <p:graphicImage
+                                            value="#{message.sender.avatarUrlOrDefaultAvatar}"
+                                            width="100%"
+                                            rendered="#{message.sender.avatar == null}">
+                                        </p:graphicImage>  
                                         
                                         <h:outputText value="#{message.text}" style="word-wrap: break-word"/>
 
@@ -429,18 +454,19 @@
                         columnClasses="label,value">
                         
                         <f:facet name="header">
-                            <p:graphicImage 
-                                value="#{userFriendsController.selectedUser.avatarUrl}"
-                                width="100%"
-                                styleClass="content-image"
-                                rendered="#{userFriendsController.selectedUser.avatarUrl != null}"
-                                />
-                            <p:graphicImage 
-                                value="/resources/images/default_user_photo.png"
-                                width="100%"
-                                styleClass="content-image"
-                                rendered="#{userFriendsController.selectedUser.avatarUrl == null}"
-                                />
+                            <p:graphicImage
+                                value="#{userAvatarsController.avatar}"
+                                width="200px"
+                                rendered="#{userFriendsManagedBean.selectedUser.avatar != null}">
+                                <f:param name="userId" value="#{userFriendsManagedBean.selectedUser.userId}"/>
+                            </p:graphicImage>
+                                
+                            <p:graphicImage
+                                value="#{userFriendsManagedBean.selectedUser.avatarUrlOrDefaultAvatar}"
+                                width="200px"
+                                rendered="#{userFriendsManagedBean.selectedUser.avatar == null}">
+                            </p:graphicImage>
+                            
                         </f:facet>
                         <f:facet name="footer">
                             <p:outputPanel>
@@ -465,7 +491,8 @@
                         
                         <h:outputText 
                             value="#{userFriendsController.selectedUser.name}"
-                            rendered="#{userFriendsController.selectedUser.name != null}"
+                            rendered="#{userFriendsController.selectedUser.name != null
+                                        and userFriendsController.selectedUser.name != ''}"
                             class="friends-info"/>
                         
                         <h:outputText 
