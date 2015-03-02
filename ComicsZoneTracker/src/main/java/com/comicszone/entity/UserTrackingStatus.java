@@ -30,7 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserTrackingStatus.findAll", query = "SELECT u FROM UserTrackingStatus u"),
     @NamedQuery(name = "UserTrackingStatus.findByUserId", query = "SELECT u FROM UserTrackingStatus u WHERE u.userTrackingStatusPK.userId = :userId"),
     @NamedQuery(name = "UserTrackingStatus.findByComicsId", query = "SELECT u FROM UserTrackingStatus u WHERE u.userTrackingStatusPK.comicsId = :comicsId"),
-    @NamedQuery(name = "UserTrackingStatus.findByStatus", query = "SELECT u FROM UserTrackingStatus u WHERE u.status = :status")})
+    @NamedQuery(name = "UserTrackingStatus.findByStatus", query = "SELECT u FROM UserTrackingStatus u WHERE u.status = :status"),
+    @NamedQuery(name = "UserTrackingStatus.findByUserAndComics", 
+                query = "SELECT u FROM UserTrackingStatus u WHERE u.userTrackingStatusPK.userId = :userId AND u.userTrackingStatusPK.comicsId = :comicsId")})
 public class UserTrackingStatus implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
