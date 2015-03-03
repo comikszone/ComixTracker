@@ -135,10 +135,6 @@
                                         />
                                     
                                     <h:outputText 
-                                        value="#{friend.email}" 
-                                        class="friends-info"/>
-                                    
-                                    <h:outputText 
                                         value="#{friend.name}"
                                         rendered="#{friend.name != null}"
                                         class="friends-info"/>
@@ -225,10 +221,6 @@
                                         />
                                     
                                     <h:outputText 
-                                        value="#{follower.email}" 
-                                        class="friends-info"/>
-                                    
-                                    <h:outputText 
                                         value="#{follower.name}"
                                         rendered="#{follower.name != null}"
                                         class="friends-info"/>
@@ -312,10 +304,6 @@
                                         value="#{unconfirmedFriend.realNickname}"
                                         class="friends-info"
                                         />
-                                    
-                                    <h:outputText 
-                                        value="#{unconfirmedFriend.email}" 
-                                        class="friends-info"/>
                                     
                                     <h:outputText 
                                         value="#{unconfirmedFriend.name}"
@@ -483,10 +471,6 @@
 
                         <h:outputText 
                             value="#{userFriendsController.selectedUser.realNickname}" 
-                            class="friends-info"/>
-                        
-                        <h:outputText 
-                            value="#{userFriendsController.selectedUser.email}" 
                             class="friends-info"/>
                         
                         <h:outputText 

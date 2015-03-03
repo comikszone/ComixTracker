@@ -71,17 +71,6 @@ public class ComicsPageController implements Serializable {
         comicsController.initComics();
     }
     
-    public String redirect(Content content)
-    {
-        if (content.getContentType() == ContentType.Comics)
-            return "/resources/templates/authorized/readingPage.jsf?faces-redirect=true&id=" + content.getId();
-        else if (content.getContentType() == ContentType.Issue)
-                return "/resources/pages/issuePage.jsf?faces-redirect=true&id=" + content.getId();
-        else if (content.getContentType() == ContentType.Volume)
-                return "/resources/pages/volumePage.jsf?faces-redirect=true&id=" + content.getId();
-        else return "/resources/templates/index.jsf";
-    }
-
     /**
      * @return the readingModeOn
      */

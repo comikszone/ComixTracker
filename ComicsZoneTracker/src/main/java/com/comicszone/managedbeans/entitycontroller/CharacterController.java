@@ -8,6 +8,8 @@ package com.comicszone.managedbeans.entitycontroller;
 import com.comicszone.dao.CharacterFacade;
 import javax.faces.bean.ManagedBean;
 import com.comicszone.entity.Character;
+import com.comicszone.entity.Content;
+import com.comicszone.entity.ContentType;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedProperty;
@@ -32,10 +34,6 @@ public class CharacterController implements Serializable {
         return ctrl;
     }
     
-    public String redirect(Character character){
-        return "/resources/pages/characterPage.jsf?faces-redirect=true&id=" + character.getId();
-    }
-
     public void setCtrl(CardController ctrl) {
         this.ctrl = ctrl;
     }
