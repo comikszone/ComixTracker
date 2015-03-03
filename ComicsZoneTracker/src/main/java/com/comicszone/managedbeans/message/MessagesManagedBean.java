@@ -21,6 +21,8 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 
 /**
  *
@@ -65,6 +67,9 @@ public class MessagesManagedBean implements Serializable {
         currentUser.addMessageToMessagesList(message);
         userDataFacade.edit(currentUser);
         inputText.setValue("");
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+//	eventBus.publish("/subscriber", htmlMessage);
+        eventBus.publish("ok");
     }
 
     
