@@ -148,6 +148,12 @@ td {
     margin-left: auto; margin-right: auto
 }
 
+.social-icon {
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+
 .profile-page-column-attr-name{
     float: right;
 }

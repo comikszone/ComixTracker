@@ -85,6 +85,7 @@ and open the template in the editor.
    <ui:define name="content">
            <h:form id="content">
                       <center>
+                          <c:if test="#{userRoleController.isUserAuthorized()}">
            <p:selectBooleanButton id="selector"
                                   value="#{comicsPageController.readingModeOn}" 
                                   offLabel="Track!" 
@@ -93,6 +94,7 @@ and open the template in the editor.
                 <p:ajax event="change" update=":content:trackingSection"/>
                 <p:ajax event="change" update=":content:mainContent"/>
             </p:selectBooleanButton>
+                          </c:if>
            <p:outputPanel id="mainContent">
                     <p:accordionPanel var="volume" 
                                       value="#{comicsPageController.comicsController.comics.volumeList}"

@@ -105,8 +105,6 @@ public class Comics implements Serializable, CommentsContainer, Content {
     @NotNull
     @Column(name = "rating")
     private float rating;
-    @Column(name = "is_read")
-    private Boolean isRead;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comics", fetch = FetchType.LAZY)
     private List<UserTrackingStatus> userTrackingStatusList;
 
@@ -348,14 +346,6 @@ public class Comics implements Serializable, CommentsContainer, Content {
     public String getExtraInfo() {
         return "Publisher: " + publisherId.getName() + "\n" + 
                 "Imprint: " + imprintId.getName();
-    }
-
-    public Boolean getIsRead() {
-        return isRead;
-    }
-
-    public void setIsRead(Boolean isRead) {
-        this.isRead = isRead;
     }
 
     @XmlTransient
