@@ -151,16 +151,16 @@ td {
     width: 25px !important;
 }
 
-.add-content-page-inputs, .add-content-page-labels {
+.add-edit-content-page-inputs, .add-edit-content-page-labels {
     float: left;
 }
 
-.add-content-panel {
+.add-edit-content-panel {
     margin-left: auto; 
     margin-right: auto;
 }
 
-.add-content-panel tr, .add-content-panel tr {
+.add-edit-content-panel tr, .add-edit-content-panel tr {
     border: white;
 }
 //Maybe, it'll help us sometimes'

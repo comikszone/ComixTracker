@@ -44,7 +44,7 @@ and open the template in the editor.
     <ui:define name ="rating">
         
         
-        <p:panelGrid>
+        <p:panelGrid styleClass="add-content-panel">
             <p:row>
                     <p:column colspan="2">
                         <c:choose>
@@ -54,9 +54,18 @@ and open the template in the editor.
                                     <pf:rating  value="#{ratingController.ratingFacade.uvrating.rating}"
                                                 totalStars="5"
                                                 step="1">
-                                        <f:ajax event="change" listener="#{ratingController.rate}"/>
+                                        <f:ajax event="change" 
+                                                listener="#{ratingController.rate}"/>
                                     </pf:rating>
-                                    </h:form>
+                                </h:form>
+                                <p:button value="Edit this page" 
+                                          outcome="/resources/templates/authorized/editContent.jsf"
+                                          style="margin-top: 1em">
+                                    <f:param name="type" 
+                                             value="volume"/>
+                                    <f:param name="id" 
+                                             value="#{volumeController.volumeId}"/>
+                                </p:button>
                             </c:when>
                             <c:otherwise>
                                 <p:link onclick="PF('reg').show()"
@@ -100,18 +109,18 @@ and open the template in the editor.
             </p:dataGrid>
             <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
                 <p:button value="Add new issue" 
-                          outcome="/resources//templates/authorized/addContent.jsf" 
-                          style="float: left">
+                          outcome="/resources/templates/authorized/addContent.jsf">
                     <f:param name="type" 
-                             value="Issue"/>
-                    <f:param name="v_id"
+                             value="issue"/>
+                    <f:param name="id"
                              value="#{volumeController.volumeId}"/>
                 </p:button>
             </c:if> 
         </center>
         <div>
             <ui:include src="/resources/templates/comments/comments.xhtml">
-                <ui:param name="type" value="volume"/>
+                <ui:param name="type" 
+                          value="volume"/>
             </ui:include>
         </div>
     </ui:define>

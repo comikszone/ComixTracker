@@ -71,7 +71,7 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "issue_issue_id_seq")
-    @SequenceGenerator(name = "issue_issue_id_seq", sequenceName = "issue_issue_id_seq")
+    @SequenceGenerator(name = "issue_issue_id_seq", sequenceName = "issue_issue_id_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "issue_id")
     private Integer Id;
@@ -133,6 +133,15 @@ public class Issue implements Serializable, CommentsContainer, Content, AjaxComi
     public Issue(Integer issueId, String name) {
         this.Id = issueId;
         this.name = name;
+    }
+    
+    public Issue(String name, String description, String image, String date, String source, Volume volumeId) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.relDate = date;
+        this.source = source;
+        this.volumeId = volumeId;
     }
 
     public Integer getId() {

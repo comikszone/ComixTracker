@@ -56,6 +56,14 @@ and open the template in the editor.
                                         <f:ajax event="change" listener="#{ratingController.rate}"/>
                                     </pf:rating>
                                     </h:form>
+                                <p:button value="Edit this page" 
+                                          outcome="/resources/templates/authorized/editContent.jsf"
+                                          style="margin-top: 1em">
+                                    <f:param name="type" 
+                                             value="issue"/>
+                                    <f:param name="id" 
+                                             value="#{issueController.issueId}"/>
+                                </p:button>
                             </c:when>
                             <c:otherwise>
                                 <p:link onclick="PF('reg').show()"
@@ -70,7 +78,9 @@ and open the template in the editor.
                         </c:choose>
     </ui:define>
     <ui:define name="content">
-        <p:accordionPanel multiple="true" id="issues" dynamic="true">
+        <p:accordionPanel multiple="true" 
+                          id="issues" 
+                          dynamic="true">
             <p:tab>
                 <f:facet name="title">
                     <h:outputText value="Characters"/>
@@ -101,7 +111,8 @@ and open the template in the editor.
         </p:accordionPanel>
         <div>
             <ui:include src="/resources/templates/comments/comments.xhtml">
-                <ui:param name="type" value="issue"/>
+                <ui:param name="type" 
+                          value="issue"/>
             </ui:include>
         </div>
     </ui:define>

@@ -103,8 +103,8 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comics_comics_id_seq")
-    @SequenceGenerator(name = "comics_comics_id_seq", sequenceName = "comics_comics_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comics_comics_id_seq")
+    @SequenceGenerator(name = "comics_comics_id_seq", sequenceName = "comics_comics_id_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "comics_id")
     private Integer Id;
@@ -160,6 +160,15 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     public Comics(Integer comicsId, String name) {
         this.Id = comicsId;
         this.name = name;
+    }
+    
+    public Comics(String title, String description, String image, Publisher publisher, Imprint imprint, String source) {
+        this.name = title;
+        this.description = description;
+        this.image = image;
+        this.publisherId = publisher;
+        this.imprintId = imprint;
+        this.source = source;
     }
 
     @Override
@@ -339,6 +348,18 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
     public String getExtraInfo() {
         return "Publisher: " + publisherId.getName() + "\n" + 
                 "Imprint: " + imprintId.getName();
+    }
+    
+    public String getPublisher() {
+        return publisherId.getName();
+    }
+    
+    public String getImprint() {
+        if (imprintId == null) {
+            return null;
+        } else {
+            return imprintId.getName();
+        }
     }
 
     public Boolean getIsRead() {

@@ -6,7 +6,9 @@
 package com.comicszone.dao;
 
 import com.comicszone.entitynetbeans.Issue;
+import com.comicszone.entitynetbeans.Volume;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -57,5 +59,20 @@ public class IssueFacade extends AbstractFacade<Issue> implements Finder {
         TypedQuery<Issue> query =em.createNamedQuery("Issue.findByChecking", Issue.class);
         query.setParameter("isChecked", isChecked);
         return query.getResultList();
+    }
+    
+    public List<Issue> findByName(String name) {
+        TypedQuery<Issue> query = em.createNamedQuery("Issue.findByName", Issue.class);
+        query.setParameter("name", name);
+        return query.getResultList();
+    }
+    
+    public void createNew(String title, String description, String image, String date, String source, Volume volumeId) {
+        if (findByName(title).isEmpty()) {
+            Issue issue = new Issue(title, description, image, date, source, volumeId);
+            create(issue);
+        } else {
+            throw new EJBException();
+        }
     }
 }

@@ -5,8 +5,10 @@
  */
 package com.comicszone.dao;
 
+import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Volume;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,4 +37,20 @@ public class VolumeFacade extends AbstractFacade<Volume> {
         query.setParameter("isChecked", isChecked);
         return query.getResultList();
     }
+    
+    public List<Volume> findByName(String name) {
+        TypedQuery<Volume> query = em.createNamedQuery("Volume.findByName", Volume.class);
+        query.setParameter("name", name);
+        return query.getResultList();
+    }
+    
+    public void createNew(String title, String description, String image, String source, Comics comicsId) {
+        if (findByName(title).isEmpty()) {
+            Volume volume = new Volume(title, description, image, source, comicsId);
+            create(volume);
+        } else {
+            throw new EJBException();
+        }
+    }
+    
 }

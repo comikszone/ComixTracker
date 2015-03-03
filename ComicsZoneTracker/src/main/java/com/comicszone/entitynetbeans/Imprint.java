@@ -36,7 +36,7 @@ public class Imprint implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "imprint_imprint_id_seq")
-    @SequenceGenerator(name = "imprint_imprint_id_seq", sequenceName = "imprint_imprint_id_seq")
+    @SequenceGenerator(name = "imprint_imprint_id_seq", sequenceName = "imprint_imprint_id_seq", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "imprint_id")
     private Integer imprintId;
@@ -53,6 +53,10 @@ public class Imprint implements Serializable {
 
     public Imprint(Integer imprintId) {
         this.imprintId = imprintId;
+    }
+    
+    public Imprint(String name) {
+        this.name = name;
     }
 
     public Imprint(Integer imprintId, String name) {

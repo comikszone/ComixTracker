@@ -36,7 +36,7 @@ public class Publisher implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "publisher_publisher_id_seq")
-    @SequenceGenerator(name = "publisher_publisher_id_seq", sequenceName = "publisher_publisher_id_seq")
+    @SequenceGenerator(name = "publisher_publisher_id_seq", sequenceName = "publisher_publisher_id_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "publisher_id")
     private Integer publisherId;
@@ -55,6 +55,10 @@ public class Publisher implements Serializable {
 
     public Publisher(Integer publisherId) {
         this.publisherId = publisherId;
+    }
+    
+    public Publisher(String name) {
+        this.name = name;
     }
 
     public Publisher(Integer publisherId, String name) {

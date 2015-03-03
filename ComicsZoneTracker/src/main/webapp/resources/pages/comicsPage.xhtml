@@ -35,7 +35,8 @@ and open the template in the editor.
                         styleClass="content-name"/>
     </ui:define>
     <ui:define name="description">
-        <h:outputText value="Description: #{comicsPageManagedBean.comicsController.comics.description}"/>
+        <h:outputText value="Description: #{comicsPageManagedBean.comicsController.comics.description}"
+                      escape="false"/>
     </ui:define>    
         
             <ui:define name="rating"> 
@@ -53,6 +54,15 @@ and open the template in the editor.
                                                 <p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
                                                         value="Read!"
                                                         styleClass="btn btn-primary"/>
+                                                <br/>
+                                                <p:button value="Edit this page" 
+                                                          outcome="/resources/templates/authorized/editContent.jsf"
+                                                          style="margin-top: 1em">
+                                                    <f:param name="type" 
+                                                             value="comics"/>
+                                                    <f:param name="id" 
+                                                             value="#{comicsPageManagedBean.comicsController.comicsId}"/>
+                                                </p:button>
                                             </h:form>
                                         </c:when>
                                         <c:otherwise>
@@ -107,8 +117,8 @@ and open the template in the editor.
                             <p:button value="Add new issue" 
                                       outcome="/resources/templates/authorized/addContent.jsf">
                                 <f:param name="type" 
-                                         value="Issue"/>
-                                <f:param name="v_id" 
+                                         value="issue"/>
+                                <f:param name="id" 
                                          value="#{volume.id}"/>
                             </p:button>
                         </p:tab>
@@ -117,15 +127,16 @@ and open the template in the editor.
                         <p:button value="Add new volume" 
                                   outcome="/resources/templates/authorized/addContent.jsf">
                             <f:param name="type" 
-                                     value="Volume"/>
-                            <f:param name="c_id" 
+                                     value="volume"/>
+                            <f:param name="id" 
                                      value="#{comicsPageManagedBean.comicsController.comicsId}"/>
                         </p:button>
                     </c:if>
             </center>
                 <div>
                     <ui:include src="/resources/templates/comments/comments.xhtml">
-                        <ui:param name="type" value="comics"/>
+                        <ui:param name="type" 
+                                  value="comics"/>
                     </ui:include>
                 </div>
     </ui:define>
