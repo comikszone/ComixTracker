@@ -60,9 +60,6 @@ public class Users implements Serializable {
     @Lob
     @Column(name = "avatar")
     private byte[] avatar;
-    @Size(max = 2147483647)
-    @Column(name = "source")
-    private String source;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users", fetch = FetchType.LAZY)
     private List<UserTrackingStatus> userTrackingStatusList;
     @JoinTable(name = "user_group", joinColumns = {
@@ -436,14 +433,6 @@ public class Users implements Serializable {
 
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
     }
 
     @XmlTransient
