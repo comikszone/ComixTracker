@@ -43,6 +43,10 @@ public class MessagesManagedBean implements Serializable {
     private boolean showMessageAdder;
     private boolean showMessages;
     private int activeIndex=-1;
+    public void invoke()
+    {
+        System.err.println("THIS METHOD WAS INVOKED!!!!!!");
+    }
     public void addMessage() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = facesContext.getViewRoot();

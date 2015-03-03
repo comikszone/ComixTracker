@@ -1,15 +1,35 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/authorized/authorized.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
-            
-    <ui:define name="articleContent">
+<h:head>
+    <script type="text/javascript">
+    function handleMessage(data){
+//            $(":form:messages").html(data);
+//                PF('messageswv').hide();
+//                PF('userDetails').show();
+        console.log(data);
+        receiveMessage([{name:'msgData',value:data}]);
+            }
+    </script>
+</h:head>      
+    <h:body>
+    <!--<ui:define name="articleContent">-->
+<!--        <h:outputScript name="/resources/templates/js/prp.js" target="head" />-->
+        <!--<script src="../../js/prp.js" type="text/javascript"></script>-->
         <f:event type="preRenderView" listener="#{messagesManagedBean.preRender(userFriendsManagedBean.selectedFriend)}" />
+        	<p:socket channel="/a" onMessage="handleMessage"></p:socket>
         <h:form id="form">
+                		<p:remoteCommand name="receiveMessage"
+                                                 actionListener="#"
+                                                 update=":form">
+                                </p:remoteCommand>
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >
+<!--                    <p id="ptag" value="sss"/>-->
+                        <!--<img id="myImage" src="smiley.gif">-->
                     <p:autoComplete
                         id="friendsFinder"
                         maxResults="5"
@@ -374,7 +394,8 @@
                                 paginator="true" 
                                 rowsPerPageTemplate="10,20,30" 
                                 rows="10"
-                                lazy="true">
+                                lazy="true"
+                                widgetVar="messageswv">
                                 
                                 <f:facet name="header">
                                     <p:commandButton
@@ -393,6 +414,7 @@
                                     
                                     style="text-align: left; background: #{message.sender.userId eq messagesManagedBean.currentUser.userId ? 'radial-gradient(circle,#4FC3F7, #E1F5FE)' : 'radial-gradient(circle,#9CCC65, #DCEDC8)'}">
                                     <f:facet name="header">
+<!--                                        <h:outputText id="outid" value="Hello!"/>-->
                                         <h:outputText value="#{message.sender.realNickname}"
                                                       style="font-weight: bold;"/>
                                         <br/>
@@ -446,7 +468,7 @@
                       hideEffect="fade" 
                       resizable="false" 
                       
-                      >
+                      >#{messagesManagedBean.invoke()};
                 <p:outputPanel id="userDetailPanel" style="text-align:center;">
                     <p:panelGrid  
                         columns="1" 
@@ -518,5 +540,6 @@
          </p:confirmDialog>
      </h:form>      
             
-    </ui:define>
-</ui:composition>
+    <!--</ui:define>-->
+        </h:body>
+</html>
