@@ -30,7 +30,9 @@ public class ProgressController implements Serializable {
     @ManagedProperty(value="#{currentUserController}")
     private CurrentUserController userManagedBean;
     
-    private List<Comics> usersComics;
+    private List<Comics> currentComics;
+    private List<Comics> droppedComics;
+    private List<Comics> plannedComics;
     
 
     /**
@@ -65,7 +67,9 @@ public class ProgressController implements Serializable {
     public void init() {
         try {
             Integer userId = userManagedBean.getCurrentUser().getUserId();
-            setUsersComics(progressFacade.findByUserInProgress(userId));
+            currentComics = progressFacade.findCurrentComics(userId);
+            plannedComics = progressFacade.findPlannedComics(userId);
+            droppedComics = progressFacade.findDroppedComics(userId);
         }
         catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -79,22 +83,51 @@ public class ProgressController implements Serializable {
         return ((long)(res));
     }
 
-    /**
-     * @return the usersComics
-     */
-    public List<Comics> getUsersComics() {
-        return usersComics;
-    }
-
-    /**
-     * @param usersComics the usersComics to set
-     */
-    public void setUsersComics(List<Comics> usersComics) {
-        this.usersComics = usersComics;
-    }
     
     public String redirect(Content content) {
         return "/resources/templates/authorized/readingPage.jsf?faces-redirect=true&id=" + content.getId();
+    }
+
+    /**
+     * @return the currentComics
+     */
+    public List<Comics> getCurrentComics() {
+        return currentComics;
+    }
+
+    /**
+     * @param currentComics the currentComics to set
+     */
+    public void setCurrentComics(List<Comics> currentComics) {
+        this.currentComics = currentComics;
+    }
+
+    /**
+     * @return the droppedComics
+     */
+    public List<Comics> getDroppedComics() {
+        return droppedComics;
+    }
+
+    /**
+     * @param droppedComics the droppedComics to set
+     */
+    public void setDroppedComics(List<Comics> droppedComics) {
+        this.droppedComics = droppedComics;
+    }
+
+    /**
+     * @return the plannedComics
+     */
+    public List<Comics> getPlannedComics() {
+        return plannedComics;
+    }
+
+    /**
+     * @param plannedComics the plannedComics to set
+     */
+    public void setPlannedComics(List<Comics> plannedComics) {
+        this.plannedComics = plannedComics;
     }
     
 }

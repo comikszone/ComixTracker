@@ -15,8 +15,10 @@ and open the template in the editor.
     <ui:define name="articleContent">
         <h1>Welcome, #{currentUserController.name}!</h1>
         <center>
+            <p:tabView>
+                <p:tab title="Now reading">
             <p:dataList var="comics" 
-                        value="#{progressController.usersComics}"
+                        value="#{progressController.currentComics}"
                         type="definition">
                 <p:panelGrid columns="2">
                     <p:row>
@@ -30,6 +32,42 @@ and open the template in the editor.
                     </p:row>
                 </p:panelGrid>
             </p:dataList>
+                </p:tab>
+                <p:tab title="Will read">
+            <p:dataList var="comics" 
+                        value="#{progressController.plannedComics}"
+                        type="definition">
+                <p:panelGrid columns="2">
+                    <p:row>
+                    <p:column style="margin-right: 50%">
+                        <p:link value="#{comics.name}" outcome="#{progressController.redirect(comics)}"/>
+                        <br/>
+                    </p:column>
+                    <p:column>
+                        <p:progressBar style="width: 50em" value="#{progressController.getValue(comics)}"/>
+                    </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dataList>
+                </p:tab>
+                <p:tab title="Dropped">
+            <p:dataList var="comics" 
+                        value="#{progressController.droppedComics}"
+                        type="definition">
+                <p:panelGrid columns="2">
+                    <p:row>
+                    <p:column style="margin-right: 50%">
+                        <p:link value="#{comics.name}" outcome="#{progressController.redirect(comics)}"/>
+                        <br/>
+                    </p:column>
+                    <p:column>
+                        <p:progressBar style="width: 50em" value="#{progressController.getValue(comics)}"/>
+                    </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dataList>
+                </p:tab>
+            </p:tabView>
         </center>    
     </ui:define>
 </ui:composition>

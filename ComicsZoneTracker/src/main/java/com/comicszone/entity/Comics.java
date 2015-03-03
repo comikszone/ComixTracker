@@ -72,12 +72,27 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Comics.getMaxCommentDateForUser", query = "SELECT MAX(cl.commentTime) FROM  Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.userId = :userId"), 
     @NamedQuery(name = "Comics.getCountOfNewCommentsForUser", query = "SELECT COUNT(cl.commentId) FROM Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.commentTime > (SELECT MAX(ccl.commentTime) FROM  Comics cc INNER JOIN cc.commentsList ccl WHERE cc.Id = c.Id AND ccl.userId = :userId)"),
     @NamedQuery(name = "Comics.getCommentsAfterDateToComics", query = "SELECT DISTINCT cl FROM Comics c INNER JOIN c.commentsList cl WHERE c.Id = :Id AND cl.commentTime > :date ORDER BY cl.commentTime"),
-    @NamedQuery(name = "Comics.findByUserInProgress", 
+    @NamedQuery(name = "Comics.findPlannedComics", 
             query = "SELECT DISTINCT c FROM Comics c "
                      + "JOIN c.volumeList v "
                      + "JOIN v.issueList i "
                      + "JOIN i.usersList p "
-                     + "WHERE p.userId = :userId"),
+                     + "JOIN c.userTrackingStatusList l "
+                     + "WHERE p.userId = :userId AND l.status = 2"),
+    @NamedQuery(name = "Comics.findCurrentComics", 
+            query = "SELECT DISTINCT c FROM Comics c "
+                     + "JOIN c.volumeList v "
+                     + "JOIN v.issueList i "
+                     + "JOIN i.usersList p "
+                     + "JOIN c.userTrackingStatusList l "
+                     + "WHERE p.userId = :userId AND l.status = 1"),
+    @NamedQuery(name = "Comics.findDroppedComics", 
+            query = "SELECT DISTINCT c FROM Comics c "
+                     + "JOIN c.volumeList v "
+                     + "JOIN v.issueList i "
+                     + "JOIN i.usersList p "
+                     + "JOIN c.userTrackingStatusList l "
+                     + "WHERE p.userId = :userId AND l.status = 3"),
     @NamedQuery(name = "Comics.getTotalIssueCount",
             query = "SELECT COUNT(i.Id) FROM Issue i"
                     + " JOIN i.volumeId v "

@@ -20,6 +20,8 @@ and open the template in the editor.
         #{trackingStatusController.setComicsId(comicsPageController.comicsController.comicsId)}
         #{ratingController.setType(comicsPageController.comicsController.comics.contentType)}
         #{ratingController.setContentId(comicsPageController.comicsController.comicsId)}
+        #{trackingController.comicsController.setComicsId(comicsPageController.comicsController.comicsId)}
+        #{trackingController.comicsController.initComics()}
         <ol class="breadcrumb">
             <li><a href="/resources/templates/index.jsf">Home</a></li>
             <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
@@ -136,6 +138,47 @@ and open the template in the editor.
                             <f:param name="c_id" 
                                      value="#{comicsPageController.comicsController.comicsId}"/>
                         </p:button>
+                                #{trackingController.init()}
+                        <h:form id="mainTable">
+                <p:commandLink actionListener="#{trackingController.selectAll}" 
+                               value="I've read everything!"
+                               update=":mainTable:tables"
+                               styleClass="btn btn-large btn-primary"
+                               action="#{trackingController.redirect(comicsController.comics)}"/>
+                <br/>
+                <br/>
+            <ui:repeat  id="tables"
+                        var="volume" 
+                        value="#{trackingController.comicsController.comics.volumeList}">
+                            <p:dataTable  var="issue" 
+                                              value="#{volume.issueList}"
+                                              selection="#{trackingController.selectedIssues}"
+                                              rowKey="#{issue.id}"
+                                              tableStyle="width:auto"
+                                              rowSelectMode="add">
+                                <p:ajax event="toggleSelect"
+                                        listener="#{trackingController.onHeaderCheckboxClick}"
+                                        update=":mainTable:tables">
+                                    <f:setPropertyActionListener target="#{trackingController.selectedVolume}"
+                                                                 value="#{volume}"/>
+                                </p:ajax>
+                                <p:ajax event="rowSelectCheckbox" 
+                                        listener="#{trackingController.onRowSelect}"
+                                        update=":mainTable:tables"/>
+                                <p:ajax event="rowUnselectCheckbox" 
+                                        listener="#{trackingController.onRowUnselect}"
+                                        update=":mainTable:tables"/>
+                                <p:column selectionMode="multiple" style="width:5%;">
+                                </p:column>
+                                <p:column style="width:max-content;">                                        
+                                    <f:facet name="header">
+                                        <h:outputText value="#{volume.name}"/>
+                                    </f:facet>
+                                            <h:outputText value="#{issue.name}"/>
+                                    </p:column>
+                                </p:dataTable>
+            </ui:repeat>
+            </h:form>
                     </c:if>
             </center>
                 <div>

@@ -6,6 +6,7 @@
 package com.comicszone.managedbeans.tracking;
 
 import com.comicszone.dao.tracking.TrackingInterface;
+import com.comicszone.dao.user.UserDataFacade;
 import com.comicszone.entity.Content;
 import com.comicszone.entity.ContentType;
 import com.comicszone.entity.Issue;
@@ -14,12 +15,14 @@ import com.comicszone.entity.Volume;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
 import com.comicszone.managedbeans.userbeans.CurrentUserController;
 import java.io.Serializable;
+import java.security.Principal;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
@@ -39,13 +42,15 @@ public class TrackingController implements Serializable {
     @EJB
     private TrackingInterface trackingFacade;
     
-    @ManagedProperty(value="#{currentUserController}")
-    private CurrentUserController userManagedBean;
-    
+    @EJB
+    private UserDataFacade userFacade;
+        
     private Volume selectedVolume;
     private List<Issue> selectedIssues;
     private List<Issue> prevSelectedIssues;
     
+    private Users currentUser;
+
      /**
      * @return the comicsController
      */
@@ -58,14 +63,6 @@ public class TrackingController implements Serializable {
      */
     public void setComicsController(ComicsController comicsController) {
         this.comicsController = comicsController;
-    }
-    
-    public CurrentUserController getUserManagedBean() {
-        return userManagedBean;
-    }
-    
-    public void setUserManagedBean(CurrentUserController userManagedBean) {
-        this.userManagedBean = userManagedBean;
     }
     
         /**
@@ -100,41 +97,29 @@ public class TrackingController implements Serializable {
     }
     
     public void init() {
-        try {
             Integer comicsId = comicsController.getComics().getId();
-            Integer userId = userManagedBean.getCurrentUser().getUserId();
-            List<Issue> prevIssues = trackingFacade.getIssueFacade().findMarkedByUserAndComics(comicsId, userId);
-            selectedIssues = prevIssues;
-            prevSelectedIssues = prevIssues;
-        }
-        catch (CloneNotSupportedException ex) {
-            ex.printStackTrace();
-        }
+            Principal prin = FacesContext.getCurrentInstance()
+                .getExternalContext().getUserPrincipal();
+            if (prin != null) {
+                setCurrentUser(getUserFacade().getUserWithNickname(prin.getName()));
+                Integer userId = getCurrentUser().getUserId();
+                List<Issue> prevIssues = trackingFacade.getIssueFacade().findMarkedByUserAndComics(comicsId, userId);
+                selectedIssues = prevIssues;
+                prevSelectedIssues = prevIssues;
+            }
     }
     
     public void onHeaderCheckboxClick(ToggleSelectEvent event) {
         if (!selectedIssues.isEmpty()) {
-            try {
                 List<Issue> temp = selectedIssues;
                 temp.removeAll(prevSelectedIssues);
-                Users currentUser = userManagedBean.getCurrentUser();
                 for (Issue issue: temp)
                     trackingFacade.markAsRead(currentUser, issue);
-            }
-            catch (CloneNotSupportedException ex) {
-                ex.printStackTrace();
-            }
         }
         else {
-            try {
-                Users currentUser = userManagedBean.getCurrentUser();
                 for (Issue issue: (List<Issue>)((DataTable) event.getSource()).getValue())
                     trackingFacade.unMark(currentUser, issue);
             }
-            catch (CloneNotSupportedException ex) {
-                ex.printStackTrace();
-            }
-        }
     }
     
     public void selectAll() {
@@ -143,36 +128,18 @@ public class TrackingController implements Serializable {
         List<Issue> temp = selectedIssues;
         if (prevSelectedIssues != null)
             temp.removeAll(prevSelectedIssues);
-        try {
-            Users currentUser = userManagedBean.getCurrentUser();
-            for (Issue issue: temp)
-                trackingFacade.markAsRead(currentUser, issue);
-        }
-        catch (CloneNotSupportedException ex) {
-            ex.printStackTrace();
-        }
+        for (Issue issue: temp)
+            trackingFacade.markAsRead(currentUser, issue);
     }
     
     public void onRowSelect(SelectEvent event) {
         Issue issueToMark = (Issue)event.getObject();
-        try {
-            Users currentUser = userManagedBean.getCurrentUser();
-            trackingFacade.markAsRead(currentUser, issueToMark);
-        }
-        catch (CloneNotSupportedException ex) {
-            ex.printStackTrace();
-        }
+        trackingFacade.markAsRead(currentUser, issueToMark);
     }
     
     public void onRowUnselect(UnselectEvent event) {
         Issue issueToUnmark = (Issue)event.getObject();
-        try {
-            Users currentUser = userManagedBean.getCurrentUser();
-            trackingFacade.unMark(currentUser, issueToUnmark);
-        }
-        catch (CloneNotSupportedException ex) {
-            ex.printStackTrace();
-        }
+        trackingFacade.unMark(currentUser, issueToUnmark);
     }
         
     public String redirect(Content content)
@@ -184,6 +151,34 @@ public class TrackingController implements Serializable {
         if (content.getContentType() == ContentType.Comics)
                 return "/resources/templates/authorized/progressPage.jsf?faces-redirect=true&id=" + content.getId();
         return "";
+    }
+
+    /**
+     * @return the userFacade
+     */
+    public UserDataFacade getUserFacade() {
+        return userFacade;
+    }
+
+    /**
+     * @param userFacade the userFacade to set
+     */
+    public void setUserFacade(UserDataFacade userFacade) {
+        this.userFacade = userFacade;
+    }
+
+    /**
+     * @return the currentUser
+     */
+    public Users getCurrentUser() {
+        return currentUser;
+    }
+
+    /**
+     * @param currentUser the currentUser to set
+     */
+    public void setCurrentUser(Users currentUser) {
+        this.currentUser = currentUser;
     }
 
 }

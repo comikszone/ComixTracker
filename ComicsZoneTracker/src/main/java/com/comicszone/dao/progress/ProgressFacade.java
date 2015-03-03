@@ -11,6 +11,7 @@ import com.comicszone.dao.progress.ProgressInterface;
 import com.comicszone.dao.user.UserDataFacade;
 import com.comicszone.entity.Comics;
 import com.comicszone.entity.Users;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,10 @@ public class ProgressFacade extends AbstractFacade<Users> implements ProgressInt
     @Override
     public String getReadComics(@PathParam("userId") String Id) {
         Integer userId = Integer.parseInt(Id);
-        List<Comics> readComics = findByUserInProgress(userId);
+        List<Comics> readComics = new ArrayList();
+        readComics.addAll(findCurrentComics(userId));
+        readComics.addAll(findDroppedComics(userId));
+        readComics.addAll(findPlannedComics(userId));
         JSONArray json = new JSONArray();
         for (Comics comics: readComics) {
             Map map = new HashMap();
@@ -63,13 +67,6 @@ public class ProgressFacade extends AbstractFacade<Users> implements ProgressInt
             json.add(map);
         }
         return json.toJSONString();
-    }
-    
-    @Override
-    public List<Comics> findByUserInProgress(Integer userId) {
-        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByUserInProgress", Comics.class);
-        query.setParameter("userId", userId);
-        return query.getResultList();
     }
 
     @Override
@@ -85,6 +82,27 @@ public class ProgressFacade extends AbstractFacade<Users> implements ProgressInt
         query.setParameter("comicsId", comicsId);
         query.setParameter("userId", userId);
         return query.getResultList().get(0);
+    }
+
+    @Override
+    public List<Comics> findCurrentComics(Integer userId) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findCurrentComics", Comics.class);
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Comics> findPlannedComics(Integer userId) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findPlannedComics", Comics.class);
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Comics> findDroppedComics(Integer userId) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findDroppedComics", Comics.class);
+        query.setParameter("userId", userId);
+        return query.getResultList();
     }
     
 }
