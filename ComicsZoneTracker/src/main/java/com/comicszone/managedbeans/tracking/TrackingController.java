@@ -142,17 +142,6 @@ public class TrackingController implements Serializable {
         trackingFacade.unMark(currentUser, issueToUnmark);
     }
         
-    public String redirect(Content content)
-    {
-        if (content.getContentType() == ContentType.Issue)
-            return "/resources/pages/issuePage.jsf?faces-redirect=true&id=" + content.getId();
-        if (content.getContentType() == ContentType.Volume)
-                return "/resources/pages/volumePage.jsf?faces-redirect=true&id=" + content.getId();
-        if (content.getContentType() == ContentType.Comics)
-                return "/resources/templates/authorized/progressPage.jsf?faces-redirect=true&id=" + content.getId();
-        return "";
-    }
-
     /**
      * @return the userFacade
      */

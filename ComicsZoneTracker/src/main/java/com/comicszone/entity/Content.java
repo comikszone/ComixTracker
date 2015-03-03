@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author alexander
  */
 public interface Content extends Serializable, NamedImage {
-
+    
     public String getDescription();
     public void setDescription(String description);
     public Float getRating();
