@@ -75,24 +75,18 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Comics.findPlannedComics", 
             query = "SELECT DISTINCT c FROM Comics c "
                      + "JOIN c.volumeList v "
-                     + "JOIN v.issueList i "
-                     + "JOIN i.usersList p "
                      + "JOIN c.userTrackingStatusList l "
-                     + "WHERE p.userId = :userId AND l.status = 2"),
+                     + "WHERE l.userTrackingStatusPK.userId = :userId AND l.status = 2"),
     @NamedQuery(name = "Comics.findCurrentComics", 
             query = "SELECT DISTINCT c FROM Comics c "
                      + "JOIN c.volumeList v "
-                     + "JOIN v.issueList i "
-                     + "JOIN i.usersList p "
                      + "JOIN c.userTrackingStatusList l "
-                     + "WHERE p.userId = :userId AND l.status = 1"),
+                     + "WHERE l.userTrackingStatusPK.userId = :userId AND l.status = 1"),
     @NamedQuery(name = "Comics.findDroppedComics", 
             query = "SELECT DISTINCT c FROM Comics c "
                      + "JOIN c.volumeList v "
-                     + "JOIN v.issueList i "
-                     + "JOIN i.usersList p "
                      + "JOIN c.userTrackingStatusList l "
-                     + "WHERE p.userId = :userId AND l.status = 3"),
+                     + "WHERE l.userTrackingStatusPK.userId = :userId AND l.status = 3"),
     @NamedQuery(name = "Comics.getTotalIssueCount",
             query = "SELECT COUNT(i.Id) FROM Issue i"
                     + " JOIN i.volumeId v "

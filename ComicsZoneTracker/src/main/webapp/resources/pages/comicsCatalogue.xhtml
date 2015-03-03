@@ -15,15 +15,15 @@
                 widgetVar="comicsTable"
                 value="#{comicsCatalogueView.lazyModel}" 
                 paginator="true" 
-                rows="3"
+                rows="10"
                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} 
                     {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                rowsPerPageTemplate="3,6,9" 
+                rowsPerPageTemplate="10,20,50,100" 
                 selectionMode="single" 
                 selection="#{comicsCatalogueView.selectedComics}"
                 emptyMessage="No comics found!"
                 lazy="true"
-                styleClass="table-responsive">
+                tableStyleClass="table-responsive">
                 
                 <p:ajax 
                     event="rowSelect" 

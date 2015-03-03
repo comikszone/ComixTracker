@@ -42,10 +42,19 @@ public class TrackingStatusController {
     public void init() {
         Principal prin = FacesContext.getCurrentInstance()
                 .getExternalContext().getUserPrincipal();
-        if (prin != null)
+        if (prin != null) {
             setCurrentUser(getUserFacade().getUserWithNickname(prin.getName()));
-        statusFacade.init(currentUser.getUserId(), comicsId);
-        selectedStatus = statusFacade.getStatus().toString();
+            statusFacade.init(currentUser.getUserId(), comicsId);
+            selectedStatus = statusFacade.getStatus().toString();
+        }
+    }
+    
+    public boolean isUserReading() {
+        if (!(selectedStatus == null)) {
+            int status = Integer.parseInt(selectedStatus);
+            return (status != 0);
+        }
+        else return false;
     }
 
     /**

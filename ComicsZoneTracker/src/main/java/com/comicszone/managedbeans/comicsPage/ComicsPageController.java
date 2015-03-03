@@ -28,6 +28,8 @@ public class ComicsPageController implements Serializable {
     @ManagedProperty(value="#{comicsController}")
     private ComicsController comicsController;
     
+    private boolean readingModeOn;
+    
     private Integer comicsId;
     /**
      * @return the comicsFacade
@@ -78,6 +80,20 @@ public class ComicsPageController implements Serializable {
         else if (content.getContentType() == ContentType.Volume)
                 return "/resources/pages/volumePage.jsf?faces-redirect=true&id=" + content.getId();
         else return "/resources/templates/index.jsf";
+    }
+
+    /**
+     * @return the readingModeOn
+     */
+    public boolean isReadingModeOn() {
+        return readingModeOn;
+    }
+
+    /**
+     * @param readingModeOn the readingModeOn to set
+     */
+    public void setReadingModeOn(boolean readingModeOn) {
+        this.readingModeOn = readingModeOn;
     }
     
 }

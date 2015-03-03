@@ -121,6 +121,24 @@ td {
     font-weight: 700;
 }
 
+.slideshow {
+    margin: 0 auto 0 auto;
+    width: max-content;
+}
+
+@media (min-width: 400px) {
+    .slideshow-image {
+            width: 200px;
+            height: 300px;
+    }
+}
+
+@media (min-width: 768px) {
+    .slideshow-image {
+            width: 300px;
+            height: 450px;
+    }
+}
 .slideshow-image {
     border: black;
     border-style: solid;

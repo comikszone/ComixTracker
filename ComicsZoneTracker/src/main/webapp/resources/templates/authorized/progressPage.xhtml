@@ -20,14 +20,21 @@ and open the template in the editor.
             <p:dataList var="comics" 
                         value="#{progressController.currentComics}"
                         type="definition">
-                <p:panelGrid columns="2">
+                <p:panelGrid columns="1" layout="grid" style="margin: 0 auto 0 auto">
                     <p:row>
-                    <p:column style="margin-right: 50%">
+                    <p:column>
                         <p:link value="#{comics.name}" outcome="#{progressController.redirect(comics)}"/>
                         <br/>
                     </p:column>
+                    </p:row>
+                    <p:row>
                     <p:column>
-                        <p:progressBar style="width: 50em" value="#{progressController.getValue(comics)}"/>
+                        <div class="progress" style="margin: 0 auto 0 auto">
+                            <div class="progress-bar progress-bar-success" 
+                                 style="width: #{progressController.getValue(comics)}%" 
+                                 aria-valuenow="#{progressController.getValue(comics)}"
+                                 aria-valuemin="0" aria-valuemax="100%"/>
+                        </div>
                     </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -37,14 +44,21 @@ and open the template in the editor.
             <p:dataList var="comics" 
                         value="#{progressController.plannedComics}"
                         type="definition">
-                <p:panelGrid columns="2">
+                <p:panelGrid columns="1" layout="grid">
                     <p:row>
                     <p:column style="margin-right: 50%">
                         <p:link value="#{comics.name}" outcome="#{progressController.redirect(comics)}"/>
                         <br/>
                     </p:column>
+                        </p:row>
+                    <p:row>
                     <p:column>
-                        <p:progressBar style="width: 50em" value="#{progressController.getValue(comics)}"/>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-info" 
+                                 style="width: #{progressController.getValue(comics)}%" 
+                                 aria-valuenow="#{progressController.getValue(comics)}"
+                                 aria-valuemin="0" aria-valuemax="100"/>
+                        </div>
                     </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -54,14 +68,21 @@ and open the template in the editor.
             <p:dataList var="comics" 
                         value="#{progressController.droppedComics}"
                         type="definition">
-                <p:panelGrid columns="2">
+                <p:panelGrid columns="1" layout="grid">
                     <p:row>
                     <p:column style="margin-right: 50%">
                         <p:link value="#{comics.name}" outcome="#{progressController.redirect(comics)}"/>
                         <br/>
                     </p:column>
+                        </p:row>
+                    <p:row>
                     <p:column>
-                        <p:progressBar style="width: 50em" value="#{progressController.getValue(comics)}"/>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-danger" 
+                                 style="width: #{progressController.getValue(comics)}%" 
+                                 aria-valuenow="#{progressController.getValue(comics)}"
+                                 aria-valuemin="0" aria-valuemax="100"/>
+                        </div>
                     </p:column>
                     </p:row>
                 </p:panelGrid>

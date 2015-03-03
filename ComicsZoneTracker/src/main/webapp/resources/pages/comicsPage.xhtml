@@ -37,7 +37,7 @@ and open the template in the editor.
                      #{trackingStatusController.init()}
                  <h:form id="form">
                      <p:selectOneButton value="#{trackingStatusController.selectedStatus}" immediate="true">
-                         <p:ajax event="change" update="@form" /> 
+                         <p:ajax event="change" update="@form :content:selector" /> 
                         <f:selectItem itemLabel="Reading" itemValue="1" />
                         <f:selectItem itemLabel="Will read" itemValue="2" />
                         <f:selectItem itemLabel="Dropped" itemValue="3" />
@@ -66,10 +66,6 @@ and open the template in the editor.
                                                             step="1">
                                                     <f:ajax event="change" listener="#{ratingController.rate}"/>
                                                 </pf:rating>
-                                                <br/>
-                                                <p:link outcome="#{comicsPageController.redirect(comicsPageController.comicsController.comics)}" 
-                                                        value="Read!"
-                                                        styleClass="btn btn-primary"/>
                                             </h:form>
                                         </c:when>
                                         <c:otherwise>
@@ -86,12 +82,23 @@ and open the template in the editor.
                 
                 </ui:define>
    <ui:define name="content">
-       <center>
+           <h:form id="content">
+                      <center>
+           <p:selectBooleanButton id="selector"
+                                  value="#{comicsPageController.readingModeOn}" 
+                                  offLabel="Track!" 
+                                  onLabel="Back to issue list"
+                                  disabled="#{!trackingStatusController.isUserReading()}">
+                <p:ajax event="change" update=":content:trackingSection"/>
+                <p:ajax event="change" update=":content:mainContent"/>
+            </p:selectBooleanButton>
+           <p:outputPanel id="mainContent">
                     <p:accordionPanel var="volume" 
                                       value="#{comicsPageController.comicsController.comics.volumeList}"
                                       multiple="true"
                                       id="issues"
                                       dynamic="true"
+                                      rendered="#{!comicsPageController.isReadingModeOn()}"
                                       >
                         <p:tab >
                             <f:facet name="title">
@@ -104,7 +111,8 @@ and open the template in the editor.
                                         layout="grid"
                                         paginator="true"
                                         rows="10"
-                                        styleClass="border:none">
+                                        styleClass="border:none"
+                                        >
                                 <h:panelGrid columns="1" styleClass="border:none">
                                     <p:row>
                                         <h:form>
@@ -121,53 +129,65 @@ and open the template in the editor.
                                     </p:row>
                                 </h:panelGrid>                      
                             </p:dataGrid>
-                            <p:button value="Add new issue" 
-                                      outcome="/resources/templates/authorized/addContent.jsf">
-                                <f:param name="type" 
-                                         value="Issue"/>
-                                <f:param name="v_id" 
-                                         value="#{volume.id}"/>
-                            </p:button>
+                            <c:if test="#{userRoleController.isUserAuthorized()}">
+                                <p:button value="Add new issue" 
+                                      outcome="/resources/templates/authorized/addContent.jsf"
+                                      rendered="#{!comicsPageController.isReadingModeOn()}">
+                                    <f:param name="type" 
+                                            value="Issue"/>
+                                    <f:param name="v_id" 
+                                            value="#{volume.id}"/>
+                                </p:button>
+                            </c:if>
                         </p:tab>
                     </p:accordionPanel>
                     <c:if test="#{userRoleController.isUserAuthorized()}">
                         <p:button value="Add new volume" 
-                                  outcome="/resources/templates/authorized/addContent.jsf">
+                                  outcome="/resources/templates/authorized/addContent.jsf"
+                                  rendered="#{!comicsPageController.isReadingModeOn()}">
                             <f:param name="type" 
                                      value="Volume"/>
                             <f:param name="c_id" 
                                      value="#{comicsPageController.comicsController.comicsId}"/>
                         </p:button>
+                    </c:if>
+           </p:outputPanel>
+           <h:form id="trackingSection">
+                    <c:if test="#{userRoleController.isUserAuthorized()}">
                                 #{trackingController.init()}
                         <h:form id="mainTable">
                 <p:commandLink actionListener="#{trackingController.selectAll}" 
                                value="I've read everything!"
-                               update=":mainTable:tables"
+                               update=":content:trackingSection:mainTable:tables"
                                styleClass="btn btn-large btn-primary"
-                               action="#{trackingController.redirect(comicsController.comics)}"/>
+                               action="#{trackingController.redirect(comicsController.comics)}"
+                               rendered="#{comicsPageController.isReadingModeOn()}"/>
                 <br/>
                 <br/>
             <ui:repeat  id="tables"
                         var="volume" 
-                        value="#{trackingController.comicsController.comics.volumeList}">
+                        value="#{trackingController.comicsController.comics.volumeList}"
+                        rendered="#{comicsPageController.isReadingModeOn()}"
+                        >
                             <p:dataTable  var="issue" 
                                               value="#{volume.issueList}"
                                               selection="#{trackingController.selectedIssues}"
                                               rowKey="#{issue.id}"
                                               tableStyle="width:auto"
-                                              rowSelectMode="add">
+                                              rowSelectMode="add"
+                                              tableStyleClass="table-responsive">
                                 <p:ajax event="toggleSelect"
                                         listener="#{trackingController.onHeaderCheckboxClick}"
-                                        update=":mainTable:tables">
+                                        update=":content:trackingSection:mainTable:tables">
                                     <f:setPropertyActionListener target="#{trackingController.selectedVolume}"
                                                                  value="#{volume}"/>
                                 </p:ajax>
                                 <p:ajax event="rowSelectCheckbox" 
                                         listener="#{trackingController.onRowSelect}"
-                                        update=":mainTable:tables"/>
+                                        update=":content:trackingSection:mainTable:tables"/>
                                 <p:ajax event="rowUnselectCheckbox" 
                                         listener="#{trackingController.onRowUnselect}"
-                                        update=":mainTable:tables"/>
+                                        update=":content:trackingSection:mainTable:tables"/>
                                 <p:column selectionMode="multiple" style="width:5%;">
                                 </p:column>
                                 <p:column style="width:max-content;">                                        
@@ -180,7 +200,9 @@ and open the template in the editor.
             </ui:repeat>
             </h:form>
                     </c:if>
+           </h:form>
             </center>
+</h:form>
                 <div>
                     <ui:include src="/resources/templates/comments/comments.xhtml">
                         <ui:param name="type" value="comics"/>
