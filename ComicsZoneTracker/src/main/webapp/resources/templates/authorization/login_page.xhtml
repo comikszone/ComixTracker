@@ -8,11 +8,11 @@
         <p:panel>
             <h:form>
                 <h2>Login</h2>
-                Username: <p:inputText value="#{authorisationManagedBean.nickname}"/><br />
-                Password: <p:password value="#{authorisationManagedBean.password}"/><br />
+                Username: <p:inputText value="#{authorisationController.nickname}"/><br />
+                Password: <p:password value="#{authorisationController.password}"/><br />
                 <p:commandButton 
                                  ajax="false"
-                                 action="#{authorisationManagedBean.doLogin()}" value="Login" />
+                                 action="#{authorisationController.doLogin()}" value="Login" />
                 <p:commandButton type="button"
                                  ajax="false"
                                  onclick="window.history.back();"

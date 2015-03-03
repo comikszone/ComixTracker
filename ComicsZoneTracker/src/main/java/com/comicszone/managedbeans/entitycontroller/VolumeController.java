@@ -6,7 +6,7 @@
 package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.VolumeFacade;
-import com.comicszone.entitynetbeans.Volume;
+import com.comicszone.entity.Volume;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;

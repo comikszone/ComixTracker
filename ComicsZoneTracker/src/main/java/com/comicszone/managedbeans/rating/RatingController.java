@@ -5,14 +5,12 @@
  */
 package com.comicszone.managedbeans.rating;
 
-import com.comicszone.dao.ComicsFacade;
-import com.comicszone.dao.IssueFacade;
-import com.comicszone.dao.VolumeFacade;
-import com.comicszone.dao.ratingdao.RatingFacade;
-import com.comicszone.dao.userdao.UserDataFacade;
-import com.comicszone.entitynetbeans.Content;
-import com.comicszone.entitynetbeans.ContentType;
-import com.comicszone.entitynetbeans.Users;
+import com.comicszone.dao.content.ContentFacade;
+import com.comicszone.dao.rating.RatingInterface;
+import com.comicszone.dao.user.UserDataFacade;
+import com.comicszone.entity.Content;
+import com.comicszone.entity.ContentType;
+import com.comicszone.entity.Users;
 import java.io.Serializable;
 import java.security.Principal;
 import javax.ejb.EJB;
@@ -31,13 +29,9 @@ import net.playerfinder.jsf.components.rating.UIRating;
 @ViewScoped
 public class RatingController implements Serializable {
     @EJB
-    private RatingFacade ratingFacade;
+    private RatingInterface ratingFacade;
     @EJB
-    private ComicsFacade comicsFacade;
-    @EJB
-    private VolumeFacade volumeFacade;
-    @EJB
-    private IssueFacade issueFacade;
+    private ContentFacade contentFacade;
     @EJB
     private UserDataFacade userFacade;
     
@@ -55,18 +49,7 @@ public class RatingController implements Serializable {
     }
     
     public void rate(AjaxBehaviorEvent actionEvent) {
-            Content content = null;
-            switch (type) {
-                case Comics:
-                    content = getComicsFacade().find(contentId);
-                    break;
-                case Volume:
-                    content = getVolumeFacade().find(contentId);
-                    break;
-                case Issue:
-                    content = getIssueFacade().find(contentId);
-                    break;
-            }
+            Content content = contentFacade.find(contentId, type);
             Float score = (Float)((UIRating) actionEvent.getComponent()).getValue();
             getRatingFacade().rateContent(content, getCurrentUser(), score);    
     }
@@ -74,14 +57,14 @@ public class RatingController implements Serializable {
     /**
      * @return the ratingFacade
      */
-    public RatingFacade getRatingFacade() {
+    public RatingInterface getRatingFacade() {
         return ratingFacade;
     }
 
     /**
      * @param ratingFacade the ratingFacade to set
      */
-    public void setRatingFacade(RatingFacade ratingFacade) {
+    public void setRatingFacade(RatingInterface ratingFacade) {
         this.ratingFacade = ratingFacade;
     }
 
@@ -111,48 +94,6 @@ public class RatingController implements Serializable {
      */
     public void setContentId(Integer contentId) {
         this.contentId = contentId;
-    }
-
-    /**
-     * @return the comicsFacade
-     */
-    public ComicsFacade getComicsFacade() {
-        return comicsFacade;
-    }
-
-    /**
-     * @param comicsFacade the comicsFacade to set
-     */
-    public void setComicsFacade(ComicsFacade comicsFacade) {
-        this.comicsFacade = comicsFacade;
-    }
-
-    /**
-     * @return the volumeFacade
-     */
-    public VolumeFacade getVolumeFacade() {
-        return volumeFacade;
-    }
-
-    /**
-     * @param volumeFacade the volumeFacade to set
-     */
-    public void setVolumeFacade(VolumeFacade volumeFacade) {
-        this.volumeFacade = volumeFacade;
-    }
-
-    /**
-     * @return the issueFacade
-     */
-    public IssueFacade getIssueFacade() {
-        return issueFacade;
-    }
-
-    /**
-     * @param issueFacade the issueFacade to set
-     */
-    public void setIssueFacade(IssueFacade issueFacade) {
-        this.issueFacade = issueFacade;
     }
 
     /**

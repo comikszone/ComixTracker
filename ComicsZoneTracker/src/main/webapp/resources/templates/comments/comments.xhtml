@@ -11,7 +11,7 @@
         <p:panel styleClass="comments-container">
         <p:dataGrid var="comment"
                     id="comments"
-                    value="#{commentsManagedBean.comments}"
+                    value="#{commentsController.comments}"
                     emptyMessage="No comments"
                     columns="1"
                     rows = "10"
@@ -25,8 +25,8 @@
                     <p:commandLink
                         styleClass="ui-panel-titlebar-icon ui-corner-all 
                         ui-state-default ui-icon ui-icon-close"
-                        action="#{commentsManagedBean.deleteComment(comment)}"
-                        rendered="#{commentsManagedBean.isCommentEditable(comment)}"
+                        action="#{commentsController.deleteComment(comment)}"
+                        rendered="#{commentsController.isCommentEditable(comment)}"
                         update=":table">
                         <p:confirm
                             header="Confirm deletion"
@@ -35,14 +35,14 @@
                     </p:commandLink>
                     
                     <p:commandLink
-                        rendered="#{commentsManagedBean.isCommentEditable(comment)}"
+                        rendered="#{commentsController.isCommentEditable(comment)}"
                         styleClass="ui-panel-titlebar-icon ui-corner-all 
                         ui-state-default ui-icon ui-icon-pencil"
                         update=":edit"
-                        action="#{commentsManagedBean.editionStarted(comment)}"
+                        action="#{commentsController.editionStarted(comment)}"
                         oncomplete="PF('commentEditor').show()">
                         <f:setPropertyActionListener
-                            target="#{commentsManagedBean.selectedCommentText}"
+                            target="#{commentsController.selectedCommentText}"
                             value="#{comment.text}"/>
                     </p:commandLink>
                 </f:facet>
@@ -60,12 +60,12 @@
         <p:panel id="edit" style="height: 70%;">
             <h:form id="editForm" style="height: 70%;">
                 <p:inputTextarea 
-                    value="#{commentsManagedBean.selectedCommentText}"
+                    value="#{commentsController.selectedCommentText}"
                     id="editedComment"
                     style="width: 90%; height: 70%;"/>
                 <p:commandButton
                     value="Save"
-                    action="#{commentsManagedBean.editComment()}"
+                    action="#{commentsController.editComment()}"
                     update=":table :dialog"/>
             </h:form>
         </p:panel>
@@ -84,7 +84,7 @@
             type="button"/>
      </p:confirmDialog>
     
-    <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+    <c:if test="#{userRoleController.isUserAuthorized()}">
         <p:panel 
             id="commentAdder" 
             header="Your comment..." 
@@ -97,7 +97,7 @@
                 <p:commandButton 
                     id="commentAdderSubmit" 
                     value="Send"
-                    action="#{commentsManagedBean.addComment()}"
+                    action="#{commentsController.addComment()}"
                     update=":table :commentAdder"/>
             </h:form>
         </p:panel>

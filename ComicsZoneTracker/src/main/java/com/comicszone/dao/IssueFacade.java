@@ -5,7 +5,7 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.entitynetbeans.Issue;
+import com.comicszone.entity.Issue;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;

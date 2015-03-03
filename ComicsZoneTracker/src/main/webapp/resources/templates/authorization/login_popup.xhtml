@@ -2,57 +2,63 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <p:dialog widgetVar="login" modal="true" header="Login">
+    <p:dialog widgetVar="login" modal="true" header="Login" styleClass="login">
         <h:form  role="form">
-            <div style="margin-left: auto; margin-right: auto;">
-                <a href="#{vKAuthorization.userUrl}"><img src="/resources/images/icons/vkontakte.png" 
-                                                          border="0"/></a>
-                <a href="#{facebookAuthorization.userUrl}"><img src="/resources/images/icons/facebook.png"
-                                                                border="0"/></a>
-                <a href="#{googleAuthorization.userUrl}"><img src="/resources/images/icons/google_plus.png"
-                                                              border="0"/></a>
-            </div>
-            <p:panelGrid>
-                <p:row>
+            <h:panelGrid cellpadding="5" columns="3" style="margin: 0 auto 0 auto">
+                    <a href="#{vKAuthorization.userUrl}"><img src="/resources/images/icons/vkontakte.png" 
+                      border="0"
+                      class="social-icon"/></a>
+                    <a href="#{facebookAuthorization.userUrl}"><img src="/resources/images/icons/facebook.png"
+                      border="0"
+                      class="social-icon"/></a>
+                    <a href="#{googleAuthorization.userUrl}"><img src="/resources/images/icons/google_plus.png"
+                      border="0"
+                      class="social-icon"/></a>
+            </h:panelGrid>
+            <br/>
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
                     <div class="input-group">
-                        <p:column>
                             <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-user"></i>
                             </span>
-                        </p:column>
-                        <p:column>
-                            <p:inputText value="#{authorisationManagedBean.nickname}" class="input-sm" placeholder="Username"/>
-                        </p:column> 
+                            <p:inputText value="#{authorisationController.nickname}" class="input-sm" placeholder="Username"/>
                     </div>
-                </p:row>
-                <p:row>
+                        </div>
+                    </td> 
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
                     <div class="input-group">
-                        <p:column>
                             <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-lock"></i>
                             </span>
-                        </p:column>
-                        <p:column>
-                            <p:inputText type="password" value="#{authorisationManagedBean.password}" class="input-sm" placeholder="Password"/>
-                        </p:column>
+                            <p:inputText type="password" value="#{authorisationController.password}" class="input-sm" placeholder="Password"/>
                     </div>
-                </p:row>
-                <p:row>
-                    <p:column>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table style="margin: 0 auto 0 auto"> 
+                <tr>
+                    <td>
                         <p:commandButton
-                            action="#{authorisationManagedBean.doLogin()}" 
+                            action="#{authorisationController.doLogin()}" 
                             ajax="false" 
                             value="Login" 
                             class="btn btn-primary"/>
-                    </p:column>
-                    <p:column>
+                    </td>
+                    <td>
                         <p:commandButton 
                             onclick="PF('login').hide()"
                             value="Cancel" 
                             class="btn btn-default"/>
-                    </p:column>
-                </p:row>
-            </p:panelGrid>
+                    </td>
+                </tr>
+            </table>
             <p:growl showDetail="true"/>
         </h:form>
     </p:dialog>

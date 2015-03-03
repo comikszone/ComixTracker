@@ -5,7 +5,7 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
-import com.comicszone.entitynetbeans.Users;
+import com.comicszone.entity.Users;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -33,9 +33,9 @@
         <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <p:graphicImage value="#{currentUserManagedBean.avatar}"                     
+                <p:graphicImage value="#{currentUserController.avatar}"                     
                                 styleClass="icon-on-start-page"/>
-                #{currentUserManagedBean.nameToStartPage}
+                #{currentUserController.nameToStartPage}
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
@@ -45,7 +45,7 @@
                             outcome="/resources/templates/authorized/profile.jsf"/>
                 </li>
                 <li>
-                    <c:if test="#{userRoleManagedBean.isUserAdmin()}">
+                    <c:if test="#{userRoleController.isUserAdmin()}">
                         <p:link value="Admin page"
                                 styleClass="without-decoration light-grey"
                                 outcome="/resources/templates/authorized/admin/admin.xhtml"/>
@@ -55,7 +55,7 @@
                     <h:form>
                     <h:commandLink
                             value="Logout" 
-                            action="#{logoutManagedBean.logout()}"/>
+                            action="#{logoutController.logout()}"/>
                     </h:form>
                 </li>
                 </ul>
