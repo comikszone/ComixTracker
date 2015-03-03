@@ -15,6 +15,7 @@ and open the template in the editor.
     <ui:define name="init">
         <f:metadata>
             <f:viewParam name="id" value="#{comicsPageController.comicsController.comicsId}"/>
+            <f:viewParam name="tracking" value="#{comicsPageController.readingModeOn}"/>
         </f:metadata>
         #{comicsPageController.comicsController.initComics()}
         #{trackingStatusController.setComicsId(comicsPageController.comicsController.comicsId)}

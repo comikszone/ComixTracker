@@ -85,7 +85,7 @@ public class ProgressController implements Serializable {
 
     
     public String redirect(Content content) {
-        return "/resources/templates/authorized/readingPage.jsf?faces-redirect=true&id=" + content.getId();
+        return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + content.getId() + "&tracking=true";
     }
 
     /**
