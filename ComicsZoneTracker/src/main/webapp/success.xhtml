@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+	<p:outputLabel value="Welcome #{successBean.name}"></p:outputLabel>
+	<h:form id="successForm">
+		<p:remoteCommand name="receiveMessage"
+			actionListener="#{successBean.receiveMessage}"></p:remoteCommand>
+		<p:growl id="growSubscriber" showDetail="true" sticky="true"
+			escape="false" autoUpdate="true" />
+
+
+	</h:form>
+
+	<p:socket channel="/subscriber" onMessage="handleMessage"></p:socket>
+
+
+
+</h:body>
+<script type="text/javascript">
+function handleMessage(data){
+	console.log(data);
+
+	receiveMessage([{name:'msgData',value:data}]);
+}
+</script>
+</html>
