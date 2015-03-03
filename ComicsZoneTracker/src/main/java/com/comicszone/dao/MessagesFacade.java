@@ -5,8 +5,8 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.entitynetbeans.Comics;
-import com.comicszone.entitynetbeans.Messages;
+import com.comicszone.entity.Comics;
+import com.comicszone.entity.Messages;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

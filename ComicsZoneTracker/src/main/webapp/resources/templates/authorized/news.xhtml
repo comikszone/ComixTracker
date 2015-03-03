@@ -11,7 +11,7 @@
                 title="Comments">
             <p:dataScroller
                 chunkSize="10"
-                value="#{userCommentsNewsManagedBean.newContainers}"
+                value="#{userCommentsNewsController.newContainers}"
                 rowIndexVar="index"
                 var="container">
                 <p:panel 
@@ -21,32 +21,32 @@
                         value="New comments on #{container.contentType} "/>
                     <p:link
                         value="#{container.name}"
-                        outcome="#{userCommentsNewsManagedBean.redirect(container)}"/>
+                        outcome="#{userCommentsNewsController.redirect(container)}"/>
                     <br/>
                     <h:outputText
                         value="Comments left after your last comment: 
-                        #{userCommentsNewsManagedBean.getNumberOfNewComments(index)}"/>
+                        #{userCommentsNewsController.getNumberOfNewComments(index)}"/>
                     <br/>
                     <h:outputText
                         value="Comments you haven't read: 
-                        #{userCommentsNewsManagedBean.getNumberOfUnreadComments(index)}"/>
+                        #{userCommentsNewsController.getNumberOfUnreadComments(index)}"/>
                     <br/>
                     <h:outputText
                         value="You haven't commented it 
-                        #{userCommentsNewsManagedBean.getPeriodFromUser(index)}."/>
+                        #{userCommentsNewsController.getPeriodFromUser(index)}."/>
                     <br/>
                     <h:outputText
                         value="Last comment to it was 
-                        #{userCommentsNewsManagedBean.getPeriodFromLastComment(index)} ago."/>
+                        #{userCommentsNewsController.getPeriodFromLastComment(index)} ago."/>
                     <br/>
                     <p:commandButton
-                        value="#{userCommentsNewsManagedBean.getValueOfViewButton(index)}"
+                        value="#{userCommentsNewsController.getValueOfViewButton(index)}"
                         update=":news"
-                        action="#{userCommentsNewsManagedBean.resetShowingComments(index)}"/>
+                        action="#{userCommentsNewsController.resetShowingComments(index)}"/>
                     <p:dataGrid
-                        rendered="#{userCommentsNewsManagedBean.areCommentsShowing(index)}"
+                        rendered="#{userCommentsNewsController.areCommentsShowing(index)}"
                         var="newComment"
-                        value="#{userCommentsNewsManagedBean.getNewComments(index)}"
+                        value="#{userCommentsNewsController.getNewComments(index)}"
                         emptyMessage="No comments"
                         columns="1"
                         rows = "5"
@@ -71,48 +71,48 @@
                 chunkSize="10"
                 var="friendsNews"
                 rowIndexVar="index"
-                value="#{userFriendsNewsManagedBean.news}">
+                value="#{userFriendsNewsController.news}">
                 <p:panel
-                    rendered="#{userFriendsNewsManagedBean.isForAddAsFriend(index)}"
+                    rendered="#{userFriendsNewsController.isForAddAsFriend(index)}"
                     header="Friend request"
                     style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
                     <h:outputText
-                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getRealNickname()} 
+                        value="User #{userFriendsNewsController.getOtherUser(index).getRealNickname()} 
                         wants to add you as a friend."/>
                     <br/>
                     <div>
                     <p:commandButton
                         update=":news"
                         value="Add to friends"
-                        action="#{userFriendsNewsManagedBean.addToFriends(index)}"/>
+                        action="#{userFriendsNewsController.addToFriends(index)}"/>
                     <p:commandButton
                         update=":news"
                         value="Decline request"
-                        action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
+                        action="#{userFriendsNewsController.unfollow(index)}"/>
                     <p:commandButton
                         update=":news"
                         value="Put off decision"
-                        action="#{userFriendsNewsManagedBean.setViewed(friendsNews)}"/>
+                        action="#{userFriendsNewsController.setViewed(friendsNews)}"/>
                     </div>
                 </p:panel>
                 
                 <p:panel
-                    rendered="#{userFriendsNewsManagedBean.isForDeletion(index)}"
+                    rendered="#{userFriendsNewsController.isForDeletion(index)}"
                     header="Deletion"
                     style="width:75%; margin-left: auto; margin-right: auto; margin-bottom: 2em;">
                     <h:outputText
-                        value="User #{userFriendsNewsManagedBean.getOtherUser(index).getRealNickname()} 
+                        value="User #{userFriendsNewsController.getOtherUser(index).getRealNickname()} 
                         removed you from friends."/>
                     <br/>
                     <div>
                     <p:commandButton
                         update=":news"
                         value="Unfollow"
-                        action="#{userFriendsNewsManagedBean.unfollow(index)}"/>
+                        action="#{userFriendsNewsController.unfollow(index)}"/>
                     <p:commandButton
                         update=":news"
                         value="Put off decision"
-                        action="#{userFriendsNewsManagedBean.setViewed(friendsNews)}"/>
+                        action="#{userFriendsNewsController.setViewed(friendsNews)}"/>
                     </div>
                 </p:panel>
             </p:dataScroller>

@@ -5,7 +5,7 @@
  */
 package com.comicszone.managedbeans.social_networks;
 
-import com.comicszone.entitynetbeans.Users;
+import com.comicszone.entity.Users;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;

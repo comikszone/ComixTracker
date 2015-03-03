@@ -8,12 +8,11 @@
         <title>ComicsZone</title>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta charset="utf-8"/>
-        <h:outputStylesheet library="css" name="fonts.css" />
-        <h:outputStylesheet library="css" name="popup.css"/>
-        <h:outputStylesheet library="css" name="comments-styles.css"/>
         <h:outputStylesheet library="css" name="bootstrap.min.css"/>
         <h:outputStylesheet library="css" name="basic-styles.css" />
         <h:outputStylesheet library="css" name="friends-styles.css"/>
+        <h:outputStylesheet library="css" name="fonts.css" />
+        <h:outputStylesheet library="css" name="comments-styles.css"/>
         <h:outputScript library="scripts" name="PopUpWindowScript.js"/>
         <h:outputScript library="scripts" name="bootstrap.min.js"/>
     </h:head>
@@ -53,6 +52,9 @@
                 </div>
             </nav>
         </div>
+        
+            <ui:insert name="landing">
+            </ui:insert>
             
         <div class="container">
             <ui:insert name="articleContent">
@@ -68,12 +70,12 @@
                 <tr class="full-parent">
                     <td class="parent-third">
                         <p:link value="About"
-                                href="/resources/templates/footer/about.xhtml"
+                                href="/resources/templates/footer/about.jsf"
                                 styleClass="without-decoration dark-grey"/>
                     </td>
                     <td class="parent-third">
                         <p:link value="Privacy"
-                                href="/resources/templates/footer/privacy.xhtml"
+                                href="/resources/templates/footer/privacy.jsf"
                                 styleClass="without-decoration dark-grey"/>
                     </td>
                 </tr>

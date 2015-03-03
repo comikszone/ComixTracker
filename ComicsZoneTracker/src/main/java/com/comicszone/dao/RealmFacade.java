@@ -5,7 +5,7 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.entitynetbeans.Realm;
+import com.comicszone.entity.Realm;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

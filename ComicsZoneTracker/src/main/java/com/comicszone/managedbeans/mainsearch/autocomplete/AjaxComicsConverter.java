@@ -9,7 +9,7 @@ package com.comicszone.managedbeans.mainsearch.autocomplete;
  *
  * @author ArsenyPC
  */
-import com.comicszone.entitynetbeans.AjaxComicsCharacter;
+import com.comicszone.entity.NamedImage;
 import com.comicszone.dao.Finder;
 //import com.netcracker.entitynetbeans.Comics;
 import javax.faces.application.FacesMessage;
@@ -43,7 +43,7 @@ public class AjaxComicsConverter implements Converter {
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
         if(object != null) {
-            return String.valueOf(((AjaxComicsCharacter) object).getId());
+            return String.valueOf(((NamedImage) object).getId());
         }
         else {
             return null;

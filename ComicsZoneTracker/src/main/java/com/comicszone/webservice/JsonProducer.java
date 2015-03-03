@@ -9,14 +9,15 @@ import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.VolumeFacade;
-import com.comicszone.entitynetbeans.AjaxComicsCharacter;
-import com.comicszone.entitynetbeans.Comics;
-import com.comicszone.entitynetbeans.Character;
-import com.comicszone.entitynetbeans.Imprint;
-import com.comicszone.entitynetbeans.Issue;
-import com.comicszone.entitynetbeans.Publisher;
-import com.comicszone.entitynetbeans.Realm;
-import com.comicszone.entitynetbeans.Volume;
+import com.comicszone.entity.Comics;
+import com.comicszone.entity.Character;
+import com.comicszone.entity.Content;
+import com.comicszone.entity.Imprint;
+import com.comicszone.entity.Issue;
+import com.comicszone.entity.NamedImage;
+import com.comicszone.entity.Publisher;
+import com.comicszone.entity.Realm;
+import com.comicszone.entity.Volume;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -54,10 +55,10 @@ public class JsonProducer {
     private CharacterFacade characterFacade;
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
-    private String getJsonListAjaxComicsCharacter(List<? extends AjaxComicsCharacter> listAj)
+    private String getJsonListAjaxComicsCharacter(List<? extends NamedImage> listAj)
     {
         JSONArray array=new JSONArray();
-        for (AjaxComicsCharacter aj: listAj)
+        for (NamedImage aj: listAj)
         {
             Map map=new HashMap();
             map.put("id", aj.getId());

@@ -17,7 +17,7 @@ public class ApplicationConfig extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-        Set<Class<?>> resources = new java.util.HashSet<Class<?>>();
+        Set<Class<?>> resources = new java.util.HashSet<>();
         // following code can be used to customize Jersey 1.x JSON provider:
         try {
             Class jacksonProvider = Class.forName("org.codehaus.jackson.jaxrs.JacksonJsonProvider");
@@ -36,9 +36,9 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.comicszone.dao.ProgressFacade.class);
-        resources.add(com.comicszone.dao.ReadingFacade.class);
-        resources.add(com.comicszone.dao.commentsdao.CommentsFacade.class);
+        resources.add(com.comicszone.dao.comments.CommentsFacade.class);
+        resources.add(com.comicszone.dao.progress.ProgressFacade.class);
+        resources.add(com.comicszone.dao.tracking.TrackingFacade.class);
         resources.add(com.comicszone.webservice.JsonProducer.class);
     }
     

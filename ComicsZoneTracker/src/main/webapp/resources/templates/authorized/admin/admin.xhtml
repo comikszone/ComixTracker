@@ -6,7 +6,7 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
-        <c:if test="#{userRoleManagedBean.redirectIfNotAdmin()}"/>
+        <c:if test="#{userRoleController.redirectIfNotAdmin()}"/>
         <p:panel header="Blocking / Unblocking users (search by nicknames)">
             <h:form id="blockUser">
                 <p:growl id="blockMessage" showDetail="true" life="1000"/>
@@ -14,9 +14,9 @@
                     <p:autoComplete
                         id="userToBlock"
                         maxResults="5"
-                        completeMethod="#{blockUserManagedBean.completeToBlock}"
+                        completeMethod="#{blockUserController.completeToBlock}"
                         var="user"
-                        value="#{blockUserManagedBean.selectedUser}"
+                        value="#{blockUserController.selectedUser}"
                         itemValue="#{user}"
                         itemLabel="#{user.nickname}"
                         converter="userConverter"
@@ -42,7 +42,7 @@
                     <p:commandButton 
                         value="Block user"
                         update=":blockUser:blockMessage :blockUser:userToBlock"
-                        action="#{blockUserManagedBean.blockUser()}"/>
+                        action="#{blockUserController.blockUser()}"/>
                 </h:panelGrid>
             </h:form>
         
@@ -52,9 +52,9 @@
                     <p:autoComplete
                         id="userToUnblock"
                         maxResults="5"
-                        completeMethod="#{blockUserManagedBean.completeToUnblock}"
+                        completeMethod="#{blockUserController.completeToUnblock}"
                         var="user"
-                        value="#{blockUserManagedBean.selectedUser}"
+                        value="#{blockUserController.selectedUser}"
                         itemValue="#{user}"
                         itemLabel="#{user.nickname}"
                         converter="userConverter"
@@ -80,7 +80,7 @@
                     <p:commandButton 
                         value="Unblock user"
                         update=":unblockUser:unblockMessage :unblockUser:userToUnblock"
-                        action="#{blockUserManagedBean.unblockUser()}"/>
+                        action="#{blockUserController.unblockUser()}"/>
                 </h:panelGrid>
             </h:form>
         </p:panel>
@@ -92,9 +92,9 @@
                     <p:autoComplete
                         id="userToBlock"
                         maxResults="5"
-                        completeMethod="#{blockUserManagedBean.completeToBlockRealNickname}"
+                        completeMethod="#{blockUserController.completeToBlockRealNickname}"
                         var="user"
-                        value="#{blockUserManagedBean.selectedUser}"
+                        value="#{blockUserController.selectedUser}"
                         itemValue="#{user}"
                         itemLabel="#{user.realNickname}"
                         converter="userConverter"
@@ -120,7 +120,7 @@
                     <p:commandButton 
                         value="Block user"
                         update=":blockUserReal:blockMessage :blockUserReal:userToBlock"
-                        action="#{blockUserManagedBean.blockUser()}"/>
+                        action="#{blockUserController.blockUser()}"/>
                 </h:panelGrid>
             </h:form>
         
@@ -130,9 +130,9 @@
                     <p:autoComplete
                         id="userToUnblock"
                         maxResults="5"
-                        completeMethod="#{blockUserManagedBean.completeToUnblockRealNickname}"
+                        completeMethod="#{blockUserController.completeToUnblockRealNickname}"
                         var="user"
-                        value="#{blockUserManagedBean.selectedUser}"
+                        value="#{blockUserController.selectedUser}"
                         itemValue="#{user}"
                         itemLabel="#{user.realNickname}"
                         converter="userConverter"
@@ -158,7 +158,7 @@
                     <p:commandButton 
                         value="Unblock user"
                         update=":unblockUserReal:unblockMessage :unblockUserReal:userToUnblock"
-                        action="#{blockUserManagedBean.unblockUser()}"/>
+                        action="#{blockUserController.unblockUser()}"/>
                 </h:panelGrid>
             </h:form>
         </p:panel>
@@ -167,7 +167,7 @@
             <h:form id="contentFilter">
                 <p:growl id="contentMessage" showDetail="true" life="1000" />
                 <p:commandButton
-                    action="#{contentFilterManagedBean.updateContent()}"
+                    action="#{contentFilterController.updateContent()}"
                     value="Update content to filter"
                     update=":contentFilter"/>
                 <p:tabView>
@@ -183,11 +183,11 @@
                     paginatorPosition="bottom"
                     rows="10"
                     var="content"
-                    value="#{contentFilterManagedBean.comicsContent}">
+                    value="#{contentFilterController.comicsContent}">
                     
                     <p:ajax 
                         event="cellEdit"
-                        listener="#{contentFilterManagedBean.onCellEdit(content)}"/>
+                        listener="#{contentFilterController.onCellEdit(content)}"/>
                     
                     <p:column headerText="Name">
                         <p:cellEditor>
@@ -243,7 +243,7 @@
                     <p:column headerText="Your choice">
                         <p:commandButton
                             value="Approve"
-                            action="#{contentFilterManagedBean.approve(content)}"
+                            action="#{contentFilterController.approve(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -251,7 +251,7 @@
                         </p:commandButton>
                         <p:commandButton
                             value="Delete"
-                            action="#{contentFilterManagedBean.delete(content)}"
+                            action="#{contentFilterController.delete(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -272,11 +272,11 @@
                     paginatorPosition="bottom"
                     rows="10"
                     var="content"
-                    value="#{contentFilterManagedBean.volumeContent}">
+                    value="#{contentFilterController.volumeContent}">
                     
                     <p:ajax 
                         event="cellEdit"
-                        listener="#{contentFilterManagedBean.onCellEdit(content)}"/>
+                        listener="#{contentFilterController.onCellEdit(content)}"/>
                     
                     <p:column headerText="Name">
                         <p:cellEditor>
@@ -332,7 +332,7 @@
                     <p:column headerText="Your choice">
                         <p:commandButton
                             value="Approve"
-                            action="#{contentFilterManagedBean.approve(content)}"
+                            action="#{contentFilterController.approve(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -340,7 +340,7 @@
                         </p:commandButton>
                         <p:commandButton
                             value="Delete"
-                            action="#{contentFilterManagedBean.delete(content)}"
+                            action="#{contentFilterController.delete(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -361,11 +361,11 @@
                     paginatorPosition="bottom"
                     rows="10"
                     var="content"
-                    value="#{contentFilterManagedBean.issueContent}">
+                    value="#{contentFilterController.issueContent}">
                     
                     <p:ajax 
                         event="cellEdit"
-                        listener="#{contentFilterManagedBean.onCellEdit(content)}"/>
+                        listener="#{contentFilterController.onCellEdit(content)}"/>
 
                     <p:column headerText="Name">
                         <p:cellEditor>
@@ -421,7 +421,7 @@
                     <p:column headerText="Your choice">
                         <p:commandButton
                             value="Approve"
-                            action="#{contentFilterManagedBean.approve(content)}"
+                            action="#{contentFilterController.approve(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -429,7 +429,7 @@
                         </p:commandButton>
                         <p:commandButton
                             value="Delete"
-                            action="#{contentFilterManagedBean.delete(content)}"
+                            action="#{contentFilterController.delete(content)}"
                             update=":contentFilter">
                             <p:confirm
                                 header="Apply changes"
@@ -448,7 +448,7 @@
                     paginatorPosition="bottom"
                     rows="10"
                     var="content"
-                    value="#{contentFilterManagedBean.approvedContent}">
+                    value="#{contentFilterController.approvedContent}">
                     
                     <p:column headerText="Type">
                         <h:outputText value="#{content.contentType}"/>

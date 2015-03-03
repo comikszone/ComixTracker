@@ -8,7 +8,7 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui" 
-      template="/resources/templates/contentPage.xhtml"
+      template="/resources/templates/content.xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:pf="http://jsf.playerfinder.net/components">
@@ -47,10 +47,10 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="rating">
                         <c:choose>
-                            <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                            <c:when test="#{userRoleController.isUserAuthorized()}">
                                 #{ratingController.init()}
                                 <h:form>
-                                    <pf:rating  value="#{ratingController.ratingFacade.uirating.rating}"
+                                    <pf:rating  value="#{ratingController.ratingFacade.contentRating}"
                                                 totalStars="5"
                                                 step="1">
                                         <f:ajax event="change" listener="#{ratingController.rate}"/>

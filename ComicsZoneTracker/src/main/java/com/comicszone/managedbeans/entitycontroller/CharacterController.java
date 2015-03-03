@@ -7,7 +7,7 @@ package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.CharacterFacade;
 import javax.faces.bean.ManagedBean;
-import com.comicszone.entitynetbeans.Character;
+import com.comicszone.entity.Character;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedProperty;
@@ -26,9 +26,9 @@ public class CharacterController implements Serializable {
     private Integer characterId;
     private Character character;
     @ManagedProperty(value = "#{ctrl}")
-    private CardCtrl ctrl;
+    private CardController ctrl;
     
-    public CardCtrl getCtrl() {
+    public CardController getCtrl() {
         return ctrl;
     }
     
@@ -36,7 +36,7 @@ public class CharacterController implements Serializable {
         return "/resources/pages/characterPage.jsf?faces-redirect=true&id=" + character.getId();
     }
 
-    public void setCtrl(CardCtrl ctrl) {
+    public void setCtrl(CardController ctrl) {
         this.ctrl = ctrl;
     }
 

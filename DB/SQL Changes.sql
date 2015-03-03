@@ -186,3 +186,23 @@ ALTER TABLE comics ALTER COLUMN image SET DEFAULT '/resources/images/image_not_f
 ALTER TABLE volume ALTER COLUMN img SET DEFAULT '/resources/images/image_not_found.png';
 ALTER TABLE issue ALTER COLUMN img SET DEFAULT '/resources/images/image_not_found.png';
 ALTER TABLE character ALTER COLUMN image SET DEFAULT '/resources/images/image_not_found.png';
+
+--User Tracking Status--
+CREATE TABLE user_tracking_status
+(
+  user_id integer NOT NULL,
+  comics_id integer NOT NULL,
+  status integer NOT NULL DEFAULT 0,
+  CONSTRAINT user_tracking_status_pk PRIMARY KEY (user_id, comics_id),
+  CONSTRAINT user_tracking_status_comics_id FOREIGN KEY (comics_id)
+      REFERENCES comics (comics_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT user_tracking_status_user_id FOREIGN KEY (user_id)
+      REFERENCES users (user_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE user_tracking_status
+  OWNER TO "ComicsZoneRole";

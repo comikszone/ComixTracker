@@ -5,10 +5,10 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.dao.newsdao.FriendsNewsFacade;
-import com.comicszone.entitynetbeans.Friends;
-import com.comicszone.entitynetbeans.FriendshipStatus;
-import com.comicszone.entitynetbeans.Users;
+import com.comicszone.dao.news.FriendsNewsFacade;
+import com.comicszone.entity.Friends;
+import com.comicszone.entity.FriendshipStatus;
+import com.comicszone.entity.Users;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;

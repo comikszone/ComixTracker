@@ -5,7 +5,7 @@
  */
 package com.comicszone.managedbeans.message;
 
-import com.comicszone.entitynetbeans.Messages;
+import com.comicszone.entity.Messages;
 import com.comicszone.dao.MessagesFacade;
 import java.util.ArrayList;
 import java.util.Iterator;

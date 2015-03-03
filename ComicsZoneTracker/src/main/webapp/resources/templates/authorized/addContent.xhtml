@@ -8,7 +8,7 @@
     <ui:define name="articleContent">
         <h:form id = "addContentForm"
                 enctype="multipart/form-data">
-            <c:set var="Type" value="#{addContentManagedBean.getTypeParam()}"/>
+            <c:set var="Type" value="#{addContentController.getTypeParam()}"/>
             <c:choose>
                 <c:when test="#{Type=='Volume'}">
                     <h3>Add a new volume</h3>
@@ -28,18 +28,18 @@
                 <li class="ui-state-default">Title</li>
                 <h:inputText id="name"
                              styleClass="add-content-page-inputs"
-                             value="#{addContentManagedBean.title}"/>
+                             value="#{addContentController.title}"/>
                 
                 <li class="ui-state-default">Description</li>
                 <p:editor id="editor" 
                           widgetVar="editorWidget"
-                          value="#{addContentManagedBean.description}"/>
+                          value="#{addContentController.description}"/>
                 
                 <c:if test="#{Type=='Comics'}">
                     <li class="ui-state-default">Publisher</li>
                     <p:selectOneMenu id="publisher"
                                      styleClass="add-content-page-inputs"
-                                     value="#{addContentManagedBean.publisher}">
+                                     value="#{addContentController.publisher}">
                         <f:selectItem itemLabel="Marvel" itemValue="Marvel" />
                         <f:selectItem itemLabel="DC" itemValue="DC" />
                         <f:selectItem itemLabel="Other" itemValue="Other" />
@@ -48,19 +48,19 @@
                     <li class="ui-state-default">Imprint</li>
                     <h:inputText id="imprint"
                                  styleClass="add-content-page-inputs"
-                                 value="#{addContentManagedBean.imprint}"/>
+                                 value="#{addContentController.imprint}"/>
                 </c:if>
                 
                 <c:if test="#{Type=='Issue'}">
                     <li class="ui-state-default">Release date</li>
                     <p:inputMask id="date" 
-                                 value="#{addContentManagedBean.date}" 
+                                 value="#{addContentController.date}" 
                                  mask="99/99/9999" 
                                  placeholder="DD/MM/YYYY"/>
                 </c:if>
                 
                 <li class="ui-state-default">Image</li>
-                <p:fileUpload fileUploadListener="#{addContentManagedBean.upload}"
+                <p:fileUpload fileUploadListener="#{addContentController.upload}"
                               dragDropSupport="true"
                               mode="simple"
                               fileLimit="1"

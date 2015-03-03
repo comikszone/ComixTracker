@@ -2,16 +2,19 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html">
-    <p:dialog id="regPanel" widgetVar="reg" modal="true" header="Registration" draggable="false" resizable="false">
+    <p:dialog id="regPanel" widgetVar="reg" modal="true" header="Registration" draggable="false" resizable="false" styleClass="reg">
         <h:form id="registrationForm" role="form">
-                        <h:panelGrid cellpadding="5" columns="3" style="margin: 0 auto 0 auto">
+            <h:panelGrid cellpadding="5" columns="3" style="margin: 0 auto 0 auto">
                     <a href="#{vKAuthorization.userUrl}"><img src="/resources/images/icons/vkontakte.png" 
-                      border="0"/></a>
+                      border="0"
+                      class="social-icon"/></a>
                     <a href="#{facebookAuthorization.userUrl}"><img src="/resources/images/icons/facebook.png"
-                      border="0"/></a>
+                      border="0"
+                      class="social-icon"/></a>
                     <a href="#{googleAuthorization.userUrl}"><img src="/resources/images/icons/google_plus.png"
-                      border="0"/></a>
-                        </h:panelGrid>
+                      border="0"
+                      class="social-icon"/></a>
+            </h:panelGrid>
             <br/>
             <table>
                 <tr>
@@ -73,7 +76,7 @@
                     <td>
                         <p:commandButton ajax="false" 
                                      value="Ok" 
-                                     action="#{registrationManagedBean.registrationNewUser()}" 
+                                     action="#{registrationController.registrationNewUser()}" 
                                      styleClass="btn btn-primary"/>  
                     </td>
                     <td>
