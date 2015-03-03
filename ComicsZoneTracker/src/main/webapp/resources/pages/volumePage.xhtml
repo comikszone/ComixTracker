@@ -17,15 +17,15 @@ and open the template in the editor.
             <f:viewParam name="id" value="#{volumeController.volumeId}"/>
         </f:metadata>
         #{volumeController.init()}
-        #{comicsPageManagedBean.setComicsId(volumeController.volume.comicsId.id)}
-        #{comicsPageManagedBean.init()}
+        #{comicsPageController.setComicsId(volumeController.volume.comicsId.id)}
+        #{comicsPageController.init()}
         #{ratingController.setType(volumeController.volume.contentType)}
         #{ratingController.setContentId(volumeController.volumeId)}
         <ol class="breadcrumb">
             <li><a href="/resources/templates/index.jsf">Home</a></li>
             <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
-            <li><p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
-                        value="#{comicsPageManagedBean.comicsController.comics.name}"/></li>
+            <li><p:link outcome="#{navigationController.redirect(comicsPageController.comicsController.comics)}" 
+                        value="#{comicsPageController.comicsController.comics.name}"/></li>
             <li class="active">#{volumeController.volume.name}</li>
         </ol>
     </ui:define>
@@ -78,25 +78,21 @@ and open the template in the editor.
         <center>
             <p:dataGrid var="issue"
                         value="#{volumeController.volume.issueList}"
-                        columns="5"
+                        columns="6"
                         layout="grid"
                         paginator="true"
-                        rows="10">
-                <h:panelGrid columns="1" styleClass="border:none">
-                    <p:row>
-                        <h:form>
-                            <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
-                                <h:graphicImage value="#{issue.image}"
-                                                styleClass="content-image"/>
-                            </h:link>
-                        </h:form>
-                    </p:row>
-                    <p:row>
-                        <p:link value="#{issue.name}" 
-                                style="height:auto; width:60%;"
-                                outcome="#{comicsPageManagedBean.redirect(issue)}"/>
-                    </p:row>
-                </h:panelGrid>                               
+                        rows="12">
+                    <div class="thumbnail">
+                                        <h:form>
+                                            <h:link outcome="#{navigationController.redirect(issue)}">
+                                                <h:graphicImage value="#{issue.image}"
+                                                                styleClass="content-image img-thumbnail"/>
+                                            </h:link>
+                                        </h:form>
+                                        <p:link value="#{issue.name}" 
+                                                style="height:auto; width:60%;"
+                                                outcome="#{navigationController.redirect(issue)}"/>
+                                </div>                              
             </p:dataGrid>
             <c:if test="#{userRoleController.isUserAuthorized()}">
                 <p:button value="Add new issue" 

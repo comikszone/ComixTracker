@@ -19,6 +19,15 @@ and open the template in the editor.
         #{issueController.initIssue()}
         #{ratingController.setType(issueController.issue.contentType)}
         #{ratingController.setContentId(issueController.issueId)}
+        <ol class="breadcrumb">
+            <li><a href="/resources/templates/index.jsf">Home</a></li>
+            <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
+            <li><p:link outcome="#{navigationController.redirect(issueController.issue.volumeId.comicsId)}" 
+                        value="#{issueController.issue.volumeId.comicsId.name}"/></li>
+            <li><p:link outcome="#{navigationController.redirect(issueController.issue.volumeId)}" 
+                        value="#{issueController.issue.volumeId.name}"/></li>
+            <li class="active">#{issueController.issue.name}</li>
+        </ol>
     </ui:define>
     <ui:define name="image">
         <h:graphicImage value="#{issueController.issue.image}"
@@ -77,25 +86,22 @@ and open the template in the editor.
                 </f:facet>
                 <p:dataGrid var="char"
                             value="#{issueController.issue.characterList}"
-                            columns="5"
+                            columns="6"
                             layout="grid"
                             paginator="true"
-                            rows="10">
-                    <h:panelGrid columns="1" style="border:none">
-                        <p:row>
-                            <h:form>
-                                <h:link outcome="#{characterController.redirect(char)}">
-                                    <h:graphicImage value="#{char.image}"
-                                                    styleClass="content-image"/>
-                                </h:link>
-                            </h:form>
-                        </p:row>
-                        <p:row>
-                            <p:link value="#{char.name}" 
-                                    style="height:auto; width:60%;"
-                                    outcome="#{characterController.redirect(char)}"/>
-                        </p:row>
-                    </h:panelGrid>               
+                            rows="12">
+                    <div class="thumbnail">
+                        <h:form>
+                            <h:link outcome="#{navigationController.redirect(char)}">
+                                <h:graphicImage value="#{char.image}"
+                                                styleClass="content-image img-thumbnail"
+                                                width="100%"/>
+                            </h:link>
+                        </h:form>
+                        <p:link value="#{char.name}" 
+                                style="height:auto; width:60%;"
+                                outcome="#{navigationController.redirect(char)}"/>
+                   </div>               
                 </p:dataGrid>
             </p:tab>
         </p:accordionPanel>

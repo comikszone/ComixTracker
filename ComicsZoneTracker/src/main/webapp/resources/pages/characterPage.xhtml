@@ -47,27 +47,22 @@ and open the template in the editor.
                 </f:facet>
                 <p:dataGrid var="issue"
                             value="#{characterController.character.issueList}"
-                            columns="5"
+                            columns="4"
                             layout="grid"
                             paginator="true"
-                            rows="10">
-                    <h:panelGrid columns="1" style="border:none">
-                        <p:row>
-                            <h:form>
-                                <h:link >
-                                    <p:graphicImage value="#{issue.image}"
-                                                    styleClass="content-image"/>
-                                </h:link>
-                            </h:form>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                            <p:link value="#{issue.name}" 
-                                    style="width:60%;"
-                                    />
-                            </p:column>
-                        </p:row>
-                    </h:panelGrid>               
+                            rows="8">
+                    <div class="thumbnail">
+                        <h:form>
+                            <h:link outcome="#{navigationController.redirect(issue)}">
+                                <h:graphicImage value="#{issue.image}"
+                                                styleClass="content-image img-thumbnail"
+                                                width="100%"/>
+                            </h:link>
+                        </h:form>
+                        <p:link value="#{issue.name}" 
+                                style="height:auto; width:60%;"
+                                outcome="#{navigationController.redirect(issue)}"/>
+                   </div>               
                 </p:dataGrid>
             </p:tab>
         </p:accordionPanel>

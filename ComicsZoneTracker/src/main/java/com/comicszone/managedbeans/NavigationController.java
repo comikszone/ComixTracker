@@ -1,5 +1,8 @@
 package com.comicszone.managedbeans;
 
+import com.comicszone.entity.Content;
+import com.comicszone.entity.ContentType;
+import com.comicszone.entity.NamedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -38,5 +41,18 @@ public class NavigationController implements Serializable {
     
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
-    } 
+    }
+    
+    public String redirect(NamedImage content)
+    {
+        if (content.getContentType() == ContentType.Comics)
+            return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + content.getId();
+        else if (content.getContentType() == ContentType.Issue)
+                return "/resources/pages/issuePage.jsf?faces-redirect=true&id=" + content.getId();
+        else if (content.getContentType() == ContentType.Volume)
+                return "/resources/pages/volumePage.jsf?faces-redirect=true&id=" + content.getId();
+        else if (content.getContentType() == ContentType.Character)
+            return "/resources/pages/characterPage.jsf?faces-redirect=true&id=" + content.getId();
+        else return "/resources/templates/index.jsf";
+    }
 }
