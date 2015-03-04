@@ -7,7 +7,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
         <c:if test="#{userRoleController.redirectIfNotAdmin()}"/>
-        <p:panel header="Blocking / Unblocking users (search by nicknames)">
+        <p:panel header="Blocking / Unblocking users (search by nicknames)" style="min-width: 50%;">
             <h:form id="blockUser">
                 <p:growl id="blockMessage" showDetail="true" life="1000"/>
                 <h:panelGrid columns="2" cellpadding="0">
@@ -85,83 +85,13 @@
             </h:form>
         </p:panel>
         
-        <p:panel header="Blocking / Unblocking users (search by real nicknames)">
-            <h:form id="blockUserReal">
-                <p:growl id="blockMessage" showDetail="true" life="1000"/>
-                <h:panelGrid columns="2" cellpadding="0">
-                    <p:autoComplete
-                        id="userToBlock"
-                        maxResults="5"
-                        completeMethod="#{blockUserController.completeToBlockRealNickname}"
-                        var="user"
-                        value="#{blockUserController.selectedUser}"
-                        itemValue="#{user}"
-                        itemLabel="#{user.realNickname}"
-                        converter="userConverter"
-                        forceSelection="true">
-                        
-                        <p:column>
-                            <p:graphicImage
-                                rendered="#{not empty user.avatarUrl}"
-                                value="#{user.avatarUrl}"
-                                width="70"
-                                height="70"/>
-                            <p:graphicImage
-                                rendered="#{empty user.avatarUrl}"
-                                value="#{user.avatar}"
-                                width="70"
-                                height="70"/>
-                        </p:column>
-                        
-                        <p:column>
-                            #{user.realNickname}
-                        </p:column>
-                    </p:autoComplete>
-                    <p:commandButton 
-                        value="Block user"
-                        update=":blockUserReal:blockMessage :blockUserReal:userToBlock"
-                        action="#{blockUserController.blockUser()}"/>
-                </h:panelGrid>
-            </h:form>
-        
-            <h:form id="unblockUserReal">
-                <p:growl id="unblockMessage" showDetail="true" life="1000"/>
-                <h:panelGrid columns="3" cellpadding="0">
-                    <p:autoComplete
-                        id="userToUnblock"
-                        maxResults="5"
-                        completeMethod="#{blockUserController.completeToUnblockRealNickname}"
-                        var="user"
-                        value="#{blockUserController.selectedUser}"
-                        itemValue="#{user}"
-                        itemLabel="#{user.realNickname}"
-                        converter="userConverter"
-                        forceSelection="true">
-                        
-                        <p:column>
-                            <p:graphicImage
-                                rendered="#{not empty user.avatarUrl}"
-                                value="#{user.avatarUrl}"
-                                width="70"
-                                height="70"/>
-                            <p:graphicImage
-                                rendered="#{empty user.avatarUrl}"
-                                value="#{user.avatar}"
-                                width="70"
-                                height="70"/>
-                        </p:column>
-                        
-                        <p:column>
-                            #{user.realNickname}
-                        </p:column>
-                    </p:autoComplete>
-                    <p:commandButton 
-                        value="Unblock user"
-                        update=":unblockUserReal:unblockMessage :unblockUserReal:userToUnblock"
-                        action="#{blockUserController.unblockUser()}"/>
-                </h:panelGrid>
-            </h:form>
-        </p:panel>
+        <h:form id="select">
+            <p:selectOneButton value="#{blockUserController.searchOption}">
+                <p:ajax event="change" update=":select"/>
+                <f:selectItem itemLabel="Search by nicknames" itemValue="1" />
+                <f:selectItem itemLabel="Search by real nicknames" itemValue="2"/>
+            </p:selectOneButton>
+        </h:form>
         
         <p:panel header="Filtering content">
             <h:form id="contentFilter">
