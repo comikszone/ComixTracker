@@ -59,7 +59,7 @@ and open the template in the editor.
                                                 width="100%"/>
                             </h:link>
                         </h:form>
-                        <p:link value="#{issue.name}" 
+                            <p:link value="#{characterController.getProperIssueName(issue)}" 
                                 style="height:auto; width:60%;"
                                 outcome="#{navigationController.redirect(issue)}"/>
                    </div>               

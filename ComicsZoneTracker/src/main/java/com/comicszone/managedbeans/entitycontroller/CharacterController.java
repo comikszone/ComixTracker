@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import com.comicszone.entity.Character;
 import com.comicszone.entity.Content;
 import com.comicszone.entity.ContentType;
+import com.comicszone.entity.Issue;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedProperty;
@@ -59,6 +60,11 @@ public class CharacterController implements Serializable {
         character=characterFacade.find(characterId);
         ctrl.setCard(character.getCard());
     }
-   
     
+    public String getProperIssueName(Issue issue){
+        CardController ctrl = new CardController();
+        ctrl.setName(issue.getName());
+        ctrl.setCard(issue.getCard());
+        return ctrl.getName();
+    } 
 }
