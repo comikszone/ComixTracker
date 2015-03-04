@@ -13,13 +13,17 @@ import com.comicszone.managedbeans.userbeans.ProfileUserManagedBean;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -56,6 +60,41 @@ public class UserFriendsManagedBean implements Serializable {
     
     private boolean showMessagesAdder;
     
+    private boolean updateDatatableVal;
+    public boolean isUpdateDatatable(ActionEvent event) {
+//		System.out.println("Message received at " + new Date());
+		Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		String msgFromAdmin = requestParameterMap.get("msgData");
+                System.err.println("RECEIVED"+msgFromAdmin + " currentUser" + currentUser.getUserId());
+                Integer id=Integer.parseInt(msgFromAdmin);
+                if (id.equals(currentUser.getUserId()))
+                {
+                    updateDatatableVal=true;
+                    RequestContext.getCurrentInstance().update(":form");
+                    return true;
+                }
+                else
+                {
+                    updateDatatableVal=true;
+                    RequestContext.getCurrentInstance().update(":form");                    
+                    return true;
+                }
+	} 
+//        public boolean isUpdateDatatable(ActionEvent event) {
+////		System.out.println("Message received at " + new Date());
+//		Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+//		String msgFromAdmin = requestParameterMap.get("msgData");
+//                System.err.println("RECEIVED"+msgFromAdmin + " currentUser" + currentUser.getUserId());
+//                Integer id=Integer.parseInt(msgFromAdmin);
+//                if (id.equals(currentUser.getUserId()))
+//                {
+//                    updateDatatableVal=true;
+//                }
+//                else
+//                {
+//                    updateDatatableVal=true;
+//                }
+//	} 
     @PostConstruct
     public void init() {
        try {
@@ -189,5 +228,19 @@ public class UserFriendsManagedBean implements Serializable {
         this.selectedUnconfirmedFriend = selectedUnconfirmedFriend;
         selectedFriend = null;
         selectedFollower = null;
+    }
+
+    public boolean isUpdateDatatableVal() {
+        System.err.println("************updateDatatable**************" + updateDatatableVal);
+        return updateDatatableVal;
+    }
+
+    public void setUpdateDatatableVal(boolean updateDatatable) {
+        this.updateDatatableVal = updateDatatable;
+    }
+    public boolean updateDatatableVal2()
+    {
+        System.err.println("?????????????updateDatatable*???????" + updateDatatableVal);
+        return updateDatatableVal;
     }
 }

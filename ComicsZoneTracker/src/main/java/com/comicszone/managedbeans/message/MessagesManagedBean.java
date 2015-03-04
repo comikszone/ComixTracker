@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -19,6 +20,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.push.EventBus;
@@ -43,10 +45,16 @@ public class MessagesManagedBean implements Serializable {
     private boolean showMessageAdder;
     private boolean showMessages;
     private int activeIndex=-1;
-    public void invoke()
-    {
-        System.err.println("THIS METHOD WAS INVOKED!!!!!!");
-    }
+//    public boolean isUpdateDatatable(ActionEvent event) {
+////		System.out.println("Message received at " + new Date());
+//		Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+//		String msgFromAdmin = requestParameterMap.get("msgData");
+//                System.err.println("RECEIVED"+msgFromAdmin);
+////		FacesMessage facesMessage = new FacesMessage("New Notification from Admin", msgFromAdmin);
+////		facesMessage.setSeverity(FacesMessage.SEVERITY_WARN);
+////		FacesContext.getCurrentInstance().addMessage("growSubscriber", facesMessage);
+//                return false;
+//	}
     public void addMessage() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = facesContext.getViewRoot();
@@ -73,7 +81,7 @@ public class MessagesManagedBean implements Serializable {
         inputText.setValue("");
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
 //	eventBus.publish("/subscriber", htmlMessage);
-        eventBus.publish("ok");
+        eventBus.publish(message.getReceiver().getUserId());
     }
 
     

@@ -12,9 +12,15 @@
         <p:socket channel="/a" onMessage="handleMessage"></p:socket>
         <h:form id="form">
                                 <p:remoteCommand name="receiveMessage"
-                                                 actionListener="#"
-                                                 update=":form">
+                                                 actionListener="#{userFriendsManagedBean.isUpdateDatatable}"
+                                                 
+                                                 >
+                                   
                                 </p:remoteCommand>
+<!--            <p:ajax event="#" id="rc" update=":form"/>-->
+<!--                                <p:remoteCommand id="rc"
+                                                 update=":form">
+                                </p:remoteCommand>-->
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >
                     <p:autoComplete
@@ -422,14 +428,14 @@
                                                                 friend-message-column">
                                         <p:graphicImage
                                             value="#{userAvatarsManagedBean.avatar}"
-                                            width="100%"
+                                            width="50%"
                                             rendered="#{message.sender.avatar != null}">
                                             <f:param name="userId" value="#{message.sender.userId}"/>
                                         </p:graphicImage>
                                 
                                         <p:graphicImage
                                             value="#{message.sender.avatarUrlOrDefaultAvatar}"
-                                            width="100%"
+                                            width="50%"
                                             rendered="#{message.sender.avatar == null}">
                                         </p:graphicImage>  
                                         
