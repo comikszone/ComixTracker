@@ -45,7 +45,7 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
     public VKAuthorization() {
         clientId="4695923";
         clientSecret="DN8uqaag7oUAPSfYCe2n";
-        redirectUri="http://localhost:8080/resources/templates/unauthorized/vk_redirect_page.jsf";
+        redirectUri="http://www.comicszonetracker.tk/resources/templates/unauthorized/vk_redirect_page.jsf";
         userInfoUrl = "https://api.vk.com/method/users.get";
         isError=false;
     }
