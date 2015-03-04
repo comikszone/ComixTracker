@@ -11,58 +11,62 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:pf="http://jsf.playerfinder.net/components"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
-                template="/resources/templates/contentPage.xhtml">          
+                template="/resources/templates/content.xhtml">          
     <ui:define name="init">
         <f:metadata>
-            <f:viewParam name="id" value="#{comicsPageManagedBean.comicsController.comicsId}"/>
+            <f:viewParam name="id" value="#{comicsPageController.comicsController.comicsId}"/>
+            <f:viewParam name="tracking" value="#{comicsPageController.readingModeOn}"/>
         </f:metadata>
-        #{comicsPageManagedBean.comicsController.initComics()}
-        #{ratingController.setType(comicsPageManagedBean.comicsController.comics.contentType)}
-        #{ratingController.setContentId(comicsPageManagedBean.comicsController.comicsId)}
+        #{comicsPageController.comicsController.initComics()}
+        #{trackingStatusController.setComicsId(comicsPageController.comicsController.comicsId)}
+        #{ratingController.setType(comicsPageController.comicsController.comics.contentType)}
+        #{ratingController.setContentId(comicsPageController.comicsController.comicsId)}
+        #{trackingController.comicsController.setComicsId(comicsPageController.comicsController.comicsId)}
+        #{trackingController.comicsController.initComics()}
         <ol class="breadcrumb">
             <li><a href="/resources/templates/index.jsf">Home</a></li>
             <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
-            <li class="active">#{comicsPageManagedBean.comicsController.comics.name}</li>
+            <li class="active">#{comicsPageController.comicsController.comics.name}</li>
         </ol>
     </ui:define>
     <ui:define name="image">
-        <p:graphicImage value="#{comicsPageManagedBean.comicsController.comics.image}"
+        <h:graphicImage value="#{comicsPageController.comicsController.comics.image}"
                         styleClass="content-image"
                         style="width:20vw !important;"/>
+        <c:choose>
+             <c:when test="#{userRoleController.isUserAuthorized()}">
+                     #{trackingStatusController.init()}
+                 <h:form id="form">
+                     <p:selectOneButton value="#{trackingStatusController.selectedStatus}" immediate="true">
+                         <p:ajax event="change" update="@form :content:selector" /> 
+                        <f:selectItem itemLabel="Reading" itemValue="1" />
+                        <f:selectItem itemLabel="Will read" itemValue="2" />
+                        <f:selectItem itemLabel="Dropped" itemValue="3" />
+                        <f:selectItem itemLabel="Not reading" itemValue="0" />
+                    </p:selectOneButton>
+                 </h:form>
+             </c:when>
+        </c:choose>
     </ui:define>
     <ui:define name="name">
-        <h:outputText value="#{comicsPageManagedBean.comicsController.comics.name}" 
+        <h:outputText value="#{comicsPageController.comicsController.comics.name}" 
                         styleClass="content-name"/>
     </ui:define>
     <ui:define name="description">
-        <h:outputText value="Description: #{comicsPageManagedBean.comicsController.comics.description}"
-                      escape="false"/>
+        <h:outputText value="Description: #{comicsPageController.comicsController.comics.description}"/>
     </ui:define>    
         
             <ui:define name="rating"> 
                 <br/>
                 <c:choose>
-                                        <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                                        <c:when test="#{userRoleController.isUserAuthorized()}">
                                             #{ratingController.init()}
                                             <h:form>
-                                                <pf:rating  value="#{ratingController.ratingFacade.ucrating.rating}"
+                                                <pf:rating  value="#{ratingController.ratingFacade.contentRating}"
                                                             totalStars="5"
                                                             step="1">
                                                     <f:ajax event="change" listener="#{ratingController.rate}"/>
                                                 </pf:rating>
-                                                <br/>
-                                                <p:link outcome="#{comicsPageManagedBean.redirect(comicsPageManagedBean.comicsController.comics)}" 
-                                                        value="Read!"
-                                                        styleClass="btn btn-primary"/>
-                                                <br/>
-                                                <p:button value="Edit this page" 
-                                                          outcome="/resources/templates/authorized/editContent.jsf"
-                                                          style="margin-top: 1em">
-                                                    <f:param name="type" 
-                                                             value="comics"/>
-                                                    <f:param name="id" 
-                                                             value="#{comicsPageManagedBean.comicsController.comicsId}"/>
-                                                </p:button>
                                             </h:form>
                                         </c:when>
                                         <c:otherwise>
@@ -79,64 +83,137 @@ and open the template in the editor.
                 
                 </ui:define>
    <ui:define name="content">
-       <center>
+           <h:form id="content">
+                      <center>
+                          <c:if test="#{userRoleController.isUserAuthorized()}">
+           <p:selectBooleanButton id="selector"
+                                  value="#{comicsPageController.readingModeOn}" 
+                                  offLabel="Track!" 
+                                  onLabel="Back to issue list"
+                                  disabled="#{!trackingStatusController.isUserReading()}">
+                <p:ajax event="change" update=":content:trackingSection"/>
+                <p:ajax event="change" update=":content:mainContent"/>
+            </p:selectBooleanButton>
+            <p:button value="Edit this page" 
+                      outcome="/resources/templates/authorized/editContent.jsf"
+                      style="margin-top: 1em">
+                <f:param name="type" value="comics"/>
+                <f:param name="id" 
+                         value="#{comicsPageController.comicsController.comicsId}"/>
+           </p:button>
+                          </c:if>
+                          <br/>
+           <p:outputPanel id="mainContent">
                     <p:accordionPanel var="volume" 
-                                      value="#{comicsPageManagedBean.comicsController.comics.volumeList}"
+                                      value="#{comicsPageController.comicsController.comics.volumeList}"
                                       multiple="true"
                                       id="issues"
                                       dynamic="true"
+                                      rendered="#{!comicsPageController.isReadingModeOn()}"
                                       >
                         <p:tab >
                             <f:facet name="title">
                                 <p:commandLink value="#{volume.name}" 
-                                                action="#{comicsPageManagedBean.redirect(volume)}"/>
+                                                action="#{navigationController.redirect(volume)}"/>
                             </f:facet>
                             <p:dataGrid var="issue"
                                         value="#{volume.issueList}"
-                                        columns="5"
+                                        columns="6"
                                         layout="grid"
                                         paginator="true"
-                                        rows="10"
-                                        styleClass="border:none">
-                                <h:panelGrid columns="1" styleClass="border:none">
-                                    <p:row>
+                                        rows="12"
+                                        styleClass="border:none"
+                                        >
+                                <div class="thumbnail">
                                         <h:form>
-                                            <h:link outcome="#{comicsPageManagedBean.redirect(issue)}">
-                                                <p:graphicImage value="#{issue.image}"
-                                                                styleClass="content-image"/>
+                                            <h:link outcome="#{navigationController.redirect(issue)}">
+                                                <h:graphicImage value="#{issue.image}"
+                                                                styleClass="content-image img-thumbnail"/>
                                             </h:link>
                                         </h:form>
-                                    </p:row>
-                                    <p:row>
                                         <p:link value="#{issue.name}" 
                                                 style="height:auto; width:60%;"
-                                                outcome="#{comicsPageManagedBean.redirect(issue)}"/>
-                                    </p:row>
-                                </h:panelGrid>                      
+                                                outcome="#{navigationController.redirect(issue)}"/>
+                                </div>                      
                             </p:dataGrid>
-                            <p:button value="Add new issue" 
-                                      outcome="/resources/templates/authorized/addContent.jsf">
-                                <f:param name="type" 
-                                         value="issue"/>
-                                <f:param name="id" 
-                                         value="#{volume.id}"/>
-                            </p:button>
+                            <c:if test="#{userRoleController.isUserAuthorized()}">
+                                <p:button value="Add new issue" 
+                                      outcome="/resources/templates/authorized/addContent.jsf"
+                                      rendered="#{!comicsPageController.isReadingModeOn()}">
+                                    <f:param name="type" 
+                                            value="Issue"/>
+                                    <f:param name="v_id" 
+                                            value="#{volume.id}"/>
+                                </p:button>
+                            </c:if>
                         </p:tab>
                     </p:accordionPanel>
-                    <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+                    <c:if test="#{userRoleController.isUserAuthorized()}">
                         <p:button value="Add new volume" 
-                                  outcome="/resources/templates/authorized/addContent.jsf">
+                                  outcome="/resources/templates/authorized/addContent.jsf"
+                                  rendered="#{!comicsPageController.isReadingModeOn()}">
                             <f:param name="type" 
-                                     value="volume"/>
-                            <f:param name="id" 
-                                     value="#{comicsPageManagedBean.comicsController.comicsId}"/>
+                                     value="Volume"/>
+                            <f:param name="c_id" 
+                                     value="#{comicsPageController.comicsController.comicsId}"/>
                         </p:button>
                     </c:if>
+           </p:outputPanel>
+           <h:form id="trackingSection">
+                    <c:if test="#{userRoleController.isUserAuthorized()}">
+                                #{trackingController.init()}
+                        <h:form id="mainTable">
+                                                      <br/>
+                <p:commandLink actionListener="#{trackingController.selectAll}" 
+                               value="I've read everything!"
+                               update=":content:trackingSection:mainTable:tables"
+                               styleClass="btn btn-large btn-primary"
+                               action="#{navigationController.redirect(comicsController.comics)}"
+                               rendered="#{comicsPageController.isReadingModeOn()}"/>
+                <br/>
+                <br/>
+            <ui:repeat  id="tables"
+                        var="volume" 
+                        value="#{trackingController.comicsController.comics.volumeList}"
+                        rendered="#{comicsPageController.isReadingModeOn()}"
+                        >
+                            <p:dataTable  var="issue" 
+                                              value="#{volume.issueList}"
+                                              selection="#{trackingController.selectedIssues}"
+                                              rowKey="#{issue.id}"
+                                              tableStyle="width:auto"
+                                              rowSelectMode="add"
+                                              tableStyleClass="table-responsive">
+                                <p:ajax event="toggleSelect"
+                                        listener="#{trackingController.onHeaderCheckboxClick}"
+                                        update=":content:trackingSection:mainTable:tables">
+                                    <f:setPropertyActionListener target="#{trackingController.selectedVolume}"
+                                                                 value="#{volume}"/>
+                                </p:ajax>
+                                <p:ajax event="rowSelectCheckbox" 
+                                        listener="#{trackingController.onRowSelect}"
+                                        update=":content:trackingSection:mainTable:tables"/>
+                                <p:ajax event="rowUnselectCheckbox" 
+                                        listener="#{trackingController.onRowUnselect}"
+                                        update=":content:trackingSection:mainTable:tables"/>
+                                <p:column selectionMode="multiple" style="width:5%;">
+                                </p:column>
+                                <p:column style="width:max-content;">                                        
+                                    <f:facet name="header">
+                                        <h:outputText value="#{volume.name}"/>
+                                    </f:facet>
+                                            <h:outputText value="#{issue.name}"/>
+                                    </p:column>
+                                </p:dataTable>
+            </ui:repeat>
+            </h:form>
+                    </c:if>
+           </h:form>
             </center>
+</h:form>
                 <div>
                     <ui:include src="/resources/templates/comments/comments.xhtml">
-                        <ui:param name="type" 
-                                  value="comics"/>
+                        <ui:param name="type" value="comics"/>
                     </ui:include>
                 </div>
     </ui:define>

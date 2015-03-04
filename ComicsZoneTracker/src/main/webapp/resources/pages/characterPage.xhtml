@@ -8,7 +8,7 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui" 
-      template="/resources/templates/contentPage.xhtml"
+      template="/resources/templates/content.xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:define name="init">
         <f:metadata>
@@ -17,7 +17,7 @@ and open the template in the editor.
         #{characterController.initCharacter()}
     </ui:define>
     <ui:define name="image">
-        <p:graphicImage value="#{characterController.character.image}"
+        <h:graphicImage value="#{characterController.character.image}"
                         styleClass="content-image"
                         style="width:20vw;"/>
     </ui:define>
@@ -40,15 +40,35 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="description">
         <h:outputText value="Description: #{characterController.character.description}"/>
-        <p:accordionPanel>
+                <p:accordionPanel>
             <p:tab>
                 <f:facet name="title">
-                    <h:outputText value="Starred in"/>
+                    <h:outputText value="Starred In"/>
                 </f:facet>
-                <p:dataList type="definition" value="#{characterController.character.issueList}" var="issue">
-                    <p:link value="#{issue.name}" href="#"/>
-                </p:dataList>
+                <p:dataGrid var="issue"
+                            value="#{characterController.character.issueList}"
+                            columns="4"
+                            layout="grid"
+                            paginator="true"
+                            rows="8">
+                    <div class="thumbnail">
+                        <h:form>
+                            <h:link outcome="#{navigationController.redirect(issue)}">
+                                <h:graphicImage value="#{issue.image}"
+                                                styleClass="content-image img-thumbnail"
+                                                width="100%"/>
+                            </h:link>
+                        </h:form>
+                        <p:link value="#{issue.name}" 
+                                style="height:auto; width:60%;"
+                                outcome="#{navigationController.redirect(issue)}"/>
+                   </div>               
+                </p:dataGrid>
             </p:tab>
         </p:accordionPanel>
     </ui:define>
+    <ui:define name="content">
+
+    </ui:define>
 </ui:composition>
+>>>>>>> master

@@ -5,7 +5,8 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.entitynetbeans.Character;
+import com.comicszone.entity.NamedImage;
+import com.comicszone.entity.Character;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;

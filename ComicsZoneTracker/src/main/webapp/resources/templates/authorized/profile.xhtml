@@ -21,7 +21,7 @@
                     <p:column>
                         <h:outputText id="nickname"
                                       styleClass="profile-page-column-attr-name"
-                                      value="#{profileUserManagedBean.nickname}"/>
+                                      value="#{profileUserController.realNickname}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -32,7 +32,8 @@
                     <p:column>
                         <p:inputText id="name"
                                      styleClass="profile-page-column-value-text"
-                                     value="#{profileUserManagedBean.name}"/>
+                                     readonly="#{profileUserController.isSocial}"
+                                     value="#{profileUserController.name}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -43,7 +44,7 @@
                     <p:column>
                         <p:inputText id="email"
                                      styleClass="profile-page-column-value-text"
-                                     value="#{profileUserManagedBean.email}"/>
+                                     value="#{profileUserController.email}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -54,7 +55,7 @@
                     <p:column>        
                         <p:inputMask id="birthday"
                                      styleClass="profile-page-column-value-text" 
-                                     value="#{profileUserManagedBean.birthday}" 
+                                     value="#{profileUserController.birthday}" 
                                      placeholder="day/month/year"
                                      mask="99/99/9999"/>
                     </p:column>
@@ -69,7 +70,7 @@
                             id = "sex"
                             style="width:100%"
                             styleClass="profile-page-column-value-list"
-                            value="#{profileUserManagedBean.sex}">
+                            value="#{profileUserController.sex}">
                             <f:selectItem itemValue="0" itemLabel=""/>
                             <f:selectItem itemValue="1" itemLabel="Male"/>
                             <f:selectItem itemValue="2" itemLabel="Female"/>
@@ -80,7 +81,7 @@
                     <p:column>
                         <h:outputText styleClass="profile-page-column-attr-name"  value="Avatar:"/>
                         <p:fileUpload
-                            fileUploadListener="#{profileUserManagedBean.loadImage}"
+                            fileUploadListener="#{profileUserController.loadImage}"
                             id="chooseFileDialog"
                             mode="advanced"
                             auto="true"
@@ -91,7 +92,7 @@
                     <p:column>
                         <p:graphicImage 
                             id = "avatarImage"
-                            value="#{profileUserManagedBean.avatar}"
+                            value="#{profileUserController.avatar}"
                             width="150"
                             height="150"
                             />
@@ -101,7 +102,7 @@
                     <p:column colspan="2">
                         <p:commandButton 
                             styleClass="profile-page-column-button"
-                            action="#{profileUserManagedBean.saveChanges()}"
+                            action="#{profileUserController.saveChanges()}"
                             ajax="false"
                             value="Save changes"/>
                     </p:column>
@@ -110,7 +111,7 @@
                     <p:column colspan="2">
                         <p:commandButton
                             styleClass="profile-page-column-button"
-                            action="#{profileUserManagedBean.resetChanges()}"
+                            action="#{profileUserController.resetChanges()}"
                             ajax="false"
                             value="Reset changes"/>
                     </p:column>

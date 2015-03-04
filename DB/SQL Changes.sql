@@ -1,18 +1,12 @@
-﻿ALTER TABLE realm
+ALTER TABLE realm
   ALTER COLUMN name TYPE Varchar;
   
 -- Sequence: character_char_id_seq
 
 -- DROP SEQUENCE realm_realm_id_seq;
 
-CREATE SEQUENCE realm_realm_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 2
-  CACHE 1;
-ALTER SEQUENCE realm_realm_id_seq
-  OWNER TO "ComicsZoneRole";
+alter table issue add column reldate text;
+alter table comics add column is_read  boolean;
 
 ALTER TABLE realm
    ALTER COLUMN realm_id TYPE integer;
@@ -25,6 +19,7 @@ ALTER TABLE character
   ADD COLUMN publisher_id integer;
 ALTER TABLE character
   ADD CONSTRAINT created_by FOREIGN KEY ( publisher_id ) REFERENCES publisher (publisher_id) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 
 ALTER TABLE comics
   ADD COLUMN is_checked boolean DEFAULT FALSE;
@@ -80,7 +75,6 @@ ALTER TABLE friends DROP CONSTRAINT key19;
 ALTER TABLE friends ADD id serial PRIMARY KEY;
 ALTER TABLE friends ADD are_friends boolean NOT NULL DEFAULT true; 
 ALTER TABLE friends ADD CONSTRAINT friends_with FOREIGN KEY ( user1_id ) REFERENCES users ( user_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE friends ADD CONSTRAINT friend_of FOREIGN KEY ( user2_id ) REFERENCES users ( user_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_SENDER BOOLEAN DEFAULT TRUE;
 ALTER TABLE MESSAGES ADD COLUMN SHOW_TO_RECEIVER BOOLEAN DEFAULT TRUE;
@@ -162,12 +156,11 @@ CREATE TABLE user_friends_news (
 		REFERENCES friends(id)
 );
 
-INSERT INTO user_friends_news (user_id, friends_note_id, viewed) 
-	(SELECT user1_id, id, TRUE FROM friends 
-	UNION
-	SELECT user2_id, id, TRUE FROM friends)
-	EXCEPT
-
+--INSERT INTO user_friends_news (user_id, friends_note_id, viewed) 
+--	(SELECT user1_id, id, TRUE FROM friends 
+--	UNION
+--	SELECT user2_id, id, TRUE FROM friends)
+--	EXCEPT
 
 UPDATE users
 set real_nickname=nickname
@@ -192,3 +185,23 @@ ALTER TABLE comics ALTER COLUMN image SET DEFAULT '/resources/images/image_not_f
 ALTER TABLE volume ALTER COLUMN img SET DEFAULT '/resources/images/image_not_found.png';
 ALTER TABLE issue ALTER COLUMN img SET DEFAULT '/resources/images/image_not_found.png';
 ALTER TABLE character ALTER COLUMN image SET DEFAULT '/resources/images/image_not_found.png';
+
+--User Tracking Status--
+CREATE TABLE user_tracking_status
+(
+  user_id integer NOT NULL,
+  comics_id integer NOT NULL,
+  status integer NOT NULL DEFAULT 0,
+  CONSTRAINT user_tracking_status_pk PRIMARY KEY (user_id, comics_id),
+  CONSTRAINT user_tracking_status_comics_id FOREIGN KEY (comics_id)
+      REFERENCES comics (comics_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT user_tracking_status_user_id FOREIGN KEY (user_id)
+      REFERENCES users (user_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE user_tracking_status
+  OWNER TO "ComicsZoneRole";

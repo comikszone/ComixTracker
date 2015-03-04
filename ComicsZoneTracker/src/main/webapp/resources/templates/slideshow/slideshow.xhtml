@@ -1,7 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pf="http://jsf.playerfinder.net/components">
     <h:head>
         <h:outputStylesheet library="css" name="slick.css"/>
         <h:outputStylesheet library="css" name="slick-theme.css"/>
@@ -9,27 +10,30 @@
         <h:outputScript library="scripts" name="slick.min.js"/>
     </h:head>
     <h:body>
+        <h1>Check out our top comics!</h1>
         <div class="slideshow">
             <ui:repeat var="comics" value="#{slideshowController.comicsList}">
-                <table>
-                    <tr>
-                        <td>
+                <h:panelGrid columns="1" style="margin: 0 auto 0 auto">
+                    <h:column>
                             <h:form>
                                 <h:link outcome="#{slideshowController.redirect(comics.id)}">
-                                    <p:graphicImage value="#{comics.image}"
+                                    <h:graphicImage value="#{comics.image}"
+                                                    width="100%"
                                                     styleClass="content-image slideshow-image"/>
                                 </h:link>
                             </h:form>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        <div>
+                            <pf:rating  value="#{comics.rating}"
+                                                            totalStars="5"
+                                                            step="1"
+                                                            disabled="true">
+                            </pf:rating>#{comics.rating}
+                        </div>
                             <p:link value="#{comics.name}" 
                                     outcome="#{slideshowController.redirect(comics.id)}" 
                                     style="font-weight: 900; margin-left: auto; margin-right: auto;"/>
-                        </td>
-                    </tr>
-                </table>
+                    </h:column>
+                </h:panelGrid>
             </ui:repeat>
         </div>
     </h:body>

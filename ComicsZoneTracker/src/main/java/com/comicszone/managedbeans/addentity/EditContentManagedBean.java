@@ -10,10 +10,10 @@ import com.comicszone.dao.ImprintFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.PublisherFacade;
 import com.comicszone.dao.VolumeFacade;
-import com.comicszone.entitynetbeans.Comics;
-import com.comicszone.entitynetbeans.Imprint;
-import com.comicszone.entitynetbeans.Issue;
-import com.comicszone.entitynetbeans.Volume;
+import com.comicszone.entity.Comics;
+import com.comicszone.entity.Imprint;
+import com.comicszone.entity.Issue;
+import com.comicszone.entity.Volume;
 import java.io.Serializable;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -153,7 +153,7 @@ public class EditContentManagedBean implements Serializable {
     }
     
     public String getPublisher() {
-        return comics.getPublisher();
+        return comics.getPublisherId().getName();
     }
     
     public void setPublisher(String publisher) {
@@ -161,7 +161,7 @@ public class EditContentManagedBean implements Serializable {
     }
     
     public String getImprint() {
-        return comics.getImprint();
+        return comics.getImprintId().getName();
     }
     
     public void setImprint(String imprint) {

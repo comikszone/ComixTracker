@@ -8,7 +8,7 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui" 
-      template="/resources/templates/contentPage.xhtml"
+      template="/resources/templates/content.xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:pf="http://jsf.playerfinder.net/components">
@@ -19,9 +19,18 @@ and open the template in the editor.
         #{issueController.initIssue()}
         #{ratingController.setType(issueController.issue.contentType)}
         #{ratingController.setContentId(issueController.issueId)}
+        <ol class="breadcrumb">
+            <li><a href="/resources/templates/index.jsf">Home</a></li>
+            <li><a href="/resources/pages/comicsCatalogue.jsf">Catalogue</a></li>
+            <li><p:link outcome="#{navigationController.redirect(issueController.issue.volumeId.comicsId)}" 
+                        value="#{issueController.issue.volumeId.comicsId.name}"/></li>
+            <li><p:link outcome="#{navigationController.redirect(issueController.issue.volumeId)}" 
+                        value="#{issueController.issue.volumeId.name}"/></li>
+            <li class="active">#{issueController.issue.name}</li>
+        </ol>
     </ui:define>
     <ui:define name="image">
-        <p:graphicImage value="#{issueController.issue.image}"
+        <h:graphicImage value="#{issueController.issue.image}"
                         styleClass="content-image"
                         style="width:20vw;"/>
     </ui:define>
@@ -47,10 +56,10 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="rating">
                         <c:choose>
-                            <c:when test="#{userRoleManagedBean.isUserAuthorized()}">
+                            <c:when test="#{userRoleController.isUserAuthorized()}">
                                 #{ratingController.init()}
                                 <h:form>
-                                    <pf:rating  value="#{ratingController.ratingFacade.uirating.rating}"
+                                    <pf:rating  value="#{ratingController.ratingFacade.contentRating}"
                                                 totalStars="5"
                                                 step="1">
                                         <f:ajax event="change" listener="#{ratingController.rate}"/>
@@ -78,41 +87,35 @@ and open the template in the editor.
                         </c:choose>
     </ui:define>
     <ui:define name="content">
-        <p:accordionPanel multiple="true" 
-                          id="issues" 
-                          dynamic="true">
+        <p:accordionPanel multiple="true" id="issues" dynamic="true">
             <p:tab>
                 <f:facet name="title">
                     <h:outputText value="Characters"/>
                 </f:facet>
                 <p:dataGrid var="char"
                             value="#{issueController.issue.characterList}"
-                            columns="5"
+                            columns="6"
                             layout="grid"
                             paginator="true"
-                            rows="10">
-                    <h:panelGrid columns="1" style="border:none">
-                        <p:row>
-                            <h:form>
-                                <h:link outcome="#{characterController.redirect(char)}">
-                                    <p:graphicImage value="#{char.image}"
-                                                    styleClass="content-image"/>
-                                </h:link>
-                            </h:form>
-                        </p:row>
-                        <p:row>
-                            <p:link value="#{char.name}" 
-                                    style="height:auto; width:60%;"
-                                    outcome="#{characterController.redirect(char)}"/>
-                        </p:row>
-                    </h:panelGrid>               
+                            rows="12">
+                    <div class="thumbnail">
+                        <h:form>
+                            <h:link outcome="#{navigationController.redirect(char)}">
+                                <h:graphicImage value="#{char.image}"
+                                                styleClass="content-image img-thumbnail"
+                                                width="100%"/>
+                            </h:link>
+                        </h:form>
+                        <p:link value="#{char.name}" 
+                                style="height:auto; width:60%;"
+                                outcome="#{navigationController.redirect(char)}"/>
+                   </div>               
                 </p:dataGrid>
             </p:tab>
         </p:accordionPanel>
         <div>
             <ui:include src="/resources/templates/comments/comments.xhtml">
-                <ui:param name="type" 
-                          value="issue"/>
+                <ui:param name="type" value="issue"/>
             </ui:include>
         </div>
     </ui:define>

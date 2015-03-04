@@ -5,8 +5,8 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.entitynetbeans.Issue;
-import com.comicszone.entitynetbeans.Volume;
+import com.comicszone.entity.Issue;
+import com.comicszone.entity.Volume;
 import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.LocalBean;

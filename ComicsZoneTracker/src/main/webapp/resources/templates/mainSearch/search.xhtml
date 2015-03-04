@@ -7,8 +7,8 @@
         <h:form role="form" styleClass="nav navbar-nav form-group">
             <h:panelGrid columns="2">
                 <p:autoComplete id="comicsPojo" 
-                                value="#{autoCompleteView.ajaxComicsCharacter}" 
-                                completeMethod="#{autoCompleteView.completeComics}"
+                                value="#{autoCompleteController.content}" 
+                                completeMethod="#{autoCompleteController.completeComics}"
                                 var="aj" 
                                 itemLabel="#{aj.name}"
                                 itemValue="#{aj}"
@@ -17,8 +17,9 @@
                                 forceSelection="true"
                                 dropdown="false"
                                 styleClass="nav navbar-nav"
-                                placeholder="Search">
-                    <p:ajax event="itemSelect" listener="#{autoCompleteView.handleSelect}" />  
+                                placeholder="Search"
+                                style="z-index: 1000 !important;">
+                    <p:ajax event="itemSelect" listener="#{autoCompleteController.handleSelect}" />  
                     <p:column>
                         #{aj.name}
                     </p:column>
@@ -26,10 +27,10 @@
                         <p:graphicImage value="#{aj.image}" width="100" height="100"/>
                     </p:column>
                 </p:autoComplete>
-                <p:selectOneMenu id="console" value="#{autoCompleteView.category}"
+                <p:selectOneMenu id="console" value="#{autoCompleteController.category}"
                                  styleClass="nav navbar-nav"
-                                 style="width:120px">
-                    <p:ajax listener="#{autoCompleteView.onCategoryChange}"/>
+                                 style="width:120px; z-index: 1000 !important;">
+                    <p:ajax listener="#{autoCompleteController.onCategoryChange}"/>
                     <f:selectItem itemLabel="Comics" itemValue="Comics" />
                     <f:selectItem itemLabel="Characters" itemValue="Characters" />
                 </p:selectOneMenu>

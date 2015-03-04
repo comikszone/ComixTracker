@@ -34,9 +34,9 @@
         <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <p:graphicImage value="#{currentUserManagedBean.avatar}"                     
+                <p:graphicImage value="#{currentUserController.avatar}"                     
                                 styleClass="icon-on-start-page"/>
-                #{currentUserManagedBean.nameToStartPage}
+                #{currentUserController.nameToStartPage}
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
@@ -46,7 +46,7 @@
                             outcome="/resources/templates/authorized/profile.jsf"/>
                 </li>
                 <li>
-                    <c:if test="#{userRoleManagedBean.isUserAdmin()}">
+                    <c:if test="#{userRoleController.isUserAdmin()}">
                         <p:link value="Admin page"
                                 styleClass="without-decoration light-grey"
                                 outcome="/resources/templates/authorized/admin/admin.xhtml"/>
@@ -56,7 +56,7 @@
                     <h:form>
                     <h:commandLink
                             value="Logout" 
-                            action="#{logoutManagedBean.logout()}"/>
+                            action="#{logoutController.logout()}"/>
                     </h:form>
                 </li>
                 </ul>
@@ -65,8 +65,24 @@
     </ui:define>
     <ui:define name="articleContent">
         <div class="jumbotron">
-                <h2>Where am I and what can I do?</h2>
-                <p>TODO: Write Content</p>
+                <h2>What can I do?</h2>
+                <ul>
+                    <li>
+                        <p>Find comics or characters via search or catalogue</p>
+                    </li>
+                    <li>
+                        <p>Mark issues, volumes and even whole comic books as read</p>
+                    </li>
+                    <li>
+                        <p>Rate and comment comics, volumes and issues</p>
+                    </li>
+                    <li>
+                        <p>Add new content</p>
+                    </li>
+                    <li>
+                        <p>Find friends and chat with them</p>
+                    </li>
+                </ul>
         </div>
             <ui:include src="/resources/templates/slideshow/slideshow.xhtml"/>
     </ui:define>

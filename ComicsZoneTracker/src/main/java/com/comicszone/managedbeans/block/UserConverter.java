@@ -1,6 +1,6 @@
 package com.comicszone.managedbeans.block;
 
-import com.comicszone.entitynetbeans.Users;
+import com.comicszone.entity.Users;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;

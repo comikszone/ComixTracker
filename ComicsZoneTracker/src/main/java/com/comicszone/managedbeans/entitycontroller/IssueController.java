@@ -6,7 +6,7 @@
 package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.IssueFacade;
-import com.comicszone.entitynetbeans.Issue;
+import com.comicszone.entity.Issue;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -25,13 +25,13 @@ public class IssueController implements Serializable {
     public Integer issueId;
     public Issue issue;
     @ManagedProperty(value = "#{ctrl}")
-    public CardCtrl ctrl;
+    public CardController ctrl;
 
-    public CardCtrl getCtrl() {
+    public CardController getCtrl() {
         return ctrl;
     }
 
-    public void setCtrl(CardCtrl ctrl) {
+    public void setCtrl(CardController ctrl) {
         this.ctrl = ctrl;
     }
 
