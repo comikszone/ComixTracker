@@ -61,6 +61,8 @@ public class UserFriendsController implements Serializable {
     private boolean showMessagesAdder;
     
     private boolean updateDatatableVal;
+    
+    private String updateString="";
     @PostConstruct
     public void init() {
        try {
@@ -83,7 +85,7 @@ public class UserFriendsController implements Serializable {
             Logger.getLogger(ProfileUserController.class.getName()).log(Level.SEVERE, null, ex);
         }  
     }
-    public boolean isUpdateDatatable(ActionEvent event) {
+    public void isUpdateDatatable(ActionEvent event) {
 //		System.out.println("Message received at " + new Date());
 		Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String msgFromAdmin = requestParameterMap.get("msgData");
@@ -92,14 +94,9 @@ public class UserFriendsController implements Serializable {
                 if (id.equals(currentUser.getUserId()))
                 {
                     updateDatatableVal=true;
-                    RequestContext.getCurrentInstance().update(":form:messages");
-                    return true;
-                }
-                else
-                {
-                    updateDatatableVal=true;
-                    RequestContext.getCurrentInstance().update(":form:messages");                    
-                    return true;
+                    RequestContext.getCurrentInstance().update("form:messages");
+//                    updateString="form:messages";
+//                    return true;
                 }
 	} 
     public List<Users> completeUser(String query) {
@@ -222,4 +219,14 @@ public class UserFriendsController implements Serializable {
     public void setUpdateDatatableVal(boolean updateDatatableVal) {
         this.updateDatatableVal = updateDatatableVal;
     }
+
+    public String getUpdateString() {
+        System.err.println("*********updateSrring*********="+updateString);
+        return updateString;
+    }
+
+    public void setUpdateString(String updateString) {
+        this.updateString = updateString;
+    }
+    
 }
