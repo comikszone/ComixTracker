@@ -125,10 +125,10 @@ td {
     width: max-content;
 }
 
-@media (min-width: 400px) {
+@media (max-width: 768px) {
     .slideshow-image {
-            width: 200px;
-            height: 300px;
+            width: 150px;
+            height: 225px;
     }
 }
 
