@@ -52,7 +52,7 @@ and open the template in the editor.
                                       styleClass="content-name"/>
     </ui:define>
     <ui:define name="description">
-        <h:outputText value="Description: #{issueController.issue.description}"/>
+        <h:outputText value="Description: #{issueController.issue.description}" escape="false"/>
     </ui:define>
     <ui:define name="rating">
                         <c:choose>
