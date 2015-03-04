@@ -10,6 +10,7 @@ import com.comicszone.dao.user.UserDataFacade;
 import com.comicszone.entity.Content;
 import com.comicszone.entity.ContentType;
 import com.comicszone.entity.Issue;
+import com.comicszone.entity.NamedImage;
 import com.comicszone.entity.Users;
 import com.comicszone.entity.Volume;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
@@ -123,7 +124,6 @@ public class TrackingController implements Serializable {
     }
     
     public void selectAll() {
-        init();
         setSelectedIssues(trackingFacade.getIssueFacade().findByComics(comicsController.getComics().getId()));
         List<Issue> temp = selectedIssues;
         if (prevSelectedIssues != null)
@@ -140,6 +140,13 @@ public class TrackingController implements Serializable {
     public void onRowUnselect(UnselectEvent event) {
         Issue issueToUnmark = (Issue)event.getObject();
         trackingFacade.unMark(currentUser, issueToUnmark);
+    }
+    
+    public String redirect(NamedImage content)
+    {
+        if (content.getContentType() == ContentType.Comics)
+            return "/resources/templates/authorized/progressPage.jsf?faces-redirect=true";
+        else return "/resources/templates/index.jsf";
     }
         
     /**
