@@ -41,7 +41,7 @@ public class CommentsController implements Serializable {
     private String selectedCommentText;
     private Comments editingComment;
     private String redirect;
-    private static final String WRONG_COMMENT = "Your comment is too short.";
+    private static final String WRONG_COMMENT = "Your comment has bad size.";
     private static final String NOT_AUTHORIZED = "Please authorize to perform action.";
     private static final String WRONG_USER = "You cannot perform this action.";
     private static final String ACCESS_ERROR = "Access error.";
@@ -63,7 +63,7 @@ public class CommentsController implements Serializable {
         inputText = (InputTextarea) uiViewRoot.
                 findComponent("commentAdderForm:commentAdderNewComment");
         String comment = (String)inputText.getValue();
-        if (comment == null || comment.isEmpty()) {
+        if (comment == null || comment.isEmpty() || comment.length() >= 501) {
             facesContext.addMessage(null, facesMessageWrongComment);
             return;
         }
@@ -96,7 +96,7 @@ public class CommentsController implements Serializable {
         }
         //Map<String, String> params = externalContext.getRequestParameterMap();
         //String editedText = params.get("editForm:editedComment");
-        if (selectedCommentText == null || selectedCommentText.isEmpty()) {
+        if (selectedCommentText == null || selectedCommentText.isEmpty() || selectedCommentText.length() >= 501) {
             facesContext.addMessage(null, facesMessageWrongComment);
             editingComment = null;
             selectedCommentText = null;

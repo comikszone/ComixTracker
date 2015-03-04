@@ -47,6 +47,7 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
         clientSecret="DN8uqaag7oUAPSfYCe2n";
         redirectUri="http://www.comicszonetracker.tk/resources/templates/unauthorized/vk_redirect_page.jsf";
         userInfoUrl = "https://api.vk.com/method/users.get";
+        isError=false;
     }
 
     public String getUserUrl() {
@@ -88,17 +89,20 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
             String json = getResponseJson(urlAccessToken);
             if (getJsonValue(json,"error")!=null)
             {
-                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-                context.redirect("/");
+                isError=true;
             }
-            String accessToken = getJsonValue(json, "access_token");
-            String userId = getJsonValue(json, "user_id");
-            String urlUserInfo = userInfoUrl
-                    + "?uids=" + userId
-                    + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo_max"
-                    + "&access_token=" + accessToken;
-            json = getResponseJson(urlUserInfo);
-            return json;
+            else
+            {
+                String accessToken = getJsonValue(json, "access_token");
+                String userId = getJsonValue(json, "user_id");
+                String urlUserInfo = userInfoUrl
+                        + "?uids=" + userId
+                        + "&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo_max"
+                        + "&access_token=" + accessToken;
+                json = getResponseJson(urlUserInfo);
+                return json;
+            }
+            return "";
     }
 
 
@@ -119,35 +123,41 @@ public class VKAuthorization extends SocialNetworkAuthorization implements Seria
     @Override
     public Users createUser() throws IOException, ParseException {
         String startJson = fetchPersonalInfo();
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(startJson);
-        JSONArray jsonArray = (JSONArray) jsonObject.get("response");
-        JSONObject json = (JSONObject) jsonArray.get(0);
-        String id = getJsonValue(json, "uid");
-//        return id;
-        String nickname = "VK" + id;
-        String firstName = getJsonValue(json, "first_name");
-        String lastName = getJsonValue(json, "last_name");
-        String name = firstName + " " + lastName;
-        String photo = getJsonValue(json, "photo_max");
-        String bDate = getJsonValue(json, "bdate");
-        Users user = new Users();
-        user.setNickname(nickname);
-        user.setEmail("default email");
-        user.setAvatarUrl(photo);
-        user.setName(name);
-        if (bDate!=null)
+        if (!startJson.equals(""))
         {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-            try {
-                user.setBirthday(sdf.parse(bDate));
-            } catch (java.text.ParseException ex) {
-                Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NullPointerException ex) {
-                Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(startJson);
+            JSONArray jsonArray = (JSONArray) jsonObject.get("response");
+            JSONObject json = (JSONObject) jsonArray.get(0);
+            String id = getJsonValue(json, "uid");
+    //        return id;
+            String nickname = "VK" + id;
+            String firstName = getJsonValue(json, "first_name");
+            String lastName = getJsonValue(json, "last_name");
+            String name = firstName + " " + lastName;
+            String photo = getJsonValue(json, "photo_max");
+            String bDate = getJsonValue(json, "bdate");
+            Users user = new Users();
+            user.setNickname(nickname);
+            user.setEmail("default email");
+            user.setAvatarUrl(photo);
+            user.setName(name);
+            if (bDate!=null)
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                try {
+                    user.setBirthday(sdf.parse(bDate));
+                } catch (java.text.ParseException ex) {
+                    Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NullPointerException ex) {
+                    Logger.getLogger(VKAuthorization.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            return user;
         }
-        return user;
+
+        return null;
     }
 
 }

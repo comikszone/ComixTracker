@@ -53,6 +53,7 @@ public class GoogleAuthorization extends SocialNetworkAuthorization implements S
         clientSecret = "KYTJxAdhHkJ1ccx7uy9HIgKn";
         redirectUri = "http://www.comicszonetracker.tk/resources/templates/unauthorized/redirect_page.jsf";
         userInfoUrl = "https://www.googleapis.com/oauth2/v1/userinfo";
+        isError=false;
     }
 
     public String getUserUrl() {
@@ -88,38 +89,43 @@ public class GoogleAuthorization extends SocialNetworkAuthorization implements S
     @Override
     public String fetchPersonalInfo() throws IOException {
 
-        if (authCode==null)
+        if (authCode!=null)
         {
-            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
-            context.redirect("/");
+//            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
+//            context.redirect("/");
+//        }
+            final GoogleTokenResponse response = flow.newTokenRequest(authCode).setRedirectUri(redirectUri).execute();
+            final Credential credential = flow.createAndStoreCredential(response, null);
+            final HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(credential);
+            // Make an authenticated request
+            final GenericUrl url = new GenericUrl(userInfoUrl);
+            final HttpRequest request = requestFactory.buildGetRequest(url);
+            request.getHeaders().setContentType("application/json");
+            final String jsonIdentity = request.execute().parseAsString();
+            return jsonIdentity;
         }
-        final GoogleTokenResponse response = flow.newTokenRequest(authCode).setRedirectUri(redirectUri).execute();
-        final Credential credential = flow.createAndStoreCredential(response, null);
-        final HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(credential);
-        // Make an authenticated request
-        final GenericUrl url = new GenericUrl(userInfoUrl);
-        final HttpRequest request = requestFactory.buildGetRequest(url);
-        request.getHeaders().setContentType("application/json");
-        final String jsonIdentity = request.execute().parseAsString();
-        return jsonIdentity;
-
+        return "";
     }
 
     @Override
     public Users createUser() throws IOException, ParseException {
         String startJson = fetchPersonalInfo();
-        JSONParser jsonParser = new JSONParser();
-        JSONObject json = (JSONObject) jsonParser.parse(startJson);
-        String id = getJsonValue(json, "id");
-        String nickname = "Google" + id;
-        String name = getJsonValue(json, "name");
-        String photo = getJsonValue(json, "picture");
-        String email = getJsonValue(json, "email");
-        Users user = new Users();
-        user.setEmail(email);
-        user.setNickname(nickname);
-        user.setName(name);
-        user.setAvatarUrl(photo); 
-        return user;
+        if (!startJson.equals(""))
+        {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject json = (JSONObject) jsonParser.parse(startJson);
+            String id = getJsonValue(json, "id");
+            String nickname = "Google" + id;
+            String name = getJsonValue(json, "name");
+            String photo = getJsonValue(json, "picture");
+            String email = getJsonValue(json, "email");
+            Users user = new Users();
+            user.setEmail(email);
+            user.setNickname(nickname);
+            user.setName(name);
+            user.setAvatarUrl(photo); 
+            return user;
+        }
+        return null;
     }
 }

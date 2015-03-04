@@ -9,7 +9,6 @@ import com.comicszone.dao.trackingstatus.TrackingStatusFacade;
 import com.comicszone.dao.user.UserDataFacade;
 import com.comicszone.entity.Users;
 import java.security.Principal;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -52,7 +51,7 @@ public class TrackingStatusController {
     public boolean isUserReading() {
         if (!(selectedStatus == null)) {
             int status = Integer.parseInt(selectedStatus);
-            return (status != 0);
+            return (status == 1);
         }
         else return false;
     }

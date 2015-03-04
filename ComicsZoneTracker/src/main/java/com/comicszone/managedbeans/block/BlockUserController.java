@@ -27,7 +27,6 @@ public class BlockUserController implements Serializable {
     UserBlockFacade userBlockDao;
     
     private Users selectedUser;
-    private String searchOption = "1";
     
     public void blockUser() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -72,17 +71,11 @@ public class BlockUserController implements Serializable {
     }
     
     public List<Users> completeToBlock(String query) {
-        if (searchOption.equals("2")) {
-            return completeToBlockRealNickname(query);
-        }
         List<Users> users = userBlockDao.getSomeUnblockedUsersWithNickname(query, 5);
         return users;
     }
     
     public List<Users> completeToUnblock(String query) {
-        if (searchOption.equals("2")) {
-            return completeToUnblockRealNickname(query);
-        }
         List<Users> users = userBlockDao.getSomeBlockedUsersWithNickname(query, 5);
         return users;
     }
@@ -103,13 +96,5 @@ public class BlockUserController implements Serializable {
     
     public Users getSelectedUser() {
         return selectedUser;
-    }
-    
-    public void setSearchOption(String searchOption) {
-        this.searchOption = searchOption;
-    }
-    
-    public String getSearchOption() {
-        return searchOption;
     }
 }
