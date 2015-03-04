@@ -76,11 +76,11 @@ public class ProgressController implements Serializable {
         }
     }
     
-    public Long getValue(Comics comics) throws CloneNotSupportedException {
+    public Double getValue(Comics comics) throws CloneNotSupportedException {
         double markedCount = progressFacade.getMarkedIssueCount(comics.getId(), userManagedBean.getCurrentUser().getUserId());
         double totalCount = progressFacade.getTotalIssueCount(comics.getId());
         double res = (markedCount/totalCount)*100;
-        return ((long)(res));
+        return res;
     }
     
     public Long getMarkedIssueCount(Comics comics) throws CloneNotSupportedException {
