@@ -14,6 +14,7 @@ import com.comicszone.managedbeans.userbeans.ProfileUserController;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -21,6 +22,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -56,7 +59,7 @@ public class UserFriendsController implements Serializable {
     private boolean showMessages;
     
     private boolean showMessagesAdder;
-    
+
     @PostConstruct
     public void init() {
        try {
@@ -79,7 +82,17 @@ public class UserFriendsController implements Serializable {
             Logger.getLogger(ProfileUserController.class.getName()).log(Level.SEVERE, null, ex);
         }  
     }
-    
+    public void isUpdateDatatable(ActionEvent event) {
+//		System.out.println("Message received at " + new Date());
+		Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		String msgFromAdmin = requestParameterMap.get("msgData");
+//                System.err.println("RECEIVED"+msgFromAdmin + " currentUser" + currentUser.getUserId());
+                Integer id=Integer.parseInt(msgFromAdmin);
+                if (id.equals(currentUser.getUserId()))
+                {
+                    RequestContext.getCurrentInstance().update("form:messages");
+                }
+	} 
     public List<Users> completeUser(String query) {
         
         List<Users> users = userDataFacade.getUsersWithRealNicknameStartsWith(query);
@@ -190,5 +203,5 @@ public class UserFriendsController implements Serializable {
         this.selectedUnconfirmedFriend = selectedUnconfirmedFriend;
         selectedFriend = null;
         selectedFollower = null;
-    }
+    }   
 }

@@ -3,11 +3,16 @@
                 template="/resources/templates/authorized/authorized.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
             
     <ui:define name="articleContent">
         <f:event type="preRenderView" listener="#{messagesController.preRender(userFriendsController.selectedFriend)}" />
+        <p:socket channel="/a" onMessage="handleMessage"></p:socket>
         <h:form id="form">
+        <p:remoteCommand name="receiveMessage"
+         actionListener="#{userFriendsController.isUpdateDatatable}"       
+        />
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >
                     <p:autoComplete
@@ -364,14 +369,6 @@
                                 rowsPerPageTemplate="10,20,30" 
                                 rows="10"
                                 lazy="true">
-                                
-                                <f:facet name="header">
-                                    <p:commandButton
-                                        id="messagesRefresh" 
-                                        value="Refresh"
-                                        update=":form:messages :form:messageAdder"
-                                        style="margin-right: -88%"/>
-                                </f:facet>
                                 
                                 <p:column
                                     sortBy="#{message.msgTime}" 
