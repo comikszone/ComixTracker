@@ -9,7 +9,8 @@ and open the template in the editor.
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui" 
       template="/resources/templates/contentPage.xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="init">
         <f:metadata>
             <f:viewParam name="id" value="#{characterController.characterId}"/>
@@ -50,5 +51,16 @@ and open the template in the editor.
                 </p:dataList>
             </p:tab>
         </p:accordionPanel>
+    </ui:define>
+    <ui:define name="rating">
+        <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+            <p:button value="Edit this page" 
+                      outcome="/resources/templates/authorized/editContent.jsf">
+                <f:param name="type" 
+                         value="character"/>
+                <f:param name="id"
+                         value="#{characterController.characterId}"/>
+            </p:button>
+        </c:if>
     </ui:define>
 </ui:composition>

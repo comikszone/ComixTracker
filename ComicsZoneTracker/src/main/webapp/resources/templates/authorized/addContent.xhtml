@@ -12,15 +12,29 @@
                          columns="1"
                          layout="grid">
                 
-                <li class="ui-state-default">Title</li>
+                <c:choose>
+                    <c:when test="#{param.type=='character'}">
+                        <li class="ui-state-default">Name</li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="ui-state-default">Title</li>
+                    </c:otherwise>
+                </c:choose>
                 <h:inputText id="title"
                              styleClass="add-edit-content-page-inputs"/>
+                
+                <c:if test="#{param.type=='character'}">
+                    <li class="ui-state-default">Real name</li>
+                    <h:inputText id="realName"
+                             styleClass="add-edit-content-page-inputs"/>
+                </c:if>
                 
                 <li class="ui-state-default">Description</li>
                 <p:editor id="description"
                           styleClass="add-edit-content-page-inputs"/>
                 
-                <c:if test="#{param.type=='comics'}">
+                
+                <c:if test="#{param.type=='comics' || param.type=='character'}">
                     <li class="ui-state-default">Publisher</li>
                     <p:selectOneMenu id="publisher"
                                      styleClass="add-edit-content-page-inputs">
@@ -28,7 +42,9 @@
                         <f:selectItem itemLabel="DC" itemValue="DC" />
                         <f:selectItem itemLabel="Other" itemValue="Other" />
                     </p:selectOneMenu>
+                </c:if>
                 
+                <c:if test="#{param.type=='comics'}">
                     <li class="ui-state-default">Imprint (if doesn't exist - would be created)</li>
                     <h:inputText id="imprint"
                                  styleClass="add-edit-content-page-inputs"/>
@@ -39,8 +55,13 @@
                     <p:inputMask id="date"
                                  mask="99/99/9999"
                                  placeholder="DD/MM/YYYY"/>
-                </c:if>
+                </c:if>                
                 
+                <c:if test="#{param.type=='character'}">
+                    <li class="ui-state-default">Realm (e.g. Earth-616)</li>
+                    <h:inputText id="realm"
+                                 styleClass="add-edit-content-page-inputs"/>
+                </c:if>
                 
                 <li class="ui-state-default">Image</li>
                 <h5>Enter image URL</h5>

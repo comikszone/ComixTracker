@@ -109,8 +109,9 @@ public class Character implements Serializable,AjaxComicsCharacter {
         this.name = name;
     }
     
-    public Character(String name, String description, String image, Publisher publisher, Realm realm, String source) {
+    public Character(String name, String realName, String description, String image, Publisher publisher, Realm realm, String source) {
         this.name = name;
+        this.realName = realName;
         this.description = description;
         this.image = image;
         this.publisherId = publisher;
@@ -240,9 +241,6 @@ public class Character implements Serializable,AjaxComicsCharacter {
         return true;
     }
     
-
-   
-
     @Override
     public String toString() {
         return "com.comicszone.entitynetbeans.Character[ charId=" + Id + " ]";

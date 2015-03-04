@@ -107,6 +107,15 @@ and open the template in the editor.
                         </p:row>
                     </h:panelGrid>               
                 </p:dataGrid>
+                <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+                    <p:button value="Add new character" 
+                              outcome="/resources/templates/authorized/addContent.jsf">
+                        <f:param name="type" 
+                                 value="character"/>
+                        <f:param name="id"
+                                 value="#{issueController.issueId}"/>
+                    </p:button>
+                </c:if>
             </p:tab>
         </p:accordionPanel>
         <div>

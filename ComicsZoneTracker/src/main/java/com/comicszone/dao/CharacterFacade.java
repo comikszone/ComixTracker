@@ -70,9 +70,9 @@ public class CharacterFacade extends AbstractFacade<Character> implements Finder
         return query.getResultList();
     }
     
-    public void createNew(String name, String description, String image, Publisher publisher, Realm realm, String source) {
+    public void createNew(String name, String realName, String description, String image, Publisher publisher, Realm realm, String source) {
         if (findByName(name).isEmpty()) {
-            Character character = new Character(name, description, image, publisher, realm, source);
+            Character character = new Character(name, realName, description, image, publisher, realm, source);
             create(character);
         } else {
             throw new EJBException();

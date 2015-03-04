@@ -5,15 +5,19 @@
  */
 package com.comicszone.managedbeans.addentity;
 
+import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.ImprintFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.PublisherFacade;
+import com.comicszone.dao.RealmFacade;
 import com.comicszone.dao.VolumeFacade;
 import com.comicszone.entitynetbeans.Comics;
 import com.comicszone.entitynetbeans.Imprint;
 import com.comicszone.entitynetbeans.Issue;
 import com.comicszone.entitynetbeans.Volume;
+import com.comicszone.entitynetbeans.Character;
+import com.comicszone.entitynetbeans.Realm;
 import java.io.Serializable;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -42,10 +46,15 @@ public class EditContentManagedBean implements Serializable {
     PublisherFacade publisherFacade;
     @EJB
     ImprintFacade imprintFacade;
+    @EJB
+    RealmFacade realmFacade;
+    @EJB
+    CharacterFacade characterFacade;
     
     private Comics comics;
     private Volume volume;
     private Issue issue;
+    private Character character;
     
     private FacesContext context = FacesContext.getCurrentInstance();
     private Map<String, String> map = context.getExternalContext().getRequestParameterMap();
@@ -63,6 +72,7 @@ public class EditContentManagedBean implements Serializable {
             case "comics" : comics = comicsFacade.find(id); break;
             case "volume" : volume = volumeFacade.find(id); break;
             case "issue" : issue = issueFacade.find(id); break;
+            case "character" : character = characterFacade.find(id); break;
             default : errorMsg("Wrong entity type!");
         }
     }
@@ -75,6 +85,7 @@ public class EditContentManagedBean implements Serializable {
                 case "comics" : comicsFacade.edit(comics); break;
                 case "volume" : volumeFacade.edit(volume); break;
                 case "issue" : issueFacade.edit(issue); break;
+                case "character" : characterFacade.edit(character); break;
                 default : errorMsg("Wrong entity type! Try revisiting the page.");
             }
         }
@@ -85,6 +96,7 @@ public class EditContentManagedBean implements Serializable {
             case "comics" : return comics.getName();
             case "volume" : return volume.getName();
             case "issue" : return issue.getName();
+            case "character" : return character.getName();    
             default : return null;
         }
     }
@@ -94,7 +106,20 @@ public class EditContentManagedBean implements Serializable {
             case "comics" : comics.setName(title); break;
             case "volume" : volume.setName(title); break;
             case "issue" : issue.setName(title); break;
+            case "character" : character.setName(title); break;
             default : return;
+        }
+    }
+    
+    public String getRealName() {
+        return character.getRealName();
+    }
+    
+    public void setRealName(String realName) {
+        if (realName.length() == 0) {
+            character.setRealName(null);
+        } else {
+            character.setRealName(realName);
         }
     }
     
@@ -103,6 +128,7 @@ public class EditContentManagedBean implements Serializable {
             case "comics" : return comics.getDescription();
             case "volume" : return volume.getDescription();
             case "issue" : return issue.getDescription();
+            case "character" : return character.getDescription();
             default : return null;
         }
     }
@@ -113,6 +139,7 @@ public class EditContentManagedBean implements Serializable {
                 case "comics" : comics.setDescription(null); break;
                 case "volume" : volume.setDescription(null); break;
                 case "issue" : issue.setDescription(null); break;
+                case "character" : character.setDescription(null); break;
                 default : return;
             }
         } else {
@@ -120,6 +147,7 @@ public class EditContentManagedBean implements Serializable {
                 case "comics" : comics.setDescription(description); break;
                 case "volume" : volume.setDescription(description); break;
                 case "issue" : issue.setDescription(description); break;
+                case "character" : character.setDescription(description);break;
                 default : return;
             }
         }
@@ -130,6 +158,7 @@ public class EditContentManagedBean implements Serializable {
             case "comics" : return comics.getImage();
             case "volume" : return volume.getImage();
             case "issue" : return issue.getImage();
+            case "character" : return character.getImage();
             default : return null;
         }
     }
@@ -140,6 +169,7 @@ public class EditContentManagedBean implements Serializable {
                 case "comics" : comics.setImage(null); break;
                 case "volume" : volume.setImage(null); break;
                 case "issue" : issue.setImage(null); break;
+                case "character" : character.setImage(null);break;
                 default : return;
             }
         } else {
@@ -147,17 +177,26 @@ public class EditContentManagedBean implements Serializable {
                 case "comics" : comics.setImage(image); break;
                 case "volume" : volume.setImage(image); break;
                 case "issue" : issue.setImage(image); break;
+                case "character" : character.setImage(image);break;
                 default : return;
             }
         }
     }
     
     public String getPublisher() {
-        return comics.getPublisher();
+        switch (type) {
+            case "comics" : return comics.getPublisher();
+            case "character" : return character.getPublisher();
+            default : return null;
+        }
     }
     
     public void setPublisher(String publisher) {
-        comics.setPublisherId(publisherFacade.findByName(publisher).get(0));
+        switch (type) {
+            case "comics" : comics.setPublisherId(publisherFacade.findByName(publisher).get(0)); break;
+            case "character" : character.setPublisherId(publisherFacade.findByName(publisher).get(0)); break;
+            default : return;
+        }
     }
     
     public String getImprint() {
@@ -173,6 +212,22 @@ public class EditContentManagedBean implements Serializable {
                 imprintFacade.create(imp);
             }
             comics.setImprintId(imp);
+        }
+    }
+    
+    public String getRealm() {
+        return character.getRealm();
+    }
+    
+    public void setRealm(String realm) {
+        if (realm.length() == 0) {
+            character.setRealmId(null);
+        } else {
+            Realm rlm = new Realm(realm);
+            if (realmFacade.findByName(realm).isEmpty()) {
+                realmFacade.create(rlm);
+            }
+            character.setRealmId(rlm);
         }
     }
     
