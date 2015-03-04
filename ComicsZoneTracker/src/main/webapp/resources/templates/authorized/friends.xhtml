@@ -11,7 +11,9 @@
         <h:form id="form">
         <p:remoteCommand name="receiveMessage"
          actionListener="#{userFriendsController.isUpdateDatatable}"
+         
         />
+        <p:commandButton update=":form:messages" value="aaaa" actionListener="#{userFriendsController.isUpdateDatatableVal()}"/>
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >
                     <p:autoComplete

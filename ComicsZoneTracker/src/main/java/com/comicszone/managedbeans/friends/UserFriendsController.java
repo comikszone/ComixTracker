@@ -23,6 +23,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -59,6 +60,7 @@ public class UserFriendsController implements Serializable {
     
     private boolean showMessagesAdder;
     
+    private boolean updateDatatableVal;
     @PostConstruct
     public void init() {
        try {
@@ -89,14 +91,14 @@ public class UserFriendsController implements Serializable {
                 Integer id=Integer.parseInt(msgFromAdmin);
                 if (id.equals(currentUser.getUserId()))
                 {
-//                    updateDatatableVal=true;
-//                    RequestContext.getCurrentInstance().update(":form");
+                    updateDatatableVal=true;
+                    RequestContext.getCurrentInstance().update(":form:messages");
                     return true;
                 }
                 else
                 {
-//                    updateDatatableVal=true;
-//                    RequestContext.getCurrentInstance().update(":form");                    
+                    updateDatatableVal=true;
+                    RequestContext.getCurrentInstance().update(":form:messages");                    
                     return true;
                 }
 	} 
@@ -210,5 +212,14 @@ public class UserFriendsController implements Serializable {
         this.selectedUnconfirmedFriend = selectedUnconfirmedFriend;
         selectedFriend = null;
         selectedFollower = null;
+    }
+
+    public boolean isUpdateDatatableVal() {
+        System.err.println("***********isUpdateDatatableVal()************"+updateDatatableVal);
+        return updateDatatableVal;
+    }
+
+    public void setUpdateDatatableVal(boolean updateDatatableVal) {
+        this.updateDatatableVal = updateDatatableVal;
     }
 }
