@@ -11,11 +11,8 @@
         <p:socket channel="/a" onMessage="handleMessage"></p:socket>
         <h:form id="form">
         <p:remoteCommand name="receiveMessage"
-         actionListener="#{userFriendsController.isUpdateDatatable}"
-         
+         actionListener="#{userFriendsController.isUpdateDatatable}"       
         />
-
-        <p:commandButton update=":form:messages" value="aaaa" actionListener="#{userFriendsController.isUpdateDatatableVal()}"/>
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >
                     <p:autoComplete
@@ -371,14 +368,6 @@
                                 rowsPerPageTemplate="10,20,30" 
                                 rows="10"
                                 lazy="true">
-                                
-                                <f:facet name="header">
-                                    <p:commandButton
-                                        id="messagesRefresh" 
-                                        value="Refresh"
-                                        update=":form:messages :form:messageAdder"
-                                        style="margin-right: -88%"/>
-                                </f:facet>
                                 
                                 <p:column
                                     sortBy="#{message.msgTime}" 

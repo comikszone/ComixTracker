@@ -59,10 +59,7 @@ public class UserFriendsController implements Serializable {
     private boolean showMessages;
     
     private boolean showMessagesAdder;
-    
-    private boolean updateDatatableVal;
-    
-    private String updateString="";
+
     @PostConstruct
     public void init() {
        try {
@@ -89,14 +86,11 @@ public class UserFriendsController implements Serializable {
 //		System.out.println("Message received at " + new Date());
 		Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String msgFromAdmin = requestParameterMap.get("msgData");
-                System.err.println("RECEIVED"+msgFromAdmin + " currentUser" + currentUser.getUserId());
+//                System.err.println("RECEIVED"+msgFromAdmin + " currentUser" + currentUser.getUserId());
                 Integer id=Integer.parseInt(msgFromAdmin);
                 if (id.equals(currentUser.getUserId()))
                 {
-                    updateDatatableVal=true;
                     RequestContext.getCurrentInstance().update("form:messages");
-//                    updateString="form:messages";
-//                    return true;
                 }
 	} 
     public List<Users> completeUser(String query) {
@@ -209,24 +203,5 @@ public class UserFriendsController implements Serializable {
         this.selectedUnconfirmedFriend = selectedUnconfirmedFriend;
         selectedFriend = null;
         selectedFollower = null;
-    }
-
-    public boolean isUpdateDatatableVal() {
-        System.err.println("***********isUpdateDatatableVal()************"+updateDatatableVal);
-        return updateDatatableVal;
-    }
-
-    public void setUpdateDatatableVal(boolean updateDatatableVal) {
-        this.updateDatatableVal = updateDatatableVal;
-    }
-
-    public String getUpdateString() {
-        System.err.println("*********updateSrring*********="+updateString);
-        return updateString;
-    }
-
-    public void setUpdateString(String updateString) {
-        this.updateString = updateString;
-    }
-    
+    }   
 }
