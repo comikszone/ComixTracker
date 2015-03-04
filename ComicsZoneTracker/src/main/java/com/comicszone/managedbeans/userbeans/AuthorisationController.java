@@ -56,7 +56,6 @@ public class AuthorisationController implements Serializable {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
             Principal principal = request.getUserPrincipal();
-
             if (principal == null) {
                 UserAuthentification.authUser(nickname, password, request);
             } else {

@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -111,7 +112,7 @@ public class Comics implements Serializable, CommentsContainer, Content {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comics_comics_id_seq")
-    @SequenceGenerator(name = "comics_comics_id_seq", sequenceName = "comics_comics_id_seq")
+    @SequenceGenerator(name = "comics_comics_id_seq", sequenceName = "comics_comics_id_seq", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "comics_id")
     private Integer Id;
@@ -168,6 +169,15 @@ public class Comics implements Serializable, CommentsContainer, Content {
         this.Id = comicsId;
         this.name = name;
     }
+    
+    public Comics(String title, String description, String image, Publisher publisher, Imprint imprint, String source) {
+        this.name = title;
+        this.description = description;
+        this.image = image;
+        this.publisherId = publisher;
+        this.imprintId = imprint;
+        this.source = source;
+    }
 
     @Override
     public Integer getId() {
@@ -189,10 +199,12 @@ public class Comics implements Serializable, CommentsContainer, Content {
         this.name = name;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
@@ -278,6 +290,14 @@ public class Comics implements Serializable, CommentsContainer, Content {
     public Imprint getImprintId() {
         return imprintId;
     }
+    
+    public String getImrint() {
+        if (imprintId==null) {
+            return null;
+        } else {
+            return imprintId.getName();
+        }
+    }
 
     public void setImprintId(Imprint imprintId) {
         this.imprintId = imprintId;
@@ -285,6 +305,10 @@ public class Comics implements Serializable, CommentsContainer, Content {
 
     public Publisher getPublisherId() {
         return publisherId;
+    }
+    
+    public String getPublisher() {
+        return publisherId.getName();
     }
 
     public void setPublisherId(Publisher publisherId) {
@@ -344,8 +368,12 @@ public class Comics implements Serializable, CommentsContainer, Content {
 
     @Override
     public String getExtraInfo() {
-        return "Publisher: " + publisherId.getName() + "\n" + 
-                "Imprint: " + imprintId.getName();
+        if (imprintId == null) {
+            return "Publisher: " + publisherId.getName();
+        } else {
+            return "Publisher: " + publisherId.getName() + "\n" + 
+                    "Imprint: " + imprintId.getName();
+        }
     }
 
     @XmlTransient

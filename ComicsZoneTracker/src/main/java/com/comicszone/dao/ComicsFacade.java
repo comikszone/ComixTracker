@@ -5,9 +5,11 @@
  */
 package com.comicszone.dao;
 
-import com.comicszone.dao.progress.ProgressInterface;
 import com.comicszone.entity.Comics;
+import com.comicszone.entity.Imprint;
+import com.comicszone.entity.Publisher;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -171,5 +173,20 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder, Slid
         TypedQuery<Comics> query = em.createNamedQuery("Comics.findByChecking", Comics.class);
         query.setParameter("isChecked", isChecked);
         return query.getResultList();
+    }
+    
+    public List<Comics> findByName(String name) {
+        TypedQuery<Comics> query = em.createNamedQuery("Comics.findByName", Comics.class);
+        query.setParameter("name", name);
+        return query.getResultList();
+    }
+    
+    public void createNew(String title, String description, String image, Publisher publisher, Imprint imprint, String source) {
+        if (findByName(title).isEmpty()) {
+            Comics comic = new Comics(title, description, image, publisher, imprint, source);
+            create(comic);
+        } else {
+            throw new EJBException();
+        }
     }
 }

@@ -67,11 +67,10 @@
                         </td>
                 </tr>
             </table>
+            <a onclick="PF('reg').hide(); PF('login').show()" styleClass="btn btn-link" style="margin: 0 auto 0 auto;">
+                        <em>Already a member? Sign in!</em>
+                    </a>
             <table style="margin: 0 auto 0 auto">
-                <tr style="text-align:center">
-                    <p:commandLink value="Already a member? Sign in!"
-                                   onclick="PF('reg').hide(); PF('login').show()"/>
-                </tr>
                 <tr>
                     <td>
                         <p:commandButton ajax="false" 
@@ -87,7 +86,10 @@
                     </td>
                 </tr>  
             </table>
-
+            <p:growl 
+                autoUpdate="true"
+                showDetail="true"
+                />
         </h:form>
     </p:dialog>
 </ui:composition>

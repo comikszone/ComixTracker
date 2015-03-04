@@ -6,9 +6,11 @@
 package com.comicszone.dao;
 
 import com.comicszone.entity.Realm;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -26,6 +28,12 @@ public class RealmFacade extends AbstractFacade<Realm> {
 
     public RealmFacade() {
         super(Realm.class);
+    }
+    
+    public List<Realm> findByName(String name) {
+        TypedQuery<Realm> query = em.createNamedQuery("Realm.findByName", Realm.class);
+        query.setParameter("name", name);
+        return query.getResultList();
     }
     
 }

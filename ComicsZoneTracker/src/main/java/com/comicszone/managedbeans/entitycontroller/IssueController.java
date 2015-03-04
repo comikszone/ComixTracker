@@ -58,7 +58,5 @@ public class IssueController implements Serializable {
         ctrl.setCard(issue.getCard());
         
     }
-    
-    
-    
+       
 }

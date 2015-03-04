@@ -199,8 +199,17 @@ td {
     border: white;
 }
 
-.ui-widget-overlay {
-    z-index:100 !important;
+.add-edit-content-page-inputs, .add-edit-content-page-labels {
+    float: left;
+}
+
+.add-edit-content-panel {
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+.add-edit-content-panel tr, .add-edit-content-panel tr {
+    border: white;
 }
 //Maybe, it'll help us sometimes'
 /*.ui-widget {
@@ -209,4 +218,3 @@ td {
 .ui-widget .ui-widget {
   font-size: 100% !important;
 }*/
-

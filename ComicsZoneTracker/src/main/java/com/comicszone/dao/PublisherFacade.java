@@ -6,9 +6,11 @@
 package com.comicszone.dao;
 
 import com.comicszone.entity.Publisher;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -28,4 +30,9 @@ public class PublisherFacade extends AbstractFacade<Publisher> {
         super(Publisher.class);
     }
     
+    public List<Publisher> findByName(String name) {
+        TypedQuery<Publisher> query = em.createNamedQuery("Publisher.findByName", Publisher.class);
+        query.setParameter("name", name);
+        return query.getResultList();
+    }
 }
