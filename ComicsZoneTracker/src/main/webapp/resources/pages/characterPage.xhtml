@@ -51,7 +51,7 @@ and open the template in the editor.
         </c:if>
     </ui:define>
     <ui:define name="description">
-        <h:outputText value="Description: #{characterController.character.description}"/>
+        <h:outputText value="Description: #{characterController.character.description}" escape="false"/>
                 <p:accordionPanel>
             <p:tab>
                 <f:facet name="title">
