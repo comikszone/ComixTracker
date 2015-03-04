@@ -95,6 +95,7 @@ and open the template in the editor.
                 <p:ajax event="change" update=":content:mainContent"/>
             </p:selectBooleanButton>
                           </c:if>
+                          <br/>
            <p:outputPanel id="mainContent">
                     <p:accordionPanel var="volume" 
                                       value="#{comicsPageController.comicsController.comics.volumeList}"
@@ -155,6 +156,7 @@ and open the template in the editor.
                     <c:if test="#{userRoleController.isUserAuthorized()}">
                                 #{trackingController.init()}
                         <h:form id="mainTable">
+                                                      <br/>
                 <p:commandLink actionListener="#{trackingController.selectAll}" 
                                value="I've read everything!"
                                update=":content:trackingSection:mainTable:tables"
