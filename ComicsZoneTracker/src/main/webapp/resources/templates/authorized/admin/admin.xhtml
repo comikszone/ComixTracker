@@ -7,7 +7,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
         <c:if test="#{userRoleController.redirectIfNotAdmin()}"/>
-        <p:panel header="Blocking / Unblocking users (search by nicknames)" style="min-width: 50%;">
+        <p:panel header="Blocking / Unblocking users">
             <h:form id="blockUser">
                 <p:growl id="blockMessage" showDetail="true" life="1000"/>
                 <h:panelGrid columns="2" cellpadding="0">
