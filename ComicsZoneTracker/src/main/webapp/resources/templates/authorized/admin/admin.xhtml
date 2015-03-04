@@ -7,6 +7,21 @@
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="articleContent">
         <c:if test="#{userRoleController.redirectIfNotAdmin()}"/>
+        <p:panel header="Change data source">
+            <h:form id="dataSource">
+                <p:growl id="sourceMessage" showDetail="true" life="1000"/>
+                <h:panelGrid columns="2" cellpadding="0">
+                    <p:selectOneMenu id="source"
+                                     value="#{sourceSwitch.source}">
+                        <p:ajax listener="#{sourceSwitch.onChange()}"/>
+                        <f:selectItem itemLabel="Wikia" itemValue="Wikia" />
+                        <f:selectItem itemLabel="Marvel" itemValue="Marvel" />
+                        <f:selectItem itemLabel="User" itemValue="User" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </h:form>
+        </p:panel>
+        
         <p:panel header="Blocking / Unblocking users (search by nicknames)">
             <h:form id="blockUser">
                 <p:growl id="blockMessage" showDetail="true" life="1000"/>
