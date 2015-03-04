@@ -43,12 +43,12 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
 //    private static final String userInfoUrl = "https://graph.facebook.com/me";
 //    private String userUrl;
 //    private String authCode;
-
-    public FacebookAuthorization() {
+     public FacebookAuthorization() {
         clientId = "361365270701323";
         clientSecret = "0b2cf81509ba71c7df172ab46fa49a57";
         redirectUri = "http://www.comicszonetracker.tk/resources/templates/unauthorized/facebook_redirect_page.jsf";
         userInfoUrl = "https://graph.facebook.com/me";
+        isError=false;
     }
     
     public String getUserUrl() {
@@ -92,21 +92,24 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
         {
             if (getJsonValue(response, "error")!=null)
             {
-                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-                context.redirect("/");
+                isError=true;
             }
         }
         catch (ParseException e)
         {}
-        String accessToken = getAccessToken(response);
-//        String userId=getAccessToken();
-        String urlUserInfo = userInfoUrl
-                + "?access_token=" + accessToken;
-        String json = getResponseString(urlUserInfo);
-        String personalFacebookId = getJsonValue(json, "id");
-        String pictureUrl = "https://graph.facebook.com/" + personalFacebookId + "/picture?type=large";
-        json = addPictureUrl(json, pictureUrl);
-        return json;
+        if (!isError)
+        {
+            String accessToken = getAccessToken(response);
+    //        String userId=getAccessToken();
+            String urlUserInfo = userInfoUrl
+                    + "?access_token=" + accessToken;
+            String json = getResponseString(urlUserInfo);
+            String personalFacebookId = getJsonValue(json, "id");
+            String pictureUrl = "https://graph.facebook.com/" + personalFacebookId + "/picture?type=large";
+            json = addPictureUrl(json, pictureUrl);
+            return json;
+        }
+        return "";
     }
 
     private String getAccessToken(String response) {
@@ -159,6 +162,8 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
     @Override
     public Users createUser() throws IOException, ParseException {
         String startJson = fetchPersonalInfo();
+        if (!startJson.equals(""))
+        {
         JSONParser jsonParser = new JSONParser();
         JSONObject json = (JSONObject) jsonParser.parse(startJson);
 //        String error=getJsonValue(json, "error");
@@ -173,6 +178,8 @@ public class FacebookAuthorization extends SocialNetworkAuthorization implements
         user.setNickname(nickname);
         user.setEmail("default email");
         return user;
+    }
+        return null;
     }
 
 }

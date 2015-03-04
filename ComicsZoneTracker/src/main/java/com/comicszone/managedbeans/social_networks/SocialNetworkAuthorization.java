@@ -39,6 +39,7 @@ public abstract class SocialNetworkAuthorization implements Serializable {
     protected String authCode;
     protected String redirectUri;
     protected String userInfoUrl;
+    protected boolean isError;
     private final int PASSWORD_LENGTH = 20;
     
     public abstract String fetchPersonalInfo() throws IOException, ParseException;
@@ -52,18 +53,25 @@ public abstract class SocialNetworkAuthorization implements Serializable {
         String password = passwordCreator.createPassword(PASSWORD_LENGTH);
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();        
         Users user = createUser();
-        userRegistrationDao.socialNetworkRegistration(user, password);
-        
-//        AuthorisationController mb = ((AuthorisationController) FacesContext
-//                .getCurrentInstance()
-//                .getViewRoot()
-//                .getViewMap()
-////                .getExternalContext()
-////                .getSessionMap()
-//                .get("authorisationManagedBean"));
-        mb.setNickname(user.getNickname());
-        mb.setPassword(password);
-        mb.loginWithoutBan();
+        if (user !=null)
+        {
+                userRegistrationDao.socialNetworkRegistration(user, password);
+
+    //        AuthorisationController mb = ((AuthorisationController) FacesContext
+    //                .getCurrentInstance()
+    //                .getViewRoot()
+    //                .getViewMap()
+    ////                .getExternalContext()
+    ////                .getSessionMap()
+    //                .get("authorisationManagedBean"));
+            mb.setNickname(user.getNickname());
+            mb.setPassword(password);
+            mb.loginWithoutBan();
+        }
+        else
+        {
+            context.redirect("/");
+        }
     }
     public String getJsonValue(String json,String parameter) throws ParseException
     {
