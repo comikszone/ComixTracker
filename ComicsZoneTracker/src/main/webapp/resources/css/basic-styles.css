@@ -169,6 +169,10 @@ td {
     width: 100%;
 }
 
+.profile-calendar>.ui-inputfield {
+    text-align: right;
+}
+
 .icon-on-start-page{
     height: 22px;
     width: 22px;

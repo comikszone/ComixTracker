@@ -53,11 +53,18 @@
                                       value="Birthday:"/>
                     </p:column>
                     <p:column>        
-                        <p:inputMask id="birthday"
+                        <p:calendar
+                            styleClass="profile-calendar"
+                            placeholder="day/month/year"
+                            pattern="dd/MM/yyyy"
+                            mask="99/99/9999"
+                            value="#{profileUserController.birthday}"
+                            />
+<!--                        <p:inputMask id="birthday"
                                      styleClass="profile-page-column-value-text" 
                                      value="#{profileUserController.birthday}" 
                                      placeholder="day/month/year"
-                                     mask="99/99/9999"/>
+                                     mask="99/99/9999"/>-->
                     </p:column>
                 </p:row>
                 <p:row>
@@ -70,7 +77,8 @@
                             id = "sex"
                             style="width:100%"
                             styleClass="profile-page-column-value-list"
-                            value="#{profileUserController.sex}">
+                            value="#{profileUserController.sex}"
+                            >
                             <f:selectItem itemValue="0" itemLabel=""/>
                             <f:selectItem itemValue="1" itemLabel="Male"/>
                             <f:selectItem itemValue="2" itemLabel="Female"/>

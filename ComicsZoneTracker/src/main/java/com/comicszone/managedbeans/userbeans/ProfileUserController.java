@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -58,28 +59,30 @@ public class ProfileUserController implements Serializable {
         user.setSex(sex);
     }
 
-    public String getBirthday() {
-        if (user.getBirthday() == null) {
-            return "";
-        }
-        DateFormat df = new SimpleDateFormat("ddMMyyyy");
-        System.out.println(df.format(user.getBirthday()));
-        return df.format(user.getBirthday());
+    public Date getBirthday() {
+        return user.getBirthday();
+//        if (user.getBirthday() == null) {
+//            return "";
+//        }
+//        DateFormat df = new SimpleDateFormat("ddMMyyyy");
+//        System.out.println(df.format(user.getBirthday()));
+//        return df.format(user.getBirthday());
     }
 
-    public void setBirthday(String birthday) {
-        if (birthday.length() == 0) {
-            user.setBirthday(null);
-            return;
-        }
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            user.setBirthday(df.parse(birthday));
-        } catch (ParseException ex) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null,
-                    new FacesMessage("Error:", "Can't convert date of birthday"));
-        }
+    public void setBirthday(Date birthday) {
+        user.setBirthday(birthday);
+//        if (birthday.length() == 0) {
+//            user.setBirthday(null);
+//            return;
+//        }
+//        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+//        try {
+//            user.setBirthday(df.parse(birthday));
+//        } catch (ParseException ex) {
+//            FacesContext context = FacesContext.getCurrentInstance();
+//            context.addMessage(null,
+//                    new FacesMessage("Error:", "Can't convert date of birthday"));
+//        }
     }
 
     public String getEmail() {
