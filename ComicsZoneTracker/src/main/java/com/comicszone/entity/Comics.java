@@ -112,7 +112,7 @@ public class Comics implements Serializable, CommentsContainer, Content {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comics_comics_id_seq")
-    @SequenceGenerator(name = "comics_comics_id_seq", sequenceName = "comics_comics_id_seq")
+    @SequenceGenerator(name = "comics_comics_id_seq", sequenceName = "comics_comics_id_seq", allocationSize=1)
     @Basic(optional = false)
     @Column(name = "comics_id")
     private Integer Id;
