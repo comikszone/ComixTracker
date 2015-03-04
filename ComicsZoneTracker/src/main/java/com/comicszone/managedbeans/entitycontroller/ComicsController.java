@@ -7,6 +7,7 @@ package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.entity.Comics;
+import com.comicszone.entity.Issue;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -53,6 +54,13 @@ public class ComicsController implements Serializable {
 
     public void setComics(Comics comics) {
         this.comics = comics;
+    }
+    
+    public String getProperIssueName(Issue issue){
+        CardController ctrl = new CardController();
+        ctrl.setName(issue.getName());
+        ctrl.setCard(issue.getCard());
+        return ctrl.getName();
     }
 
 }

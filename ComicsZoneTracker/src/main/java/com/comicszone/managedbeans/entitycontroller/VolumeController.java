@@ -6,6 +6,7 @@
 package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.VolumeFacade;
+import com.comicszone.entity.Issue;
 import com.comicszone.entity.Volume;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -52,5 +53,12 @@ public class VolumeController implements Serializable {
     
     public void init() {
         volume = volumeFacade.find(volumeId);
+    }
+    
+    public String getProperIssueName(Issue issue){
+        CardController ctrl = new CardController();
+        ctrl.setName(issue.getName());
+        ctrl.setCard(issue.getCard());
+        return ctrl.getName();
     }
 }

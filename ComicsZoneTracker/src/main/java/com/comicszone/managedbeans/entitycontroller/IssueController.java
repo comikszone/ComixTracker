@@ -54,9 +54,9 @@ public class IssueController implements Serializable {
     public void initIssue()
     {
         issue = issueFacade.find(issueId);
-        ctrl.setCard(issue.getCard());
         ctrl.setName(issue.getName());
-        ctrl.init();
+        ctrl.setCard(issue.getCard());
+        
     }
     
     

@@ -26,15 +26,6 @@ public class CardController implements Serializable {
     public String getName() {
         return name;
     }
-    
-    public void init(){
-        if (card.has("name") && !card.getString("name").equals("Writers")) {
-            card.put("Name", name);
-            name = card.getString("name");
-            card.remove("name");
-        } else if(card.has("name")) 
-            card.remove("name");
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -48,8 +39,14 @@ public class CardController implements Serializable {
         return card;
     }
 
-    public void setCard(String card) {
-        this.card = new JSONObject(card);
+    public void setCard(String cardd) {
+        this.card = new JSONObject(cardd);
+        if (card.has("name") && !card.getString("name").equals("Writers")) {
+            card.put("Name", name);
+            name = card.getString("name");
+            card.remove("name");
+        } else if(card.has("name")) 
+            card.remove("name");
     }
     
     public String[] LHS(){
