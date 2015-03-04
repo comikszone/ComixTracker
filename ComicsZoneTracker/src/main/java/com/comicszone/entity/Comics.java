@@ -49,23 +49,23 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Comics.findByStartDate", query = "SELECT c FROM Comics c WHERE c.startDate = :startDate"),
     @NamedQuery(name = "Comics.findByEndDate", query = "SELECT c FROM Comics c WHERE c.endDate = :endDate"),
     @NamedQuery(name = "Comics.findByInProgress", query = "SELECT c FROM Comics c WHERE c.inProgress = :inProgress"),
-    @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name"),
+    @NamedQuery(name = "Comics.findByNameStartsWith", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name AND c.isChecked = true"),
     @NamedQuery(name = "Comics.findByNameStartsWithAscId", query = "SELECT c FROM Comics c WHERE  LOWER(c.name) LIKE :name ORDER BY c.Id"),
     @NamedQuery(name = "Comics.getBestComicsWithImages", 
-            query = "SELECT c FROM Comics c WHERE c.image !='/resources/images/image_not_found.png' ORDER BY c.rating DESC"),
+            query = "SELECT c FROM Comics c WHERE c.image !='/resources/images/image_not_found.png' AND c.isChecked = true ORDER BY c.rating DESC"),
     @NamedQuery(name = "Comics.findByChecking", query = "SELECT c FROM Comics c WHERE c.isChecked = :isChecked ORDER BY c.Id"),
     @NamedQuery(name = "Comics.findBySource", query = "SELECT c FROM Comics c WHERE c.source = :source"),
     
     //for ComicsCatalogue
     @NamedQuery(name = "Comics.count", 
-            query = "SELECT COUNT(c) FROM Comics c"),
+            query = "SELECT COUNT(c) FROM Comics c WHERE c.isChecked = true"),
     @NamedQuery(name = "Comics.countFoundByNameAndRating", 
             query = "SELECT COUNT(c) FROM Comics c "
-                    + "WHERE LOWER(c.name) LIKE :name AND c.rating >= :rating"),
+                    + "WHERE LOWER(c.name) LIKE :name AND c.rating >= :rating AND c.isChecked = true"),
     @NamedQuery(name = "Comics.countFoundByName",
-            query = "SELECT COUNT(c) FROM Comics c WHERE LOWER(c.name) LIKE :name"),
+            query = "SELECT COUNT(c) FROM Comics c WHERE LOWER(c.name) LIKE :name AND c.isChecked = true"),
     @NamedQuery(name = "Comics.countFoundByRating",
-            query = "SELECT COUNT(c) FROM Comics c WHERE c.rating >= :rating"),
+            query = "SELECT COUNT(c) FROM Comics c WHERE c.rating >= :rating AND c.isChecked = true"),
 
     //for news
     @NamedQuery(name = "Comics.getComicsWithImages", query = "SELECT c FROM Comics c WHERE c.image !='/resources/images/image_not_found.png'"), 

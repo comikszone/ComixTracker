@@ -62,7 +62,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder, Slid
         String sortOrderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
         String otherOrderString = sortOrderString.equals("ASC") ? "DESC" : "ASC";
         
-        Query query = em.createQuery("SELECT c FROM Comics c ORDER BY c."
+        Query query = em.createQuery("SELECT c FROM Comics c WHERE c.isChecked = true ORDER BY c."
                 + sortField + " " + sortOrderString 
                 + ",c.Id " + otherOrderString);
         
@@ -83,6 +83,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder, Slid
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE LOWER(c.name) LIKE :name "
                 + "AND c.rating >= :rating "
+                + "AND c.isChecked = true "
                 + "ORDER BY c." + sortField + " " + sortOrderString 
                 + ",c.Id " + otherOrderString);
         
@@ -103,6 +104,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder, Slid
         
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE c.rating >= :rating "
+                + "AND c.isChecked = true "
                 + "ORDER BY c." + sortField + " " + sortOrderString 
                 + ",c.Id " + otherOrderString);
         
@@ -122,6 +124,7 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder, Slid
         
         Query query = em.createQuery("SELECT c FROM Comics c "
                 + "WHERE LOWER(c.name) LIKE :name "
+                + "AND c.isChecked = true "
                 + "ORDER BY c." + sortField + " " + sortOrderString 
                 + ",c.Id " + otherOrderString);
         
