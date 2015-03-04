@@ -23,10 +23,17 @@ and open the template in the editor.
                 <p:panelGrid columns="1" layout="grid" style="margin: 0 auto 0 auto">		
                     <p:row>		
                     <p:column>		
-                        <p:link value="#{comics.name}" outcome="#{progressController.redirect(comics)}"/>		
+                        <a href="#{progressController.redirect(comics)}">
+                            <h3>#{comics.name}</h3>
+                        </a>
                         <br/>		
                     </p:column>		
                     </p:row>		
+                    <p:row>
+                        <div class="col-2">
+                        Read: #{progressController.getMarkedIssueCount(comics)} of <span style="color:red">#{progressController.getTotalIssueCount(comics)}</span>
+                        </div>
+                    </p:row>
                     <p:row>		
                     <p:column>		
                         <div class="progress" style="margin: 0 auto 0 auto">		
@@ -47,10 +54,17 @@ and open the template in the editor.
                 <p:panelGrid columns="1" layout="grid">		
                     <p:row>		
                     <p:column style="margin-right: 50%">		
-                        <p:link value="#{comics.name}" outcome="#{progressController.redirect(comics)}"/>		
+                        <a href="#{progressController.redirect(comics)}">
+                            <h3>#{comics.name}</h3>
+                        </a>		
                         <br/>		
                     </p:column>		
-                        </p:row>		
+                        </p:row>
+                                        <p:row>
+                        <div class="col-2">
+                        Read: #{progressController.getMarkedIssueCount(comics)} of <span style="color:red">#{progressController.getTotalIssueCount(comics)}</span>
+                        </div>
+                    </p:row>
                     <p:row>		
                     <p:column>		
                         <div class="progress">		
@@ -71,10 +85,17 @@ and open the template in the editor.
                 <p:panelGrid columns="1" layout="grid">		
                     <p:row>		
                     <p:column style="margin-right: 50%">		
-                        <p:link value="#{comics.name}" outcome="#{progressController.redirect(comics)}"/>		
+                        <a href="#{progressController.redirect(comics)}">
+                            <h3>#{comics.name}</h3>
+                        </a>		
                         <br/>		
                     </p:column>		
-                        </p:row>		
+                        </p:row>
+                                        <p:row>
+                        <div class="col-2">
+                        Read: #{progressController.getMarkedIssueCount(comics)} of <span style="color:red">#{progressController.getTotalIssueCount(comics)}</span>
+                        </div>
+                    </p:row>
                     <p:row>		
                     <p:column>		
                         <div class="progress">		

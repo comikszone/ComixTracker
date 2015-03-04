@@ -445,14 +445,14 @@
                             <p:graphicImage
                                 value="#{userAvatarsController.avatar}"
                                 width="200px"
-                                rendered="#{userFriendsManagedBean.selectedUser.avatar != null}">
-                                <f:param name="userId" value="#{userFriendsManagedBean.selectedUser.userId}"/>
+                                rendered="#{userFriendsController.selectedUser.avatar != null}">
+                                <f:param name="userId" value="#{userFriendsController.selectedUser.userId}"/>
                             </p:graphicImage>
                                 
                             <p:graphicImage
-                                value="#{userFriendsManagedBean.selectedUser.avatarUrlOrDefaultAvatar}"
+                                value="#{userFriendsController.selectedUser.avatarUrlOrDefaultAvatar}"
                                 width="200px"
-                                rendered="#{userFriendsManagedBean.selectedUser.avatar == null}">
+                                rendered="#{userFriendsController.selectedUser.avatar == null}">
                             </p:graphicImage>
                             
                         </f:facet>
