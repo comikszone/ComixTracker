@@ -7,7 +7,11 @@
             
     <ui:define name="articleContent">
         <f:event type="preRenderView" listener="#{messagesController.preRender(userFriendsController.selectedFriend)}" />
+        <p:socket channel="/a" onMessage="handleMessage"></p:socket>
         <h:form id="form">
+        <p:remoteCommand name="receiveMessage"
+         actionListener="#{userFriendsController.isUpdateDatatable}"
+        />
             <p:panel header="Find new friends">
                 <p:panelGrid columns="1" >
                     <p:autoComplete

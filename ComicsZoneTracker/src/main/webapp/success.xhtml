@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <script type="text/javascript">
+    function handleMessage(data){
+            $("p").html(data);
+            console.log('333333s3');
+    }
+    </script>
+</h:head>
+
+<h:body>
+	<p:outputLabel value="Welcome #{successBean.name}"></p:outputLabel>
+	<h:form id="successForm">
+		<p:remoteCommand name="receiveMessage"
+			actionListener="#{successBean.receiveMessage}"></p:remoteCommand>
+		<p:growl id="growSubscriber" showDetail="true" sticky="true"
+			escape="false" autoUpdate="true" />
+
+        <h1><p>eeee</p> </h1>
+	</h:form>
+
+	<p:socket channel="/a" onMessage="handleMessage"></p:socket>
+
+
+
+</h:body>
+    <p id="demo" onclick="myFunction()">Click me to change my text color.</p>
+
+<script>
+function myFunction() {
+    document.getElementById("demo").style.color = "red";
+}
+</script>
+<!--        <ui:define name="content">
+        <h:outputScript>
+            function handleMessage(data){
+            $("p").html(data);
+            }
+        </h:outputScript>
+        <p class="item">Random text</p>
+    </ui:define>-->
+<!--<ui:define name="trr">-->
+<!--    <script type="text/javascript">
+    function handleMessage(data){
+            $("p").html('aaa');
+    }
+    </script>-->
+<!--</ui:define>-->
+</html>
