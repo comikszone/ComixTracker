@@ -15,14 +15,12 @@
         <h:outputStylesheet library="css" name="comments-styles.css"/>
         <h:outputScript library="scripts" name="PopUpWindowScript.js"/>
         <h:outputScript library="scripts" name="bootstrap.min.js"/>
-                <script type="text/javascript"> 
-function handleMessage(data){
-//                PF('userDetails').show();
-        console.log(data);
-        
-        receiveMessage([{name:'msgData',value:data}]);
+        <script type="text/javascript"> 
+            function handleMessage(data)
+            {
+                receiveMessage([{name:'msgData',value:data}]);
             };
-    </script>
+        </script>
     </h:head>
     <h:body id="container">
         <div class="custom-wrapper">
