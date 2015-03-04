@@ -71,7 +71,7 @@
                         rowKey="#{friend.userId}"
                         value="#{userFriendsController.friends}" 
                         paginator="true" 
-                        rows="3"
+                        rows="5"
                         paginatorPosition="bottom"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -136,17 +136,14 @@
                                     
                                     <h:outputText 
                                         value="#{friend.name}"
-                                        rendered="#{friend.name != null}"
+                                        rendered="#{friend.name != null
+                                                    and not friend.name.
+                                                    equalsIgnoreCase(friend.realNickname)}"
                                         class="friends-info"/>
                                     
                                     <h:outputText 
                                         value="#{userFriendsController.getFormatedData(friend)}"
                                         rendered="#{friend.birthday != null}"
-                                        class="friends-info"/>
-                                    
-                                    <h:outputText 
-                                        value="#{friend.online}"
-                                        rendered="#{friend.online != null}"
                                         class="friends-info"/>
                                     
                                 </p:panelGrid>
@@ -163,7 +160,7 @@
                         rowKey="#{follower.userId}"
                         value="#{userFriendsController.followers}" 
                         paginator="true" 
-                        rows="3"
+                        rows="5"
                         paginatorPosition="bottom"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -222,7 +219,9 @@
                                     
                                     <h:outputText 
                                         value="#{follower.name}"
-                                        rendered="#{follower.name != null}"
+                                        rendered="#{follower.name != null 
+                                                    and not follower.name.
+                                                    equalsIgnoreCase(follower.realNickname)}"
                                         class="friends-info"/>
                                     
                                     <h:outputText 
@@ -249,7 +248,7 @@
                         rowKey="#{unconfirmedFriend.userId}"
                         value="#{userFriendsController.unconfirmedFriends}" 
                         paginator="true" 
-                        rows="3"
+                        rows="5"
                         paginatorPosition="bottom"
                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
                         {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -307,7 +306,9 @@
                                     
                                     <h:outputText 
                                         value="#{unconfirmedFriend.name}"
-                                        rendered="#{unconfirmedFriend.name != null}"
+                                        rendered="#{unconfirmedFriend.name != null
+                                                    and not unconfirmedFriend.name.
+                                                    equalsIgnoreCase(unconfirmedFriend.realNickname)}"
                                         class="friends-info"/>
                                     
                                     <h:outputText 
@@ -433,7 +434,7 @@
                       showEffect="fade" 
                       hideEffect="fade" 
                       resizable="false" 
-                      
+                     
                       >
                 <p:outputPanel id="userDetailPanel" style="text-align:center;">
                     <p:panelGrid  
@@ -445,14 +446,14 @@
                             <p:graphicImage
                                 value="#{userAvatarsController.avatar}"
                                 width="200px"
-                                rendered="#{userFriendsManagedBean.selectedUser.avatar != null}">
-                                <f:param name="userId" value="#{userFriendsManagedBean.selectedUser.userId}"/>
+                                rendered="#{userFriendsController.selectedUser.avatar != null}">
+                                <f:param name="userId" value="#{userFriendsController.selectedUser.userId}"/>
                             </p:graphicImage>
                                 
                             <p:graphicImage
-                                value="#{userFriendsManagedBean.selectedUser.avatarUrlOrDefaultAvatar}"
+                                value="#{userFriendsController.selectedUser.avatarUrlOrDefaultAvatar}"
                                 width="200px"
-                                rendered="#{userFriendsManagedBean.selectedUser.avatar == null}">
+                                rendered="#{userFriendsController.selectedUser.avatar == null}">
                             </p:graphicImage>
                             
                         </f:facet>
@@ -476,7 +477,9 @@
                         <h:outputText 
                             value="#{userFriendsController.selectedUser.name}"
                             rendered="#{userFriendsController.selectedUser.name != null
-                                        and userFriendsController.selectedUser.name != ''}"
+                                        and userFriendsController.selectedUser.name != ''
+                                        and not userFriendsController.selectedUser.name.
+                                        equalsIgnoreCase(userFriendsController.selectedUser.realNickname)}"
                             class="friends-info"/>
                         
                         <h:outputText 
