@@ -112,7 +112,7 @@ public class Comics implements Serializable, CommentsContainer, Content {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "comics_comics_id_seq")
-    @SequenceGenerator(name = "comics_comics_id_seq", sequenceName = "comics_comics_id_seq", allocationSize=1)
+    @SequenceGenerator(name = "comics_comics_id_seq", sequenceName = "comics_comics_id_seq", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "comics_id")
     private Integer Id;
@@ -290,6 +290,14 @@ public class Comics implements Serializable, CommentsContainer, Content {
     public Imprint getImprintId() {
         return imprintId;
     }
+    
+    public String getImrint() {
+        if (imprintId==null) {
+            return null;
+        } else {
+            return imprintId.getName();
+        }
+    }
 
     public void setImprintId(Imprint imprintId) {
         this.imprintId = imprintId;
@@ -297,6 +305,10 @@ public class Comics implements Serializable, CommentsContainer, Content {
 
     public Publisher getPublisherId() {
         return publisherId;
+    }
+    
+    public String getPublisher() {
+        return publisherId.getName();
     }
 
     public void setPublisherId(Publisher publisherId) {

@@ -56,7 +56,8 @@ public class Volume implements Serializable, CommentsContainer, Content {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "volume_volume_id_seq")
-    @SequenceGenerator(name = "volume_volume_id_seq", sequenceName = "volume_volume_id_seq", allocationSize=1)
+    @SequenceGenerator(name = "volume_volume_id_seq", sequenceName = "volume_volume_id_seq", allocationSize = 1)
+    @Basic(optional = false)
     @Column(name = "volume_id")
     private Integer volumeId;
     @Basic(optional = false)

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/templates/authorized/authorized.xhtml"
@@ -163,85 +162,7 @@
                 </h:panelGrid>
             </h:form>
         </p:panel>
-        
-        <p:panel header="Blocking / Unblocking users (search by real nicknames)">
-            <h:form id="blockUserReal">
-                <p:growl id="blockMessage" showDetail="true" life="1000"/>
-                <h:panelGrid columns="2" cellpadding="0">
-                    <p:autoComplete
-                        id="userToBlock"
-                        maxResults="5"
-                        completeMethod="#{blockUserManagedBean.completeToBlockRealNickname}"
-                        var="user"
-                        value="#{blockUserManagedBean.selectedUser}"
-                        itemValue="#{user}"
-                        itemLabel="#{user.realNickname}"
-                        converter="userConverter"
-                        forceSelection="true">
-                        
-                        <p:column>
-                            <p:graphicImage
-                                rendered="#{not empty user.avatarUrl}"
-                                value="#{user.avatarUrl}"
-                                width="70"
-                                height="70"/>
-                            <p:graphicImage
-                                rendered="#{empty user.avatarUrl}"
-                                value="#{user.avatar}"
-                                width="70"
-                                height="70"/>
-                        </p:column>
-                        
-                        <p:column>
-                            #{user.realNickname}
-                        </p:column>
-                    </p:autoComplete>
-                    <p:commandButton 
-                        value="Block user"
-                        update=":blockUserReal:blockMessage :blockUserReal:userToBlock"
-                        action="#{blockUserManagedBean.blockUser()}"/>
-                </h:panelGrid>
-            </h:form>
-        
-            <h:form id="unblockUserReal">
-                <p:growl id="unblockMessage" showDetail="true" life="1000"/>
-                <h:panelGrid columns="3" cellpadding="0">
-                    <p:autoComplete
-                        id="userToUnblock"
-                        maxResults="5"
-                        completeMethod="#{blockUserManagedBean.completeToUnblockRealNickname}"
-                        var="user"
-                        value="#{blockUserManagedBean.selectedUser}"
-                        itemValue="#{user}"
-                        itemLabel="#{user.realNickname}"
-                        converter="userConverter"
-                        forceSelection="true">
-                        
-                        <p:column>
-                            <p:graphicImage
-                                rendered="#{not empty user.avatarUrl}"
-                                value="#{user.avatarUrl}"
-                                width="70"
-                                height="70"/>
-                            <p:graphicImage
-                                rendered="#{empty user.avatarUrl}"
-                                value="#{user.avatar}"
-                                width="70"
-                                height="70"/>
-                        </p:column>
-                        
-                        <p:column>
-                            #{user.realNickname}
-                        </p:column>
-                    </p:autoComplete>
-                    <p:commandButton 
-                        value="Unblock user"
-                        update=":unblockUserReal:unblockMessage :unblockUserReal:userToUnblock"
-                        action="#{blockUserManagedBean.unblockUser()}"/>
-                </h:panelGrid>
-            </h:form>
-        </p:panel>
-        
+
         <p:panel header="Filtering content">
             <h:form id="contentFilter">
                 <p:growl id="contentMessage" showDetail="true" life="1000" />

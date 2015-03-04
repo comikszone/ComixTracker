@@ -71,7 +71,7 @@ public class Issue implements Serializable, CommentsContainer, Content {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "issue_issue_id_seq")
-    @SequenceGenerator(name = "issue_issue_id_seq", sequenceName = "issue_issue_id_seq", allocationSize=1)
+    @SequenceGenerator(name = "issue_issue_id_seq", sequenceName = "issue_issue_id_seq", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "issue_id")
     private Integer Id;

@@ -45,7 +45,7 @@ public class Character implements Serializable, NamedImage {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "character_char_id_seq")
-    @SequenceGenerator(name = "character_char_id_seq", sequenceName = "character_char_id_seq", allocationSize=1)
+    @SequenceGenerator(name = "character_char_id_seq", sequenceName = "character_char_id_seq", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "char_id")
     private Integer Id;
