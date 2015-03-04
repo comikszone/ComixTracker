@@ -107,6 +107,14 @@ public class AddContentController implements Serializable {
         }
     }
     
+    public String addOrReplaceImage() {
+        if (image.length() == 0) {
+            return "/resources/images/image_not_found.png";
+        } else {
+            return image;
+        }
+    }
+    
     @PostConstruct
     public void init() {
         String msg = "Wrong type during init! Received is "+type;
@@ -127,25 +135,25 @@ public class AddContentController implements Serializable {
                 switch (type) {
                     case "issue" : issueFacade.createNew(title,
                                                          replaceNull(description),
-                                                         replaceNull(image),
+                                                         addOrReplaceImage(),
                                                          replaceNull(date),
                                                          "User",
                                                          volume); break;
                     case "volume" : volumeFacade.createNew(title,
                                                            replaceNull(description),
-                                                           replaceNull(image),
+                                                           addOrReplaceImage(),
                                                            "User",
                                                            comics); break;
                     case "comics" : comicsFacade.createNew(title,
                                                            replaceNull(description),
-                                                           replaceNull(image),
+                                                           addOrReplaceImage(),
                                                            publisherFacade.findByName(publisherName).get(0),
                                                            findOrCreateImprint(),
                                                           "User"); break;
                     case "character" : characterFacade.createNew(title,
                                                                  replaceNull(realName),
                                                                  replaceNull(description), 
-                                                                 replaceNull(image), 
+                                                                 addOrReplaceImage(), 
                                                                  publisherFacade.findByName(publisherName).get(0), 
                                                                  findOrCreateRealm(), 
                                                                  "User"); break;

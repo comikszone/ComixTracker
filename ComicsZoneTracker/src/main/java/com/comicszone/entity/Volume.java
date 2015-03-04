@@ -110,6 +110,7 @@ public class Volume implements Serializable, CommentsContainer, Content {
         this.img = image;
         this.source = source;
         this.comicsId = comicsId;
+        this.isChecked = Boolean.FALSE;
     }
 
     public Integer getId() {

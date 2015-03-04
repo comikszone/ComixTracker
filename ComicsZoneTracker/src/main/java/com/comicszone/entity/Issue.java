@@ -134,6 +134,7 @@ public class Issue implements Serializable, CommentsContainer, Content {
         this.relDate = date;
         this.source = source;
         this.volumeId = volumeId;
+        this.isChecked = Boolean.FALSE;
     }
 
     public Integer getId() {

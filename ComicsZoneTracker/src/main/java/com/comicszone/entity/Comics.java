@@ -177,6 +177,7 @@ public class Comics implements Serializable, CommentsContainer, Content {
         this.publisherId = publisher;
         this.imprintId = imprint;
         this.source = source;
+        this.isChecked = Boolean.FALSE;
     }
 
     @Override
