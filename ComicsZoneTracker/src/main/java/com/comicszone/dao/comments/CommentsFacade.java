@@ -199,7 +199,7 @@ public class CommentsFacade extends AbstractFacade<Comments> {
     public boolean addComment(String commentText, String userNickname, 
             CommentToType type, Integer commentToId) {
         
-        if (commentText == null || commentText.isEmpty() 
+        if (commentText == null || commentText.isEmpty() || commentText.length() >= 501
                 || userNickname == null || userNickname.isEmpty()) {
             return false;
         }
@@ -274,7 +274,7 @@ public class CommentsFacade extends AbstractFacade<Comments> {
     
     public boolean editComment(Integer commentId, String newText) 
     {
-        if (newText == null || newText.isEmpty()) {
+        if (newText == null || newText.isEmpty() || newText.length() >= 501) {
             return false;
         }
         Comments comment = find(commentId);
