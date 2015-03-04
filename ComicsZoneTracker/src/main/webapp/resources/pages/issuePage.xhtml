@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -111,6 +112,15 @@ and open the template in the editor.
                                 outcome="#{navigationController.redirect(char)}"/>
                    </div>               
                 </p:dataGrid>
+                <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+                    <p:button value="Add new character" 
+                              outcome="/resources/templates/authorized/addContent.jsf">
+                        <f:param name="type" 
+                                 value="character"/>
+                        <f:param name="id"
+                                 value="#{issueController.issueId}"/>
+                    </p:button>
+                </c:if>
             </p:tab>
         </p:accordionPanel>
         <div>

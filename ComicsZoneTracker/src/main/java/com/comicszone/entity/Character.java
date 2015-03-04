@@ -38,6 +38,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Character.findByRealName", query = "SELECT c FROM Character c WHERE c.realName = :realName"),
     @NamedQuery(name = "Character.findByDescription", query = "SELECT c FROM Character c WHERE c.description = :description"),
     @NamedQuery(name = "Character.findByImage", query = "SELECT c FROM Character c WHERE c.image = :image"),
+    @NamedQuery(name = "Character.findBySource", query = "SELECT c FROM Character c WHERE c.source = :source"),
     @NamedQuery(name = "Character.findByNameStartsWith", query = "SELECT c FROM Character c WHERE  LOWER(c.name) LIKE :name"),
     @NamedQuery(name = "Character.findByNameStartsWithAscId", query = "SELECT c FROM Character c WHERE  LOWER(c.name) LIKE :name ORDER BY c.Id")})
 public class Character implements Serializable, NamedImage {
@@ -73,6 +74,8 @@ public class Character implements Serializable, NamedImage {
     @Size(max = 2147483647)
     @Column(name = "image")
     private String image;
+    @Column(name="source")
+    private String source;
     @JoinTable(name = "charver", joinColumns = {
         @JoinColumn(name = "char1", referencedColumnName = "char_id")}, inverseJoinColumns = {
         @JoinColumn(name = "char2", referencedColumnName = "char_id")})
@@ -106,6 +109,16 @@ public class Character implements Serializable, NamedImage {
     public Character(Integer charId, String name) {
         this.Id = charId;
         this.name = name;
+    }
+    
+    public Character(String name, String realName, String description, String image, Publisher publisher, Realm realm, String source) {
+        this.name = name;
+        this.realName = realName;
+        this.description = description;
+        this.image = image;
+        this.publisherId = publisher;
+        this.realmId = realm;
+        this.source = source;
     }
 
     public Integer getId() {
@@ -147,6 +160,14 @@ public class Character implements Serializable, NamedImage {
     public void setImage(String image) {
         this.image = image;
     }
+    
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public List<Character> getCharacterList() {
         return characterList;
@@ -187,6 +208,18 @@ public class Character implements Serializable, NamedImage {
     public void setPublisherId(Publisher publisherId) {
         this.publisherId = publisherId;
     }
+    
+    public String getPublisher() {
+        return publisherId.getName();
+    }
+    
+    public String getRealm() {
+        if (realmId == null) {
+            return null;
+        } else {
+            return realmId.getName();
+        }
+    }
 
     @Override
     public int hashCode() {
@@ -209,7 +242,7 @@ public class Character implements Serializable, NamedImage {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "com.comicszone.entity.Character[ charId=" + Id + " ]";

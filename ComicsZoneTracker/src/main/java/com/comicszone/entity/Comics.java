@@ -199,10 +199,12 @@ public class Comics implements Serializable, CommentsContainer, Content {
         this.name = name;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
@@ -354,8 +356,12 @@ public class Comics implements Serializable, CommentsContainer, Content {
 
     @Override
     public String getExtraInfo() {
-        return "Publisher: " + publisherId.getName() + "\n" + 
-                "Imprint: " + imprintId.getName();
+        if (imprintId == null) {
+            return "Publisher: " + publisherId.getName();
+        } else {
+            return "Publisher: " + publisherId.getName() + "\n" + 
+                    "Imprint: " + imprintId.getName();
+        }
     }
 
     @XmlTransient

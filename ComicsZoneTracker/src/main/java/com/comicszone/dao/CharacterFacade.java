@@ -7,7 +7,11 @@ package com.comicszone.dao;
 
 import com.comicszone.entity.NamedImage;
 import com.comicszone.entity.Character;
+import com.comicszone.entity.Character;
+import com.comicszone.entity.Publisher;
+import com.comicszone.entity.Realm;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -62,4 +66,18 @@ public class CharacterFacade extends AbstractFacade<Character> implements Finder
         return query.getResultList();
     }
     
+    public List<Character> findByName(String name) {
+        TypedQuery<Character> query = em.createNamedQuery("Character.findByName", Character.class);
+        query.setParameter("name", name);
+        return query.getResultList();
+    }
+    
+    public void createNew(String name, String realName, String description, String image, Publisher publisher, Realm realm, String source) {
+        if (findByName(name).isEmpty()) {
+            Character character = new Character(name, realName, description, image, publisher, realm, source);
+            create(character);
+        } else {
+            throw new EJBException();
+        }
+    }
 }

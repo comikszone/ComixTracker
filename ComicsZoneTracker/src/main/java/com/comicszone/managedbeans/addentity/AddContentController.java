@@ -5,17 +5,20 @@
  */
 package com.comicszone.managedbeans.addentity;
 
+import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.ImprintFacade;
 import com.comicszone.dao.VolumeFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.PublisherFacade;
+import com.comicszone.dao.RealmFacade;
 import com.comicszone.entity.Comics;
 import com.comicszone.entity.Imprint;
 import com.comicszone.entity.Issue;
+import com.comicszone.entity.Character;
 import com.comicszone.entity.Publisher;
+import com.comicszone.entity.Realm;
 import com.comicszone.entity.Volume;
-import com.comicszone.dao.content.ContentFacade;
 import java.io.Serializable;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -42,23 +45,30 @@ public class AddContentController implements Serializable {
     @EJB
     IssueFacade issueFacade;
     @EJB
+    CharacterFacade characterFacade;
+    @EJB
     PublisherFacade publisherFacade;
     @EJB
     ImprintFacade imprintFacade;
+    @EJB
+    RealmFacade realmFacade;
     
     private Comics comics;
     private Volume volume;
     private Issue issue;
+    private Character character;
     
     private FacesContext context = FacesContext.getCurrentInstance();
     private Map<String, String> map = context.getExternalContext().getRequestParameterMap();
     
     private String title = map.get("addContentForm:title");
+    private String realName = map.get("addContentForm:realName");
     private String description = map.get("addContentForm:description_input");
     private String image = map.get("addContentForm:imageUrl");
     private String date = map.get("addContentForm:date");
     private String publisherName = map.get("addContentForm:publisher_input");
     private String imprintName = map.get("addContentForm:imprint");
+    private String realmName = map.get("addContentForm:realm");
     private String type = map.get("type");
     
     public int getId() {
@@ -85,12 +95,25 @@ public class AddContentController implements Serializable {
         }
     }
     
+    public Realm findOrCreateRealm() {
+        if (realmName.length() == 0) {
+            return null;
+        } else {
+            Realm realm = new Realm(realmName);
+            if (realmFacade.findByName(realmName).isEmpty()) {
+                realmFacade.create(realm);
+            }
+            return realmFacade.findByName(realmName).get(0);
+        }
+    }
+    
     @PostConstruct
     public void init() {
         String msg = "Wrong type during init! Received is "+type;
         switch (type) { 
             case "issue" : volume = volumeFacade.find(getId()); break;
             case "volume" : comics = comicsFacade.find(getId()); break ;
+            case "character" : character = characterFacade.find(getId()); break;
             case "comics" : System.out.println("0"); break;
             default : context.addMessage(null, new FacesMessage("Error:", msg));
         }
@@ -119,6 +142,13 @@ public class AddContentController implements Serializable {
                                                            publisherFacade.findByName(publisherName).get(0),
                                                            findOrCreateImprint(),
                                                           "User"); break;
+                    case "character" : characterFacade.createNew(title,
+                                                                 replaceNull(realName),
+                                                                 replaceNull(description), 
+                                                                 replaceNull(image), 
+                                                                 publisherFacade.findByName(publisherName).get(0), 
+                                                                 findOrCreateRealm(), 
+                                                                 "User"); break;
                     default : context.addMessage(null, new FacesMessage("Error:", "Wrong entity type!"));
                 }
                 context.addMessage(null, new FacesMessage("Success! ", "New "+type+" added!"));
@@ -128,5 +158,3 @@ public class AddContentController implements Serializable {
         }
     }
 }
-
-
