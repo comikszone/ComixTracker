@@ -89,7 +89,7 @@ and open the template in the editor.
                                                                 styleClass="content-image img-thumbnail"/>
                                             </h:link>
                                         </h:form>
-                                        <p:link value="#{issue.name}" 
+                                            <p:link value="#{volumeController.getProperIssueName(issue)}" 
                                                 style="height:auto; width:60%;"
                                                 outcome="#{navigationController.redirect(issue)}"/>
                                 </div>                              
