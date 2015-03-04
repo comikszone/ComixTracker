@@ -348,8 +348,12 @@ public class Comics implements Serializable, AjaxComicsCharacter, CommentsContai
 
     @Override
     public String getExtraInfo() {
-        return "Publisher: " + publisherId.getName() + "\n" + 
-                "Imprint: " + imprintId.getName();
+        if (imprintId == null) {
+            return "Publisher: " + publisherId.getName();
+        } else {
+            return "Publisher: " + publisherId.getName() + "\n" + 
+                    "Imprint: " + imprintId.getName();
+        }
     }
     
     public String getPublisher() {
