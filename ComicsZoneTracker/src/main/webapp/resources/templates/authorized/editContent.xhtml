@@ -5,10 +5,12 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
     <ui:define name="articleContent">
-        <h:form id = "addContentForm">
-            <h3>Add a new #{param.type}</h3>
-            <p:panelGrid id="addContentPanel"
+        <h:form id = "editContentForm">
+            #{editContentManagedBean.init()}
+            <h3>Edit #{param.type}</h3>
+            <p:panelGrid id="editContentPanel"
                          columns="1"
                          layout="grid">
                 
@@ -21,23 +23,26 @@
                     </c:otherwise>
                 </c:choose>
                 <h:inputText id="title"
-                             styleClass="add-edit-content-page-inputs"/>
+                             styleClass="add-edit-content-page-inputs"
+                             value="#{editContentManagedBean.title}"/>
                 
                 <c:if test="#{param.type=='character'}">
                     <li class="ui-state-default">Real name</li>
                     <h:inputText id="realName"
-                             styleClass="add-edit-content-page-inputs"/>
+                                 styleClass="add-edit-content-page-inputs"
+                                 value="#{editContentManagedBean.realName}"/>
                 </c:if>
                 
                 <li class="ui-state-default">Description</li>
                 <p:editor id="description"
-                          styleClass="add-edit-content-page-inputs"/>
-                
+                          styleClass="add-edit-content-page-inputs"
+                          value="#{editContentManagedBean.description}"/>
                 
                 <c:if test="#{param.type=='comics' || param.type=='character'}">
                     <li class="ui-state-default">Publisher</li>
                     <p:selectOneMenu id="publisher"
-                                     styleClass="add-edit-content-page-inputs">
+                                     styleClass="add-edit-content-page-inputs"
+                                     value="#{editContentManagedBean.publisher}">
                         <f:selectItem itemLabel="Marvel" itemValue="Marvel" />
                         <f:selectItem itemLabel="DC" itemValue="DC" />
                         <f:selectItem itemLabel="Other" itemValue="Other" />
@@ -45,31 +50,39 @@
                 </c:if>
                 
                 <c:if test="#{param.type=='comics'}">
-                    <li class="ui-state-default">Imprint (if doesn't exist - would be created)</li>
+                    <li class="ui-state-default">Imprint</li>
                     <h:inputText id="imprint"
-                                 styleClass="add-edit-content-page-inputs"/>
+                                 styleClass="add-edit-content-page-inputs"
+                                 value="#{editContentManagedBean.imprint}"/>
                 </c:if>
                 
                 <c:if test="#{param.type=='issue'}">
                     <li class="ui-state-default">Release date</li>
                     <p:inputMask id="date"
-                                 mask="99/99/9999"
-                                 placeholder="DD/MM/YYYY"/>
-                </c:if>                
+                                 mask="99/99/9999" 
+                                 placeholder="DD/MM/YYYY"
+                                 value="#{editContentManagedBean.date}"/>
+                </c:if>
                 
                 <c:if test="#{param.type=='character'}">
                     <li class="ui-state-default">Realm (e.g. Earth-616)</li>
                     <h:inputText id="realm"
-                                 styleClass="add-edit-content-page-inputs"/>
+                                 styleClass="add-edit-content-page-inputs"
+                                 value="#{editContentManagedBean.realm}"/>
                 </c:if>
                 
                 <li class="ui-state-default">Image</li>
+                <p:graphicImage 
+                            id = "avatarImage"
+                            value="#{editContentManagedBean.image}"
+                            />
                 <h5>Enter image URL</h5>
                 <h:inputText id="imageUrl"
                              styleClass="add-edit-content-page-inputs"
-                             autocomplete="off"/>
+                             value="#{editContentManagedBean.image}"/>
                 
-                <p:commandButton action="#{addContentController.addEntity()}"
+                
+                <p:commandButton action="#{editContentManagedBean.editEntity()}"
                                  ajax="false"
                                  value="Submit"
                                  icon="ui-icon-check">
@@ -78,6 +91,7 @@
                     <f:param name="id"
                              value="#{param.id}"/>
                 </p:commandButton>
+                
             </p:panelGrid>
             <p:growl id="messages" 
                      showDetail="true" />

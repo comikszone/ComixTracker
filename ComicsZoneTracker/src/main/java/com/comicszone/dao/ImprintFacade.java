@@ -6,9 +6,11 @@
 package com.comicszone.dao;
 
 import com.comicszone.entity.Imprint;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -28,4 +30,9 @@ public class ImprintFacade extends AbstractFacade<Imprint> {
         super(Imprint.class);
     }
     
+    public List<Imprint> findByName(String name) {
+        TypedQuery<Imprint> query = em.createNamedQuery("Imprint.findByName", Imprint.class);
+        query.setParameter("name", name);
+        return query.getResultList();
+    }
 }

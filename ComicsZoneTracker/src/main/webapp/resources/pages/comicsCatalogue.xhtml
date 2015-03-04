@@ -37,13 +37,11 @@
                           >
                     <h:outputText value="#{comics.name}" />
                 </p:column>      
-                
-                <p:column 
-                    width="20%" 
-                    headerText="#{comicsCatalogueView.columnComicsRating}" 
-                    sortBy="#{comics.rating}"
-                    filterBy="#{comics.rating}" 
-                    filterMatchMode="exact" >
+                <p:column width="20%" 
+                          headerText="#{comicsCatalogueView.columnComicsRating}" 
+                          sortBy="#{comics.rating}"
+                          filterBy="#{comics.rating}" 
+                          filterMatchMode="exact" >
                     <f:facet name="filter" >
                         <p:selectOneMenu 
                             onchange="PF('comicsTable').filter()"

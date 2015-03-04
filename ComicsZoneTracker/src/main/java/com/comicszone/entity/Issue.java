@@ -71,7 +71,7 @@ public class Issue implements Serializable, CommentsContainer, Content {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "issue_issue_id_seq")
-    @SequenceGenerator(name = "issue_issue_id_seq", sequenceName = "issue_issue_id_seq")
+    @SequenceGenerator(name = "issue_issue_id_seq", sequenceName = "issue_issue_id_seq", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "issue_id")
     private Integer Id;
@@ -83,14 +83,6 @@ public class Issue implements Serializable, CommentsContainer, Content {
     @Size(max = 2147483647)
     @Column(name = "description")
     private String description;
-
-    public String getCard() {
-        return card;
-    }
-
-    public void setCard(String card) {
-        this.card = card;
-    }
     @Size(max = 2147483647)
     @Column(name = "card")
     private String card;
@@ -134,6 +126,15 @@ public class Issue implements Serializable, CommentsContainer, Content {
         this.Id = issueId;
         this.name = name;
     }
+    
+    public Issue(String name, String description, String image, String date, String source, Volume volumeId) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.relDate = date;
+        this.source = source;
+        this.volumeId = volumeId;
+    }
 
     public Integer getId() {
         return Id;
@@ -159,6 +160,14 @@ public class Issue implements Serializable, CommentsContainer, Content {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public String getCard() {
+        return card;
+    }
+
+    public void setCard(String card) {
+        this.card = card;
     }
 
     public String getImage() {

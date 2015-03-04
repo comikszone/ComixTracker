@@ -15,8 +15,11 @@ $(document).ready(function(){
             }
         },
         {
-            breakpoint: 1400,
+            breakpoint: 1350,
             settings: {
+                arrows: false,
+                centerMode: true,
+                centerPadding: '0px',
                 slidesToShow: 2,
                 slidesToScroll: 2
             }
@@ -27,8 +30,8 @@ $(document).ready(function(){
                 arrows: false,
                 centerMode: true,
                 centerPadding: '0px',
-                slidesToShow: 1,
-                slidesToScroll: 1
+                slidesToShow: 3,
+                slidesToScroll: 3
             }
         }
         ]

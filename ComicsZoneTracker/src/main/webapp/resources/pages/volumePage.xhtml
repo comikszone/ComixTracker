@@ -31,7 +31,7 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="image">
         <h:graphicImage value="#{volumeController.volume.image}"
-                        styleClass="content-image"
+                        styleClass="content-image img-thumbnail"
                         style="width:20vw;"/>
     </ui:define>
     <ui:define name="name">
@@ -57,6 +57,14 @@ and open the template in the editor.
                                         <f:ajax event="change" listener="#{ratingController.rate}"/>
                                     </pf:rating>
                                     </h:form>
+                                <p:button value="Edit this page" 
+                                          outcome="/resources/templates/authorized/editContent.jsf"
+                                          style="margin-top: 1em">
+                                    <f:param name="type" 
+                                             value="volume"/>
+                                    <f:param name="id" 
+                                             value="#{volumeController.volumeId}"/>
+                                </p:button>
                             </c:when>
                             <c:otherwise>
                                 <p:link onclick="PF('reg').show()"

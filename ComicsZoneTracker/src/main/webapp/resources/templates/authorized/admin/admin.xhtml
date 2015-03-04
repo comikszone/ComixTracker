@@ -84,7 +84,7 @@
                 </h:panelGrid>
             </h:form>
         </p:panel>
-        
+  
         <h:form id="select">
             <p:selectOneButton value="#{blockUserController.searchOption}">
                 <p:ajax event="change" update=":select"/>
@@ -92,7 +92,6 @@
                 <f:selectItem itemLabel="Search by real nicknames" itemValue="2"/>
             </p:selectOneButton>
         </h:form>
-        
         <p:panel header="Filtering content">
             <h:form id="contentFilter">
                 <p:growl id="contentMessage" showDetail="true" life="1000" />

@@ -31,7 +31,7 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="image">
         <h:graphicImage value="#{comicsPageController.comicsController.comics.image}"
-                        styleClass="content-image"
+                        styleClass="content-image img-thumbnail"
                         style="width:20vw !important;"/>
         <c:choose>
              <c:when test="#{userRoleController.isUserAuthorized()}">
@@ -94,6 +94,13 @@ and open the template in the editor.
                 <p:ajax event="change" update=":content:trackingSection"/>
                 <p:ajax event="change" update=":content:mainContent"/>
             </p:selectBooleanButton>
+            <p:button value="Edit this page" 
+                      outcome="/resources/templates/authorized/editContent.jsf"
+                      style="margin-top: 1em">
+                <f:param name="type" value="comics"/>
+                <f:param name="id" 
+                         value="#{comicsPageController.comicsController.comicsId}"/>
+           </p:button>
                           </c:if>
                           <br/>
            <p:outputPanel id="mainContent">

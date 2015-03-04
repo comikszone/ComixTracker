@@ -162,7 +162,6 @@ CREATE TABLE user_friends_news (
 --	SELECT user2_id, id, TRUE FROM friends)
 --	EXCEPT
 
-
 UPDATE users
 set real_nickname=nickname
 where is_social is null or is_social=false;

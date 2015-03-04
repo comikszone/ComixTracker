@@ -31,7 +31,7 @@ and open the template in the editor.
     </ui:define>
     <ui:define name="image">
         <h:graphicImage value="#{issueController.issue.image}"
-                        styleClass="content-image"
+                        styleClass="content-image img-thumbnail"
                         style="width:20vw;"/>
     </ui:define>
     <ui:define name="card">
@@ -65,6 +65,14 @@ and open the template in the editor.
                                         <f:ajax event="change" listener="#{ratingController.rate}"/>
                                     </pf:rating>
                                     </h:form>
+                                <p:button value="Edit this page" 
+                                          outcome="/resources/templates/authorized/editContent.jsf"
+                                          style="margin-top: 1em">
+                                    <f:param name="type" 
+                                             value="issue"/>
+                                    <f:param name="id" 
+                                             value="#{issueController.issueId}"/>
+                                </p:button>
                             </c:when>
                             <c:otherwise>
                                 <p:link onclick="PF('reg').show()"
@@ -103,6 +111,15 @@ and open the template in the editor.
                                 outcome="#{navigationController.redirect(char)}"/>
                    </div>               
                 </p:dataGrid>
+                <c:if test="#{userRoleManagedBean.isUserAuthorized()}">
+                    <p:button value="Add new character" 
+                              outcome="/resources/templates/authorized/addContent.jsf">
+                        <f:param name="type" 
+                                 value="character"/>
+                        <f:param name="id"
+                                 value="#{issueController.issueId}"/>
+                    </p:button>
+                </c:if>
             </p:tab>
         </p:accordionPanel>
         <div>
