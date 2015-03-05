@@ -66,6 +66,10 @@ public class EditContentManagedBean implements Serializable {
         context.addMessage(null, new FacesMessage("Error:", msg));
     }
     
+    public void successMsg(String msg) {
+        context.addMessage(null, new FacesMessage("Success!", msg));
+    }
+    
     @PostConstruct
     public void init() {
         switch (type) {
@@ -77,14 +81,56 @@ public class EditContentManagedBean implements Serializable {
         }
     }
     
+    public Comics findComics() {
+        return comicsFacade.findByName(volume.getComicsId().getName()).get(0);
+    }
+    
+    public Volume findVolume() {
+        return volumeFacade.findByName(issue.getVolumeId().getName()).get(0);
+    }
+    
+    public Imprint findImprint() {
+        if (comics.getImprintId()==null) {
+            return null;
+        } else {
+            return imprintFacade.findByName(comics.getImprint()).get(0);
+        }
+    }
+    
     public void editEntity() {
         if (getTitle().length() == 0) {
             errorMsg("Title can't be empty!");
         } else {
             switch (type) {
-                case "comics" : comicsFacade.edit(comics); break;
-                case "volume" : volumeFacade.edit(volume); break;
-                case "issue" : issueFacade.edit(issue); break;
+                case "comics" : Comics comicsEdit = new Comics(comics.getName(),
+                                                               comics.getDescription(),
+                                                               comics.getImage(),
+                                                               comics.getPublisherId(),
+                                                               findImprint(),
+                                                               "User",
+                                                               comics.getId());
+                                comicsFacade.create(comicsEdit);
+                                successMsg("Comics sent for approve!");
+                                break;
+                case "volume" : Volume volumeEdit = new Volume(volume.getName(),
+                                                               volume.getDescription(),
+                                                               volume.getImage(),
+                                                               "User",
+                                                               volume.getComicsId(),
+                                                               volume.getId());
+                                volumeFacade.create(volumeEdit);
+                                successMsg("Volume sent for approve!");
+                                break;
+                case "issue" : Issue issueEdit = new Issue(issue.getName(),
+                                                           issue.getDescription(),
+                                                           issue.getImage(),
+                                                           issue.getRelDate(),
+                                                           "User",
+                                                           issue.getVolumeId(),
+                                                           issue.getId());
+                                issueFacade.create(issueEdit);
+                                successMsg("Issue sent for approve!");
+                                break;
                 case "character" : characterFacade.edit(character); break;
                 default : errorMsg("Wrong entity type! Try revisiting the page.");
             }

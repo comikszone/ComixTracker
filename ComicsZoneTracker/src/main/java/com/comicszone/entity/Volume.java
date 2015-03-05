@@ -80,6 +80,8 @@ public class Volume implements Serializable, CommentsContainer, Content {
     private Boolean isChecked;
     @Column(name = "source")
     private String source;
+    @Column(name="edit_parent")
+    private Integer editParent;
     @JoinColumn(name = "comics_id", referencedColumnName = "comics_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Comics comicsId;
@@ -110,6 +112,16 @@ public class Volume implements Serializable, CommentsContainer, Content {
         this.img = image;
         this.source = source;
         this.comicsId = comicsId;
+        this.isChecked = Boolean.FALSE;
+    }
+    
+    public Volume(String name, String description, String image, String source, Comics comicsId, Integer editParent) {
+        this.name = name;
+        this.description = description;
+        this.img = image;
+        this.source = source;
+        this.comicsId = comicsId;
+        this.editParent = editParent;
         this.isChecked = Boolean.FALSE;
     }
 
@@ -195,6 +207,15 @@ public class Volume implements Serializable, CommentsContainer, Content {
     @Override
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
+    }
+    
+    @Override
+    public Integer getEditParent() {
+        return editParent;
+    }
+    
+    public void setEditParent(Integer editParent) {
+        this.editParent = editParent;
     }
     
     @Override

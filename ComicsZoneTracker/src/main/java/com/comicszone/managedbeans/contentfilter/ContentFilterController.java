@@ -82,8 +82,15 @@ public class ContentFilterController implements Serializable {
                 facesContext.addMessage(null, approvedMessage);
             }
             else {
-                contentDao.setChecked(item);
-                approvedContent.add(item);
+                if (contentDao.getEditParent(item)==null) {
+                    contentDao.setChecked(item);
+                    approvedContent.add(item);
+                } else {
+                    Content itemParent = contentDao.editParentItem(item);
+                    contentDao.setChecked(itemParent);
+                    approvedContent.add(itemParent);
+                    contentDao.delete(item);
+                }
             }
         }
         updateContent();

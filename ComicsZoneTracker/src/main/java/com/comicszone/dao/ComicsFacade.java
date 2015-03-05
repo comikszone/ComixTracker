@@ -29,6 +29,7 @@ import org.primefaces.model.SortOrder;
 public class ComicsFacade extends AbstractFacade<Comics> implements Finder, SlideshowInterface, CatalogueInterface {
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+    private ImprintFacade imprintFacade;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -176,6 +177,10 @@ public class ComicsFacade extends AbstractFacade<Comics> implements Finder, Slid
         TypedQuery<Comics> query = em.createNamedQuery("Comics.findByChecking", Comics.class);
         query.setParameter("isChecked", isChecked);
         return query.getResultList();
+    }
+    
+    public Imprint findImprint(Comics comics) {
+        return imprintFacade.findByName(comics.getImprint()).get(0);
     }
     
     public List<Comics> findByName(String name) {

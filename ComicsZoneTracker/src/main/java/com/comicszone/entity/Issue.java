@@ -94,13 +94,15 @@ public class Issue implements Serializable, CommentsContainer, Content {
     private Float rating;
     @Column(name = "votes")
     private Integer votes;
-    @Column(name = "rel_date")
+    @Column(name = "reldate")
     @Size(max = 2147483647)
     private String relDate;
     @Column(name = "is_checked")
     private Boolean isChecked;
     @Column(name = "source")
     private String source;
+    @Column(name="edit_parent")
+    private Integer editParent;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
     private List<Character> characterList;
     @ManyToMany(mappedBy = "issueList", fetch = FetchType.LAZY)
@@ -134,6 +136,17 @@ public class Issue implements Serializable, CommentsContainer, Content {
         this.relDate = date;
         this.source = source;
         this.volumeId = volumeId;
+        this.isChecked = Boolean.FALSE;
+    }
+    
+    public Issue(String name, String description, String image, String date, String source, Volume volumeId, Integer editParent) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.relDate = date;
+        this.source = source;
+        this.volumeId = volumeId;
+        this.editParent = editParent;
         this.isChecked = Boolean.FALSE;
     }
 
@@ -255,6 +268,15 @@ public class Issue implements Serializable, CommentsContainer, Content {
     @Override
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
+    }
+    
+    @Override
+    public Integer getEditParent() {
+        return editParent;
+    }
+    
+    public void setEditParent(Integer editParent) {
+        this.editParent = editParent;
     }
     
     @Override

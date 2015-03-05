@@ -24,6 +24,7 @@ import javax.persistence.TypedQuery;
 public class IssueFacade extends AbstractFacade<Issue> implements Finder {
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+    private VolumeFacade volumeFacade;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -59,6 +60,10 @@ public class IssueFacade extends AbstractFacade<Issue> implements Finder {
         TypedQuery<Issue> query =em.createNamedQuery("Issue.findByChecking", Issue.class);
         query.setParameter("isChecked", isChecked);
         return query.getResultList();
+    }
+    
+    public Volume findVolume(Issue issue) {
+        return volumeFacade.findByName(issue.getVolumeId().getName()).get(0);
     }
     
     public List<Issue> findByName(String name) {

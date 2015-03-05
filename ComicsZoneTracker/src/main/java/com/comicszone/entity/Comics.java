@@ -142,6 +142,8 @@ public class Comics implements Serializable, CommentsContainer, Content {
     private Boolean isChecked;
     @Column(name = "source")
     private String source;
+    @Column(name="edit_parent")
+    private Integer editParent;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comicsId", fetch = FetchType.LAZY)
     private List<Volume> volumeList;
@@ -177,6 +179,17 @@ public class Comics implements Serializable, CommentsContainer, Content {
         this.publisherId = publisher;
         this.imprintId = imprint;
         this.source = source;
+        this.isChecked = Boolean.FALSE;
+    }
+    
+    public Comics(String title, String description, String image, Publisher publisher, Imprint imprint, String source, Integer editParent) {
+        this.name = title;
+        this.description = description;
+        this.image = image;
+        this.publisherId = publisher;
+        this.imprintId = imprint;
+        this.source = source;
+        this.editParent = editParent;
         this.isChecked = Boolean.FALSE;
     }
 
@@ -292,7 +305,7 @@ public class Comics implements Serializable, CommentsContainer, Content {
         return imprintId;
     }
     
-    public String getImrint() {
+    public String getImprint() {
         if (imprintId==null) {
             return null;
         } else {
@@ -334,6 +347,15 @@ public class Comics implements Serializable, CommentsContainer, Content {
     @Override
     public void setSource(String source) {
         this.source = source;
+    }
+    
+    @Override
+    public Integer getEditParent() {
+        return editParent;
+    }
+    
+    public void setEditParent(Integer editParent) {
+        this.editParent = editParent;
     }
     
     @Override
