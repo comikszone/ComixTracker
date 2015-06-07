@@ -195,7 +195,9 @@
                                 <h:outputText
                                     value="#{content.name}"
                                     title="Click to edit"
-                                    style="width: 100%; height: 100%;"/>
+                                    style="width: 100%; height: 100%; 
+                                    white-space: pre-wrap; word-break: break-all;
+                                    word-wrap: break-word;"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputTextarea
@@ -226,7 +228,9 @@
                                 <h:outputText
                                     value="#{content.description}"
                                     title="Click to edit"
-                                    style="width: 100%; height: 100%;"/>
+                                    style="width: 100%; height: 100%;  
+                                    white-space: pre-wrap; word-break: break-all;
+                                    word-wrap: break-word;"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputTextarea
@@ -239,6 +243,14 @@
                     <p:column headerText="Extra info">
                         <h:outputText
                             value="#{content.extraInfo}"
+                            style="width: 100%; height: 100%; 
+                            white-space: pre-wrap; word-break: break-all;
+                            word-wrap: break-word;"/>
+                    </p:column>
+                    
+                    <p:column headerText="Edition id">
+                        <h:outputText
+                            value="#{content.editParent}"
                             style="width: 100%; height: 100%;"/>
                     </p:column>
                     
@@ -286,7 +298,9 @@
                                 <h:outputText
                                     value="#{content.name}"
                                     title="Click to edit"
-                                    style="width: 100%; height: 100%;"/>
+                                    style="width: 100%; height: 100%; 
+                                    white-space: pre-wrap; word-break: break-all;
+                                    word-wrap: break-word;"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputTextarea
@@ -299,7 +313,9 @@
                     <p:column headerText="Image">
                         <p:cellEditor>
                             <f:facet name="output">
-                                <p:graphicImage 
+                                <p:graphicImage
+                                    width="100%"
+                                    styleClass="content-image"
                                     value="#{content.image}"
                                     title="Click to edit"/>
                             </f:facet>
@@ -315,7 +331,9 @@
                                 <h:outputText
                                     value="#{content.description}"
                                     title="Click to edit"
-                                    style="width: 100%; height: 100%;"/>
+                                    style="width: 100%; height: 100%; 
+                                    white-space: pre-wrap; word-break: break-all;
+                                    word-wrap: break-word;"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputTextarea
@@ -328,6 +346,14 @@
                     <p:column headerText="Extra info">
                         <h:outputText
                             value="#{content.extraInfo}"
+                            style="width: 100%; height: 100%; 
+                            white-space: pre-wrap; word-break: break-all;
+                            word-wrap: break-word;"/>
+                    </p:column>
+                    
+                    <p:column headerText="Edition id">
+                        <h:outputText
+                            value="#{content.editParent}"
                             style="width: 100%; height: 100%;"/>
                     </p:column>
                     
@@ -375,7 +401,9 @@
                                 <h:outputText
                                     value="#{content.name}"
                                     title="Click to edit"
-                                    style="width: 100%; height: 100%;"/>
+                                    style="width: 100%; height: 100%; 
+                                    white-space: pre-wrap; word-break: break-all;
+                                    word-wrap: break-word;"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputTextarea
@@ -388,7 +416,9 @@
                     <p:column headerText="Image">
                         <p:cellEditor>
                             <f:facet name="output">
-                                <p:graphicImage 
+                                <p:graphicImage
+                                    width="100%"
+                                    styleClass="content-image"
                                     value="#{content.image}"
                                     title="Click to edit"/>
                             </f:facet>
@@ -404,7 +434,9 @@
                                 <h:outputText
                                     value="#{content.description}"
                                     title="Click to edit"
-                                    style="width: 100%; height: 100%;"/>
+                                    style="width: 100%; height: 100%; 
+                                    white-space: pre-wrap; word-break: break-all;
+                                    word-wrap: break-word;"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputTextarea
@@ -417,7 +449,9 @@
                     <p:column headerText="Extra info">
                         <h:outputText
                             value="#{content.extraInfo}"
-                            style="width: 100%; height: 100%;"/>
+                            style="width: 100%; height: 100%; 
+                            white-space: pre-wrap; word-break: break-all;
+                            word-wrap: break-word;"/>
                     </p:column>
                     
                     <p:column headerText="Your choice">
@@ -459,24 +493,32 @@
                     <p:column headerText="Name">
                         <h:outputText
                             value="#{content.name}"
-                            style="width: 100%; height: 100%;"/>
+                            style="width: 100%; height: 100%; 
+                            white-space: pre-wrap; word-break: break-all;
+                            word-wrap: break-word;"/>
                     </p:column>
                     
                     <p:column headerText="Image">
-                        <p:graphicImage 
+                        <p:graphicImage
+                            width="100%"
+                            styleClass="content-image"
                             value="#{content.image}"/>
                     </p:column>
                     
                     <p:column headerText="Description">
                         <h:outputText
                             value="#{content.description}"
-                            style="width: 100%; height: 100%;"/>
+                            style="width: 100%; height: 100%; 
+                            white-space: pre-wrap; word-break: break-all;
+                            word-wrap: break-word;"/>
                     </p:column>
                     
                     <p:column headerText="Extra info">
                         <h:outputText
                             value="#{content.extraInfo}"
-                            style="width: 100%; height: 100%;"/>
+                            style="width: 100%; height: 100%; 
+                            white-space: pre-wrap; word-break: break-all;
+                            word-wrap: break-word;"/>
                     </p:column>
                            
                 </p:dataTable>

@@ -4,8 +4,12 @@ import com.comicszone.dao.AbstractFacade;
 import com.comicszone.dao.ComicsFacade;
 import com.comicszone.dao.IssueFacade;
 import com.comicszone.dao.VolumeFacade;
+import com.comicszone.entity.Comics;
 import com.comicszone.entity.Content;
 import com.comicszone.entity.ContentType;
+import com.comicszone.entity.Imprint;
+import com.comicszone.entity.Issue;
+import com.comicszone.entity.Volume;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -56,7 +60,7 @@ public class ContentFacade extends AbstractFacade<Content> {
     public List<Content> findBySource(String source) {
         TypedQuery<Content> comicsQuery = 
                 em.createNamedQuery("source.findBySource", Content.class);
-        comicsQuery.setParameter("isChecked", source);
+        comicsQuery.setParameter("source", source);
         TypedQuery<Content> volumeQuery = 
                 em.createNamedQuery("Volume.findBySource", Content.class);
         volumeQuery.setParameter("source", source);
@@ -81,6 +85,88 @@ public class ContentFacade extends AbstractFacade<Content> {
         result.addAll(volumeQuery.getResultList());
         result.addAll(issueQuery.getResultList());
         return result;
+    }
+    
+    public Integer getEditParent(Content item) {
+        Content editingItem = null;
+        ContentType type = item.getContentType();
+        Integer id = item.getId();
+        switch(type) {
+            case Comics:
+                editingItem = comicsFacade.find(id);
+                if (editingItem == null) {
+                    return null;
+                }
+                return editingItem.getEditParent();
+                
+            case Issue:
+                editingItem = issueFacade.find(id);
+                if (editingItem == null) {
+                    return null;
+                }
+                return editingItem.getEditParent();
+                
+            case Volume:
+                editingItem = volumeFacade.find(id);
+                if (editingItem == null) {
+                    return null;
+                }
+                return editingItem.getEditParent();
+                
+            default:
+                return null;
+        }
+    }
+    
+    public Content editParentItem(Content item) {
+        ContentType type = item.getContentType();
+        Integer id = item.getId();
+        Integer parentId = item.getEditParent();
+        switch(type) {
+            case Comics:
+                Comics parentComics = new Comics();
+                Comics comicsEdit = new Comics();
+                comicsEdit = comicsFacade.find(id);
+                parentComics = comicsFacade.find(parentId);
+                parentComics.setName(comicsEdit.getName());
+                parentComics.setDescription(comicsEdit.getDescription());
+                parentComics.setImage(comicsEdit.getImage());
+                parentComics.setPublisherId(comicsEdit.getPublisherId());
+                parentComics.setImprintId(comicsEdit.getImprintId());
+                parentComics.setSource("User");
+                comicsFacade.edit(parentComics);
+                return parentComics;
+                
+            case Issue:
+                Issue parentIssue = new Issue();
+                Issue issueEdit = new Issue();
+                issueEdit = issueFacade.find(id);
+                parentIssue = issueFacade.find(parentId);
+                parentIssue.setName(issueEdit.getName());
+                parentIssue.setDescription(issueEdit.getDescription());
+                parentIssue.setImage(issueEdit.getImage());
+                parentIssue.setRelDate(issueEdit.getRelDate());
+                parentIssue.setSource("User");
+                parentIssue.setVolumeId(issueEdit.getVolumeId());
+                issueFacade.edit(parentIssue);
+                return parentIssue;
+                
+            case Volume:
+                Volume parentVolume = new Volume();
+                Volume volumeEdit = new Volume();
+                volumeEdit = volumeFacade.find(id);
+                parentVolume = volumeFacade.find(parentId);
+                parentVolume.setName(volumeEdit.getName());
+                parentVolume.setDescription(volumeEdit.getDescription());
+                parentVolume.setImage(volumeEdit.getImage());
+                parentVolume.setSource("User");
+                parentVolume.setComicsId(volumeEdit.getComicsId());
+                volumeFacade.edit(parentVolume);
+                return parentVolume;
+                
+            default:
+                return null;
+        }
     }
     
     public void setChecked(Content item) {

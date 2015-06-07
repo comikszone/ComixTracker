@@ -142,8 +142,8 @@ and open the template in the editor.
                                       outcome="/resources/templates/authorized/addContent.jsf"
                                       rendered="#{!comicsPageController.isReadingModeOn()}">
                                     <f:param name="type" 
-                                            value="Issue"/>
-                                    <f:param name="v_id" 
+                                            value="issue"/>
+                                    <f:param name="id" 
                                             value="#{volume.id}"/>
                                 </p:button>
                             </c:if>
@@ -154,8 +154,8 @@ and open the template in the editor.
                                   outcome="/resources/templates/authorized/addContent.jsf"
                                   rendered="#{!comicsPageController.isReadingModeOn()}">
                             <f:param name="type" 
-                                     value="Volume"/>
-                            <f:param name="c_id" 
+                                     value="volume"/>
+                            <f:param name="id" 
                                      value="#{comicsPageController.comicsController.comicsId}"/>
                         </p:button>
                     </c:if>

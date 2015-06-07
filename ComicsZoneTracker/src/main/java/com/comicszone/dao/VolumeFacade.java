@@ -22,6 +22,7 @@ import javax.persistence.TypedQuery;
 public class VolumeFacade extends AbstractFacade<Volume> {
     @PersistenceContext(unitName = "com.mycompany_ComicsZoneTracker_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+    private ComicsFacade comicsFacade;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -36,6 +37,10 @@ public class VolumeFacade extends AbstractFacade<Volume> {
         TypedQuery<Volume> query = em.createNamedQuery("Volume.findByChecking", Volume.class);
         query.setParameter("isChecked", isChecked);
         return query.getResultList();
+    }
+    
+    public Comics findComics(Volume volume) {
+        return comicsFacade.findByName(volume.getComicsId().getName()).get(0);
     }
     
     public List<Volume> findByName(String name) {

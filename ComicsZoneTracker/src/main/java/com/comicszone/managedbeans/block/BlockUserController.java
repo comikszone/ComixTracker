@@ -31,17 +31,18 @@ public class BlockUserController implements Serializable {
     public void blockUser() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         String userNickName = selectedUser != null ? selectedUser.getNickname() : null;
+        String realNickName = selectedUser != null ? selectedUser.getRealNickname() : null;
         String blockResult = "";
         
         switch (userBlockDao.blockUser(userNickName)) {
             case DONE:
-                blockResult = "User \"" + userNickName + "\" successfully blocked.";
+                blockResult = "User \"" + realNickName + "\" successfully blocked.";
                 break;
             case NOT_FOUND:
-                blockResult = "User \"" + userNickName + "\" doesn't exist."; 
+                blockResult = "User \"" + realNickName + "\" doesn't exist."; 
                 break;
             case CANCELED:
-                blockResult = "User \"" + userNickName + "\" has been banned yet.";
+                blockResult = "User \"" + realNickName + "\" has been banned yet.";
         }
         selectedUser = null;
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -52,17 +53,18 @@ public class BlockUserController implements Serializable {
     public void unblockUser() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         String userNickName = selectedUser.getNickname();
+        String realNickName = selectedUser != null ? selectedUser.getRealNickname() : null;
         String unblockResult = "";
         
         switch (userBlockDao.unblockUser(userNickName)) {
             case DONE:
-                unblockResult = "User \"" + userNickName + "\" successfully unblocked.";
+                unblockResult = "User \"" + realNickName + "\" successfully unblocked.";
                 break;
             case NOT_FOUND:
-                unblockResult = "User \"" + userNickName + "\" doesn't exist."; 
+                unblockResult = "User \"" + realNickName + "\" doesn't exist."; 
                 break;
             case CANCELED:
-                unblockResult = "User \"" + userNickName + "\" hasn't been banned.";
+                unblockResult = "User \"" + realNickName + "\" hasn't been banned.";
         }
         selectedUser = null;
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO,

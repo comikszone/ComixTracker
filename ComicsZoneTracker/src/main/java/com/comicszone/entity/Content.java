@@ -21,5 +21,6 @@ public interface Content extends Serializable, NamedImage {
     public Boolean getIsChecked();
     public void setIsChecked(Boolean isChecked);
     public String getSource();
+    public Integer getEditParent();
     public void setSource(String source);
 }

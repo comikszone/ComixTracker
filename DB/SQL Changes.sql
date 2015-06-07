@@ -205,3 +205,7 @@ WITH (
 );
 ALTER TABLE user_tracking_status
   OWNER TO "ComicsZoneRole";
+  
+ALTER TABLE comics ADD COLUMN edit_parent integer;
+ALTER TABLE volume ADD COLUMN edit_parent integer;
+ALTER TABLE issue ADD COLUMN edit_parent integer;
