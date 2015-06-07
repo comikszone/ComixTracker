@@ -14,18 +14,18 @@ import com.comicszone.entity.Users;
 import java.io.Serializable;
 import java.security.Principal;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import net.playerfinder.jsf.components.rating.UIRating;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author ajpyatakov
  */
 
-@ManagedBean
+@Named
 @ViewScoped
 public class RatingController implements Serializable {
     @EJB

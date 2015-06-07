@@ -10,16 +10,15 @@ import com.comicszone.entity.Comics;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import org.primefaces.model.LazyDataModel;
 
 /**
  *
  * @author Eschenko_DA
  */
-@ManagedBean(name="comicsCatalogueView")
+@Named("comicsCatalogueView")
 @SessionScoped
 public class ComicsCatalogueController implements Serializable {
     

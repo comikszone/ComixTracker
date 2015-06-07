@@ -12,18 +12,18 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author alexander
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class UserCommentsNewsController implements Serializable {
     

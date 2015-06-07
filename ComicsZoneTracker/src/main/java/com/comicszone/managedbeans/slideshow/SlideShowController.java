@@ -9,17 +9,17 @@ import com.comicszone.dao.ComicsFacade;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import com.comicszone.entity.Comics;
 import javax.ejb.EJB;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  * 
  * @author Alexander Pyatakov
  */
 
-@ManagedBean(name="slideshowController")
+@Named("slideshowController")
 @ViewScoped
 public class SlideShowController implements Serializable {
     

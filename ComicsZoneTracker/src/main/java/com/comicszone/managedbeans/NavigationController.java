@@ -6,12 +6,12 @@ import com.comicszone.entity.NamedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@ManagedBean
+@Named
 @RequestScoped
 public class NavigationController implements Serializable {
     private String templateName;

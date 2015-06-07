@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
+import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.apache.http.HttpResponse;
@@ -31,7 +31,7 @@ import org.json.simple.parser.ParseException;
  *
  * @author ArsenyPC
  */
-@ManagedBean
+@Named
 public class VKAuthorization extends SocialNetworkAuthorization implements Serializable {
 //    private static final String clientId = "4695923";
 //    private static final String clientSecret = "DN8uqaag7oUAPSfYCe2n";

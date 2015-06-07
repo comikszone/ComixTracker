@@ -10,21 +10,20 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.inject.Default;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.facelets.FaceletContext;
+import org.omnifaces.cdi.ViewScoped;
 import org.primefaces.component.inputtextarea.InputTextarea;
 
 /**
  *
  * @author alexander
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class CommentsController implements Serializable {
     

@@ -9,8 +9,8 @@ import com.comicszone.dao.user.UserDataFacade;
 import com.comicszone.entity.Users;
 import java.io.ByteArrayInputStream;
 import javax.ejb.EJB;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import org.primefaces.model.DefaultStreamedContent;
@@ -20,7 +20,7 @@ import org.primefaces.model.StreamedContent;
  *
  * @author Eschenko_DA
  */
-@ManagedBean
+@Named
 @ApplicationScoped
 public class UserAvatarsController {
     

@@ -13,21 +13,21 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author GuronPavorro
  */
 
-@ManagedBean
+@Named
 @ViewScoped
 public class ProgressController implements Serializable {
     @EJB
     private ProgressInterface progressFacade;
-    @ManagedProperty(value="#{currentUserController}")
+    @Inject
     private CurrentUserController userManagedBean;
     
     private List<Comics> currentComics;

@@ -7,23 +7,20 @@ package com.comicszone.managedbeans.tracking;
 
 import com.comicszone.dao.tracking.TrackingInterface;
 import com.comicszone.dao.user.UserDataFacade;
-import com.comicszone.entity.Content;
 import com.comicszone.entity.ContentType;
 import com.comicszone.entity.Issue;
 import com.comicszone.entity.NamedImage;
 import com.comicszone.entity.Users;
 import com.comicszone.entity.Volume;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
-import com.comicszone.managedbeans.userbeans.CurrentUserController;
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import org.omnifaces.cdi.ViewScoped;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
@@ -33,11 +30,11 @@ import org.primefaces.event.UnselectEvent;
  *
  * @author GuronPavorro
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class TrackingController implements Serializable {
     
-    @ManagedProperty(value="#{comicsController}")
+    @Inject
     private ComicsController comicsController;
     
     @EJB

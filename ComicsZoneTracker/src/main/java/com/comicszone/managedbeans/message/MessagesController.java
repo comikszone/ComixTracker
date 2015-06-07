@@ -16,10 +16,10 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import org.omnifaces.cdi.ViewScoped;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.push.EventBus;
@@ -29,7 +29,7 @@ import org.primefaces.push.EventBusFactory;
  *
  * @author ArsenyPC
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class MessagesController implements Serializable {
     @EJB

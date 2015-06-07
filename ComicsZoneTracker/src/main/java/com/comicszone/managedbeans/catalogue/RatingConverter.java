@@ -9,6 +9,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 /**
  *
  * @author Eschenko_DA
@@ -16,12 +17,13 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter("ratingConverter")
 public class RatingConverter implements Converter {
     
+    @Inject
+    private ComicsFinderController ratingFinderController;
+    
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if(value != null && value.trim().length() > 0) {
-            ComicsFinderController ratingFinderManagedBean = (ComicsFinderController)
-                    fc.getExternalContext().getApplicationMap().get("comicsFinderManagedBean");
-            return ratingFinderManagedBean.getRating(Integer.parseInt(value));
+            return ratingFinderController.getRating(Integer.parseInt(value));
         }
         else {
             return null;

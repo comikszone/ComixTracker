@@ -16,7 +16,6 @@ import com.comicszone.entity.Comics;
 import com.comicszone.entity.Imprint;
 import com.comicszone.entity.Issue;
 import com.comicszone.entity.Character;
-import com.comicszone.entity.Publisher;
 import com.comicszone.entity.Realm;
 import com.comicszone.entity.Volume;
 import java.io.Serializable;
@@ -24,9 +23,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 
 /**
@@ -34,7 +33,7 @@ import javax.faces.context.FacesContext;
  * @author Phoenix1092
  */
 
-@ManagedBean
+@Named
 @RequestScoped
 public class AddContentController implements Serializable {
     

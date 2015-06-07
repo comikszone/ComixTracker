@@ -8,13 +8,13 @@ import java.io.Serializable;
 import java.security.Principal;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import org.omnifaces.cdi.ViewScoped;
 
-@ManagedBean
+@Named
 @ViewScoped
 public class AuthorisationController implements Serializable {
 

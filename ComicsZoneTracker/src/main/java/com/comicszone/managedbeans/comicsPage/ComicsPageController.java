@@ -6,26 +6,24 @@
 package com.comicszone.managedbeans.comicsPage;
 
 import com.comicszone.dao.ComicsFacade;
-import com.comicszone.entity.Content;
-import com.comicszone.entity.ContentType;
 import com.comicszone.managedbeans.entitycontroller.ComicsController;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author aypyatakov
  */
-@ManagedBean(name="comicsPageController")
+@Named("comicsPageController")
 @ViewScoped
 public class ComicsPageController implements Serializable {
     
     @EJB
     private ComicsFacade comicsFacade; 
-    @ManagedProperty(value="#{comicsController}")
+    @Inject
     private ComicsController comicsController;
     
     private boolean readingModeOn;

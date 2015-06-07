@@ -18,19 +18,22 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
  
 //import org.primefaces.showcase.domain.Theme;
 //import org.primefaces.showcase.service.ThemeService;
  
 @FacesConverter("ajaxComicsCharacterConverter")
 public class AjaxComicsConverter implements Converter {
+    
+    @Inject
+    private AutoCompleteController autoCompleteController;
  
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if(value != null && value.trim().length() > 0) {
             try {
-                Finder finder=(Finder) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("finder");
-                return finder.find(Integer.parseInt(value));
+                return autoCompleteController.getFinder().find(Integer.parseInt(value));
             } catch(NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid comics."));
             }
