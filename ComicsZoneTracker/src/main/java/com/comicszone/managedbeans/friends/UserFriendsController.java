@@ -19,10 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.omnifaces.cdi.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -30,7 +30,7 @@ import org.primefaces.context.RequestContext;
  * @author Eschenko_DA
  */
 
-@ManagedBean
+@Named
 @ViewScoped
 public class UserFriendsController implements Serializable {
     

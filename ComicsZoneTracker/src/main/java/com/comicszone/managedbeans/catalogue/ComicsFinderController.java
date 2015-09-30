@@ -9,15 +9,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+import org.omnifaces.cdi.Eager;
+import org.omnifaces.cdi.Startup;
 
 /**
  *
  * @author Eschenko_DA
  */
-@ManagedBean(name = "comicsFinderManagedBean", eager = true)
-@ApplicationScoped
+@Named("comicsFinderManagedBean")
+@Startup
 public class ComicsFinderController implements Serializable {
     
     private List<Rating> ratings;

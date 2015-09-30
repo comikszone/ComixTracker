@@ -6,20 +6,12 @@
 package com.comicszone.managedbeans.password_recovery;
 
 import com.comicszone.dao.user.UserDataFacade;
-import com.comicszone.dao.user.UserRegistrationFacade;
-import com.comicszone.dao.util.encryption.IPasswordEncryptor;
-import com.comicszone.dao.util.encryption.SHA256Encryptor;
-import com.comicszone.entity.Users;
-import com.comicszone.managedbeans.util.passwordcreators.IPasswordCreator;
-import com.comicszone.managedbeans.util.passwordcreators.SimplePasswordCreator;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.mail.MessagingException;
@@ -28,7 +20,7 @@ import javax.mail.MessagingException;
  *
  * @author ArsenyPC
  */
-@ManagedBean
+@Named
 @RequestScoped
 public class EmailController implements Serializable {
     @EJB

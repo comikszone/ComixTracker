@@ -10,19 +10,23 @@ import com.comicszone.entity.Comics;
 import com.comicszone.entity.Issue;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.omnifaces.cdi.ViewScoped;
 /**
  *
  * @author ArsenyPC
  */
-@ManagedBean(name="comicsController")
+@Named("comicsController")
 @ViewScoped
 public class ComicsController implements Serializable {
     @EJB
     private ComicsFacade comicsFacade;
     private Comics comics;
     private Integer comicsId;
+    
+    @Inject
+    private CardController ctrl;
     
     public ComicsController(){
     }
@@ -57,7 +61,6 @@ public class ComicsController implements Serializable {
     }
     
     public String getProperIssueName(Issue issue){
-        CardController ctrl = new CardController();
         ctrl.setName(issue.getName());
         ctrl.setCard(issue.getCard());
         return ctrl.getName();

@@ -21,13 +21,13 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.omnifaces.cdi.ViewScoped;
  
  
-@ManagedBean
+@Named
 @ViewScoped
 public class AutoCompleteController implements Serializable {
     @EJB
@@ -73,8 +73,7 @@ public class AutoCompleteController implements Serializable {
     }
      
     public List<Content> completeComics(String query) {
-        List<Content> contents=(List<Content>) finder.findByNameStartsWith(query.toLowerCase());
-        FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put("finder", finder);
+        List<Content> contents=(List<Content>) getFinder().findByNameStartsWith(query.toLowerCase());
         return contents;
     }
     public String redirect()
@@ -83,5 +82,13 @@ public class AutoCompleteController implements Serializable {
             return "/resources/pages/comicsPage.jsf?faces-redirect=true&id=" + content.getId();
         else
             return "/resources/pages/characterPage.jsf?faces-redirect=true&id=" + content.getId();
+    }
+
+    public Finder getFinder() {
+        return finder;
+    }
+
+    public void setFinder(Finder finder) {
+        this.finder = finder;
     }
 }

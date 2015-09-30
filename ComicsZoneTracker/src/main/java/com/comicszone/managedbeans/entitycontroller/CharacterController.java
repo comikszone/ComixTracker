@@ -6,21 +6,22 @@
 package com.comicszone.managedbeans.entitycontroller;
 
 import com.comicszone.dao.CharacterFacade;
-import javax.faces.bean.ManagedBean;
+import javax.inject.Named;
 import com.comicszone.entity.Character;
 import com.comicszone.entity.Content;
 import com.comicszone.entity.ContentType;
 import com.comicszone.entity.Issue;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
+import org.omnifaces.cdi.ViewScoped;
+
 
 /**
  *
  * @author ArsenyPC
  */
-@ManagedBean(name="characterController")
+@Named("characterController")
 @ViewScoped
 public class CharacterController implements Serializable {
 
@@ -28,7 +29,8 @@ public class CharacterController implements Serializable {
     private CharacterFacade characterFacade;
     private Integer characterId;
     private Character character;
-    @ManagedProperty(value = "#{ctrl}")
+    
+    @Inject
     private CardController ctrl;
     
     public CardController getCtrl() {
@@ -62,7 +64,6 @@ public class CharacterController implements Serializable {
     }
     
     public String getProperIssueName(Issue issue){
-        CardController ctrl = new CardController();
         ctrl.setName(issue.getName());
         ctrl.setCard(issue.getCard());
         return ctrl.getName();

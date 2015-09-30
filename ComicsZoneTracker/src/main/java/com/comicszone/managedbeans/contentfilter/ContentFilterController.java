@@ -13,16 +13,16 @@ import java.util.List;
 import java.util.Vector;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 
 /**
  *
  * @author alexander
  */
-@ManagedBean
+@Named
 @SessionScoped
 public class ContentFilterController implements Serializable {
     

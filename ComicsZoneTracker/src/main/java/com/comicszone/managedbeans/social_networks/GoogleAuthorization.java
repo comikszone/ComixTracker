@@ -21,10 +21,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -33,7 +31,7 @@ import org.json.simple.parser.ParseException;
  *
  * @author ArsenyPC
  */
-@ManagedBean
+@Named
 @SessionScoped
 public class GoogleAuthorization extends SocialNetworkAuthorization implements Serializable {
 //    private static final String clientId = "232041634310-t8k3nf1cbede85kbu8ljsc16j2fdfbvf.apps.googleusercontent.com";

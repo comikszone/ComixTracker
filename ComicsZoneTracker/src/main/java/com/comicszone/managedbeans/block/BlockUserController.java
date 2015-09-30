@@ -11,15 +11,15 @@ import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author alexander
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class BlockUserController implements Serializable {
     

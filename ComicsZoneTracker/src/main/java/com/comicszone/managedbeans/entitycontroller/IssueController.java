@@ -9,23 +9,26 @@ import com.comicszone.dao.IssueFacade;
 import com.comicszone.entity.Issue;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.omnifaces.cdi.ViewScoped;
+
 
 /**
  *
  * @author Alexander Pyatakov
  */
-@ManagedBean(name="issueController")
+@Named
 @ViewScoped
 public class IssueController implements Serializable {
     @EJB
-    public IssueFacade issueFacade;
-    public Integer issueId;
-    public Issue issue;
-    @ManagedProperty(value = "#{ctrl}")
-    public CardController ctrl;
+    private IssueFacade issueFacade;
+    private Integer issueId;
+    private Issue issue;
+    
+    @Inject
+    private CardController ctrl;
 
     public CardController getCtrl() {
         return ctrl;

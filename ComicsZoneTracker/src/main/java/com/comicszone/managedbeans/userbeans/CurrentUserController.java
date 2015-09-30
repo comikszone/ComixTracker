@@ -8,12 +8,12 @@ import java.security.Principal;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.DefaultStreamedContent;
 
-@ManagedBean
+@Named
 @SessionScoped
 public class CurrentUserController implements Serializable {
 

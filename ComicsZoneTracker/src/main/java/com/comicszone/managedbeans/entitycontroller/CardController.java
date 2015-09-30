@@ -9,16 +9,18 @@ import com.comicszone.dao.CharacterFacade;
 import com.comicszone.dao.ComicsFacade;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.inject.Model;
+import javax.inject.Named;
 import org.json.JSONObject;
+import org.omnifaces.cdi.Eager;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author nofuture
  */
-@ManagedBean(name = "ctrl")
-@ViewScoped
+@Named("ctrl")
+@Model
 public class CardController implements Serializable {
     private JSONObject card;
     private String name;
@@ -30,10 +32,6 @@ public class CardController implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    @EJB
-    private ComicsFacade comicsFacade;
-    @EJB
-    private CharacterFacade characterFacade;
 
     public JSONObject getCard() {
         return card;

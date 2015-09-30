@@ -6,3 +6,4 @@ pom.xml.next
 nb-configuration.xml
 release.properties
 .idea/
+ApplicationConfig.java
